@@ -19,7 +19,7 @@ class server {
 	
 	public static function serverStatus($realm_id) 
 	{
-		//Get status
+		//获取状态
 	    $fp = fsockopen($GLOBALS['realms'][$realm_id]['host'], $GLOBALS['realms'][$realm_id]['port'], $errno, $errstr, 1);
 		if (!$fp) 
 		   echo $status = '';

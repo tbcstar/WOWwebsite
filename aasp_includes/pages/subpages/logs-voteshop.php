@@ -3,7 +3,7 @@ $server = new server;
 $account = new account;
 ?>
 	 
-<div class="box_right_title">Vote Shop logs</div>
+<div class="box_right_title">投票商店日志</div>
 <?php 
 
 $per_page = 40;
@@ -24,7 +24,7 @@ if(mysql_num_rows($result)==0) {
  <hr/>
 <div id="logs_content">
 <table width="100%">
-        <tr><th>User</th><th>Character</th><th>Realm</th><th>Item</th><th>Date</th></tr>
+        <tr><th>用户</th><th>角色</th><th>服务器</th><th>物品</th><th>日期</th></tr>
         <?php while($row = mysql_fetch_assoc($result)) { ?>
 		<tr class="center">
             <td><?php echo $account->getAccName($row['account']); ?></td>
@@ -44,7 +44,7 @@ if($pages>=1 && $page <= $pages)
 	if($page>1)
 	{
 	   $prev = $page-1;
-	   echo '<a href="?p=logs&s=voteshop&page='.$prev.'" title="Previous">Previous</a> &nbsp;';
+	   echo '<a href="?p=logs&s=voteshop&page='.$prev.'" title="Previous">上一页</a> &nbsp;';
 	}
 	for($x=1; $x<=$pages; $x++)
 	{
@@ -57,7 +57,7 @@ if($pages>=1 && $page <= $pages)
 	if($page<$x - 1)
 	{
 	   $next = $page+1;
-	   echo '&nbsp; <a href="?p=logs&s=voteshop&page='.$next.'" title="Next">Next</a> &nbsp; &nbsp;';
+	   echo '&nbsp; <a href="?p=logs&s=voteshop&page='.$next.'" title="Next">下一页</a> &nbsp; &nbsp;';
 	}
 }
 ?>

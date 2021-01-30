@@ -1,7 +1,7 @@
 <?php $page = new page; $server = new server;?>
-<div class="box_right_title">Manage Realms</div>
+<div class="box_right_title">服务器管理</div>
 <table class="center">
-<tr><th>ID</th><th>Name</th><th>Host</th><th>Port</th><th>Character DB</th><th>Actions</th></tr>
+<tr><th>ID</th><th>名称</th><th>主机</th><th>端口</th><th>角色数据库</th><th>动作</th></tr>
 <?php
     $server->selectDB('webdb');
 	$result = mysql_query("SELECT * FROM realms ORDER BY id DESC");
@@ -13,10 +13,10 @@
               <td><?php echo $row['port']; ?></td>
               <td><?php echo $row['char_db']; ?></td>
               <td><a href="#" onclick="edit_realm(<?php echo $row['id']; ?>,'<?php echo $row['name']; ?>','<?php echo $row['host']; ?>',
-              '<?php echo $row['port']; ?>','<?php echo $row['char_db']; ?>')">Edit</a> &nbsp; 
-              <a href="#" onclick="delete_realm(<?php echo $row['id']; ?>,'<?php echo $row['name']; ?>')">Delete</a><br/>
+              '<?php echo $row['port']; ?>','<?php echo $row['char_db']; ?>')">编辑</a> &nbsp; 
+              <a href="#" onclick="delete_realm(<?php echo $row['id']; ?>,'<?php echo $row['name']; ?>')">删除</a><br/>
               <a href="#" onclick="edit_console(<?php echo $row['id']; ?>,'<?php echo $row['sendType']; ?>','<?php echo $row['rank_user']; ?>',
-			  '<?php echo $row['rank_pass']; ?>')">Edit Console settings</a>
+			  '<?php echo $row['rank_pass']; ?>')">编辑控制台设置</a>
               </td>
           </tr>
 	<?php }

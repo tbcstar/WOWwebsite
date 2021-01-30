@@ -10,7 +10,7 @@ $page->validatePageAccess('Tools->Tickets');
 <?php if(!isset($_GET['guid'])) { ?>
 <table class="center">
         <tr>
-            <td><input type="checkbox" id="tickets_offline">View offline tickets</td>
+            <td><input type="checkbox" id="tickets_offline">查看离线tickets</td>
             <td>
             <select id="tickets_realm">
            		 <?php
@@ -19,11 +19,11 @@ $page->validatePageAccess('Tools->Tickets');
 				$result = mysql_query("SELECT char_db,name,description FROM realms");
 				if(mysql_num_rows($result)==0) 
 				{
-					echo '<option value="NULL">No realms found.</option>';
+					echo '<option value="NULL">找不到服务器。</option>';
 				}
 				else 
 				{
-					echo '<option value="NULL">--Select a realm--</option>';
+					echo '<option value="NULL">--选择一个服务器--</option>';
 					while($row = mysql_fetch_assoc($result)) 
 					{
 						echo '<option value="'.$row['char_db'].'">'.$row['name'].' - <i>'.$row['description'].'</i></option>';
@@ -65,24 +65,24 @@ $page->validatePageAccess('Tools->Tickets');
 			  
 
 				if($realm == "NULL")
-				   die("<pre>Please select a realm.</pre>");
+				   die("<pre>请选择一个服务器。</pre>");
 				
 				mysql_select_db($realm);	
 				
 				$result = mysql_query("SELECT ".$ticketString.",name,message,createtime,".$guidString.",".$closedString." FROM gm_tickets ORDER BY ticketId DESC");
 				if(mysql_num_rows($result)==0)
-				   die("<pre>No tickets were found!</pre>");
+				   die("<pre>没有发现tickets！</pre>");
 				   
 				echo '
 				<table class="center">
 				   <tr>
 					   <th>ID</th>
-					   <th>Name</th>
-					   <th>Message</th>
-					   <th>Created</th>
-					   <th>Ticket Status</th>
-					   <th>Player Status</th>
-					   <th>Quick Tools</th>
+					   <th>名字</th>
+					   <th>信息</th>
+					   <th>创建日期</th>
+					   <th>Ticket状态</th>
+					   <th>玩家状态</th>
+					   <th>敏捷工具</th>
 				   </tr>
 				';
 				
@@ -97,26 +97,26 @@ $page->validatePageAccess('Tools->Tickets');
 						echo '<td><a href="?p=tools&s=tickets&guid='.$row[$ticketString].'&db='.$realm.'">'.date('Y-m-d H:i:s',$row['createtime']).'</a></td>';
 						
 						if($row[$closedString]==1) 
-							echo '<td><font color="red">Closed</font></td>';
+							echo '<td><font color="red">关闭</font></td>';
 						else
-							echo '<td><font color="green">Open</font></td>';		
+							echo '<td><font color="green">打开</font></td>';		
 						
 						$get = mysql_query("SELECT COUNT(online) FROM characters WHERE guid='".$row[$guidString]."' AND online='1'");
 						if(mysql_result($get,0)>0)
-						   echo '<td><font color="green">Online</font></td>';
+						   echo '<td><font color="green">在线</font></td>';
 						else
-						   echo '<td><font color="red">Offline</font></td>';
+						   echo '<td><font color="red">离线</font></td>';
 						   
-						?> <td><a href="#" onclick="deleteTicket('<?php echo $row[$ticketString]; ?>','<?php echo $realm; ?>')">Delete</a>
+						?> <td><a href="#" onclick="deleteTicket('<?php echo $row[$ticketString]; ?>','<?php echo $realm; ?>')">删除</a>
 								&nbsp;
 								<?php if($row[$closedString]==1) 
 								{ ?>
-									<a href="#" onclick="openTicket('<?php echo $row[$ticketString]; ?>','<?php echo $realm; ?>')">Open</a>
+									<a href="#" onclick="openTicket('<?php echo $row[$ticketString]; ?>','<?php echo $realm; ?>')">打开</a>
 								<?php }
 								else 
 								{
 								?>
-							   <a href="#" onclick="closeTicket('<?php echo $row[$ticketString]; ?>','<?php echo $realm; ?>')">Close</a>
+							   <a href="#" onclick="closeTicket('<?php echo $row[$ticketString]; ?>','<?php echo $realm; ?>')">关闭</a>
 							   <?php
 								}
 								?>
@@ -127,7 +127,7 @@ $page->validatePageAccess('Tools->Tickets');
             echo '</table>'; 
 		   }
 		   else
-			echo '<pre>Please select a realm.</pre>';
+			echo '<pre>请选择一个服务器。</pre>';
 	   ?>
 </span>
 <?php } 
@@ -155,21 +155,21 @@ elseif(isset($_GET['guid']))
     <table style="width: 100%;" class="center">
         <tr>
             <td>
-            	<span class='blue_text'>Submitted by:</span>
+            	<span class='blue_text'>提交者：</span>
             </td>	
             <td>
 				<?php echo $row['name']; ?>
             </td>
                 
             <td>
-            	<span class='blue_text'>Created:</span>
+            	<span class='blue_text'>创建日期：</span>
             </td>
             <td>
 				<?php echo date("Y-m-d H:i:s",$row['createtime']); ?>
             </td>
                
             <td>
-            	<span class='blue_text'>Ticket Status:</span>
+            	<span class='blue_text'>Ticket状态：</span>
             </td>
             <td>
 				<?php
@@ -181,15 +181,15 @@ elseif(isset($_GET['guid']))
             </td>
             
             <td>
-            	<span class='blue_text'>Player Status:</span>
+            	<span class='blue_text'>玩家状态：</span>
             </td>
             <td>
             	<?php
 				$get = mysql_query("SELECT COUNT(online) FROM characters WHERE guid='".$row[$guidString]."' AND online='1'");
 				if(mysql_result($get,0)>0)
-				   	echo '<font color="green">Online</font>';
+				   	echo '<font color="green">在线</font>';
 				else
-				   echo '<font color="red">Offline</font>';
+				   echo '<font color="red">离线</font>';
 			   ?>
             </td>
                 
@@ -201,18 +201,18 @@ elseif(isset($_GET['guid']))
 	?>
     <hr/>
     <pre>
-        <a href="?p=tools&s=tickets">&laquo; Back to tickets</a>
+        <a href="?p=tools&s=tickets">&laquo; 回到tickets</a>
         &nbsp; &nbsp; &nbsp;
-        <a href="#" onclick="deleteTicket('<?php echo $_GET['guid']; ?>','<?php echo $_GET['db']; ?>')">Remove ticket</a>
+        <a href="#" onclick="deleteTicket('<?php echo $_GET['guid']; ?>','<?php echo $_GET['db']; ?>')">移除tickets</a>
         &nbsp; &nbsp; &nbsp;
         <?php if($row[$closedString]==1) 
 			{ ?>
-				<a href="#" onclick="openTicket('<?php echo $_GET['guid']; ?>','<?php echo $_GET['db']; ?>')">Open ticket</a>
+				<a href="#" onclick="openTicket('<?php echo $_GET['guid']; ?>','<?php echo $_GET['db']; ?>')">打开ticket</a>
 			<?php }
 			else 
 			{
 			?>
-		  		<a href="#" onclick="closeTicket('<?php echo $_GET['guid']; ?>','<?php echo $_GET['db']; ?>')">Close ticket</a>
+		  		<a href="#" onclick="closeTicket('<?php echo $_GET['guid']; ?>','<?php echo $_GET['db']; ?>')">关闭ticket</a>
 		   <?php
 			}
 		   ?>

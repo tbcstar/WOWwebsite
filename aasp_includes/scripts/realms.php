@@ -36,9 +36,9 @@ if($_POST['action']=='edit')
 	$chardb = mysql_real_escape_string(trim($_POST['chardb']));
 	
 	if(empty($name) || empty($host) || empty($port) || empty($chardb))
-		die("<span class='red_text'>Please enter all fields.</span><br/>");
+		die("<span class='red_text'>请输入所有字段。</span><br/>");
 	
-	$server->logThis("Updated realm information for ".$name);
+	$server->logThis("更新了以下服务器信息".$name);
 	
 	mysql_query("UPDATE realms SET id='".$new_id."',name='".$name."',host='".$host."',port='".$port."',char_db='".$chardb."' WHERE id='".$id."'");
 	return TRUE;
@@ -50,7 +50,7 @@ if($_POST['action']=='delete')
 	
 	mysql_query("DELETE FROM realms WHERE id='".$id."'");
 	
-	$server->logThis("Deleted a realm");
+	$server->logThis("删除一个服务器");
 }
 ###############################
 if($_POST['action']=='edit_console') 
@@ -63,7 +63,7 @@ if($_POST['action']=='edit_console')
 	if(empty($id) || empty($type) || empty($user) || empty($pass))
 		die();
 
-	$server->logThis("Updated console information for realm with ID: ".$id);
+	$server->logThis("更新了带有ID的服务器的控制台信息：".$id);
 	
 	mysql_query("UPDATE realms SET sendType='".$type."',rank_user='".$user."',rank_pass='".$pass."' WHERE id='".$id."'");
 	return TRUE;
@@ -78,24 +78,24 @@ if($_POST['action']=='loadTickets')
 	$_SESSION['lastTicketRealmOffline']=$offline;
 	
 	if($realm == "NULL")
-	   die("<pre>Please select a realm.</pre>");
+	   die("<pre>请选择一个服务器。</pre>");
 	
 	$server->selectDB($realm);
 	
 	$result = mysql_query("SELECT ".$ticketString.",name,message,createtime,".$guidString.",".$closedString." FROM gm_tickets ORDER BY ticketId DESC");
 	if(mysql_num_rows($result)==0)
-	   die("<pre>No tickets were found!</pre>");
+	   die("<pre>没有找到tickets！</pre>");
 	   
 	echo '
 	<table class="center">
        <tr>
            <th>ID</th>
-           <th>Name</th>
-           <th>Message</th>
-           <th>Created</th>
-		   <th>Ticket Status</th>
-           <th>Player Status</th>
-           <th>Quick Tools</th>
+           <th>名字</th>
+           <th>信息</th>
+           <th>创建者</th>
+		   <th>ticket状态</th>
+           <th>玩家状态</th>
+           <th>敏捷工具</th>
        </tr>
 	';
 	
@@ -110,26 +110,26 @@ if($_POST['action']=='loadTickets')
 			echo '<td><a href="?p=tools&s=tickets&guid='.$row[$ticketString].'&db='.$realm.'">'.date('Y-m-d H:i:s',$row['createtime']).'</a></td>';
 			
 			if($row[$closedString]==1) 
-				echo '<td><font color="red">Closed</font></td>';
+				echo '<td><font color="red">关闭</font></td>';
 			else
-				echo '<td><font color="green">Open</font></td>';		
+				echo '<td><font color="green">打开</font></td>';		
 			
 			$get = mysql_query("SELECT COUNT(online) FROM characters WHERE guid='".$row[$guidString]."' AND online='1'");
 			if(mysql_result($get,0)>0)
-			   echo '<td><font color="green">Online</font></td>';
+			   echo '<td><font color="green">在线</font></td>';
 			else
-			   echo '<td><font color="red">Offline</font></td>';
+			   echo '<td><font color="red">离线</font></td>';
 			   
-			?> <td><a href="#" onclick="deleteTicket('<?php echo $row[$ticketString]; ?>','<?php echo $realm; ?>')">Delete</a>
+			?> <td><a href="#" onclick="deleteTicket('<?php echo $row[$ticketString]; ?>','<?php echo $realm; ?>')">删除</a>
              		&nbsp;
                     <?php if($row[$closedString]==1) 
 					{ ?>
-						<a href="#" onclick="openTicket('<?php echo $row[$ticketString]; ?>','<?php echo $realm; ?>')">Open</a>
+						<a href="#" onclick="openTicket('<?php echo $row[$ticketString]; ?>','<?php echo $realm; ?>')">打开</a>
 					<?php }
 					else 
 					{
 					?>
-            	   <a href="#" onclick="closeTicket('<?php echo $row[$ticketString]; ?>','<?php echo $realm; ?>')">Close</a>
+            	   <a href="#" onclick="closeTicket('<?php echo $row[$ticketString]; ?>','<?php echo $realm; ?>')">结束</a>
                    <?php
 					}
 					?>
@@ -170,7 +170,7 @@ if($_POST['action']=='openTicket')
 ###############################
 if($_POST['action']=='getPresetRealms')
 {
-	echo '<h3>Select a realm</h3><hr/>';
+	echo '<h3>请选择一个服务器</h3><hr/>';
 	$server->selectDB('webdb');
 	
 	$result = mysql_query('SELECT id,name,description FROM realms ORDER BY id ASC');

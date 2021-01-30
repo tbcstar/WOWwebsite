@@ -9,13 +9,13 @@
 	} else {
  ?>
 
-<div class="box_right_title">Pages</div>
+<div class="box_right_title">页面</div>
 
 <?php if(!isset($_GET['action'])) { ?>
 
 <table class="center">
 <tr>
-		<th>Name</th><th>File name</th><th>Actions</th>
+		<th>名称</th><th>文件名</th><th>动作</th>
 </tr>
 <?php
 	$result = mysql_query("SELECT * FROM custom_pages ORDER BY id ASC");
@@ -31,13 +31,13 @@
          <td width="50"><?php echo $row['name']; ?></td>
          <td width="100"><?php echo $row['filename']; ?>(Database)</td>
          <td><select id="action-<?php echo $row['filename']; ?>"><?php if($disabled==true) {  ?>
-             <option value="1">Enable</option>
+             <option value="1">启用</option>
 		 <?php } else { ?>
-			 <option value="2">Disable</option>
+			 <option value="2">禁用</option>
 		 <?php } ?>
-         <option value="3">Edit</option>
-         <option value="4">Remove</option>
-         </select> &nbsp;<input type="submit" value="Save" onclick="savePage('<?php echo $row['filename']; ?>')"></td>
+         <option value="3">编辑</option>
+         <option value="4">移除</option>
+         </select> &nbsp;<input type="submit" value="保存" onclick="savePage('<?php echo $row['filename']; ?>')"></td>
     </tr>
 <?php }
 
@@ -57,11 +57,11 @@ $check = mysql_query("SELECT COUNT(filename) FROM disabled_pages WHERE filename=
         <td><?php echo $v; ?></td>
         <td><select id="action-<?php echo $filename; ?>">
              <?php if($disabled==true) { ?>
-             <option value="1">Enable</option>
+             <option value="1">启用</option>
 		 <?php } else { ?>
-			 <option value="2">Disable</option>
+			 <option value="2">禁用</option>
 		 <?php } ?>
-        </select> &nbsp;<input type="submit" value="Save" onclick="savePage('<?php echo $filename; ?>')"></td>
+        </select> &nbsp;<input type="submit" value="保存" onclick="savePage('<?php echo $filename; ?>')"></td>
     </tr>
 <?php } ?>
 
@@ -81,13 +81,13 @@ $check = mysql_query("SELECT COUNT(filename) FROM disabled_pages WHERE filename=
 		$content = mysql_real_escape_string(htmlentities($_POST['editpage_content']));
 		
 	if(empty($name) || empty($filename) || empty($content)) {
-		echo "<h3>Please enter <u>all</u> fields.</h3>";
+		echo "<h3>请输入 <u>所有</u> 字段。</h3>";
 	} else {
 		mysql_query("UPDATE custom_pages SET name='".$name."',filename='".$filename."',
 		content='".$content."' WHERE filename='".mysql_real_escape_string($_GET['filename'])."'");
 
-		echo "<h3>The page was successfully updated.</h3> 
-		<a href='".$GLOBALS['website_domain']."?p=".$filename."' target='_blank'>View Page</a>";
+		echo "<h3>页面更新成功。</h3> 
+		<a href='".$GLOBALS['website_domain']."?p=".$filename."' target='_blank'>查看页面</a>";
 	}
 	}
 	
@@ -104,6 +104,6 @@ $row = mysql_fetch_assoc($result);
     Content<br/>
     <textarea cols="77" rows="14" id="wysiwyg" name="editpage_content"><?php echo $row['content']; ?></textarea>    
     <br/>
-    <input type="submit" value="Save" name="editpage">
+    <input type="submit" value="保存" name="editpage">
     
 <?php } } ?>

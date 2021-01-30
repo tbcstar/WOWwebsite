@@ -59,22 +59,22 @@ if ($resp == 'VERIFIED')
 				
 	$to = $payer_email;
 	$subject = $GLOBALS['donation']['emailResponse'];
-	$message = 'Hello '.$first_name.'
-	We would like to inform you that the recent payment you did was successfull.
+	$message = '你好 '.$first_name.'
+	谨在此通知您，您最近的付款已成功。
 	
-	If you require further assistance, please contact us via the forums.
+	如果您需要更多帮助，请通过论坛与我们联系。
 	------------------------------------------
-	Payment email: '.$payer_email.'
-	Payment amount: '.$mc_gross.'
-	Buyer name: '.$first_name.' '.$last_name.'
-	Payment date: '.$payment_date.'
-	Account ID: '.$custom.'
+	支付账号：'.$payer_email.'
+	支付金额：'.$mc_gross.'
+	商家名称：'.$first_name.' '.$last_name.'
+	付款日期：'.$payment_date.'
+	账户ID：'.$custom.'
 	------------------------------------------
-	This payment is saved in our logs.
+	这笔付款已保存在我们的日志中。
 	
-	Thank you, the Management.
+	感谢您，TBCstar项目组。
 	';
-	$headers = 'From: '.$GLOBALS['default_email'].'' . "\r\n" .
+	$headers = '来自： '.$GLOBALS['default_email'].'' . "\r\n" .
 		'X-Mailer: PHP/' . phpversion();
 	
 	if ($GLOBALS['donation']['emailResponse']==true) 
@@ -117,19 +117,19 @@ else if ($resp == 'INVALID')
 	}
 	
 	
- mail($GLOBALS['donation']['copyTo'],"INVALID Donation","A payment was invalid. Information is shown below: <br/>
-		  User ID : ".$custom."
-		  Buyer Email: ".$payer_email."
-		  Amount: ".$mc_gross." USD
-		  Date: ".$payment_date."
-		  First name: ".$first_name."
-		  Last name: ".$last_name."
-		  ","From: ".$GLOBALS['donation']['responseFrom']."");  
+ mail($GLOBALS['donation']['copyTo'],"无效的捐赠","付款无效。信息如下:<br/>
+		  用户ID：".$custom."
+		  账号：".$payer_email."
+		  金额：".$mc_gross." USD
+		  日期：".$payment_date."
+		  名：".$first_name."
+		  姓：".$last_name."
+		  ","来自：".$GLOBALS['donation']['responseFrom']."");  
 		  
-		  mail($payer_email,"Hello there. Unfortunately, the latest payment you did was invalid. Please contact us for more information. 
+		  mail($payer_email,"你好。不幸的是，你最近的付款无效。请与我们联系以获取更多信息。 
 		  
-		  Best regards.
-		  The Management");
+		  致以最亲切的问候。
+		  TBCstar项目组");
 	
 		 mysql_query("INSERT INTO payments_log(userid,paymentstatus,buyer_email,firstname,lastname,mc_gross,paymentdate,datecreation) values ('".$custom."','".$payment_status." - INVALID','".$payer_email."','".$first_name."','".$last_name."','".$mc_gross."','".$payment_date."','".$fecha."')");
     }

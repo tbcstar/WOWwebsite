@@ -4,13 +4,13 @@
 	$filename = $_GET['plugin']; 
 	include('../plugins/'.$filename.'/info.php');			
 ?>
-<div class="box_right_title"><a href="?p=interface&s=plugins">Plugins</a> &raquo; <?php echo $title; ?></div>
+<div class="box_right_title"><a href="?p=interface&s=plugins">插件</a> &raquo; <?php echo $title; ?></div>
 <b><?php echo $title; ?></b><br/>
 <?php echo $desc; ?>
 <hr/>
-Author: <?php echo $author; ?> - <?php echo $created; ?>
+作者： <?php echo $author; ?> - <?php echo $created; ?>
 <p/>
-<b>Files:</b><br/>
+<b>文件：</b><br/>
 <?php
 $bad = array('.','..');
 //Classes

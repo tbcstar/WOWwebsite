@@ -10,55 +10,54 @@ account::isNotLoggedIn();
 <div class="head-content">
 <div class="breadcrumbs">
 <a href="?p=ucp">
-Control Panel </a>
+控制面板 </a>
 <span class="ico-raquo"></span>
 <div>
-Account </div>
+账户 </div>
 </div>
 <div class="realm_picker">
 <div class="">
-Actual realm: </div>
-<a href="#">
-Nefelin-WoW </a>
+所在服务器：</div>
+<a href="game.tbcstar.com">Nefelin-WoW </a>
 </div>
 </div>
-<h3 class="main-title">Information</h3>
+<h3 class="main-title">信息</h3>
 <div class="general-info">
 <div class="item item-1">
 <div class="item__info">
-<p>E-mail address</p>
+<p>E-mail地址</p>
 <div><?php echo account::getEmail($_SESSION['cw_user']);?></div>
 </div>
-<a href="?p=settings" class="btn btn-low-yellow">Change</a>
+<a href="?p=settings" class="btn btn-low-yellow">更换</a>
 </div>
 <div class="item item-2 tfa">
 <div class="item__info">
-<p>Account Status</p>
+<p>帐户状态</p>
 <div><span><?php echo account::checkBanStatus($_SESSION['cw_user']);?></span></div>
 </div>
-<a class="btn btn-low-yellow" href="#">Enable</a> </div>
+<a class="btn btn-low-yellow" href="#">启用</a> </div>
 <div class="item item-3">
 <div class="item__info">
-<p>Account balance</p>
+<p>帐户余额</p>
 <div><span class="coin-gold"></span> <span class="count-gold"><?php echo account::loadVP($_SESSION['cw_user']); ?></span></div>
 </div>
-<a href="?p=donate" class="btn btn-low-yellow">Add</a>
+<a href="?p=donate" class="btn btn-low-yellow">添加</a>
 </div>
 <div class="item item-4">
 <div class="item__info">
-<p>Last login</p>
+<p>上次登录</p>
 <div><span class="numbers"><?php echo account::getJoindate($_SESSION['cw_user']); ?></span></div>
-<p>Last IP</p>
+<p>最后IP</p>
 <div><span class="numbers">*********</span></div>
 </div>
-<a href="?p=changepass" class="btn btn-low-yellow">Change password</a>
+<a href="?p=changepass" class="btn btn-low-yellow">修改密码</a>
 </div>
 </div>
 <section class="extra-info">
 </section>
 
 <section class="my-characters">
-<h3 class="services character">Your characters on realm <span>Nefelin-WoW </span></h3>
+<h3 class="services character">你在服务器上的角色 <span>时光回溯 </span></h3>
 <ul class="character">
 <?php 
 
@@ -79,31 +78,31 @@ while($row = mysql_fetch_assoc($result))
 <li class="character_1">
 <div class="content">
 
-<img class="class-img" src="https://cp.elysium-project.org/themes/cp_ely/images/classes/2.png" alt="">
+<img class="class-img" src="/images/class/class-02.png" alt="">
 
 <h5><a href="#"><?php echo $row['name']; ?></a></h5>
 <ul class="fraction">
 <li class="fraction_1">
-Faction<br>
+阵营<br>
 <span class="alliance">
-Alliance </span>
+联盟 </span>
 </li>
 <li class="fraction_2">
-Class<br>
-<img class="class-img" src="/themes/nefelin/images/class/<?php echo $row['class']; ?>.gif" border="none">
+职业<br>
+<img class="class-img" src="/images/class/<?php echo $row['class']; ?>.gif" border="none">
 </li>
 <li class="fraction_3">
-Race<br>
+种族<br>
 <img class="class-img" src="/themes/nefelin/images/race/<?php echo $row['race']; ?>.jpg" border="none">
 </li>
 <li class="fraction_4">
-Level<br>
+等级<br>
 <span><?php echo $row['level']; ?></span>
 </li>
 </ul>
-<p>Time in game: <span class="time">0 h. 19 m. </span></p>
+<p>在线时长： <span class="time">0 h. 19 m. </span></p>
 </div>
-<a class="change first" href="?p=work_list">Edit</a> <a class="change last" href="#">Sell</a></li>
+<a class="change first" href="?p=work_list">编辑</a> <a class="change last" href="#">出售</a></li>
 
 <?php 
 
@@ -112,7 +111,7 @@ Level<br>
 
 ?>
 </ul>
-<a href="#" class="btn btn-more-big">Show all characters</a>
+<a href="#" class="btn btn-more-big">显示所有角色</a>
 
 </section>
 </div>

@@ -9,7 +9,7 @@ class connect {
 		 if(self::$connectedTo != 'global')
 		 {
 			 if (!mysql_connect($GLOBALS['connection']['host'],$GLOBALS['connection']['user'],$GLOBALS['connection']['password']))
-				 buildError("<b>Database Connection error:</b> A connection could not be established. Error: ".mysql_error(),NULL);
+				 buildError("<b>数据库连接错误:</b>无法建立连接。错误:".mysql_error(),NULL);
 			 self::$connectedTo = 'global';	 
 		 }
 	 }
@@ -26,14 +26,14 @@ class connect {
 							  $GLOBALS['realms'][$realmid]['mysql_user'],
 							  $GLOBALS['realms'][$realmid]['mysql_pass'])
 							  or 
-							  buildError("<b>Database Connection error:</b> A connection could not be established to Realm. Error: ".mysql_error(),NULL);
+							  buildError("<b>数据库连接错误:</b> 无法建立到Realm的连接。错误:".mysql_error(),NULL);
 			}
 			else
 			{
 				self::connectToDB();
 			}
 			mysql_select_db($GLOBALS['realms'][$realmid]['chardb'])or 
-			buildError("<b>Database Selection error:</b> The realm database could not be selected. Error: ".mysql_error(),NULL);
+			buildError("<b>数据库选择错误:</b> 无法选择Realm数据库。错误:".mysql_error(),NULL);
 			self::$connectedTo = 'chardb';
 
 	}
@@ -68,17 +68,17 @@ class connect {
 		 
 		 if ($GLOBALS['current_revision']!=$row['version']) 
 		 {
-			 buildError("<b>Wrong database version:</b> Mismatching database & core. Expected: ".$GLOBALS['current_revision'].", Installed: ".$row['version'],NULL);
+			 buildError("<b>错误的数据库版本:</b> 数据库和内核不匹配。预期:".$GLOBALS['current_revision'].", Installed: ".$row['version'],NULL);
 			if ($GLOBALS['shutDownOnMismatch']==true) 
 			{
-				die("<b>Wrong database version:</b> Mismatching database & core. Expected: ".$GLOBALS['current_revision'].", Installed: ".$row['version']);
+				die("<b>错误的数据库版本:</b> 数据库和内核不匹配。预期:".$GLOBALS['current_revision'].", Installed: ".$row['version']);
 			}
 		 } 
 	 }
 }
 
 /*************************/
-	/* Realms & service prices automatic settings
+	/* 服务器和服务价格自动设置
 	/*************************/
 	$realms = array();
 	$service = array();

@@ -3,9 +3,9 @@
 	$server = new server;
 	$account = new account;
 ?> 
-<div class="box_right_title">Voting Links</div>
+<div class="box_right_title">投票链接</div>
 <table class="center">
-<tr><th>Title</th><th>Points</th><th>Image</th><th>Url</th><th>Actions</th></tr>
+<tr><th>标题</th><th>积分</th><th>图片</th><th>Url</th><th>动作</th></tr>
 <?php
 $server->selectDB('webdb');
 $result = mysql_query("SELECT * FROM votingsites ORDER BY id ASC");
@@ -16,8 +16,8 @@ while($row = mysql_fetch_assoc($result)) { ?>
               <td><img src="<?php echo $row['image']; ?>"></td>
               <td><?php echo $row['url']; ?></td>
               <td><a href="#" onclick="editVoteLink('<?php echo $row['id']; ?>','<?php echo $row['title']; ?>','<?php echo $row['points']; ?>',
-              '<?php echo $row['image']; ?>','<?php echo $row['url']; ?>')">Edit</a> 
-              <br/> <a href="#" onclick="removeVoteLink('<?php echo $row['id']; ?>')">Remove</a><br />
+              '<?php echo $row['image']; ?>','<?php echo $row['url']; ?>')">编辑</a> 
+              <br/> <a href="#" onclick="removeVoteLink('<?php echo $row['id']; ?>')">删除</a><br />
               </td>   
           </tr>
   <?php 
@@ -25,4 +25,4 @@ while($row = mysql_fetch_assoc($result)) { ?>
 ?>
 </table>
 <br/>
-<a href="#" class="content_hider" onclick="addVoteLink()">Add a new voting site</a>
+<a href="#" class="content_hider" onclick="addVoteLink()">添加一个新的投票网站</a>

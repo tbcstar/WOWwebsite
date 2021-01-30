@@ -9,49 +9,49 @@ account::isNotLoggedIn();
 <a href="?p=ucp">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-01.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-01.png" alt="" /> </div>
-<p>Account</p>
+<p>账户</p>
 </a>
 </li>
 <li>
 <a href="?p=shop">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-02.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-02.png" alt="" /> </div>
-<p>Shop</p>
+<p>商城</p>
 </a>
 </li>
 <li>
 <a href="?p=donate">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-03.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-03.png" alt="" /> </div>
-<p>Buy coins</p>
+<p>捐赠充值</p>
 </a>
 </li>
 <li>
 <a class="active" href="?p=characters">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-04.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-04.png" alt="" /> </div>
-<p>Characters</p>
+<p>角色</p>
 </a>
 </li>
 <li>
 <a href="#">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-05.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-05.png" alt="" /> </div>
-<p>Find character</p>
+<p>查找角色</p>
 </a>
 </li>
 <li>
 <a href="?p=stat">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-06.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-06.png" alt="" /> </div>
-<p>Statistics</p>
+<p>统计</p>
 </a>
 </li>
 <li>
 <a href="?p=vote">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-07.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-07.png" alt="" /> </div>
-<p>Vote</p>
+<p>投票</p>
 </a>
 </li>
 </ul>
@@ -65,23 +65,23 @@ account::isNotLoggedIn();
 <div class="column">
 <div class="head-content">
 <div class="breadcrumbs">
-<a href="/main/main">
-Control Panel </a>
+<a href="?p=ucp">
+控制面板 </a>
 <span class="ico-raquo"></span>
 <div>
-Your characters </div>
+你的角色 </div>
 </div>
 <div class="realm_picker">
 <div class="">
-Actual realm: </div>
-<a href="#">
-Nefelin-WoW </a>
+所在服务器： </div>
+<a href="game.tbcstar.com">
+时光祭坛 </a>
 </div>
 </div>
 
 
 <section class="my-characters">
-<h3 class="services character">Your characters on realm <span>Nefelin-WoW </span></h3>
+<h3 class="services character">你在服务器上的角色 <span>时光祭坛</span></h3>
 <ul class="character">
 <?php 
 
@@ -102,31 +102,31 @@ while($row = mysql_fetch_assoc($result))
 <li class="character_1">
 <div class="content">
 
-<img class="class-img" src="https://cp.elysium-project.org/themes/cp_ely/images/classes/2.png" alt="">
+<img class="class-img" src="/images/class/<?php echo $row['class']; ?>.png" alt="">
 
 <h5><a href="#"><?php echo $row['name']; ?></a></h5>
 <ul class="fraction">
 <li class="fraction_1">
-Faction<br>
+阵营<br>
 <span class="alliance">
-Alliance </span>
+联盟 </span>
 </li>
 <li class="fraction_2">
-Class<br>
-<img class="class-img" src="/themes/nefelin/images/class/<?php echo $row['class']; ?>.gif" border="none">
+职业<br>
+<img class="class-img" src="/images/class/<?php echo $row['class']; ?>.gif" border="none">
 </li>
 <li class="fraction_3">
-Race<br>
-<img class="class-img" src="/themes/nefelin/images/race/<?php echo $row['race']; ?>.jpg" border="none">
+种族<br>
+<img class="class-img" src="/images/race/<?php echo $row['race']; ?>.gif" border="none">
 </li>
 <li class="fraction_4">
-Level<br>
+等级<br>
 <span><?php echo $row['level']; ?></span>
 </li>
 </ul>
-<p>Time in game: <span class="time">0 h. 19 m. </span></p>
+<p>游戏时间:<span class="time">0 h. 19 m. </span></p>
 </div>
-<a class="change first" href="?p=work_list">Edit</a> <a class="change last" href="#">Sell</a></li>
+<a class="change first" href="?p=work_list">编辑</a> <a class="change last" href="#">出售</a></li>
 
 <?php 
 
@@ -135,7 +135,7 @@ Level<br>
 
 ?>
 </ul>
-<a href="?p=characters" class="btn btn-more-big">Show all characters</a>
+<a href="?p=characters" class="btn btn-more-big">显示所有角色</a>
 
 </section>
 </div>

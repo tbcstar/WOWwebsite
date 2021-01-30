@@ -6,7 +6,7 @@
 <div id="leftcontent">
 <div class="box_two">
 
-<div class='box_two_title'>Change Password</div>
+<div class='box_two_title'更改密码</div>
 <?php
 account::isNotLoggedIn();
 if (isset($_POST['change_pass']))
@@ -15,11 +15,11 @@ if (isset($_POST['change_pass']))
 <form action="?p=changepass" method="post">
 <table width="70%">
        <tr>
-           <td>New password:</td> 
+           <td>新的密码：</td> 
            <td><input type="password" name="new_pass" class="input_text"/></td>
        </tr> 
        <tr>
-           <td>Repeat new password:</td> 
+           <td>重复新密码:</td> 
            <td><input type="password" name="new_pass_repeat" class="input_text"/></td>
        </tr>
         <tr>
@@ -27,7 +27,7 @@ if (isset($_POST['change_pass']))
            <td><hr/></td>
        </tr> 
        <tr>
-           <td>Enter your current password:</td> 
+           <td>输入您的当前密码:</td> 
            <td><input type="password" name="cur_pass" class="input_text"/></td>
        </tr>  
        <tr>

@@ -10,11 +10,11 @@ function buildError($error,$num)
 function errors($error,$num) 
 {
 	log_error(strip_tags($error),$num);
-	die("<center><b>Website error</b>  <br/>
-		The website script encountered an error and died. <br/><br/>
-		<b>Error message: </b>".$error."  <br/>
-		<b>Error number: </b>".$num."
-		<br/><br/><br/><i>Powered by CraftedWeb
+	die("<center><b>网页错误</b>  <br/>
+		网站脚本遇到错误并关闭。<br/><br/>
+		<b>错误信息：</b>".$error."  <br/>
+		<b>错误代码：</b>".$num."
+		<br/><br/><br/><i>由CraftedWeb
 		<br/><font size='-2'>Professionally developed with love.</font></i></center>
 		");
 }

@@ -8,14 +8,14 @@ echo "<span class='blue_text'>No news has been posted yet!</span>";
 }
 else { 
 ?>
-<div class="box_right_title">News &raquo; Manage</div>
+<div class="box_right_title">新闻 &raquo; 管理</div>
 <table width="100%">
 <tr>
     <th>ID</th>
-    <th>Title</th>
-    <th>Content</th>
-    <th>Comments</th>
-    <th>Actions</th>
+    <th>标题</th>
+    <th>内容</th>
+    <th>评论</th>
+    <th>动作</th>
 </tr>
 <?php
 while($row=mysql_fetch_assoc($result)) {
@@ -25,8 +25,8 @@ while($row=mysql_fetch_assoc($result)) {
 			   <td>'.$row['title'].'</td>
 			   <td>'.substr($row['body'],0,25).'...</td>
 			   <td>'.mysql_result($comments,0).'</td>
-			   <td> <a onclick="editNews('.$row['id'].')" href="#">Edit</a> &nbsp;  
-			   <a onclick="deleteNews('.$row['id'].')" href="#">Delete</a></td>
+			   <td> <a onclick="editNews('.$row['id'].')" href="#">编辑</a> &nbsp;  
+			   <a onclick="deleteNews('.$row['id'].')" href="#">删除</a></td>
 	 </tr>';
 }
 ?></table><?php

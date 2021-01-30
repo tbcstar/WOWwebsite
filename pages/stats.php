@@ -1,73 +1,101 @@
 <?php 
 account::isNotLoggedIn();
 ?>
-<?php include "header.php" ?>
+<?php include "headers.php" ?>
 <div class="container">
 <div class="row">
-<div class="user-panel logged">
-<div class="cp-item wow shake">
-<span class="cp-icon ico-acc"></span>
-<p>Welcome back</p>
-<p><span><?php echo ucfirst(strtolower($_SESSION['cw_user']));?></span></p>
-<?php 
-			if (isset($_SESSION['cw_gmlevel']) && $_SESSION['cw_gmlevel']>=$GLOBALS['adminPanel_minlvl'] && $GLOBALS['adminPanel_enable']==true) 
-				echo ' <a href="admin/">(Admin Panel)</a>';
-				
-			if (isset($_SESSION['cw_gmlevel']) && $_SESSION['cw_gmlevel']>=$GLOBALS['staffPanel_minlvl'] && $GLOBALS['staffPanel_enable']==true) 
-				echo ' <a href="staff/">(Staff Panel)</a>';
-			?>
+<ul class="navbar-cp">
+<li>
+<a href="?p=ucp">
+<div class="nav-img">
+<img src="/themes/cp_nefelin/images/cp-nav-01.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-01.png" alt="" /> </div>
+<p>账户</p>
+</a>
+</li>
+<li>
+<a href="?p=shop">
+<div class="nav-img">
+<img src="/themes/cp_nefelin/images/cp-nav-02.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-02.png" alt="" /> </div>
+<p>商城</p>
+</a>
+</li>
+<li>
+<a href="?p=donate">
+<div class="nav-img">
+<img src="/themes/cp_nefelin/images/cp-nav-03.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-03.png" alt="" /> </div>
+<p>捐赠充值</p>
+</a>
+</li>
+<li>
+<a href="?p=characters">
+<div class="nav-img">
+<img src="/themes/cp_nefelin/images/cp-nav-04.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-04.png" alt="" /> </div>
+<p>角色</p>
+</a>
+</li>
+<li>
+<a href="#">
+<div class="nav-img">
+<img src="/themes/cp_nefelin/images/cp-nav-05.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-05.png" alt="" /> </div>
+<p>查找角色</p>
+</a>
+</li>
+<li>
+<a class="active" href="?p=stat">
+<div class="nav-img">
+<img src="/themes/cp_nefelin/images/cp-nav-06.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-06.png" alt="" /> </div>
+<p>统计</p>
+</a>
+</li>
+<li>
+<a href="?p=vote">
+<div class="nav-img">
+<img src="/themes/cp_nefelin/images/cp-nav-07.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-07.png" alt="" /> </div>
+<p>投票</p>
+</a>
+</li>
+</ul>
 </div>
-<div class="cp-item wow shake">
-<span class="cp-icon ico-coins"></span>
-<p>Account balance</p>
-<p>
-<span class="coin-gold"></span> <span class="count-gold"><?php echo account::loadVP($_SESSION['cw_user']); ?></span>
-</p>
 </div>
-<div class="cp-item wow shake">
-<span class="cp-icon ico-cp"></span>
-<p>Enter to</p>
-<p><a href="?p=ucp"><span>Control Panel</span></a></p>
-</div>
-<div class="cp-item wow shake last">
-<?php if(isset($_SESSION['cw_user'])) { ?>
-<a href='?p=logout&last_page=<?php echo $_SERVER["REQUEST_URI"]; ?>'><span class="ico-exit"></span></a>
-<?php } ?>
-</div>
-</div>
-</div>
-</div>
-    
+</header>
+<main id="content-wrapper">
 <div class="container">
 <div class="row">
-<aside class="sidebar pull-right wow bounceInRight">
-
-<div class="twitter-widget-holder js-pretty-scroll-light">
-test
+<div class="column">
+<div class="head-content">
+<div class="breadcrumbs">
+<a href="?p=ucp">
+控制面板 </a>
+<span class="ico-raquo"></span>
+<a href="?p=stat">
+统计 </a>
+<span class="ico-raquo"></span>
+<div>
+游戏时长 </div>
 </div>
-
-<div class="facebook-widget-holder js-pretty-scroll-light">
-<div class="fb-container">
-<div class="fb-page" data-href="" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false" data-height="3000" data-width="350">
-<blockquote cite="" class="fb-xfbml-parse-ignore">
-<a href="">Nefelin-WoW Project</a>
-</blockquote>
+<div class="realm_picker">
+<div class="">
+所在服务器： </div>
+<a href="game.tbcstar.com">
+时光回溯 </a>
 </div>
 </div>
-</div>
-
+<div class="content-box standart">
+<div class="content-holder">
+<div class="content-frame">
+<div class="content">
 </aside>
 <?php
 
 ######################################################
-# SQL Connection
+# SQL连接
 ######################################################
 $db_user = "root";
-$db_pass = "ascent" ;
-$db_host = "87.254.177.88";
+$db_pass = "A112233a" ;
+$db_host = "game.tbcstar.com:3310";
 
 ######################################################
-# VoteShop Website Connection
+# 投票商店网站连接
 ######################################################
 
 mysql_connect("$db_host","$db_user", "$db_pass");
@@ -77,7 +105,7 @@ mysql_connect("$db_host","$db_user", "$db_pass");
 $arena_top = "characters";
 
 ######################################################
-# Player Online Table
+# 玩家在线表
 ######################################################
 
 $player_online = "characters";
@@ -110,7 +138,7 @@ if ($sec < 10)
 $sec = "".$sec;
 // Uptime
 
-// online players
+// 在线玩家
 mysql_select_db("$player_online");
 $sql = "SELECT SUM(online) FROM characters";
 $sqlquery = mysql_query($sql) or die(mysql_error());
@@ -143,57 +171,57 @@ $daa3 = mysql_result($da3,0);
 $da4 = mysql_query("SELECT COUNT(id) FROM account WHERE last_login LIKE '%".date("Y-m")."%'");
 $daa4 = mysql_result($da4,0);
 
-// online players
+// 在线玩家
 ?>
 
 <section class="main-section with-sidebar">
 <div class="newsbox clearfix">
 <section class="inner_about">
 <div class="table">
-<h2>Server Statistics</h2>
+<h2>服务器统计信息</h2>
 <table class="spoiler">
-<p>Accounts Registered: <?php echo ''.$acc.''; ?></p>
-<p>Unique Players per day: <?php echo ''.$daa4.''; ?></p>
-<p>Accounts Created per day: <?php echo ''.$daa3.''; ?></p>
+<p>帐号注册: <?php echo ''.$acc.''; ?></p>
+<p>每天唯一玩家：<?php echo ''.$daa4.''; ?></p>
+<p>每天创建的账户: <?php echo ''.$daa3.''; ?></p>
 
 <br>
 <table class="spoiler">
-<center><img src="/themes/nefelin/images/wow_tbc_logo.png" width="250">
-<h2>Statistic of realms with version 2.4.3 (TBC)</h2></center>
+<center><img src="/themes/nefelin/images/bc.gif" width="50">
+<h2>当前伺服器统计</h2></center>
 <tr>
-<th>Realm</th>
-<th>Status</th>
-<th>Online</th>
-<th>Online Max</th>
-<th>Chars</th>
-<th>Uptime</th>
+<th>伺服器</th>
+<th>状态</th>
+<th>在线</th>
+<th>最大在线</th>
+<th>角色</th>
+<th>连续运行时间</th>
 </tr>
 <tr>
-<td><a href="#" class="spoiler-button">Stormrage</a></td>
-<td>Online</td>
+<td><a href="#" class="spoiler-button">时光祭坛</a></td>
+<td>在线</td>
 <td><?php echo $memb; ?></td>
 <td><?php echo "$mx"; ?></td>
 <td><?php echo ''.$char.''; ?></td>
-<td><?php echo "$days"; ?> d. <?php echo "$hours"; ?> h. <?php echo "$min"; ?> m. <?php echo "$sec"; ?> s.</td>
+<td><?php echo "$days"; ?> 天 <?php echo "$hours"; ?> 小时 <?php echo "$min"; ?> 分钟 <?php echo "$sec"; ?> 秒</td>
 </tr>
 <tr>
 <td colspan="6">
 <table>
 <tr>
-<th>Alliance</th>
-<th>Horde</th>
-<th>Queue</th>
-<th>Connections</th>
-<th>Uptime</th>
+<th>联盟</th>
+<th>部落</th>
+<th>排队中</th>
+<th>游戏中</th>
+<th>连续运行时间</th>
 </tr>
 <tr>
 <td>
 <img src="/images/alliance_small.png" /> <?php echo $amemb; ?> </td>
 <td>
 <img src="/images/horde_small.png" /> <?php echo $hmemb; ?> </td>
-<td>No</td>
+<td>无</td>
 <td><?php echo ''.$daa2.''; ?></td>
-<td><?php echo "$days"; ?> d. <?php echo "$hours"; ?> h. <?php echo "$min"; ?> m. <?php echo "$sec"; ?> s. &nbsp;ago</td>
+<td><?php echo "$days"; ?> 天 <?php echo "$hours"; ?> 小时 <?php echo "$min"; ?> 分钟 <?php echo "$sec"; ?> 秒 &nbsp;</td>
 </tr>
 </table>
 </td>
@@ -208,19 +236,4 @@ $daa4 = mysql_result($da4,0);
 </main>
 </div>
 
-<footer id="footer">
-<div class="container">
-<div class="row clearfix">
-<div class="column">
-<div id="footer-copy" class="wow fadeInUp">
-&copy; 2018 - 2019 <br />
-<a href="./">Nefelin-WoW Project, Vanilla Legacy Server</a> 
-<a class="legals" href="">Contact us - About us</a> 
-<a class="legals" href="">Refund policy / private policy</a> 
-</div></div></div></div>
-</div>
-</div>
-</div>
-</footer>
-<script type="text/javascript" src="/themes/nefelin/js/jquery-2.1.0.min.js"></script>
-<script type="text/javascript" src="/themes/nefelin/js/custom.js"></script>
+<?php include "footer.php" ?>

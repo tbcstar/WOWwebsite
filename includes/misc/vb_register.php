@@ -38,7 +38,7 @@ switch ($dst_setting)
 	break;
 }
 
-#If there are errors (eMail not set, eMail banned, Username taken, etc.) you can check for errors using
+#如果有错误(电子邮件没有设置，电子邮件禁止，用户名，等等)，你可以检查错误使用
 if (count($userdm->errors)) 
 {
 	for($i=0; $ierrors; $i++) 
@@ -48,7 +48,7 @@ if (count($userdm->errors))
 } 
 else 
 {
-	# If everything is OK
+	# 如果一切都好
 	$newuserid = $userdm->save();
 	echo "1";
 }

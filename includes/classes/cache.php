@@ -8,7 +8,7 @@ class cache {
 		{
 			if(!$fh = fopen('cache/'.$filename.'.cache.php', 'w+'))
 			{
-				buildError('<b>Cache error.</b> could not load the file (cache/'.$filename.'.cache.php)');
+				buildError('<b>缓存错误。</b> 无法加载文件 (cache/'.$filename.'.cache.php)');
 			}
 			fwrite($fh,$content);
 			fclose($fh); 
@@ -25,7 +25,7 @@ class cache {
 			if (file_exists('cache/'.$filename.'.cache.php')) 
 				include('cache/'.$filename.'.cache.php');
 			else 
-				buildError('<b>Cache error.</b> could not load the file (cache/'.$filename.'.cache.php)');
+				buildError('<b>缓存错误。</b> 无法加载文件 (cache/'.$filename.'.cache.php)');
 		} 
 		else 
 			self::deleteCache($filename);
@@ -37,7 +37,7 @@ class cache {
 		{
 			$del = unlink('cache/'.$filename.'.cache.php');
 			if(!$del) 
-				buildError('<b>Cache error.</b> tried to delete non-existing cache file (cache/'.$filename.'.cache.php)');
+				buildError('<b>缓存错误。</b> 试图删除不存在的缓存文件 (cache/'.$filename.'.cache.php)');
 		} 
 	}
 	

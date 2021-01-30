@@ -9,6 +9,6 @@
 	} 
 	else 
 	{
-		echo '<h2>Forbidden!</h2>Or actually... there\'s nothing here!'; 
+		echo '<h2>禁止访问！</h2>或者... 这里什么也没有！'; 
 	}
 ?>

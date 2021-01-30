@@ -9,49 +9,49 @@ account::isNotLoggedIn();
 <a href="?p=ucp">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-01.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-01.png" alt="" /> </div>
-<p>Account</p>
+<p>账户</p>
 </a>
 </li>
 <li>
 <a href="?p=shop">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-02.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-02.png" alt="" /> </div>
-<p>Shop</p>
+<p>商城</p>
 </a>
 </li>
 <li>
 <a href="?p=donate">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-03.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-03.png" alt="" /> </div>
-<p>Buy coins</p>
+<p>捐赠充值</p>
 </a>
 </li>
 <li>
 <a href="?p=characters">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-04.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-04.png" alt="" /> </div>
-<p>Characters</p>
+<p>角色</p>
 </a>
 </li>
 <li>
 <a href="#">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-05.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-05.png" alt="" /> </div>
-<p>Find character</p>
+<p>查找角色</p>
 </a>
 </li>
 <li>
 <a class="active" href="?p=stat">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-06.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-06.png" alt="" /> </div>
-<p>Statistics</p>
+<p>统计</p>
 </a>
 </li>
 <li>
 <a href="?p=vote">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-07.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-07.png" alt="" /> </div>
-<p>Vote</p>
+<p>投票</p>
 </a>
 </li>
 </ul>
@@ -64,20 +64,20 @@ account::isNotLoggedIn();
 <div class="column">
 <div class="head-content">
 <div class="breadcrumbs">
-<a href="/main/main">
-Control Panel </a>
+<a href="?p=ucp">
+控制面板 </a>
 <span class="ico-raquo"></span>
 <div>
-Statistics </div>
+统计 </div>
 </div>
 <div class="realm_picker">
 <div class="">
-Actual realm: </div>
-<a href="#">
-Nefelin-WoW </a>
+所在服务器：</div>
+<a href="game.tbcstar.com">
+时光回溯 </a>
 </div>
 </div>
-<h3 class="main-title">Game statistics</h3>
+<h3 class="main-title">游戏统计</h3>
 <div class="statistic">
 <div class="row">
 <div class="col">
@@ -88,8 +88,8 @@ Nefelin-WoW </a>
 <div class="item">
 <img src="/themes/cp_nefelin/images/stat-type-02.jpg" alt="">
 <div class="item-content">
-<div>PvE statistics</div>
-<a href="#" class="btn btn-low-green">View</a>
+<div>PvE统计</div>
+<a href="#" class="btn btn-low-green">查看</a>
 </div>
 </div>
 </div>
@@ -97,8 +97,8 @@ Nefelin-WoW </a>
 <div class="item">
 <img src="/themes/cp_nefelin/images/stat-type-03.jpg" alt="">
 <div class="item-content">
-<div>Top Kills</div>
-<a href="?p=kills" class="btn btn-low-green">View</a>
+<div>击杀数</div>
+<a href="?p=kills" class="btn btn-low-green">查看</a>
 </div>
 </div>
 </div>
@@ -106,8 +106,8 @@ Nefelin-WoW </a>
 <div class="item">
 <img src="/themes/cp_nefelin/images/stat-type-04.jpg" alt="">
 <div class="item-content">
-<div>Time played</div>
-<a href="#" class="btn btn-low-green">View</a>
+<div>游戏时长</div>
+<a href="?p=stats" class="btn btn-low-green">查看</a>
 </div>
 </div>
 </div>

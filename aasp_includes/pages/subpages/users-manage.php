@@ -1,5 +1,5 @@
 <?php $page = new page; $server = new server; $account = new account; ?>
-<div class="box_right_title"><?php echo $page->titleLink(); ?> &raquo; Manage Users</div>
+<div class="box_right_title"><?php echo $page->titleLink(); ?> &raquo; 用户管理</div>
 
 <?php
 if(isset($_GET['char']))  {
@@ -26,34 +26,34 @@ if(isset($_GET['user']))  {
 		$row = mysql_fetch_assoc($result);?>
 		<table width="100%">
 			<tr>
-			<td><span class='blue_text'>Account name</span></td><td> <?php echo ucfirst(strtolower($row['username']));?> (<?php echo $row['last_ip']; ?>)</td>
-			<td><span class='blue_text'>Joined</span></td><td><?php echo $row['joindate']; ?></td>
+			<td><span class='blue_text'>账号名称</span></td><td> <?php echo ucfirst(strtolower($row['username']));?> (<?php echo $row['last_ip']; ?>)</td>
+			<td><span class='blue_text'>注册时间</span></td><td><?php echo $row['joindate']; ?></td>
 			</tr>
 			<tr>
-				<td><span class='blue_text'>Email adress</span></td><td><?php echo $row['email'];?></td>
-				<td><span class='blue_text'>Vote Points</span></td><td><?php  echo $account->getVP($row['id']); ?></td>
+				<td><span class='blue_text'>Email地址</span></td><td><?php echo $row['email'];?></td>
+				<td><span class='blue_text'>投票积分</span></td><td><?php  echo $account->getVP($row['id']); ?></td>
 			</tr>
 			<tr>
-				<td><span class='blue_text'>Account Status</span></td><td><?php echo $account->getBan($row['id']); ?></td>
+				<td><span class='blue_text'>账号状态</span></td><td><?php echo $account->getBan($row['id']); ?></td>
 				<td><span class='blue_text'><?php echo $GLOBALS['donation']['coins_name']; ?></span></td><td><?php echo $account->getDP($row['id']); ?></td>
 			</tr>
-			<tr><td><a href='?p=users&s=manage&getlogs=<?php echo $row['id']; ?>'>Account payments- & Shop logs</a><br />
-            <a href='?p=users&s=manage&getslogs=<?php echo $row['id']; ?>'>Service logs</a></td>
+			<tr><td><a href='?p=users&s=manage&getlogs=<?php echo $row['id']; ?>'>帐户付款&购买记录</a><br />
+            <a href='?p=users&s=manage&getslogs=<?php echo $row['id']; ?>'>服务记录</a></td>
 			<td></td>
-			<td><a href='?p=users&s=manage&editaccount=<?php echo $row['id']; ?>'>Edit Account information</a></tr>
+			<td><a href='?p=users&s=manage&editaccount=<?php echo $row['id']; ?>'>编辑帐户信息</a></tr>
 			</table>
             <hr/>
-            <b>Characters</b><br/>
+            <b>角色</b><br/>
             <table>
             <tr>
             	<th>Guid</th>
-                <th>Name</th>
-                <th>Level</th>
-                <th>Class</th>
-                <th>Race</th>
-                <th>Realm</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th>名字</th>
+                <th>登记</th>
+                <th>阵营</th>
+                <th>种族</th>
+                <th>服务器</th>
+                <th>状态</th>
+                <th>动作</th>
             </tr>
             <?php
 			 $server->selectDB('webdb');
@@ -72,18 +72,18 @@ if(isset($_GET['user']))  {
                     	<td><?php echo $rows['guid']; ?></td>
                         <td><?php echo $rows['name']; ?></td>
                         <td><?php echo $rows['level']; ?></td>
-                        <td><img src="../styles/global/images/icons/class/<?php echo $rows['class']; ?>.gif" /></td>
-                        <td><img src="../styles/global/images/icons/race/<?php echo $rows['race'].'-'.$rows['gender']; ?>.gif" /></td>
+                        <td><img src="/styles/global/images/icons/class/<?php echo $rows['class']; ?>.gif" /></td>
+                        <td><img src="/styles/global/images/icons/race/<?php echo $rows['race'].'-'.$rows['gender']; ?>.gif" /></td>
                         <td><?php echo $row['name']; ?></td>
                         <td>
                         <?php
 						if($rows['online']==1)
-							echo '<font color="#009900">Online</font>';
+							echo '<font color="#009900">在线</font>';
 						else
-							echo '<font color="#990000">Offline</font>';	
+							echo '<font color="#990000">离线</font>';	
 						?>
                         </td>
-                        <td><a href="#" onclick="characterListActions('<?php echo $rows['guid']; ?>','<?php echo $row['id']; ?>')">List actions</a></td>
+                        <td><a href="#" onclick="characterListActions('<?php echo $rows['guid']; ?>','<?php echo $row['id']; ?>')">操作列表</a></td>
                     </tr>
                     <?php 
 				}
@@ -96,26 +96,26 @@ if(isset($_GET['user']))  {
  }
 elseif(isset($_GET['getlogs'])) {
 	?>
-	Account selected: <a href='?p=users&s=manage&user=<?php echo $_GET['getlogs']; ?>'><?php echo $account->getAccName($_GET['getlogs']); ?></a><p />
+	选择账号： <a href='?p=users&s=manage&user=<?php echo $_GET['getlogs']; ?>'><?php echo $account->getAccName($_GET['getlogs']); ?></a><p />
 	
-	<h4 class='payments' onclick='loadPaymentsLog(<?php echo (int)$_GET['getlogs']; ?>)'>Payments log</h4>
+	<h4 class='payments' onclick='loadPaymentsLog(<?php echo (int)$_GET['getlogs']; ?>)'>付款记录</h4>
 	<div class='hidden_content' id='payments'></div>
 	<hr/>
-	<h4 class='payments' onclick='loadDshopLog(<?php echo (int)$_GET['getlogs']; ?>)'>Donation shop log</h4>
+	<h4 class='payments' onclick='loadDshopLog(<?php echo (int)$_GET['getlogs']; ?>)'>公益商城记录</h4>
 	<div class='hidden_content' id='dshop'></div>
 	<hr/>
-	<h4 class='payments' onclick='loadVshopLog(<?php echo (int)$_GET['getlogs']; ?>)'>Vote shop log</h4>
+	<h4 class='payments' onclick='loadVshopLog(<?php echo (int)$_GET['getlogs']; ?>)'>投票商店记录</h4>
 	<div class='hidden_content' id='vshop'></div>
 	<?php
 }
 elseif(isset($_GET['editaccount'])) {
-   ?>Account selected: <a href='?p=users&s=manage&user=<?php echo $_GET['editaccount']; ?>'><?php echo $account->getAccName($_GET['editaccount']); ?></a><p />
+   ?>所选账号： <a href='?p=users&s=manage&user=<?php echo $_GET['editaccount']; ?>'><?php echo $account->getAccName($_GET['editaccount']); ?></a><p />
    <table width="100%">
 	<input type="hidden" id="account_id" value="<?php echo $_GET['editaccount']; ?>" />
 		   <tr><td>Email</td> <td><input type="text" id="edit_email" class='noremove' 
 		   value="<?php echo $account->getEmail($_GET['editaccount']); ?>"/> </tr> 
-		   <tr><td>Set Password</td><td><input type="text" id="edit_password" class='noremove'/></td></tr>
-		   <tr><td>Vote Points</td> <td><input type="text" id="edit_vp" value="<?php echo $account->getVP($_GET['editaccount']); ?>" class='noremove'/> </tr>
+		   <tr><td>设置密码</td><td><input type="text" id="edit_password" class='noremove'/></td></tr>
+		   <tr><td>投票积分</td> <td><input type="text" id="edit_vp" value="<?php echo $account->getVP($_GET['editaccount']); ?>" class='noremove'/> </tr>
 		   <tr><td><?php echo $GLOBALS['donation']['coins_name']; ?></td> 
 									<td><input type="text" id="edit_dp" value="<?php echo $account->getDP($_GET['editaccount']); ?>" class='noremove'/></td></tr>
 		   <tr><td></td><td><input type="submit" value="Save" onclick="save_account_data()"/></td></tr>
@@ -124,19 +124,19 @@ elseif(isset($_GET['editaccount'])) {
 <?php } 
  elseif(isset($_GET['getslogs'])) {
 	?>
-	Account selected: <a href='?p=users&s=manage&user=<?php echo $_GET['getslogs']; ?>'><?php echo $account->getAccName($_GET['getslogs']); ?></a><p />
+	所选账号： <a href='?p=users&s=manage&user=<?php echo $_GET['getslogs']; ?>'><?php echo $account->getAccName($_GET['getslogs']); ?></a><p />
 	<table>
     	<tr>
-        	<th>Service</th>
-            <th>Description</th>
-            <th>Realm</th>
-            <th>Date</th>
+        	<th>服务</th>
+            <th>描述</th>
+            <th>服务器</th>
+            <th>日期</th>
         </tr>
         <?php
 		$server->selectDB('webdb');
 		$result = mysql_query("SELECT * FROM user_log WHERE account='".(int)$_GET['getslogs']."'");
 		if(mysql_num_rows($result)==0)
-			echo 'No logs was found for this account!';
+			echo '没有找到该帐户的记录！';
 		else
 		{
 			while($row = mysql_fetch_assoc($result))
@@ -157,7 +157,7 @@ elseif(isset($_GET['editaccount'])) {
 ?>
 <table width="100%">
   			<tr>
-            	<td>Username or ID: </td>	
+            	<td>账号名称或ID： </td>	
                 <form action="" method="get">
                 <input type="hidden" name="p" value="users">
                 <input type="hidden" name="s" value="manage">
@@ -165,7 +165,7 @@ elseif(isset($_GET['editaccount'])) {
             </tr></form>
             
             <tr>
-                <td>Character name or GUID: </td>	
+                <td>角色名称或GUID: </td>	
                 <form action="" method="get">
                 <input type="hidden" name="p" value="users">
                 <input type="hidden" name="s" value="manage">

@@ -9,7 +9,7 @@ if (isset($_POST['item_entry']))
 	$type = mysql_real_escape_string($_POST['send_mode']);
 	
 	if (empty($entry) || empty($character_realm) || empty($type))
-		echo '<b class="red_text">Please specify a character.</b>';
+		echo '<b class="red_text">请指定一个角色。</b>';
 	else 
 	{
 		connect::selectDB('webdb');
@@ -24,7 +24,7 @@ if (isset($_POST['item_entry']))
 		if ($type=='vote') 
 		{
         	if (account::hasVP($account_name,$row['price'])==FALSE)
-				die('<b class="red_text">You do not have enough Vote Points</b>');
+				die('<b class="red_text">你没有足够的投票积分</b>');
 				
 	    account::deductVP($account_id,$row['price']);
 		
@@ -32,7 +32,7 @@ if (isset($_POST['item_entry']))
 		elseif ($type=='donate') 
 		{
 			if (account::hasDP($account_name,$row['price'])==FALSE)
-			   die('<b class="red_text">You do not have enough '.$GLOBALS['donation']['coins_name'].'</b>');
+			   die('<b class="red_text">你的积分不足'.$GLOBALS['donation']['coins_name'].'</b>');
 
 	        account::deductDP($account_id,$row['price']);
 		}
@@ -46,7 +46,7 @@ if (isset($_POST['item_entry']))
 		 require('../misc/ra.php');
 		 require('../classes/character.php');
 		  
-		 sendRa("send items ".character::getCharname($realm[0])." \"Your requested item\" \"Thanks for supporting us!\" ".$entry." ",
+		 sendRa("send items ".character::getCharname($realm[0])." \"您购买的物品\" \"感谢您对我们的支持！\" ".$entry." ",
 		 $row['rank_user'],$row['rank_pass'],$row['host'],$row['ra_port']); 
 	  } 
 	  elseif($row['sendType']=='soap') 
@@ -54,7 +54,7 @@ if (isset($_POST['item_entry']))
 		 require('../misc/soap.php');
 		 require('../classes/character.php'); 
 		 
-		 sendSoap("send items ".character::getCharname($realm[0])." \"Your requested item\" \"Thanks for supporting us!\" ".$entry." ",
+		 sendSoap("send items ".character::getCharname($realm[0])." \"您购买的物品\" \"感谢您对我们的支持！\" ".$entry." ",
 		 $row['rank_user'],$row['rank_pass'],$row['host'],$row['soap_port']);
 	  }
 	}

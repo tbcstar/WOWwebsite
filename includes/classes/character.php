@@ -8,13 +8,13 @@ class character {
 		connect::connectToRealmDB($rid);
 		
         if(character::isOnline($guid)==TRUE) 
-			echo '<b class="red_text">Please log out your character before proceeding.';
+			echo '<b class="red_text">请在继续之前退出游戏。';
 		else 
 		{
 			if($GLOBALS['service']['unstuck']['currency']=='vp')
 			{
 				if(account::hasVP($_SESSION['cw_user'],$GLOBALS['service']['unstuck']['price'])==FALSE) 
-					die('<b class="red_text">Not enough Vote Points!</b>' );
+					die('<b class="red_text">没有足够的投票积分!</b>' );
 				else
 					account::deductVP(account::getAccountID($_SESSION['cw_user']),$GLOBALS['service']['unstuck']['price']);	
 		}
@@ -22,7 +22,7 @@ class character {
 			if($GLOBALS['service']['unstuck']['currency']=='dp')
 			{
 				if(account::hasDP($_SESSION['cw_user'],$GLOBALS['service']['unstuck']['price'])==FALSE) 
-					die( '<b class="red_text">Not enough '.$GLOBALS['donation']['coins_name'].'</b>' );
+					die( '<b class="red_text">积分不足'.$GLOBALS['donation']['coins_name'].'</b>' );
 				else
 					account::deductDP(account::getAccountID($_SESSION['cw_user']),$GLOBALS['service']['unstuck']['price']);
 		}
@@ -52,13 +52,13 @@ class character {
 		connect::connectToRealmDB($rid);
 		
 		if(character::isOnline($guid)==TRUE) 
-			echo '<b class="red_text">Please log out your character before proceeding.';
+			echo '<b class="red_text">请在继续之前退出游戏。';
 	    else 
 		{
 			if($GLOBALS['service']['revive']['currency']=='vp')
 			{
 				if(account::hasVP($_SESSION['cw_user'],$GLOBALS['service']['unstuck']['price'])==FALSE) 
-					die( '<b class="red_text">Not enough Vote Points!</b>' );
+					die( '<b class="red_text">没有足够的投票积分！</b>' );
 				else
 					account::deductVP(account::getAccountID($_SESSION['cw_user']),$GLOBALS['service']['revive']['price']);	
 			}
@@ -66,7 +66,7 @@ class character {
 		if($GLOBALS['service']['revive']['currency']=='dp')
 		{
 			if(account::hasDP($_SESSION['cw_user'],$GLOBALS['service']['unstuck']['price'])==FALSE) 
-				die( '<b class="red_text">Not enough '.$GLOBALS['donation']['coins_name'].'</b>' );
+				die( '<b class="red_text">积分不足'.$GLOBALS['donation']['coins_name'].'</b>' );
 			else
 				account::deductDP(account::getAccountID($_SESSION['cw_user']),$GLOBALS['service']['revive']['price']);	
 		}
@@ -81,8 +81,8 @@ class character {
 	
 	public static function instant80($values) 
 	{
-		die("This feature is disabled. <br/>
-		<i>Also, you shouldn't be here...</i>
+		die("此功能被禁用。 <br/>
+		<i>还有，你不应该在这里…</i>
 		");
 		$values = mysql_real_escape_string($values);
 		$values = explode("*",$values);
@@ -90,7 +90,7 @@ class character {
 		connect::connectToRealmDB($values[1]);
 		
 		if(character::isOnline($values[0])==TRUE) 
-			echo '<b class="red_text">Please log out your character before proceeding.';
+			echo '<b class="red_text">请在继续之前退出游戏。';
 		else 
 		{
 		$service_values = explode("*",$GLOBALS['service']['instant80']);
@@ -98,7 +98,7 @@ class character {
 		{
 			if(account::hasDP($_SESSION['cw_user'],$GLOBALS['service']['instant80']['price'])==FALSE) 
 			{
-				echo '<b class="red_text">Not enough '.$GLOBALS['donation']['coins_name'].'</b>';
+				echo '<b class="red_text">积分不足'.$GLOBALS['donation']['coins_name'].'</b>';
 				$error = true;
 			}
 		} 
@@ -106,20 +106,20 @@ class character {
 		{
 			if(account::hasVP($_SESSION['cw_user'],$GLOBALS['service']['instant80']['price'])==FALSE) 
 			{
-				echo '<b class="red_text">Not enough Vote Points.</b>';
+				echo '<b class="red_text">没有足够的投票积分！</b>';
 				$error = true;
 			}
 		} 
 		
 		if ($error!=true) 
 		{
-			//User got coins. Boost them up to 80 :D
+			//用户有积分，可以提高等级到58级。:D
 			connect::connectToRealmDB($values[1]);
-			mysql_query("UPDATE characters SET level='80' WHERE guid = '".$values[0]."'");
+			mysql_query("UPDATE characters SET level='58' WHERE guid = '".$values[0]."'");
 			
 			account::logThis("Performed an instant max level on ".character::getCharName($values[0],NULL),'Instant',NULL);
 			
-			echo '<h3 class="green_text">The character level was set to 80!</h3>';
+			echo '<h3 class="green_text">等级已提升到58级！</h3>';
 		}
 	}
  }
@@ -139,55 +139,55 @@ class character {
 	  switch($value) 
 	  {
 		 default:
-		 return "Unknown";
+		 return "未知";
 		 break;
 		 #######
 		 case(1):
-		 return "Human";
+		 return "人类";
 		 break;
 		 #######		 
 		 case(2):
-		 return "Orc";
+		 return "兽人";
 		 break;
 		 #######
 		 case(3):
-		 return "Dwarf";
+		 return "矮人";
 		 break;
 		 #######
 		 case(4):
-		 return "Night Elf";
+		 return "暗夜精灵";
 		 break;
 		 #######
 		 case(5):
-		 return "Undead";
+		 return "不死族";
 		 break; 
 		 #######
 		 case(6):
-		 return "Tauren";
+		 return "牛头人";
 		 break;
 		 #######
 		 case(7):
-		 return "Gnome";
+		 return "侏儒";
 		 break;
 		 #######
 		 case(8):
-		 return "Troll";
+		 return "巨魔";
 		 break;
 		 #######
 		 case(9):
-		 return "Goblin";
+		 return "哥布林";
 		 break;
 		 #######
 		 case(10):
-		 return "Blood Elf";
+		 return "血精灵";
 		 break;
 		 #######
 		 case(11):
-		 return "Dranei";
+		 return "德莱尼";
 		 break;
 		 #######
 		 case(22):
-		 return "Worgen";
+		 return "狼人";
 		 break;
          #######
 	  }
@@ -196,11 +196,11 @@ class character {
   public static function getGender($value) 
   {
 	 if($value==1) 
-		 return "Female";
+		 return "女性";
 	 elseif($value=9)
-		 return "Male";
+		 return "男性";
 	 else 
-		 return "Unknown";
+		 return "未知";
   }
   
   public static function getClass($value) 
@@ -208,52 +208,52 @@ class character {
 	  switch($value) 
 	  {
 		 default:
-		 return "Unknown";
+		 return "未知";
 		 break;
 		 #######
 		 case(1):
-		 return "Warrior";
+		 return "战士";
 		 break;
 		 #######
 		 case(2):
-		 return "Paladin";
+		 return "圣骑士";
 		 break;
 		 #######
 		 case(3):
-		 return "Hunter";
+		 return "猎人";
 		 break;
 		 #######
 		 case(4):
-		 return "Rogue";
+		 return "盗贼";
 		 break;
 		 #######
 		 case(5):
-		 return "Priest";
+		 return "牧师";
 		 break;
 		 #######
 		 case(6):
-		 return "Death Knight";
+		 return "死亡骑士";
 		 break;
 		 #######
 		 case(7):
-		 return "Shaman";
+		 return "萨满";
 		 break;
 		 #######
 		 case(8):
-		 return "Mage";
+		 return "法师";
 		 break;
 		 #######
 		 case(9):
-		 return "Warlock";
+		 return "术士";
 		 break;
 		 #######
 		 case(11):
-		 return "Druid";
+		 return "德鲁伊";
 		 break;
 		 ####### 
 		 #######
 		 case(12):
-		 return "Monk";
+		 return "武僧";
 		 break;
 		 ####### 
 	  }

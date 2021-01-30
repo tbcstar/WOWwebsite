@@ -12,12 +12,12 @@ $server->selectDB('webdb');
 if($_POST['action']=='toggle')
  {
 	if($_POST['value']==1) {
-		//Enable
+		//开启
 		mysql_query("DELETE FROM disabled_pages WHERE filename='".mysql_real_escape_string($_POST['filename'])."'");
 	} 
 	elseif($_POST['value']==2) 
 	{
-		//Disable
+		//禁用
 		mysql_query("INSERT IGNORE disabled_pages values('".mysql_real_escape_string($_POST['filename'])."')");
 	}
 }

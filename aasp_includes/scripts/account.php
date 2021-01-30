@@ -20,7 +20,7 @@ if($_POST['action']=='edit')
 	
 	$chk1 = mysql_query("SELECT COUNT FROM account WHERE email='".$email."' AND id='".$od."'");
 	if(mysql_query($chk1,0)>0)
-		$extended .= "Changed email to".$email."<br/>"; 
+		$extended .= "电子邮件已更改为".$email."<br/>"; 
 	
 	mysql_query("UPDATE account SET email='".$email."' WHERE id='".$id."'");
 	$server->selectDB('webdb');
@@ -29,11 +29,11 @@ if($_POST['action']=='edit')
 	
 		$chk2 = mysql_query("SELECT COUNT FROM account_data WHERE vp='".$vp."' AND id='".$od."'");
 		if(mysql_query($chk2,0)>0)
-			$extended .= "Updated Vote Points to ".$vp."<br/>"; 
+			$extended .= "投票积分已更新为".$vp."<br/>"; 
 			
 		$chk3 = mysql_query("SELECT COUNT FROM account_data WHERE dp='".$dp."' AND id='".$od."'");
 		if(mysql_query($chk3,0)>0)
-			$extended .= "Updated Donation Coins to ".$dp."<br/>"; 	
+			$extended .= "捐赠积分已更新为".$dp."<br/>"; 	
 	
 	
 	mysql_query("UPDATE account_data SET vp='".$vp."', dp ='".$dp."' WHERE id='".$id."'");
@@ -46,12 +46,12 @@ if($_POST['action']=='edit')
 		$server->selectDB('logondb');
 		mysql_query("UPDATE account SET sha_pass_hash='".$password."' WHERE id='".$id."'");
 		mysql_query("UPDATE account SET v='0',s='0' WHERE id='".$id."'");
-		$extended .= "Changed password<br/>";
+		$extended .= "密码已更改<br/>";
 	}
 	
 	
-	$server->logThis("Modified account information for ".ucfirst(strtolower($account->getAccName($id))),$extended);
-	echo "Settings were saved.";
+	$server->logThis("帐户信息已更改为".ucfirst(strtolower($account->getAccName($id))),$extended);
+	echo "设置已保存。";
 }
 ###############################
 if($_POST['action']=='saveAccA')
@@ -61,7 +61,7 @@ if($_POST['action']=='saveAccA')
 	$realm = mysql_real_escape_string($_POST['realm']);
 	
 	mysql_query("UPDATE account_access SET gmlevel='".$rank."',RealmID='".$realm."' WHERE id='".$id."'");
-	$server->logThis("Modified account access for ".ucfirst(strtolower($account->getAccName($id))));
+	$server->logThis("帐户访问权限已更改为".ucfirst(strtolower($account->getAccName($id))));
 }
 ###############################
 if($_POST['action']=='removeAccA')
@@ -69,7 +69,7 @@ if($_POST['action']=='removeAccA')
 	$id = (int)$_POST['id'];
 	
 	mysql_query("DELETE FROM account_access WHERE id='".$id."'");
-	$server->logThis("Modified GM account access for ".ucfirst(strtolower($account->getAccName($id))));
+	$server->logThis("修改GM帐户访问权限".ucfirst(strtolower($account->getAccName($id))));
 }
 ###############################
 if($_POST['action']=='addAccA')
@@ -81,7 +81,7 @@ if($_POST['action']=='addAccA')
 	$guid = $account->getAccID($user);
 	
 	mysql_query("INSERT INTO account_access VALUES('".$guid."','".$rank."','".$realm."')");
-	$server->logThis("Added GM account access for ".ucfirst(strtolower($account->getAccName($guid))));
+	$server->logThis("添加了GM帐户访问权限".ucfirst(strtolower($account->getAccName($guid))));
 }
 ###############################
 if($_POST['action']=='editChar') 
@@ -103,18 +103,18 @@ if($_POST['action']=='editChar')
 	
 	$onl = mysql_query("SELECT COUNT(*) FROM characters WHERE guid='".$guid."' AND online=1");
 	if(mysql_result($onl,0)>0)
-		exit('The character must be online for any change to take effect!');
+		exit('角色必须在线才能使任何更改生效！');
 	
 	mysql_query("UPDATE characters SET name='".$name."',class='".$class."',race='".$race."',gender='".$gender."', money='".$money."', account='".$accountid."'
 	WHERE guid='".$guid."'");
 	
-	echo 'The character was saved!';
+	echo '角色已保存！';
 	
 	$chk = mysql_query("SELECT COUNT(*) FROM characters WHERE name='".$name."'");
 	if(mysql_result($chk,0)>1)
-		echo '<br/><b>NOTE:</b> It seems like there more than 1 character with this name, this might force them to rename when they log in.';
+		echo '<br/><b>注意：</b似乎有不止一个角色有这个名字，这可能会迫使他们在进入时改变名字。';
 	
-	$server->logThis("Modified character data for ".$name);
+	$server->logThis("角色数据已更改为 ".$name);
 }
 ###############################
 ?>

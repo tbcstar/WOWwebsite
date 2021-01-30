@@ -1,13 +1,13 @@
 <?php $page = new page;
 	  $server = new server; ?>
-<div class="box_right_title">Plugins</div>
+<div class="box_right_title">插件</div>
 <table>
 	<tr>
-    	<th>Name</th>
-        <th>Description</th>
-        <th>Author</th>
-        <th>Created</th>
-        <th>Status</th>
+    	<th>名称</th>
+        <th>描述</th>
+        <th>作者</th>
+        <th>创建日期</th>
+        <th>状态</th>
     </tr>
 <?php
 	$bad = array('.','..','index.html');
@@ -28,9 +28,9 @@
 					$server->selectDB('webdb');
 					$chk = mysql_query("SELECT COUNT(*) FROM disabled_plugins WHERE foldername='".mysql_real_escape_string($folderName)."'");
 					if(mysql_result($chk,0)>0)
-						echo '<td>Disabled</td>';
+						echo '<td>禁用</td>';
 					else
-						echo '<td>Enabled</td>';
+						echo '<td>启用</td>';
 				echo '</tr>';
 			}
 		}

@@ -1,6 +1,6 @@
 <script type="text/javascript" src="javascript/main.js"></script>
 <?php
-####SHOP CARTS####
+####购物车####
 if($_GET['p']=='donateshop') 
 { ?>
 <script type="text/javascript">
@@ -26,9 +26,9 @@ if($_GET['p']=='voteshop')
 <?php 
 }
 if($GLOBALS['core_expansion']>2) 
-	echo '<script type="text/javascript" src="http://cdn.cavernoftime.com/api/tooltip.js"></script>';
+	echo '<script type="text/javascript" src="/javascript/tooltip.js"></script>';
 else
-	echo '<script type="text/javascript" src="http://cdn.cavernoftime.com/api/tooltip.js"></script>';
+	echo '<script type="text/javascript" src="/javascript/tooltip.js"></script>';
 
 ####CURSOR TRACKER####
 if($_GET['p']=='donateshop' || $_GET['p'] == 'voteshop') 
@@ -54,7 +54,7 @@ if($GLOBALS['social']['enableFacebookModule']==TRUE)
 <?php 
 }
 
-####SERVER STATUS######
+####服务器状态######
 if($GLOBALS['serverStatus']['enable']==true) 
 {
 	?>

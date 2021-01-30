@@ -1,26 +1,26 @@
 <?php $page = new page; $server = new server; $account = new account; ?>
-<div class="box_right_title"><?php echo $page->titleLink(); ?> &raquo; Character Inventory</div>
-Showing inventory of character 
+<div class="box_right_title"><?php echo $page->titleLink(); ?> &raquo; 角色库存</div>
+显示角色明细 
 <a href="?p=users&s=viewchar&guid=<?php echo $_GET['guid']; ?>&rid=<?php echo $_GET['rid']; ?>">
 	<?php echo $account->getCharName($_GET['guid'],$_GET['rid']); ?>
 </a>
 <hr/>
 Filter:
 	   <a href="?p=users&s=inventory&guid=<?php echo $_GET['guid']; ?>&rid=<?php echo $_GET['rid']; ?>&f=equip">
-		<?php if(isset($_GET['f']) && $_GET['f']=='equip') echo '<b>'; ?>Equipped Items</a><?php if(isset($_GET['f']) && $_GET['f']=='equip') echo '</b>'; ?> 
+		<?php if(isset($_GET['f']) && $_GET['f']=='equip') echo '<b>'; ?>在身上的物品</a><?php if(isset($_GET['f']) && $_GET['f']=='equip') echo '</b>'; ?> 
     &nbsp; | 
 &nbsp; <a href="?p=users&s=inventory&guid=<?php echo $_GET['guid']; ?>&rid=<?php echo $_GET['rid']; ?>&f=bank">
-		<?php if(isset($_GET['f']) && $_GET['f']=='bank') echo '<b>'; ?>Items in bank<?php if(isset($_GET['f']) && $_GET['f']=='bank') echo '</b>'; ?></a> 
+		<?php if(isset($_GET['f']) && $_GET['f']=='bank') echo '<b>'; ?>在银行的物品<?php if(isset($_GET['f']) && $_GET['f']=='bank') echo '</b>'; ?></a> 
     &nbsp; | 
 &nbsp; <a href="?p=users&s=inventory&guid=<?php echo $_GET['guid']; ?>&rid=<?php echo $_GET['rid']; ?>&f=keyring">
-		<?php if(isset($_GET['f']) && $_GET['f']=='keyring') echo '<b>'; ?>Items in keyring<?php if(isset($_GET['f']) && $_GET['f']=='keyring') echo '</b>'; ?>
+		<?php if(isset($_GET['f']) && $_GET['f']=='keyring') echo '<b>'; ?>锁定的物品<?php if(isset($_GET['f']) && $_GET['f']=='keyring') echo '</b>'; ?>
         </a> 
      &nbsp; | 
 &nbsp; <a href="?p=users&s=inventory&guid=<?php echo $_GET['guid']; ?>&rid=<?php echo $_GET['rid']; ?>&f=currency">
-		<?php if(isset($_GET['f']) && $_GET['f']=='currency') echo '<b>'; ?>Currencies<?php if(isset($_GET['f']) && $_GET['f']=='currency') echo '</b>'; ?></a> 
+		<?php if(isset($_GET['f']) && $_GET['f']=='currency') echo '<b>'; ?>金钱<?php if(isset($_GET['f']) && $_GET['f']=='currency') echo '</b>'; ?></a> 
      &nbsp; | 
 &nbsp; <a href="?p=users&s=inventory&guid=<?php echo $_GET['guid']; ?>&rid=<?php echo $_GET['rid']; ?>">
-		<?php if(!isset($_GET['f'])) echo '<b>'; ?>All Items<?php if(!isset($_GET['f'])) echo '</b>'; ?></a> 
+		<?php if(!isset($_GET['f'])) echo '<b>'; ?>所有物品<?php if(!isset($_GET['f'])) echo '</b>'; ?></a> 
 <p/>
 <?php
 $server->connectToRealmDB($_GET['rid']);
@@ -28,7 +28,7 @@ $equip_array = array(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18);
 
 $result = mysql_query("SELECT guid,itemEntry,`count` FROM item_instance WHERE owner_guid='".(int)$_GET['guid']."'");
 if(mysql_num_rows($result)==0)
-	echo 'No items was found!';
+	echo '没有发现任何物品!';
 else
 {	
  echo '<table cellspacing="3" cellpadding="5">';
@@ -80,8 +80,8 @@ else
 			 $sxml = new SimpleXmlElement(file_get_contents('http://www.wowhead.com/item='.$entry.'&xml'));
 			  
 			  $icon = strtolower(mysql_real_escape_string($sxml->item->icon));
-			  //Now that we have it loaded. Add it into database for future use.
-			  //Note that WoWHead XML is extremely slow. This is the main reason why we're adding it into the db.
+			  //现在我们已经加载了它。将其添加到数据库中供以后使用。
+			  //注意，WoWHead XML非常慢。这就是我们将其添加到数据库中的主要原因。
 			  mysql_query("INSERT INTO item_icons VALUES('".$row['displayid']."','".$icon."')");
 		 }
 		 else 

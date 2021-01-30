@@ -8,49 +8,49 @@
 <a href="?p=ucp">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-01.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-01.png" alt="" /> </div>
-<p>Account</p>
+<p>账户</p>
 </a>
 </li>
 <li>
 <a href="?p=shop">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-02.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-02.png" alt="" /> </div>
-<p>Shop</p>
+<p>商城</p>
 </a>
 </li>
 <li>
 <a href="?p=donate">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-03.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-03.png" alt="" /> </div>
-<p>Buy coins</p>
+<p>捐赠充值</p>
 </a>
 </li>
 <li>
 <a class="active" href="?p=characters">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-04.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-04.png" alt="" /> </div>
-<p>Characters</p>
+<p>角色</p>
 </a>
 </li>
 <li>
 <a href="#">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-05.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-05.png" alt="" /> </div>
-<p>Find character</p>
+<p>查找角色</p>
 </a>
 </li>
 <li>
 <a href="?p=stat">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-06.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-06.png" alt="" /> </div>
-<p>Statistics</p>
+<p>统计</p>
 </a>
 </li>
 <li>
 <a href="?p=vote">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-07.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-07.png" alt="" /> </div>
-<p>Vote</p>
+<p>投票</p>
 </a>
 </li>
 </ul>
@@ -65,27 +65,27 @@
 <div class="head-content">
 <div class="breadcrumbs">
 <a href="?p=ucp">
-Control Panel </a>
+控制面板 </a>
 <span class="ico-raquo"></span>
 <a href="?p=shop">
-Shop </a>
+商城 </a>
 <span class="ico-raquo"></span>
 <div>
-Services </div>
+服务项目 </div>
 </div>
 <div class="realm_picker">
 <div class="">
-Actual realm: </div>
-<a href="#">
-Nefelin-WoW </a>
+所在服务器： </div>
+<a href="game.tbcstar.com">
+时光回溯 </a>
 </div>
 </div>
 <div class="content-box standart">
 <div class="content-holder">
 <div class="content-frame">
 <div class="content">
-<h2>Select character</h2>
-<strong class="title">Your characters on realm <span>Nefelin </span>:</strong>
+<h2>查找角色</h2>
+<strong class="title">你在服务器上的角色 <span>Nefelin </span>:</strong>
 <style>
 span.accept {
     color: #648434;
@@ -129,11 +129,11 @@ span.attention, span.notice, span.alert, span.download, span.approved, span.medi
 
 <table class="table">
 <tr>
-<th>img</th>
-<th>Name</th>
-<th>Level</th>
-<th>Race</th>
-<th>Class</th>
+<th>头像</th>
+<th>名字</th>
+<th>等级</th>
+<th>阵营</th>
+<th>职业</th>
 <th>&nbsp;</th>
 </tr>
 </br>
@@ -144,24 +144,24 @@ $service = $_GET['s'];
 $service_title = ucfirst($service." Change");
 
 if($GLOBALS['service'][$service]['status']!="TRUE") 
-	echo "This page is currently unavailable.";
+	echo "此页面目前不可用。";
 else
 {
 	if(isset($_GET['service'])&&$_GET['service']=='applied')
 	{
-		echo '<div class="box_two_title">Service applied!</div>';
-		echo 'Your service has been applied to the character you just selected. You may have to relog your account to notice any changes.';
-		echo '<p/>This action has been logged in our database incase you need any assistance.';
+		echo '<div class="box_two_title">应用服务！</div>';
+		echo '你的服务已经应用到你刚刚选择的角色。您可能需要重新登录您的帐户，以注意任何变化。';
+		echo '<p/>如果您需要任何帮助，此操作已被记录在我们的数据库中。';
 	}
 	else
 	{
 ?>
 
 
-Choose which character you wish to apply this service to.
+选择您希望将此服务应用于哪个角色。
 <?php
 if($GLOBALS['service'][$service]['price']==0) 
-      	echo '<span class="attention">'.$service_title.' is free of charge.</span>';
+      	echo '<span class="attention">'.$service_title.' 是免费的。</span>';
 else
 { ?>
 <span class="attention"><?php echo $service_title; ?> costs 
@@ -169,7 +169,7 @@ else
 echo $GLOBALS['service'][$service]['price'].' '.website::convertCurrency($GLOBALS['service'][$service]['currency']); ?></span>
 <?php 
 if($GLOBALS['service'][$service]['currency']=="vp")
-	echo "<span class='currency'>Vote Points: ".account::loadVP($_SESSION['cw_user'])."</span>";
+	echo "<span class='currency'>投票积分：".account::loadVP($_SESSION['cw_user'])."</span>";
 elseif($GLOBALS['service'][$service]['currency']=="dp")
 	echo "<span class='currency'>".$GLOBALS['donation']['coins_name'].": ".account::loadDP($_SESSION['cw_user'])."</span>";
 } 
@@ -209,11 +209,11 @@ while($row = mysql_fetch_assoc($result))
 
  <!--<td><?php echo $realm; ?>
 					<?php if($row['online']==1)
-                   echo "<br/><span class='red_text'>Please log out before trying to unstuck.</span>";?>
+                   echo "<br/><span class='red_text'>在尝试解除卡死之前，请先退出游戏。</span>";?>
                 </td>-->
                 
 				
-				<td align="right"> &nbsp; <input type="submit" class="btn btn-low-yellow" value="Select" 
+				<td align="right"> &nbsp; <input type="submit" class="btn btn-low-yellow" value="选择" 
 				   <?php if($row['online']==0) { ?> 
                    onclick='nstepService(<?php echo $row['guid']; ?>,<?php echo $realm_id; ?>,"<?php echo $service; ?>","<?php echo $service_title; ?>"
                    ,"<?php echo $row['name']; ?>")' <?php }

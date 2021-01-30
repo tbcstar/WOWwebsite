@@ -6,12 +6,12 @@
 class account {
 	
 	###############################
-	####### Log in method
+	####### 登录方法
 	###############################
 	public static function logIn($username,$password,$last_page,$remember) 
 	{
 		if (!isset($username) || !isset($password) || $username=="Username..." || $password=="Password...") 
-			echo '<span class="red_text">Please enter both fields.</span>'; 
+			echo '<span class="red_text">请输入账号密码。</span>'; 
 		else 
 		{
 			$username = mysql_real_escape_string(trim(strtoupper($username)));
@@ -22,7 +22,7 @@ class account {
 			if (mysql_result($checkForAccount,0)==0) 
 				echo '
 			
-			<div id="ajax_notification" class="notification_red" style="z-index: 999999; display: block;">Invalid username.</div>
+			<div id="ajax_notification" class="notification_red" style="z-index: 999999; display: block;">无效的用户名。</div>
 			
 
 			';	
@@ -34,7 +34,7 @@ class account {
 				$result = mysql_query("SELECT id FROM account WHERE username='".$username."' AND sha_pass_hash='".$password."'");
 				if (mysql_num_rows($result)==0) 
 					echo '
-				<div id="ajax_notification" class="notification_red" style="z-index: 999999; display: block;">Wrong password.</div>
+				<div id="ajax_notification" class="notification_red" style="z-index: 999999; display: block;">错误的密码。</div>
 
 			';
 				else 
@@ -68,7 +68,7 @@ class account {
 	
 	public static function loadUserData() 
 	{
-		//Unused function
+		//未使用的函数
 		$user_info = array();
 		
 		connect::selectDB('logondb');
@@ -83,7 +83,7 @@ class account {
 	}
 	
 	###############################
-	####### Log out method
+	####### 注销方法
 	###############################
 	public static function logOut($last_page) 
 	{
@@ -106,42 +106,43 @@ class account {
 		$errors = array();
 		
 		if (empty($username))  
-			$errors[] = 'Enter a username.';
+			$errors[] = '输入用户名。';
 			
 		if (empty($email)) 
-			$errors[] = 'Enter an email address.';
+			$errors[] = '输入电子邮件地址。';
 			
 		if (empty($password)) 
-			$errors[] = 'Enter a password.';
+			$errors[] = '输入密码。';
 			
 		if (empty($repeat_password)) 
-			$errors[] = 'Enter the password repeat.';
+			$errors[] = '再次输入密码。';
 			
 		if($username==$password) 
-			$errors[] = 'Your password cannot be your username!';
+			$errors[] = '您的密码不能是您的用户名!';
 			
 		else 
 		{
 			session_start();
-			if($GLOBALS['registration']['captcha']==TRUE) 
+			/*if($GLOBALS['registration']['captcha']==TRUE) 
 			{ 
 				if($captcha!=$_SESSION['captcha_numero']) 
-					$errors[] = 'The captcha is incorrect!';
-			}
+					$errors[] = '验证码不正确!';
+			}*/
 			
 			if (strlen($username)>$GLOBALS['registration']['userMaxLength'] || strlen($username)<$GLOBALS['registration']['userMinLength']) 
-				$errors[] = 'The username must be between '.$GLOBALS['registration']['userMinLength'].' and '.$GLOBALS['registration']['userMaxLength'].' letters.';
+				$errors[] = '用户名必须介于'.$GLOBALS['registration']['userMinLength'].' 和 '.$GLOBALS['registration']['userMaxLength'].' letters.';
 				
 			if (strlen($password)>$GLOBALS['registration']['passMaxLength'] || strlen($password)<$GLOBALS['registration']['passMinLength']) 
-				$errors[] = 'The password must be between '.$GLOBALS['registration']['passMinLength'].' and '.$GLOBALS['registration']['passMaxLength'].' letters.';
+				$errors[] = '密码必须介于'.$GLOBALS['registration']['passMinLength'].' 和 '.$GLOBALS['registration']['passMaxLength'].' letters.';
 				
 			if ($GLOBALS['registration']['validateEmail']==true) 
 			{
 			    if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) 
-				       $errors[] = 'Enter a valid email address.';
+				       $errors[] = '输入一个有效的电子邮件地址。';
 			}
 			
 		}
+		
 		$username_clean = mysql_real_escape_string(trim($username));
 		$password_clean = mysql_real_escape_string(trim($password));
 		$username = mysql_real_escape_string(trim(strtoupper(strip_tags($username))));
@@ -152,18 +153,20 @@ class account {
 		
 		
 		connect::selectDB('logondb');
-		//Check for existing user
+		
+		//检查现有用户
 		$result = mysql_query("SELECT COUNT(id) FROM account WHERE username='".$username."'");
+		
 		if (mysql_result($result,0)>0) 
-			$errors[] = 'The username already exists!';
+			$errors[] = '用户名已经存在!';
 		
 		if ($password != $repeat_password) 
-			$errors[] = 'The passwords does not match!';
+			$errors[] = '密码不匹配!';
 		
 		if (!empty($errors)) 
 		{
-			//errors found.
-			echo "<div class='news' style='padding: 5px;'><h4>The following errors occured:</h4>";
+			//发现错误。
+			echo "<div class='news' style='padding: 5px;'><h4>出现以下错误:</h4>";
 			foreach($errors as $error) 
 			{
 				echo  "<strong>*", $error ,"</strong><br/>";
@@ -174,6 +177,7 @@ class account {
 		else 
 		{
 			$password = sha1("".$username.":".$password."");
+		
 			mysql_query("INSERT INTO account (username,email,sha_pass_hash,joindate,expansion,recruiter) 
 			VALUES('".$username."','".$email."','".$password."','".date("Y-m-d H:i:s")."','".$GLOBALS['core_expansion']."','".$raf."') "); 
 			
@@ -204,7 +208,7 @@ class account {
      global $phpbb_root_path, $phpEx, $user, $db, $config, $cache, $template;
 	 if($GLOBALS['forum']['type']=='phpbb' && $GLOBALS['forum']['autoAccountCreate']==TRUE) 
 	 {
-		     ////////PHPBB INTEGRATION//////////////
+		     ////////PHPBB集成//////////////
 			ini_set('display_errors',1);
 			define('IN_PHPBB', true);
 			define('ROOT_PATH', '../..'.$GLOBALS['forum']['forum_path']);
@@ -291,12 +295,12 @@ class account {
 				$duration = ($duration / 60)/60;
 				$duration = $duration.' hours';  
 			}
-				echo '<span class="yellow_text">Banned<br/>
+				echo '<span class="yellow_text">禁用<br/>
 				Reason: '.$row['banreason'].'<br/>
 				Time left: '.$duration.'</span>';
 		} 
 		else 
-			echo '<b class="green_text">Active</b>';
+			echo '<b class="green_text">启用</b>';
 	}
 	
 	
@@ -390,9 +394,9 @@ class account {
 		connect::selectDB('logondb');
 		$result = mysql_query("SELECT COUNT(online) FROM account WHERE username='".$account_name."' AND online=1");
 		if (mysql_result($result,0)==0) 
-			return '<b class="red_text">Offline</b>';
+			return '<b class="red_text">离线</b>';
 		else
-			return '<b class="green_text">Online</b>';
+			return '<b class="green_text">在线</b>';
 	}
 	
 	
@@ -410,7 +414,7 @@ class account {
 	
 	
 	###############################
-	####### Returns a GM session if the user is a GM with rank 2 and above.
+	####### 如果用户是级别为2及以上的GM，则返回一个GM会话。
 	###############################
 	public static function GMLogin($account_name) 
 	{
@@ -438,7 +442,7 @@ class account {
 			if(mysql_num_rows($result)==0 && !isset($x))
 			{
 				$x = true;
-			     echo '<option value="">No characters found!</option>';
+			     echo '<option value="">没有发现角色！</option>';
 			}
 				  
 			while($char = mysql_fetch_assoc($result)) 
@@ -454,11 +458,11 @@ class account {
 
 		$errors = array();
 		if (empty($current_pass)) 
-			$errors[] = 'Please enter your current password'; 
+			$errors[] = '请输入您的当前密码'; 
 		else 
 		{
 			if (empty($email)) 
-				$errors[] = 'Please enter an email address.';
+				$errors[] = '请输入电子邮件地址。';
 			
 			connect::selectDB('logondb');
 			$username = mysql_real_escape_string(trim(strtoupper($_SESSION['cw_user'])));
@@ -468,24 +472,24 @@ class account {
 
 			$result = mysql_query("SELECT COUNT(id) FROM account WHERE username='".$username."' AND sha_pass_hash='".$password."'");
 			if (mysql_result($result,0)==0) 
-				$errors[] = 'The current password is incorrect.';
+				$errors[] = '当前密码不正确。';
 			
 			
 			if ($GLOBALS['registration']['validateEmail']==true) 
 			{
 			    if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) 
-				    $errors[] = 'Enter a valid email address.';
+				    $errors[] = '输入一个有效的电子邮件地址。';
 				 else 
 					 mysql_query("UPDATE account SET email='".$email."' WHERE username='".$_SESSION['cw_user']."'");
 			}
 			
 		}
 		if(empty($errors)) 
-			echo 'Successfully updated your account.';
+			echo '您的帐号更新成功。';
 		else 
 		{
 			echo '<div class="news" style="padding: 5px;">
-			<h4 class="red_text">The following errors occured:</h4>';
+			<h4 class="red_text">出现以下错误:</h4>';
 				   foreach($errors as $error) 
 				   {
 					 echo  '<strong class="yellow_text">*', $error ,'</strong><br/>';
@@ -496,29 +500,29 @@ class account {
 	
 	
 	
-	//Used for the change password page.
+	//用于更改密码页面。
 	public static function changePass($old,$new,$new_repeat) 
 	{
 		$_POST['cur_pass']=mysql_real_escape_string(trim($old));
 		$_POST['new_pass']=mysql_real_escape_string(trim($new));
 		$_POST['new_pass_repeat']=mysql_real_escape_string(trim($new_repeat));
 		
-		//Check if all field values has been typed into
+		//检查是否所有字段值都已输入
 		if (!isset($_POST['cur_pass']) || !isset($_POST['new_pass']) || !isset($_POST['new_pass_repeat'])) 
-			echo '<b class="red_text">Please type in all fields!</b>';
+			echo '<b class="red_text">请输入所有字段!</b>';
 	    else 
 		{
-			//Check if new passwords match?
+			//检查新密码是否匹配?
 			if ($_POST['new_pass'] != $_POST['new_pass_repeat'])
-				echo '<b class="red_text">The new passwords doesnt match!</b>';
+				echo '<b class="red_text">新密码不匹配!</b>';
 			else 
 			{
 			  if (strlen($_POST['new_pass']) < $GLOBALS['registration']['passMinLength'] || 
 			      strlen($_POST['new_pass'] > $GLOBALS['registration']['passMaxLength'])) 
-				  echo '<b class="red_text">Your password must be between 6 and 32 letters</b>';
+				  echo '<b class="red_text">您的密码不能小于6位或大于32位！</b>';
 			  else 
 			  {
-				//Lets check if the old password is correct!
+				//让我们检查一下旧密码是否正确!
 				$username = strtoupper(mysql_real_escape_string($_SESSION['cw_user']));
 				connect::selectDB('logondb');
 				$getPass = mysql_query("SELECT `sha_pass_hash` FROM `account` WHERE `username`='".$username."'");
@@ -532,11 +536,11 @@ class account {
 				$new_pass_hash = SHA1($username.':'.$new_pass);
 				
 				if ($thePass != $pass_hash) 
-					echo '<b class="red_text">The old password is not correct!</b>';
+					echo '<b class="red_text">旧密码不正确!</b>';
 				else 
 				{
-					//success, change password
-					echo 'Your Password was changed!';
+					//成功,更改密码
+					echo '您的密码已修改!';
 					mysql_query("UPDATE `account` SET `sha_pass_hash`='$new_pass_hash' WHERE `username`='".$username."'");
 					mysql_query("UPDATE `account` SET `v`='0' AND `s`='0' WHERE username='".$username."'");
 				}
@@ -564,7 +568,7 @@ class account {
 		$account_email = mysql_real_escape_string($account_email);
 		
 		if (empty($account_name) || empty($account_email)) 
-			echo '<b class="red_text">Please enter both fields.</b>';
+			echo '<b class="red_text">请输入用户名和Email。</b>';
 		else 
 		{
 			connect::selectDB('logondb');
@@ -572,22 +576,22 @@ class account {
 								 WHERE username='".$account_name."' AND email='".$account_email."'");
 			
 			if (mysql_result($result,0)==0) 
-				echo '<b class="red_text">The username or email is incorrect.</b>';
+				echo '<b class="red_text">用户名或电子邮件不正确。</b>';
 			else 
 			{
 				//Success, lets send an email & add the forgotpw thingy.
 				$code = RandomString();
-				website::sendEmail($account_email,$GLOBALS['default_email'],'Forgot Password',"
-				Hello there. <br/><br/>
-				A password reset has been requested for the account ".$account_name." <br/>
-				If you wish to reset your password, click the following link: <br/>
+				website::sendEmail($account_email,$GLOBALS['default_email'],'找回密码',"
+				你好。<br/><br/>
+				要求为帐户重设密码 ".$account_name." <br/>
+				如果要重置密码，请单击下面的链接：<br/>
 				<a href='".$GLOBALS['website_domain']."?p=forgotpw&code=".$code."&account=".account::getAccountID($account_name)."'>
 				".$GLOBALS['website_domain']."?p=forgotpw&code=".$code."&account=".account::getAccountID($account_name)."</a>
 				
 				<br/><br/>
 				
-				If you did not request this, just ignore this message.<br/><br/>
-				Sincerely, The Management.
+				如果您没有请求此消息，请忽略此消息。<br/><br/>
+				来自TBCstar的问候。
 				");
 				$account_id = self::getAccountID($account_name);
 				connect::selectDB('webdb');
@@ -595,8 +599,8 @@ class account {
 				mysql_query("DELETE FROM password_reset WHERE account_id='".$account_id."'");
 				mysql_query("INSERT INTO password_reset VALUES ('','".$code."','".$account_id."')");
 				echo "
-				An email containing a link to reset your password has been sent to the Email address you specified. 
-				If you've tried to send other password reset before this, they won't work. <br/>";
+				包含重置密码链接的电子邮件已发送到您指定的电子邮件地址。
+				如果您在此之前已经提交了其他密码重置请求，则这些请求将不起作用。<br/>";
 				}	
 			}	
 		}

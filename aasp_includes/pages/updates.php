@@ -6,13 +6,13 @@ function getLatestVersions() {
 </script>
 <table width="100%">
        <tr>
-            <td>Current version: r_01</td><td class="hidden_version">Available version: r_02</td>
+            <td>当前版本：r_01</td><td class="hidden_version">可用版本:r_02</td>
        </tr>
        <tr>
-            <td>Current database version: r_01</td><td class="hidden_version">Available database version: r_02</td>
+            <td>当前数据库版本:r_01</td><td class="hidden_version">可用数据库版本:r_02</td>
        </tr>
        <tr>
-           <td><input type="submit" value="Check for available versions" onclick="getLatestVersions()"/></td>
-           <td class="hidden_version"><input type="submit" value="Update" onclick="alert('Trololol! This feature is not implemented yet! :D')"/></td>
+           <td><input type="submit" value="检查可用版本" onclick="getLatestVersions()"/></td>
+           <td class="hidden_version"><input type="submit" value="Update" onclick="alert('嘿，这是一个恶作剧。此功能尚未实现！)"/></td>
        </tr>
 </table>

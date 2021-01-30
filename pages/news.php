@@ -23,22 +23,22 @@ if (isset($_GET['newsid']))
 	echo nl2br($text); ?> 
    
     <br/><br/>
-    <span class='yellow_text'>Written by <b><?php echo $row['author'];?></b> | <?php echo $row['date']; ?></span>
+    <span class='yellow_text'>作者 <b><?php echo $row['author'];?></b> | <?php echo $row['date']; ?></span>
     <?php if ($GLOBALS['news']['enableComments']==true) 
 	 { 
 		 $result = mysql_query("SELECT poster FROM news_comments WHERE newsid='".$id."' ORDER BY id DESC LIMIT 1");
 		 $rows = mysql_fetch_assoc($result);
 	 if($rows['poster'] == $_SESSION['cw_user_id'] && isset($_SESSION['cw_user'])) 
-		echo "<p>You can't post 2 comments in a row!</p>"; 
+		echo "<p>您不能连续发表2条评论！</p>"; 
 	 else 
 	 {
 	?>
     <hr/>
-    <h4 class="yellow_text">Comments</h4>
+    <h4 class="yellow_text">评论</h4>
     <?php if ($_SESSION['cw_user']) {?>
     <table width="100%"> <tr> <td>
     <form action="?p=news&id=<?php echo $id; ?>" method="post">
-    <textarea id="newscomment_textarea" name="text">Comment this post...</textarea> </td>
+    <textarea id="newscomment_textarea" name="text">评论这篇文章……</textarea> </td>
     <td><input type="submit" value="Post" name="comment"></td>
     </form> 
     </tr></table>
@@ -46,7 +46,7 @@ if (isset($_GET['newsid']))
     <?php
 	} 
 	else
-		echo "<span class='note'>Log in to comment!</span>";
+		echo "<span class='note'>请登录才能发表评论！</span>";
 	}
 	if (isset($_POST['comment'])) 
 	{
@@ -67,7 +67,7 @@ if (isset($_GET['newsid']))
 	
     $result = mysql_query("SELECT * FROM news_comments WHERE newsid='".$row['id']."' ORDER BY id ASC");
 	if (mysql_num_rows($result)==0)
-		echo "<span class='alert'>No comments has been made yet!</span>";
+		echo "<span class='alert'>还没有发表任何评论!</span>";
 	else 
 	{
 		$c = 0;
@@ -89,7 +89,7 @@ if (isset($_GET['newsid']))
 			<div class="news_comment" id="comment-<?php echo $row['id']; ?>"> 
                 <div class="news_comment_user"><?php echo $user; 
 				if(mysql_result($getGM,0)>0)
-					echo "<br/><span class='blue_text' style='font-size: 11px;'>Staff</span>";?>
+					echo "<br/><span class='blue_text' style='font-size: 11px;'>职员</span>";?>
                 </div> 
                 <div class="news_comment_body"><?php if(mysql_result($getGM,0)>0) { echo "<span class='blue_text'>"; }?>
 				<?php echo nl2br(htmlentities($text));
@@ -97,7 +97,7 @@ if (isset($_GET['newsid']))
 				
 				if(isset($_SESSION['cw_gmlevel']) && $_SESSION['cw_gmlevel']>=$GLOBALS['adminPanel_minlvl'] || 
 				isset($_SESSION['cw_gmlevel']) && $_SESSION['cw_gmlevel']>=$GLOBALS['staffPanel_minlvl'] && $GLOBALS['editNewsComments']==true)
-				 	echo '<br/><br/> ( <a href="#">Edit</a> | <a href="#remove" onclick="removeNewsComment('.$row['id'].')">Remove</a> )';  
+				 	echo '<br/><br/> ( <a href="#">编辑</a> | <a href="#remove" onclick="removeNewsComment('.$row['id'].')">移除</a> )';  
 			   ?>
                <div class='news_count'>
                		<?php echo '#'.$c; ?>
@@ -159,7 +159,7 @@ else
 			 $commentsNum = mysql_query("SELECT COUNT(id) FROM news_comments WHERE newsid='".$row['id']."'");
 							 
 			 if($GLOBALS['news']['enableComments']==TRUE) 
-				 $comments = '| <a href="?p=news&amp;newsid='.$row['id'].'">Comments ('.mysql_result($commentsNum,0).')</a>';
+				 $comments = '| <a href="?p=news&amp;newsid='.$row['id'].'">评论 ('.mysql_result($commentsNum,0).')</a>';
 			 else
 				 $comments = '';
 			 

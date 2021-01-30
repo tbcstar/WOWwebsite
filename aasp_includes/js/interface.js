@@ -9,7 +9,7 @@ document.onkeydown = function(event)
 {
 	var key_press = String.fromCharCode(event.keyCode);
 	var key_code = event.keyCode;
-	if(key_code == 27)
+	if(key_code == 27) 
 		{
 			hideLoader();
 		}
@@ -63,14 +63,14 @@ function loader(id) {
 }
 function templateInstallGuide() {
 	showLoader();
-	$("#loading").html("<h3>Installing Templates</h3>\
-	<h4>Step 1</h4>First off, download or create a template for CraftedWeb. If you have experience in HTML/CSS, you should be able to create one yourself by using the default\
+	$("#loading").html("<h3>安装模板</h3>\
+	<h4>步骤1</h4>First off, download or create a template for CraftedWeb. If you have experience in HTML/CSS, you should be able to create one yourself by using the default\
 	template as a core. If you cannot make one on your own, you must get a template from another source.\
-	<h4>Step 2</h4>Next, grab the template folder that you now want to install. The name of the folder does not matter, make sure it's a regular folder, no ZIP or RAR etc.\
+	<h4>步骤2</h4>Next, grab the template folder that you now want to install. The name of the folder does not matter, make sure it's a regular folder, no ZIP or RAR etc.\
 	Upload the folder into /styles/ that is located in the root folder of where you installed TrinityWeb on your web server.\
-	<h4>Step 3</h4>Log onto your Admin panel, go into Layouts->Template. Below 'Install a new template'. In the first input, enter the name of the folder that contains your\ template. In the next input, enter a name for the template so you can recognize it.\
-	<h4>Step 4</h4>Go back into the Admin panel, Layouts->Template. Now below 'Choose Template', choose the name of the template you should installed & click Save.\
-	<h4>Done!</h4>Your template should now be installed & active on your website. You can always disable it at any time, and enable it later on. <br/>\
+	<h4>步骤3</h4>Log onto your Admin panel, go into Layouts->Template. Below 'Install a new template'. In the first input, enter the name of the folder that contains your\ template. In the next input, enter a name for the template so you can recognize it.\
+	<h4>步骤4</h4>Go back into the Admin panel, Layouts->Template. Now below 'Choose Template', choose the name of the template you should installed & click Save.\
+	<h4>完成！</h4>Your template should now be installed & active on your website. You can always disable it at any time, and enable it later on. <br/>\
 	<i>For template developers:</i> After the template is installed, you no longer need to install it again. Just edit it on-the-fly if you wish.<br/>\
 	<input type='submit' value='Got it!' onclick='hideLoader()'>");
 }
@@ -146,7 +146,7 @@ function saveMenuLink(pos) {
 function deleteLink(id) {
 	
 	showLoader();
-	$("#loading").html("Are you sure you wish to delete this link?<br/><br/>\
+	$("#loading").html("您确定要删除此链接吗?<br/><br/>\
 	<input type='submit' value='Yes I do' onclick='deleteLinkNow( " + id + " )'> <input type='submit' value='No' onclick='hideLoader()'>");
 	
 }
@@ -169,7 +169,7 @@ function deleteLinkNow(id) {
 function addLink() {
 	
 	showLoader();
-	$("#loading").html("<h3>Add Link</h3>\
+	$("#loading").html("<h3>添加链接</h3>\
 	Title<br/><input type='text' id='addlink_title'><br/>\
 	Url<br/><input type='text' id='addlink_url'><br/>\
 	Shown When<br/><select id='addlink_shownWhen'>\
@@ -191,7 +191,7 @@ function addLinkNow() {
 	$.post("../aasp_includes/scripts/layout.php", { action: "addLink", title: title, url: url, shownWhen: shownWhen },
        function(data) {
 		   if(data==true) {
-			   window.location='?p=interface&s=menu'
+			   window.location='?p=interface&s=menu';
 		   } else {
 			    $("#loading").html(data);  
 		   }
@@ -199,12 +199,15 @@ function addLinkNow() {
 	
 }
 
-$("#menu_left ul li").not("#menu_head").click(function() {
-	if($(this).next().is(":hidden")) {
-			 $(this).next().slideDown("slow");
-		} else {
-          $(this).next().slideUp("slow");
-		}
+$(document).ready(function(){
+    $("#menu_left ul li").not("#menu_head").click(function() {
+	    if($(this).next().is(":hidden")) {
+		    	 $(this).next().slideDown("slow");
+		    } else {
+                $(this).next().slideUp("slow");
+		    }
+    });
+    
 });
 
 function savePage(filename) {

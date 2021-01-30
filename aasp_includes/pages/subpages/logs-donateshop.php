@@ -2,7 +2,7 @@
 $server = new server;
 $account = new account;
 ?> 
-<div class="box_right_title">Donation Shop logs</div>
+<div class="box_right_title">公益商店日志</div>
 <?php $result = mysql_query("SELECT * FROM shoplog WHERE shop='donate' ORDER BY id DESC LIMIT 10 "); 
 if(mysql_num_rows($result)==0) {
 	echo "Seems like the donation shop log was empty!";
@@ -11,7 +11,7 @@ if(mysql_num_rows($result)==0) {
  <input type='text' value='Search...' id="logs_search" onkeyup="searchLog('donate')"><hr/>
 <div id="logs_content">
 <table width="100%">
-        <tr><th>User</th><th>Character</th><th>Realm</th><th>Item</th><th>Date</th></tr>
+        <tr><th>用户</th><th>角色</th><th>服务器</th><th>物品</th><th>日期</th></tr>
         <?php while($row = mysql_fetch_assoc($result)) { ?>
 		<tr class="center">
             <td><?php echo $account->getAccName($row['account']); ?></td>

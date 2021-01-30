@@ -20,20 +20,20 @@ class shop {
 		$type = mysql_real_escape_string($type);
 		$subtype = mysql_real_escape_string($subtype);
 		
-		if($value=="Search for an item...") 
+		if($value=="搜索物品...") 
 			$value = "";
 		
 		$advanced = NULL;
 		
-		####Advanced Search
+		####高级搜索
 		if($GLOBALS[$shop.'Shop']['enableAdvancedSearch']==TRUE) 
 		{
-			if($quality!="--Quality--") 
+			if($quality!="--品质--") 
 				$advanced.=" AND quality='".$quality."'";
 			
-			if($type!="--Type--") {
+			if($type!="--类型--") {
 				if($type=="15-5" || $type=="15-5")  {
-					//Mount or pet
+					//坐骑或宠物
 					$type = explode('-',$type);
 					
 					$advanced.=" AND type='".$type[0]."' AND subtype='".$type[1]."'";
@@ -41,16 +41,16 @@ class shop {
 					$advanced.=" AND type='".$type."'";
 			} 
 			
-			if($faction!="--Faction--") 
+			if($faction!="--阵营--") 
 				$advanced.=" AND faction='".$faction."'";
 			
-			if($class!="--Class--") 
+			if($class!="--种族--") 
 				$advanced.=" AND class='".$class."'"; 
 			
-			if($ilevelfrom!="--Item level from--") 
+			if($ilevelfrom!="--物品等级--") 
 				$advanced.=" AND itemlevel>='".$ilevelfrom."'";
 			
-			if($ilevelto!="--Item level to--") 
+			if($ilevelto!="--物品等级--") 
 				$advanced.=" AND itemlevel<='".$ilevelto."'";
 
 			$count = mysql_query("SELECT COUNT(id) FROM shopitems WHERE name LIKE '%".$value."%' 
@@ -62,7 +62,7 @@ class shop {
 					$count = mysql_result($count,0);
 				
 			
-			if($results!="--Results--") 
+			if($results!="--结果--") 
 				$advanced.=" ORDER BY name ASC LIMIT ".$results;
 			 else 
 				$advanced.=" ORDER BY name ASC LIMIT 250";
@@ -71,15 +71,15 @@ class shop {
 		FROM shopitems WHERE name LIKE '%".$value."%' 
 		AND in_shop = '".mysql_real_escape_string($shop)."' ".$advanced);
 		
-		if($results!="--Results--") 
+		if($results!="--结果--") 
 			$limited = $results;
 		 else 
 			$limited = mysql_num_rows($result);
 		
-	    echo "<div class='shopBox'><b>".$count."</b> results found. (".$limited." displayed)</div>";
+	    echo "<div class='shopBox'><b>".$count."</b> 找到的结果。 (".$limited." displayed)</div>";
 		
 		if (mysql_num_rows($result)==0) 
-			echo '<b class="red_text">No results found!</b><br/>';
+			echo '<b class="red_text">没有找到结果!</b><br/>';
 		 else 
 		 {
 			while($row = mysql_fetch_assoc($result)) 
@@ -88,22 +88,22 @@ class shop {
 				
 				switch($row['quality']) {
 					default:
-					        $class="white";
+					        $class="白色";
 					break;
 					case(0):
-					        $class="gray";
+					        $class="灰色";
 					break;
 					case(2):
-					        $class="green";
+					        $class="绿色";
 					break;
 					case(3):
-					        $class="blue";
+					        $class="蓝色";
 					break;
 					case(4):
-					        $class="purple";
+					        $class="紫色";
 					break;
 					case(5):
-					        $class="orange";
+					        $class="橙色";
 					break;
 					
 					case(6):
@@ -118,12 +118,12 @@ class shop {
 				 $getIcon = mysql_query("SELECT icon FROM item_icons WHERE displayid='".$row['displayid']."'");
 				 if(mysql_num_rows($getIcon)==0) 
 				 {
-					 //No icon found. Probably cataclysm item. Get the icon from wowhead instead.
+					 //发现没有图标。也许灾难项目。从wowhead获取图标。
 					 $sxml = new SimpleXmlElement(file_get_contents('http://www.wowhead.com/item='.$entry.'&xml'));
 					  
 					  $icon = strtolower(mysql_real_escape_string($sxml->item->icon));
-					  //Now that we have it loaded. Add it into database for future use.
-					  //Note that WoWHead XML is extremely slow. This is the main reason why we're adding it into the db.
+					  //现在我们已经加载了它。将其添加到数据库中供以后使用。
+					  //注意，WoWHead XML非常慢。这就是我们将其添加到数据库中的主要原因。
 					  mysql_query("INSERT INTO item_icons VALUES('".$row['displayid']."','".$icon."')");
 				 }
 				 else 
@@ -149,7 +149,7 @@ class shop {
 </div>
 <div class="price">
 <div style="display:none;" id="status-<?php echo $entry; ?>" class="green_text">
-						   The item was added to your cart
+						   物品已添加到您的购物车
 						   </div>
 <span class="coin-gold"></span>
 
@@ -159,7 +159,7 @@ class shop {
 								   if ($shop=="donate") 
 								   	   echo $GLOBALS['donation']['coins_name'];
 								   else 
-									   echo 'Vote Points';   
+									   echo '投票积分';   
 								   ?></div>
 
 </div>
@@ -181,7 +181,7 @@ class shop {
 		FROM shopitems WHERE in_shop = '".$shop."'");
 		
 		if(mysql_num_rows($result)==0)
-			echo 'No items was found in the shop.';
+			echo '在商城中找不到任何物品。';
 		else
 		{
 			while($row = mysql_fetch_assoc($result))
@@ -190,12 +190,12 @@ class shop {
 				$getIcon = mysql_query("SELECT icon FROM item_icons WHERE displayid='".$row['displayid']."'");
 				 if(mysql_num_rows($getIcon)==0) 
 				 {
-					 //No icon found. Probably cataclysm item. Get the icon from wowhead instead.
+					 //发现没有图标。也许灾难项目。从wowhead获取图标。
 					 $sxml = new SimpleXmlElement(file_get_contents('http://www.wowhead.com/item='.$entry.'&xml'));
 					  
 					  $icon = strtolower(mysql_real_escape_string($sxml->item->icon));
-					  //Now that we have it loaded. Add it into database for future use.
-					  //Note that WoWHead XML is extremely slow. This is the main reason why we're adding it into the db.
+					  //现在我们已经加载了它。将其添加到数据库中供以后使用。
+					  //注意，WoWHead XML非常慢。这就是我们将其添加到数据库中的主要原因。
 					  mysql_query("INSERT INTO item_icons VALUES('".$row['displayid']."','".$icon."')");
 				 }
 				 else 
@@ -220,11 +220,11 @@ class shop {
                                <?php echo $row['name']; ?></a></td>
                                <td align="right" width="350">
                                <?php if($row['faction']==2) {
-                                 echo "<span class='blue_text'>Alliance only </span>";  
+                                 echo "<span class='blue_text'>仅联盟</span>";  
                                  if($row['class']!="-1")
                                  echo "<br/>";
                                } elseif($row['faction']==1) {
-                                 echo "<span class='red_text'>Horde only </span>"; 
+                                 echo "<span class='red_text'>仅部落</span>"; 
                                  if($row['class']!="-1")
                                  echo "<br/>";
                                }
@@ -238,9 +238,9 @@ class shop {
                              ?>
                              <font size="-2">
                              ( <a 
-                             onclick="editShopItem('<?php echo $entry; ?>','<?php echo $shop; ?>','<?php echo $row['price']; ?>')">Edit</a> | 
+                             onclick="editShopItem('<?php echo $entry; ?>','<?php echo $shop; ?>','<?php echo $row['price']; ?>')">编辑</a> | 
                              <a
-                             onclick="removeShopItem('<?php echo $entry; ?>','<?php echo $shop; ?>')">Remove</a> )
+                             onclick="removeShopItem('<?php echo $entry; ?>','<?php echo $shop; ?>')">移除</a> )
                              </font>
                              &nbsp; &nbsp; &nbsp; &nbsp;   
                              <?php
@@ -251,11 +251,11 @@ class shop {
                                <?php if ($shop=="donate") {
                                  echo $GLOBALS['donation']['coins_name'];
                                } else {
-                                echo 'Vote Points';   
+                                echo '投票积分';   
                                }?></font>
                          
                        <div style="display:none;" id="status-<?php echo $entry; ?>" class="green_text">
-                       The item was added to your cart
+                       物品已添加到您的购物车
                        </div></td>
                                <td><input type="button" value="Add to cart" 
                                onclick="addCartItem(<?php echo $entry; ?>,'<?php echo $shop; ?>Cart',
@@ -285,34 +285,34 @@ class shop {
 		switch((int)$classID) {
 
 			case(1):
-			 return "<span class='warrior_color'>Warrior only</span> <br/>";
+			 return "<span class='warrior_color'>战士</span> <br/>";
 			break;
 			case(2):
-			 return "<span class='paladin_color'>Paladin only</span> <br/>";
+			 return "<span class='paladin_color'>圣骑士</span> <br/>";
 			break;
 			case(4):
-			 return "<span class='hunter_color'>Hunter only</span> <br/>";
+			 return "<span class='hunter_color'>猎人</span> <br/>";
 			break;
 			case(8):
-			 return "<span class='rogue_color'>Rogue only</span> <br/>";
+			 return "<span class='rogue_color'>盗贼</span> <br/>";
 			break;
 			case(16):
-			 return "<span class='priest_color'>Priest only</span> <br/>";
+			 return "<span class='priest_color'>牧师</span> <br/>";
 			break;
 			case(32):
-			 return "<span class='dk_color'>Death Knight only</span> <br/>";
+			 return "<span class='dk_color'>死亡骑士</span> <br/>";
 			break;
 			case(64):
-			 return "<span class='shaman_color'>Shaman only</span> <br/>";
+			 return "<span class='shaman_color'>萨满</span> <br/>";
 			break;
 			case(128):
-			 return "<span class='mage_color'>Mage only</span> <br/>";
+			 return "<span class='mage_color'>法师</span> <br/>";
 			break;
 			case(256):
-			 return "<span class='warlock_color'>Warlock only</span> <br/>";
+			 return "<span class='warlock_color'>术士</span> <br/>";
 			break;
 			case(1024):
-			 return "<span class='druid_color'>Druid only</span> <br/>";
+			 return "<span class='druid_color'>德鲁伊</span> <br/>";
 			break;
 		}
 		

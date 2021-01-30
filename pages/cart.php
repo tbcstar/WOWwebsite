@@ -8,19 +8,19 @@
 <div class="column">
 <div class="head-content">
 <div class="breadcrumbs">
-<a href="/main/main">
-Control Panel </a>
+<a href="?p=ucp">
+控制面板 </a>
 <span class="ico-raquo"></span>
-<a href="https://cp.elysium-project.org/shop">
-Shop </a>
+<a href="?p=shop">
+商城 </a>
 <span class="ico-raquo"></span>
 <div>
-Purchase items </div>
+购买物品 </div>
 </div>
 <div class="realm_picker">
 <div class="">
-Actual realm: </div>
-<a href="https://elysium-project.org/main/realm">
+所在服务器: </div>
+<a href="game.tbcstar.com">
 Nighthaven </a>
 </div>
 </div>
@@ -69,12 +69,12 @@ span.attention, span.notice, span.alert, span.download, span.approved, span.medi
 	</style>
 {alert}
 <?php
-echo '<span class="currency">Vote Points: '.account::loadVP($_SESSION['cw_user']).'<br/>
+echo '<span class="currency">投票积分： '.account::loadVP($_SESSION['cw_user']).'<br/>
 '.$GLOBALS['donation']['coins_name'].': '.account::loadDP($_SESSION['cw_user']).'
 </span>';
 
 if(isset($_GET['return']) && $_GET['return']=="true")
-	echo "<span class='accept'>The item(s) was sent to the selected character!</span>";
+	echo "<span class='accept'>物品已发送到选定的角色!</span>";
 elseif(isset($_GET['return']) && $_GET['return']!="true")
 	echo "<span class='alert'>".$_GET['return']."</span>";
 
@@ -89,7 +89,7 @@ if(isset($_SESSION['donateCart']) && !empty($_SESSION['donateCart']))
 {
 	$counter = 1;
 	
-	echo '<h3>Donation Shop</h3>';
+	echo '<h3>公益商城</h3>';
 	
 	$sql = "SELECT * FROM shopitems WHERE entry IN(";
 	foreach($_SESSION['donateCart'] as $entry => $value) {
@@ -110,7 +110,7 @@ if(isset($_SESSION['donateCart']) && !empty($_SESSION['donateCart']))
       $query = mysql_query($sql);
 ?>
 <table width="100%" >
-<tr id="cartHead"><th>Name</th><th>Quantity</th><th>Price</th><th>Actions</th></tr>
+<tr id="cartHead"><th>名称</th><th>数量</th><th>价格</th><th>结算</th></tr>
 <?php
 while($row = mysql_fetch_array($query)) 
 {
@@ -119,12 +119,12 @@ while($row = mysql_fetch_array($query))
         <input type="text" value="<?php echo $_SESSION['donateCart'][$row['entry']]['quantity']; ?>" style="width: 30px;"
         onFocus="$(this).next('.quantitySave').fadeIn()" id="donateCartQuantity-<?php echo $row['entry']; ?>" />
         <div class="quantitySave" style="display:none;">
-        <a href="#" onclick="saveItemQuantityInCart('donateCart',<?php echo $row['entry']; ?>)">Save</a>
+        <a href="#" onclick="saveItemQuantityInCart('donateCart',<?php echo $row['entry']; ?>)">保存</a>
         </div>
         </td>
         <td><?php echo $_SESSION['donateCart'][$row['entry']]['quantity'] * $row['price']; ?> 
 		<?php echo $GLOBALS['donation']['coins_name']; ?></td>
-        <td><a href="#" onclick="removeItemFromCart('donateCart',<?php echo $row['entry']; ?>)">Remove</a></td>
+        <td><a href="#" onclick="removeItemFromCart('donateCart',<?php echo $row['entry']; ?>)">移除</a></td>
     </tr>
     <?php
 	$totalDP = $totalDP + ( $_SESSION['donateCart'][$row['entry']]['quantity'] * $row['price'] );
@@ -137,7 +137,7 @@ if(isset($_SESSION['voteCart']) && !empty($_SESSION['voteCart']))
 {
 	$counter = 1;
 
-	 echo '<br><br>';
+	 echo '<br>投票商店<br>';
 	$sql = "SELECT * FROM shopitems WHERE entry IN(";
 	foreach($_SESSION['voteCart'] as $entry => $value) {
 		if($_SESSION['voteCart'][$entry]['quantity']!=0) {
@@ -156,7 +156,7 @@ if(isset($_SESSION['voteCart']) && !empty($_SESSION['voteCart']))
 $query = mysql_query($sql);
 ?>
 <table width="100%" >
-<tr id="cartHead"><th>Name</th><th>Quantity</th><th>Price</th><th>Actions</th></tr>
+<tr id="cartHead"><th>名称</th><th>数量</th><th>价格</th><th>结算</th></tr>
 <?php
 while($row = mysql_fetch_array($query)) {
 	?><tr align="center">
@@ -164,11 +164,11 @@ while($row = mysql_fetch_array($query)) {
         <input type="text" value="<?php echo $_SESSION['voteCart'][$row['entry']]['quantity']; ?>" style="width: 30px;"
         onFocus="$(this).next('.quantitySave').fadeIn()" id="voteCartQuantity-<?php echo $row['entry']; ?>" />
         <div class="quantitySave" style="display:none;">
-        <a href="#" onclick="saveItemQuantityInCart('voteCart',<?php echo $row['entry']; ?>)">Save</a>
+        <a href="#" onclick="saveItemQuantityInCart('voteCart',<?php echo $row['entry']; ?>)">保存</a>
         </div>
         </td>
-        <td><?php echo $_SESSION['voteCart'][$row['entry']]['quantity'] * $row['price']; ?> Vote Points</td>
-        <td><a href="#" onclick="removeItemFromCart('voteCart',<?php echo $row['entry']; ?>)">Remove</a></td>
+        <td><?php echo $_SESSION['voteCart'][$row['entry']]['quantity'] * $row['price']; ?> 投票积分</td>
+        <td><a href="#" onclick="removeItemFromCart('voteCart',<?php echo $row['entry']; ?>)">移除</a></td>
     </tr>
     <?php
 	$totalVP = $totalVP + ( $_SESSION['voteCart'][$row['entry']]['quantity'] * $row['price'] );
@@ -178,7 +178,7 @@ while($row = mysql_fetch_array($query)) {
 <?php
 }
 ?>
-<br/>Total cost: <?php echo $totalVP; ?> Vote Points, <?php echo $totalDP.' '.$GLOBALS['donation']['coins_name']; ?>
+<br/>合计：<?php echo $totalVP; ?> 投票积分，<?php echo $totalDP.' '.$GLOBALS['donation']['coins_name']; ?>
 <hr/>
 <?php
 if(isset($_SESSION['donateCart']) && !empty($_SESSION['donateCart']) || isset($_SESSION['voteCart']) 
@@ -202,7 +202,7 @@ if(isset($_SESSION['donateCart']) && !empty($_SESSION['donateCart']) || isset($_
 }
 
 if($counter==0)
-	echo "<span class='attention'>Your cart is empty!</span>";
+	echo "<span class='attention'>您的购物车是空的</span>";
 
 ?>
 <span class="image"></span>

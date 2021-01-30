@@ -6,12 +6,12 @@
 		$page->outputSubPage();
 	} else {
 		?>
-        <div class='box_right_title'>Hey! You shouldn't be here!</div>
+        <div class='box_right_title'>嘿!你不应该在这里!</div>
         
-		<pre>The script might have redirected you wrong. Or... did you try to HACK!? Anyways, good luck.</pre>
+		<pre>脚本可能对您进行了错误的重定向。还是……你是黑客!?无论如何,祝你好运。</pre>
         
-        <a href="?p=tools&s=tickets" class="content_hider">Tickets</a>
-		<a href="?p=tools&s=accountaccess" class="content_hider">Account Access</a>
+        <a href="?p=tools&s=tickets" class="content_hider">工单</a>
+		<a href="?p=tools&s=accountaccess" class="content_hider">账户访问</a>
 		<?php
 	 }
 ?>

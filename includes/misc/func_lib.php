@@ -1,13 +1,13 @@
 <?php
 function exit_page() 
 {
-	die("<h1>Server offline</h1>
-		Currently the server is under maintenance please wait.
+	die("<h1>服务器离线</h1>
+		目前服务器正在维护中，请稍候。
 		<br/>
 		<br/>
 		<br/>
 		<br/>
-		<i>Power by Nefelin-WoW Project</i>");
+		<i>TBCstar时光回溯 项目组</i>");
 }
 
 function RandomString() 
@@ -25,18 +25,18 @@ function RandomString()
 function convTime($time)
 {
 	if($time<60) 
-			$string = 'Seconds';
+			$string = '秒';
 		elseif ($time > 60) 
 		{
 		    $time = $time / 60;
-			$string = 'Minutes'; 
+			$string = '分钟'; 
 		if ($time > 60) 
 		{									 
-			$string = 'Hours';
+			$string = '小时';
 			$time = $time / 60;
 	    if ($time > 24) 
 		{
-			$string = 'Days';
+			$string = '天';
 			$time = $time / 24;
 		}
 		}

@@ -13,8 +13,8 @@ function postNews() {
 }
 function deleteNews(id) {
 	showLoader();
-	$("#loading").html("Are you sure you wish to delete this news post?<br/>\
-	<input type='submit' value='Yes I do' onclick='deleteNewsNow(" + id + ")'><input type='submit' value='No' onclick='hideLoader()'>");
+	$("#loading").html("您确定要删除此新闻贴子吗?<br/>\
+	<input type='submit' value='Yes' onclick='deleteNewsNow(" + id + ")'><input type='submit' value='No' onclick='hideLoader()'>");
 }
 
 function deleteNewsNow(id) {

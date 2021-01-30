@@ -38,7 +38,7 @@ function editAccA(id,rank,realm)
 	<input type='text' value='"+rank+"' id='editAccARank'><br/>\
 	Realm ID<br/>\
 	<input type='text' value='"+realm+"' id='editAccARealm'><br/>\
-	<input type='submit' value='Save' onclick='editAccANow("+id+")'>");
+	<input type='submit' value='保存' onclick='editAccANow("+id+")'>");
 	
 	showLoader();
 }
@@ -58,8 +58,8 @@ function editAccANow(id)
 
 function removeAccA(id) 
 {
-	$("#loading").html("Are you sure you wish to remove this account's GM access? <br/>\
-	<input type='submit' value='Yes I do' onclick='removeAccANow(" + id + ")'> <input type='submit' value='No' onclick='hideLoader()'>");
+	$("#loading").html("您确定要删除此帐户的GM权限吗? <br/>\
+	<input type='submit' value='Yes' onclick='removeAccANow(" + id + ")'> <input type='submit' value='No' onclick='hideLoader()'>");
 	
 	showLoader();
 }
@@ -102,8 +102,8 @@ function addAccANow()
 
 function editChar(guid,rid)
 {
-	$("#loading").html("Are you sure you wish to save this character? <br/>\
-	<input type='submit' value='Yes I do' onclick='editCharNow("+ guid + "," + rid + ")'> <input type='submit' value='No' onclick='hideLoader()'>");
+	$("#loading").html("您确定要保存此角色吗？ <br/>\
+	<input type='submit' value='Yes' onclick='editCharNow("+ guid + "," + rid + ")'> <input type='submit' value='No' onclick='hideLoader()'>");
 	
 	showLoader();
 }

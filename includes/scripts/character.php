@@ -33,18 +33,18 @@ if ($_POST['action']=='getLocations')
 	$alliance = array(1,3,4,7,11);
 	if (in_array($row['race'],$alliance)) 
 	{
-		//Alliance
+		//联盟
 		$locations_name = array( 1  => "Stormwind" , 2 => "Ironforge", 3 => "Darnassus", 4 => "The Exodar", 5 => "Dalaran", 6 => "Shattrath");
         $locations_image = array("Stormwind" => "spell_arcane_teleportstormwind", "Ironforge" => "spell_arcane_teleportironforge", "Darnassus"  => "spell_arcane_teleportdarnassus", 
 		"The Exodar" => "spell_arcane_teleportexodar","Dalaran" => "spell_arcane_teleportdalaran", "Shattrath" => "spell_arcane_teleportshattrath");
 	} else {
-		//Horde
+		//部落
 		$locations_name = array( 1  => "Orgrimmar" , 2 => "Undercity", 3 => "Thunder Bluff", 4 => "Silvermoon", 5 => "Dalaran", 6 => "Shattrath");
         $locations_image = array("Orgrimmar" => "spell_arcane_teleportorgrimmar", "Undercity" => "spell_arcane_teleportundercity", 
 		"Thunder Bluff"  => "spell_arcane_teleportthunderbluff", "Silvermoon" => "spell_arcane_teleportsilvermoon", "Dalaran" => "spell_arcane_teleportdalaran", 
 		"Shattrath" => "spell_arcane_teleportshattrath");
 	}
-	echo '<h3>Choose Location</h3>';
+	echo '<h3>选择位置</h3>';
 	foreach ($locations_name as $v) 
 	{
 	 ?>
@@ -70,14 +70,14 @@ if ($_POST['action']=='teleport')
 	$result = mysql_query("SELECT race,account,level,online FROM characters WHERE guid='".$character."'");
     
 	if (mysql_num_rows($result) == 0)
-		die("<span class='alert'>The character does not exist on that account!</span>");
+		die("<span class='alert'>该帐户中不存在该角色！</span>");
 		
 	else 
 	{
 	$row = mysql_fetch_assoc($result);
 	
 	if($row['online']==1)
-		die("Please log out before teleporting.");
+		die("请先退出游戏，然后再继续。");
 	
 	$acct = $row['account'];
 	$race = $row['race'];
@@ -98,70 +98,70 @@ if ($_POST['action']=='teleport')
 	
 	switch($location)
 	{
-		//stormwind
+		//暴风城
 		case "Stormwind":
 			$map = "0";
 			$x = "-8913.23";
 			$y = "554.633";
 			$z = "93.7944";
 			break;
-		//ironforge
+		//铁炉堡
 		case "Ironforge":
 			$map = "0";
 			$x = "-4981.25";
 			$y = "-881.542";
 			$z = "501.66";
 			break;
-		//darnassus
+		//达纳苏斯
 		case "Darnassus":
 			$map = "1";
 			$x = "9951.52";
 			$y = "2280.32";
 			$z = "1341.39";
 			break;
-		//exodar
+		//埃索达
 		case "The Exodar":
 			$map = "530";
 			$x = "-3987.29";
 			$y = "-11846.6";
 			$z = "-2.01903";
 			break;
-		//orgrimmar
+		//奥格瑞玛
 		case "Orgrimmar":
 			$map = "1";
 			$x = "1676.21";
 			$y = "-4315.29";
 			$z = "61.5293";
 			break;
-		//thunderbluff
+		//雷霆崖
 		case "Thunder Bluff":
 			$map = "1";
 			$x = "-1196.22";
 			$y = "29.0941";
 			$z = "176.949";
 			break;
-		//undercity
+		//幽暗城
 		case "Undercity":
 			$map = "0";
 			$x = "1586.48";
 			$y = "239.562";
 			$z = "-52.149";
 			break;
-		//silvermoon
+		//银月城
 		case "Silvermoon":
 			$map = "530";
 			$x = "9473.03";
 			$y = "-7279.67";
 			$z = "14.2285";
 			break;
-		//shattrath
+		//沙塔斯
 		case "Shattrath":
 			$map = "530";
 			$x = "-1863.03";
 			$y = "4998.05";
 			$z = "-21.1847";
 			break;
-		//dalaran
+		//达拉然
 		case "Dalaran":
 			$map = "571";
 			$x = "5812.79";
@@ -173,31 +173,31 @@ if ($_POST['action']=='teleport')
 	//disallows factions to use enemy portals
 	switch($race)
 	{
-		//alliance
+		//联盟
 		case 1:
 		case 3:
 		case 4:
 		case 7:
 		case 11:
 			if((($location >=5) && ($location <=8)) && ($location != 9))
-				die("<span class='alert'>Alliance players can <b>NOT</b> Teleport to Horde areas!</span>");	
+				die("<span class='alert'>联盟玩家<b>无法</b>传送到部落地区!</span>");	
 			break;
-		//horde
+		//部落
 		case 2:
 		case 5:
 		case 6:
 		case 8:
 		case 10:
 			if ((($location >=1) && ($location <=4)) && ($location != 9))
-				die("<span class='alert'>Horde Players can <b>NOT</b> Teleport to Alliance areas!</span>");
+				die("<span class='alert'>部落玩家<b>无法</b>传送到联盟地区！</span>");
 			break;
 		default:
-			die("<span class='alert'>That is not a valid Race!</span>");
+			die("<span class='alert'>这不是有效的种族！</span>");
 			break;
 	}
 	
 	if ($location == "Dalaran" && $level < 68)
-		die("Aborting...<br/><span class='alert'>Your character must be level 68 or higher to teleport to Northrend!</span>");
+		die("正在中止...<br/><span class='alert'>你的角色必须达到68级或更高才能传送到诺森德!</span>");
 
 	if($GLOBALS['service']['teleport']['currency']=="vp")
 		 account::deductVP(account::getAccountID($_SESSION['cw_user']),$GLOBALS['service']['teleport']['price']);
@@ -220,9 +220,9 @@ if ($_POST['action']=='teleport')
 			     AND guid = '".$character."'");
      
 	 if($GLOBALS['service']['teleport']['currency']=="vp")
-		 echo $GLOBALS['service']['teleport']['price']." Vote Points was taken from your account.";
+		 echo $GLOBALS['service']['teleport']['price']."投票积分已从您的帐户中扣除。";
 	 elseif($GLOBALS['service']['teleport']['currency']=="dp")
-		echo $GLOBALS['service']['teleport']['price']." ".$GLOBALS['donation']['coins_name']." was taken from your account.";
+		echo $GLOBALS['service']['teleport']['price']." ".$GLOBALS['donation']['coins_name']."已从您的账户中扣除。";
 		
 		account::logThis("Teleported ".character::getCharName($character,$realm_id)." to ".$location,'Teleport',$realm_id);
 	
@@ -239,44 +239,44 @@ if($_POST['action']=='service')
 	
 	
 	if(character::isOnline($guid)==TRUE) 
-			die('<b class="red_text">Please log out your character before proceeding.');
+			die('<b class="red_text">请先退回到登录界面，然后再继续。');
 	
 	if($GLOBALS['service'][$serviceX]['currency']=='vp')
 	{
 		if(account::hasVP($_SESSION['cw_user'],$GLOBALS['service'][$serviceX]['price'])==FALSE)
-			die('<b class="red_text">Not enough Vote Points!</b>');
+			die('<b class="red_text">投票积分不足！</b>');
 	}
 	
 	if($GLOBALS['service'][$serviceX]['currency']=='dp')
 	{
 		if(account::hasDP($_SESSION['cw_user'],$GLOBALS['service'][$serviceX]['price'])==FALSE)
-			die('<b class="red_text">Not enough '.$GLOBALS['donation']['coins_name'].'</b>');
+			die('<b class="red_text">捐赠积分不足！'.$GLOBALS['donation']['coins_name'].'</b>');
 	}
 	
 	switch($serviceX)
 	{
 		default:
-			die("Unknown Error");
+			die("未知错误");
 		break;
 		
 		case('appearance'):
 			$command = "customize";
-			$info = "Character customization";
+			$info = "定制角色";
 		break;
 		
 		case('name'):
 			$command = "rename";
-			$info = "Character rename";
+			$info = "角色重命名";
 		break;
 		
 		case('faction'):
 			$command = "changefaction";
-			$info = "Faction change";
+			$info = "改变阵营";
 		break;
 		
 		case('race'):
 		 	$command = "changerace";
-			$info = "Race change";
+			$info = "改变种族";
 		break;
 		
 	}

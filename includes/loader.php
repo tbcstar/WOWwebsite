@@ -1,7 +1,7 @@
 <?php
 /**********************
-CraftedWeb Generation 1
-Main loader file
+CraftedWeb第一代
+主要加载程序文件
 *********************/
 
 require('includes/misc/headers.php'); //Load sessions, erorr reporting & ob.
@@ -11,20 +11,20 @@ if(file_exists('install/index.php'))
 
 define('INIT_SITE', TRUE);
 
-require('includes/configuration.php'); //Load configuration file
+require('includes/configuration.php'); //加载配置文件
 
 if(isset($GLOBALS['not_installed']) && $GLOBALS['not_installed']==true)
 {
 	if(file_exists('install/index.php'))
 		header("Location: install/index.php");
 	else
-		exit('<b>Error</b>. It seems like your website is not yet installed, but no installer could be found!');	
+		exit('<b>错误</b>。看起来你的网站还没有安装，但是找不到安装程序!');	
 }
 
 if($GLOBALS['maintainance']==TRUE && !in_array($_SERVER['REMOTE_ADDR'],$GLOBALS['maintainance_allowIPs']))
 { 
-  die("<center><h3>Website Maintainance</h3>
-      ".$GLOBALS['website_title']." is currently undergoing some major maintainance and will be available as soon as possible.
+  die("<center><h3>网站维护</h3>
+      ".$GLOBALS['website_title']." 目前正在进行一些主要的维护，并将尽快提供。
       <br/><br/>Sincerely
   </center>");
 }
@@ -47,7 +47,7 @@ require('includes/classes/character.php');
 require('includes/classes/cache.php'); 
 require('includes/classes/plugins.php'); 
 
-/******* LOAD PLUGINS ***********/
+/******* 加载插件 ***********/
 plugins::globalInit();
 
 plugins::init('classes');
@@ -56,7 +56,7 @@ plugins::init('modules');
 plugins::init('styles');
 plugins::init('pages');
 
-//Load configs.
+//加载配置。
 if($GLOBALS['enablePlugins']==true)
 {
 	if($_SESSION['loaded_plugins']!=NULL)
@@ -72,11 +72,11 @@ if($GLOBALS['enablePlugins']==true)
 $account = new account;
 $account->getRemember(); //Remember thingy.
 
-//This is to prevent the error "Undefined index: p"
+//这是为了防止错误 "Undefined index: p"
 if (!isset($_GET['p'])) 
 	$_GET['p'] = 'login';
 	
-###VOTING SYSTEM####
+###投票系统####
 if(isset($_SESSION['votingUrlID']) && $_SESSION['votingUrlID']!=0 && $GLOBALS['vote']['type']=='confirm')
 {
     if(website::checkIfVoted((int)$_SESSION['votingUrlID'],$GLOBALS['connection']['webdb'])==TRUE) 
@@ -109,7 +109,7 @@ if(isset($_SESSION['votingUrlID']) && $_SESSION['votingUrlID']!=0 && $GLOBALS['v
 	header("Location: ?p=vote");
 }
 
-###SESSION SECURITY###
+###会话安全###
 if(!isset($_SESSION['last_ip']) && isset($_SESSION['cw_user'])) 
 	$_SESSION['last_ip'] = $_SERVER['REMOTE_ADDR'];
 	

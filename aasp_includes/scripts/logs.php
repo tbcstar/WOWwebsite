@@ -13,14 +13,14 @@ if($_POST['action']=="payments")
 {
 		$result = mysql_query("SELECT paymentstatus,mc_gross,datecreation FROM payments_log WHERE userid='".(int)$_POST['id']."'");
 		if(mysql_num_rows($result)==0)
-			echo "<b color='red'>No payments was found for this account.</b>";
+			echo "<b color='red'>找不到此帐户的付款。</b>";
 		else 
 		{
 		?> <table width="100%">
                <tr>
-                   <th>Amount</th>
-                   <th>Payment Status</th>
-                   <th>Date</th>
+                   <th>金额</th>
+                   <th>付款状态</th>
+                   <th>日期</th>
                </tr>
            <?php
 		while($row = mysql_fetch_assoc($result)) 
@@ -39,15 +39,15 @@ elseif($_POST['action']=='dshop')
 {
 		$result = mysql_query("SELECT entry,char_id,date,amount,realm_id FROM shoplog WHERE account='".(int)$_POST['id']."' AND shop='donate'");
 		if(mysql_num_rows($result)==0)
-			echo "<b color='red'>No logs was found for this account.</b>";
+			echo "<b color='red'>找不到该帐户的记录。</b>";
 		else 
 		{
 		?> <table width="100%">
                <tr>
-                   <th>Item</th>
-                   <th>Character</th>
-                   <th>Date</th>
-                   <th>Amount</th>
+                   <th>物品</th>
+                   <th>角色</th>
+                   <th>日期</th>
+                   <th>金额</th>
                </tr>
            <?php
 		while($row = mysql_fetch_assoc($result)) { ?>
@@ -67,15 +67,15 @@ elseif($_POST['action']=='vshop')
 {
 		$result = mysql_query("SELECT entry,char_id,realm_id,date,amount FROM shoplog WHERE account='".(int)$_POST['id']."' AND shop='vote'");
 		if(mysql_num_rows($result)==0)
-			echo "<b color='red'>No logs was found for this account.</b>";
+			echo "<b color='red'>找不到该帐户的记录。</b>";
 		else 
 		{
 		?> <table width="100%">
                <tr>
-              	 <th>Item</th>
-                 <th>Character</th>
-                 <th>Date</th>
-                 <th>Amount</th>
+              	 <th>物品</th>
+                 <th>角色</th>
+                 <th>日期</th>
+                 <th>金额</th>
                </tr>
            <?php
 		while($row = mysql_fetch_assoc($result)) { ?>
@@ -98,12 +98,12 @@ elseif($_POST['action']=="search")
 	?>
     <table width="100%">
     <tr>
-        <th>User</th>
-        <th>Character</th>
-        <th>Realm</th>
-        <th>Item</th>
-        <th>Date</th>
-        <th>Amount</th>
+        <th>账户</th>
+        <th>角色</th>
+        <th>服务器</th>
+        <th>物品</th>
+        <th>日期</th>
+        <th>金额</th>
     </tr>
 	
 	<?php 

@@ -6,27 +6,27 @@
 <div class="user-panel logged">
 <div class="cp-item wow shake">
 <span class="cp-icon ico-acc"></span>
-<p>Welcome back</p>
+<p>欢迎回来</p>
 <p><span><?php echo ucfirst(strtolower($_SESSION['cw_user']));?></span></p>
 <?php 
 			if (isset($_SESSION['cw_gmlevel']) && $_SESSION['cw_gmlevel']>=$GLOBALS['adminPanel_minlvl'] && $GLOBALS['adminPanel_enable']==true) 
-				echo ' <a href="admin/">(Admin Panel)</a>';
+				echo ' <a href="admin/">(管理面板)</a>';
 				
 			if (isset($_SESSION['cw_gmlevel']) && $_SESSION['cw_gmlevel']>=$GLOBALS['staffPanel_minlvl'] && $GLOBALS['staffPanel_enable']==true) 
-				echo ' <a href="staff/">(Staff Panel)</a>';
+				echo ' <a href="staff/">(员工面板)</a>';
 			?>
 </div>
 <div class="cp-item wow shake">
 <span class="cp-icon ico-coins"></span>
-<p>Account balance</p>
+<p>帐户余额</p>
 <p>
 <span class="coin-gold"></span> <span class="count-gold"><?php echo account::loadVP($_SESSION['cw_user']); ?></span>
 </p>
 </div>
 <div class="cp-item wow shake">
 <span class="cp-icon ico-cp"></span>
-<p>Enter to</p>
-<p><a href="?p=ucp"><span>Control Panel</span></a></p>
+<p>进入</p>
+<p><a href="?p=ucp"><span>控制面板</span></a></p>
 </div>
 <div class="cp-item wow shake last">
 <?php if(isset($_SESSION['cw_user'])) { ?>
@@ -42,7 +42,7 @@
 <aside class="sidebar pull-right wow bounceInRight">
 
 <div class="twitter-widget-holder js-pretty-scroll-light">
-test
+测试
 </div>
 
 
@@ -50,7 +50,7 @@ test
 <div class="fb-container">
 <div class="fb-page" data-href="" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false" data-height="3000" data-width="350">
 <blockquote cite="" class="fb-xfbml-parse-ignore">
-<a href="">Nefelin-WoW Project</a>
+<a href="">TBCstar 时光回溯</a>
 </blockquote>
 </div>
 </div>
@@ -61,23 +61,24 @@ test
 <div class="newsbox clearfix">
 <article class="howtoplay">
 <section id="welcome">
-<h2>Welcome to Elysium!</h2>
-<p>We are a vanilla World of Warcraft project, striving to be as Blizzlike as possible. This means that your
-game play experience should be as close to 2004-2006 as we can possibly make it. As such, all of our rates
-are 1x and quests, spells and instances work the way they did back in the day. Please read this thread if
-you are a new player (or an old returning one wanting a refresher) before posting questions or issues.
+<h2>欢迎来到TBCstar时光回溯</h2>
+<p>我们是一个TBC狂热爱好者团队，努力做到像暴雪一样。
+这意味着你的游戏体验应该尽可能接近2006-2008年
+因此，我们所有的速度都是1倍，任务、法术和副本的工作方式和以前一样。
+在发布问题或问题之前，请阅读这个帖子，如果你是一个新玩家(或一个老返回一个需要复习)。
 </p>
-<p>The aim of this thread is to cover how to get your client up & running, how to register an account for
-yourself, and how to handle some common issues.
- Later in the thread, some basic in-game advice will be given as well as directions to more information.
+<p>这个线程的目的是告诉你如何下载和更新客户端并进入游戏
+如何为自己注册一个帐户，以及如何处理一些常见的问题。
+稍后，我们将提供一些基本的游戏建议以及获取更多信息的指导。
 </p>
-<p>Quick Links:</p>
+<p>快速链接：</p>
 <ul>
-<li><a href="#install">Installing WoW 1.12.1</a></li>
-<li><a href="#register">Registering an account</a></li>
-<li><a href="#troubleshooting">Troubleshooting</a></li>
-<li><a href="#character-creation">Character creation</a></li>
-<li><a href="#getting-started">Getting started</a></li>
+<li><a href="#install">客户端下载</a></li>
+<li><a href="#install">登录器下载</a></li>
+<li><a href="#register">注册账户</a></li>
+<li><a href="#troubleshooting">故障排除</a></li>
+<li><a href="#character-creation">角色创建</a></li>
+<li><a href="#getting-started">入门指南</a></li>
 </ul>
 </section>
 <section id="install">
@@ -87,7 +88,7 @@ Where you got it from doesn't really matter.
 You can Google around for one, but we also provide some handy links for you to download it from:
 </p>
 <ul>
-<li><a href="https://drive.google.com/file/d/1TDoNNUXCtsgIUhLw96biPCqjv3AcLYkg/view">Google drive</a></li>
+<li><a href="https://drive.google.com/file/d/1TDoNNUXCtsgIUhLw96biPCqjv3AcLYkg/view">谷歌网盘</a></li>
 <li><a href="https://mega.nz/#!uYxBWAYb!4bV1pqFl2-zXRS7063GqzAnt53oe5jTcmlVce9CtKPc">Mega</a></li>
 <li><a href="https://rutracker.org/forum/viewtopic.php?t=1267317">rutracker.org</a></li>
 <li><a href="http://forum.nostalrius.org/viewtopic.php?f=32&t=2803">Nostalrius client</a></li>
@@ -219,10 +220,10 @@ Just run back to your corpse, resurrect yourself and get back to questing.
 <div class="row clearfix">
 <div class="column">
 <div id="footer-copy" class="wow fadeInUp">
-&copy; 2018 - 2019 <br />
-<a href="./">Nefelin-WoW Project, Vanilla Legacy Server</a> 
-<a class="legals" href="">Contact us - About us</a> 
-<a class="legals" href="">Refund policy / private policy</a> 
+&copy; 2020 - 2021 <br />
+<a href="./">TBCstar 时光回溯</a> 
+<a class="legals" href="">联系我们-关于我们</a> 
+<a class="legals" href="">退款政策/隐私政策</a> 
 </div></div></div></div>
 </div>
 </div>

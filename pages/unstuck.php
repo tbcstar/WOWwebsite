@@ -1,29 +1,29 @@
 <?php include "headers.php" ?>
 <?php include "menus.php" ?>
-<script type="text/javascript" src="http://lastwow.net/javascript/jquery.js"></script>
-<script type="text/javascript" src="http://lastwow.net/javascript/main.js"></script>
+<script type="text/javascript" src="/javascript/jquery.js"></script>
+<script type="text/javascript" src="/javascript/main.js"></script>
 <main id="content-wrapper">
 <div class="container">
 <div class="row">
 <div class="column">
 <div class="head-content">
 <div class="breadcrumbs">
-<a href="/main/main">
-Control Panel </a>
+<a href="?p=ucp">
+控制面板 </a>
 <span class="ico-raquo"></span>
-<a href="https://cp.elysium-project.org/shop">
-Shop </a>
+<a href="?p=shop">
+商城 </a>
 <span class="ico-raquo"></span>
-<a href="https://cp.elysium-project.org/game/work_list">
-Services </a>
+<a href="?p=work_list">
+服务项目 </a>
 <span class="ico-raquo"></span>
 <div>
-Unstuck character </div>
+角色卡死 </div>
 </div>
 <div class="realm_picker">
 <div class="">
-Actual realm: </div>
-<a href="https://elysium-project.org/main/realm">
+所在服务器：</div>
+<a href="game.tbcstar.com">
 Nefelin </a>
 </div>
 </div>
@@ -31,19 +31,19 @@ Nefelin </a>
 <div class="content-holder">
 <div class="content-frame">
 <div class="content">
-<h2>Select character</h2>
-<strong class="title">Your characters on realm <span>Nefelin </span>:</strong>
+<h2>查找角色</h2>
+<strong class="title">你在服务器上的角色 <span>Nefelin </span>:</strong>
 
 {alert}
 
 <table class="table">
 <tr>
-<th>img</th>
-<th>Name</th>
-<th>Level</th>
-<th>Race</th>
-<th>Class</th>
-<th>Time in game</th>
+<th>头像</th>
+<th>名字</th>
+<th>等级</th>
+<th>种族</th>
+<th>职业</th>
+<th>在线时长</th>
 <th>&nbsp;</th>
 </tr>
 </br>
@@ -54,7 +54,7 @@ if($GLOBALS['service'][$service]['price']==0)
       echo '';
 else
 { ?>
-<span class="attention">Unstuck costs 
+<span class="attention">解除成本
 <?php 
 echo $GLOBALS['service'][$service]['price'].' '.website::convertCurrency($GLOBALS['service'][$service]['currency']); ?></span>
 <?php 
@@ -98,10 +98,10 @@ while($row = mysql_fetch_assoc($result))
 
  <!--<td><?php echo $realm; ?>
 					<?php if($row['online']==1)
-                   echo "<br/><span class='red_text'>Please log out before trying to unstuck.</span>";?>
+                   echo "<br/><span class='red_text'>在尝试解除卡死之前，请先登出。</span>";?>
                 </td>-->
                 
-                <td align="right"> &nbsp; <input type="submit" class="btn btn-low-yellow" value="Unstuck" 
+                <td align="right"> &nbsp; <input type="submit" class="btn btn-low-yellow" value="解除卡死" 
 				   <?php if($row['online']==0) { ?> 
                    onclick='unstuck(<?php echo $row['guid']; ?>,"<?php echo $char_db; ?>")' <?php }
                    else { echo 'disabled="disabled"'; } ?>>

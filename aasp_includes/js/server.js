@@ -18,7 +18,7 @@ function edit_realm(id,name,host,port,chardb) {
 	<br/>Host<br/><input type='text' id='editrealm_host' value='"+ host +"'>\
 	<br/>Port<br/><input type='text' id='editrealm_port' value='"+ port +"'>\
 	<br/>Character DB<br/><input type='text' id='editrealm_chardb' value='"+ chardb +"'>\
-	<br/><input type='submit' value='Save' onclick='edit_realmNow("+ id +")'>");
+	<br/><input type='submit' value='保存' onclick='edit_realmNow("+ id +")'>");
 	
 }
 
@@ -39,8 +39,8 @@ function edit_realmNow(id) {
 
 function delete_realm(id,name) {
 	
-	$("#loading").html("Are you sure you wish to delete <b>" + name + "</b><br/>\
-	<input type='submit' value='Yes I do' onclick='delete_realmNow("+ id +")'> <input type='submit' value='No' onclick='hideLoader()'>");
+	$("#loading").html("您确定要删除吗 <b>" + name + "</b><br/>\
+	<input type='submit' value='Yes' onclick='delete_realmNow("+ id +")'> <input type='submit' value='No' onclick='hideLoader()'>");
 	
 	showLoader();
 	
@@ -75,7 +75,7 @@ function edit_console(id,type,user,pass) {
 	$("#loading").html("Console type<br/> " + typeInput + "\
 	<br/>Rank Username<br/><input type='text' id='console_rank_user' value='"+ user +"'>\
 	<br/>Rank Password<br/><input type='text' id='console_rank_pass' value='"+ pass +"'>\
-	<br/><input type='submit' value='Save' onclick='edit_consoleNow("+ id +")'>\
+	<br/><input type='submit' value='保存' onclick='edit_consoleNow("+ id +")'>\
 	<br/><br/><i>The rank user must have GM permissions to use the .send mail command.</i>");
 	
 }

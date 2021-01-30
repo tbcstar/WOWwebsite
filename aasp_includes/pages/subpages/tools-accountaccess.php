@@ -6,24 +6,24 @@ $page = new page;
 $page->validatePageAccess('Tools->Account Access');
 
 ?>
-<div class="box_right_title">Account Access</div>
-All GM accounts are listed below.
+<div class="box_right_title">账号访问</div>
+所有的GM账户如下。
 <br/>&nbsp;
 <table>
 	<tr>
     	<th>ID</th>
-        <th>Username</th>
-        <th>Rank</th>
-        <th>Realms</th>
-        <th>Status</th>
-        <th>Last Login</th>
-        <th>Actions</th>
+        <th>用户名</th>
+        <th>级别</th>
+        <th>服务器</th>
+        <th>状态</th>
+        <th>最后一次登录</th>
+        <th>动作</th>
     </tr>
     <?php
 	$server->selectDB('logondb');
 	$result = mysql_query("SELECT * FROM account_access");
 	if(mysql_num_rows($result)==0) 
-	 	echo "<b>No GM accounts found!</b>";	
+	 	echo "<b>没有发现GM账户!</b>";	
 	else
 	{
 		while($row = mysql_fetch_assoc($result)) 
@@ -36,7 +36,7 @@ All GM accounts are listed below.
                 <td>
                 <?php 
 					if($row['RealmID']=='-1')
-						echo 'All';
+						echo '所有';
 					else
 					{
 						$getRealm = mysql_query("SELECT name FROM realmlist WHERE id='".$row['RealmID']."'");
@@ -52,9 +52,9 @@ All GM accounts are listed below.
 					$getData = mysql_query("SELECT last_login,online FROM account WHERE id='".$row['id']."'");
 					$rows = mysql_fetch_assoc($getData);
 					if($rows['online']==0)
-					 	echo '<font color="red">Offline</font>';
+					 	echo '<font color="red">离线</font>';
 					else
-						echo '<font color="green">Online</font>';	
+						echo '<font color="green">在线</font>';	
 				?>
                 </td>
                 <td>
@@ -63,9 +63,9 @@ All GM accounts are listed below.
 				?>
                 </td>
                 <td>
-                	<a href="#" onclick="editAccA(<?php echo $row['id']; ?>,<?php echo $row['gmlevel']; ?>,<?php echo $row['RealmID']; ?>)">Edit</a>
+                	<a href="#" onclick="editAccA(<?php echo $row['id']; ?>,<?php echo $row['gmlevel']; ?>,<?php echo $row['RealmID']; ?>)">编辑</a>
               		&nbsp;
-                    <a href="#" onclick="removeAccA(<?php echo $row['id']; ?>)">Remove</a>
+                    <a href="#" onclick="removeAccA(<?php echo $row['id']; ?>)">移除</a>
                 </td>
             </tr>
             <?php
@@ -75,4 +75,4 @@ All GM accounts are listed below.
 	?>
 </table>
 <hr/>
-<a href="#" class="content_hider" onclick="addAccA()">Add account</a>
+<a href="#" class="content_hider" onclick="addAccA()">新增账号</a>

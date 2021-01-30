@@ -2,79 +2,93 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title><?php echo $GLOBALS['website_title']; ?> Admin Panel</title>
-<link rel="stylesheet" href="../aasp_includes/styles/default/style.css" />
-<link rel="stylesheet" href="../aasp_includes/styles/wysiwyg.css" />
-<script type="text/javascript" src="../javascript/jquery.js"></script>
+<title><?php echo $GLOBALS['website_title']; ?> 管理面板</title>
+<link rel="stylesheet" href="/aasp_includes/styles/default/style.css" />
+<link rel="stylesheet" href="/aasp_includes/styles/wysiwyg.css" />
+<script src="https://s3.pstatp.com/cdn/expire-1-M/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="/javascript/jquery.js"></script>
+<script type="text/javascript" src="/aasp_includes/js/account.js"></script>
+<script type="text/javascript" src="/aasp_includes/js/interface.js"></script>
+<script type="text/javascript" src="/aasp_includes/js/account.js"></script>
+<script type="text/javascript" src="/aasp_includes/js/server.js"></script>
+<script type="text/javascript" src="/aasp_includes/js/news.js"></script>
+<script type="text/javascript" src="/aasp_includes/js/logs.js"></script>
+<script type="text/javascript" src="/aasp_includes/js/shop.js"></script>
+<script type="text/javascript" src="/aasp_includes/js/wysiwyg.js"></script>
+<script type="text/javascript" src="/aasp_includes/js/wysiwyg/wysiwyg.image.js"></script>
+<script type="text/javascript" src="/aasp_includes/js/wysiwyg/wysiwyg.link.js"></script>
+<script type="text/javascript" src="/aasp_includes/js/wysiwyg/wysiwyg.table.js"></script>
+
 </head>
 
 <body>
 <div id="overlay"></div>
-<div id="loading"><img src="../aasp_includes/styles/default/images/ajax-loader.gif" /></div>
+<div id="loading"><img src="/aasp_includes/styles/default/images/ajax-loader.gif" /></div>
 <div id="leftcontent">
         <div id="menu_left">
                           <ul>
-                              <li id="menu_head">Menu</li>
-                              <li>Dashboard</li>
+                              <li id="menu_head">菜单</li>
+                              <li>仪表盘</li>
                                    <ul class="hidden" <?php activeMenu('dashboard'); ?>>
-                                       <a href="?p=dashboard">Dashboard</a>
-                                       <!--<a href="?p=updates">Updates</a>-->
+                                       <a href="?p=dashboard">控制面板</a>
+                                       <a href="?p=updates">更新</a>
                                    </ul>
-                              <li>Pages</li>
+                              <li>页面</li>
                                    <ul class="hidden" <?php activeMenu('pages'); ?>>
-                                       <a href="?p=pages">All Pages</a>
-                                       <a href="?p=pages&s=new">Add New</a>
+                                       <a href="?p=pages">所有页面</a>
+                                       <a href="?p=pages&s=new">添加新页面</a>
                                    </ul>
-                              <li>News</li>
+                              <li>新闻</li>
                                    <ul class="hidden" <?php activeMenu('news'); ?>>
-                                       <a href="?p=news">Post news</a>
-                                       <a href="?p=news&s=manage">Manage news</a>
+                                       <a href="?p=news">发布新闻</a>
+                                       <a href="?p=news&s=manage">管理新闻</a>
                                    </ul>     
-                              <li>Shop</li>
+                              <li>商城</li>
                                     <ul class="hidden" <?php activeMenu('shop'); ?>>
-                                       <a href="?p=shop">Overview</a>
-                                       <a href="?p=shop&s=add">Add items</a>
-                                       <a href="?p=shop&s=manage">Manage items</a>
-                                       <a href="?p=shop&s=tools">Tools</a>
+                                       <a href="?p=shop">总览</a>
+                                       <a href="?p=shop&s=add">添加物品</a>
+                                       <a href="?p=shop&s=manage">管理物品</a>
+                                       <a href="?p=shop&s=tools">工具</a>
                                    </ul> 
-                              <li>Donations</li>
+                              <li>捐赠</li>
                                    <ul class="hidden" <?php activeMenu('donations'); ?>>
-                                       <a href="?p=donations">Overview</a>
-                                       <a href="?p=donations&s=browse">Browse</a>
+                                       <a href="?p=donations">总览</a>
+                                       <a href="?p=donations&s=browse">浏览</a>
                                    </ul> 
-                              <li>Logs</li>
+                              <li>日志</li>
                                     <ul class="hidden" <?php activeMenu('logs'); ?>>
-                                       <a href="?p=logs&s=voteshop">Vote shop</a>
-                                       <a href="?p=logs&s=donateshop">Donation shop</a>
-                                       <a href="?p=logs&s=admin">Admin Panel</a>
+                                       <a href="?p=logs&s=voteshop">投票商店</a>
+                                       <a href="?p=logs&s=donateshop">公益商城</a>
+                                       <a href="?p=logs&s=admin">管理面板</a>
                                    </ul> 
                               <li>Interface</li>
                                     <ul class="hidden" <?php activeMenu('interface'); ?>>
-                                       <a href="?p=interface">Template</a>
-                                       <a href="?p=interface&s=menu">Menu</a>
-                                       <a href="?p=interface&s=slideshow">Slideshow</a>
-                                       <a href="?p=interface&s=plugins">Plugins</a>
+                                       <a href="?p=interface">模板</a>
+                                       <a href="?p=interface&s=menu">菜单</a>
+                                       <a href="?p=interface&s=slideshow">幻灯片</a>
+                                       <a href="?p=interface&s=plugins">插件</a>
                                    </ul> 
-                              <li>Users</li>
+                              <li>用户</li>
                                     <ul class="hidden" <?php activeMenu('users'); ?>>
-                                       <a href="?p=users">Overview</a>
-                                       <a href="?p=users&s=manage">Manage Users</a>
+                                       <a href="?p=users">总览</a>
+                                       <a href="?p=users&s=manage">管理用户</a>
                                    </ul> 
-                              <li>Realms</li>
+                              <li>服务器</li>
                                     <ul class="hidden" <?php activeMenu('realms'); ?>>
-                                       <a href="?p=realms">New realm</a>
-                                       <a href="?p=realms&s=manage">Manage realm(s)</a>
+                                       <a href="?p=realms">添加服务器</a>
+                                       <a href="?p=realms&s=manage">服务器管理</a>
                                    </ul> 
-                              <li>Services</li>
+                              <li>服务项目</li>
                                     <ul class="hidden" <?php activeMenu('services'); ?>>
-                                       <a href="?p=services&s=voting">Voting Links</a>
-                                       <a href="?p=services&s=charservice">Character Services</a>
+                                       <a href="?p=services&s=voting">投票链接</a>
+                                       <a href="?p=services&s=charservice">角色服务</a>
                                    </ul> 
-                              <li>Tools</li>
+                              <li>工具</li>
                                     <ul class="hidden" <?php activeMenu('tools'); ?>>
-                                       <a href="?p=tools&s=tickets">Tickets</a>
-                                       <a href="?p=tools&s=accountaccess">Account Access</a>
+                                       <a href="?p=tools&s=tickets">工单</a>
+                                       <a href="?p=tools&s=accountaccess">账号访问</a>
                                    </ul>      
                           </ul>
          </div>
@@ -82,12 +96,12 @@
 
 <div id="header">
 <div id="header_text">
-  <?php if(isset($_SESSION['cw_admin'])) { ?> Welcome  
+  <?php if(isset($_SESSION['cw_admin'])) { ?> 欢迎  
      <b><?php echo $_SESSION['cw_admin']; ?> </b> 
-     <a href="?p=logout"><i>(Log out)</i></a> &nbsp; | &nbsp;
-     <a href="<?php echo $GLOBALS['website_domain']; ?>" title="View your site">View your site</a>
+     <a href="?p=logout"><i>（注销）</i></a> &nbsp; | &nbsp;
+     <a href="<?php echo $GLOBALS['website_domain']; ?>" title="View your site">查看您的网站</a>
      <?php } else {
-         echo "Please log in.";
+         echo "请登录。";
      }?>
  </div>
 </div>
@@ -98,7 +112,7 @@
 <?php if(!isset($_SESSION['cw_admin'])) { ?>  
 <br/>
 <center>
-<h2>Please log in</h2>
+<h2>请登录</h2>
   <input type="text" placeholder="Username" id="login_username" style="border: 1px solid #ccc;"/><br/> 
   <input type="password" placeholder="Password" id="login_password" style="border: 1px solid #ccc;"/><br/>
   <input type="submit" value="Log in" onclick="login('admin')"/> <br/>
@@ -129,13 +143,13 @@
     ?>
     <?php if($GLOBALS['forum']['type']=='phpbb' && $GLOBALS['forum']['autoAccountCreate']==TRUE && $page=='dashboard') { ?>
          <div class="box_right">
-         <div class="box_right_title">Recent forum activity</div>
+         <div class="box_right_title">最近的论坛活动</div>
             <table width="100%">
                 <tr>
-                    <th>Account</th>
-                    <th>Topic</th>
-                    <th>Message</th>
-                    <th>Topic</th>
+                    <th>账号</th>
+                    <th>主题</th>
+                    <th>消息</th>
+                    <th>主题</th>
                 </tr>
 			<?php
             $server->selectDB($GLOBALS['forum']['forum_db']);
@@ -143,7 +157,7 @@
             while($row = mysql_fetch_assoc($result)) 
 			{
                 $string = $row['post_text']; 
-                //Lets get the username			
+                //获取用户名		
                 $getUser = mysql_query("SELECT username FROM phpbb_users WHERE user_id='".$row['poster_id']."'"); 
 				$user = mysql_fetch_assoc($getUser);
                 //Get topic
@@ -157,7 +171,7 @@
                     <td><?php echo limit_characters(strip_tags($string),75);?>...</td>
                     <td><a href="<?php echo $GLOBALS['website_domain'].substr($GLOBALS['forum']['forum_path'],1); ?>viewtopic.php?t=<?php echo $row['topic_id']?>" 
                     title="View this topic" target="_blank">
-                    	View topic</a></td>
+                    	浏览主题</a></td>
                 </tr>
             <?php } ?>
         </table>
@@ -169,19 +183,19 @@
     <?php if(isset($_SESSION['cw_admin']))  { ?>
     <div id="rightcontent">
      <div class="box_right">
-            <div class="box_right_title">Server Status</div>
+            <div class="box_right_title">服务器状态</div>
             <?php $server->serverStatus(); ?>
      </div>    
-                         
+
     <div class="box_right">
-    <div class="box_right_title">Website Configuration</div>
+    <div class="box_right_title">网站配置</div>
     <table>
            <tr valign="top">
                <td>
-                MySQL Host: <br/>
-                MySQL User: <br/>
-                MySQL Password: <br/>
-                Core Revision: 
+                数据库主机：<br/>
+                数据库用户：<br/>
+                数据库密码：<br/>
+                服务器版本: 
                </td>
                <td>
                <b>
@@ -192,10 +206,10 @@
                </b>
                </td>
                <td>
-               Logon Database: <br/>
-               Website Database: <br />
-               World Database: <br/>
-               Database Revision: 
+               realmd数据库:<br/>
+               Web数据库：<br />
+               World数据库：<br/>
+               数据库版本：
                </td>
                <td>
                <b>
@@ -216,6 +230,6 @@
   <?php } ?>
 </div>               
 </div> 
-	<?php include("../aasp_includes/javascript_loader.php"); ?>
+	<?php include("/aasp_includes/javascript_loader.php"); ?>
 </body>
 </html>

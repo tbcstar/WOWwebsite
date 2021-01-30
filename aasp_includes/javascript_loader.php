@@ -6,12 +6,12 @@
 <script type="text/javascript" src="../aasp_includes/js/shop.js"></script>
 <?php if($GLOBALS['core_expansion']>2) 
 {
-	//Core is over WOTLK. Use WoWHead.
+	//核心在WOTLK之上。 使用WoWHead,反之使用openwow
 	echo '<script type="text/javascript" src="http://static.wowhead.com/widgets/power.js"></script>';
 }
 else
 {
-	echo '<script type="text/javascript" src="http://cdn.openwow.com/api/tooltip.js"></script>';
+	echo '<script type="text/javascript" src="http://cdn.cavernoftime.com/api/tooltip.js"></script>';
 }
 ?>
 <script type="text/javascript" src="../aasp_includes/js/wysiwyg.js"></script>

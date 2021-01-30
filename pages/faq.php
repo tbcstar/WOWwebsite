@@ -1,16 +1,16 @@
 <div class="box_left">
-<h2>Frequent Asked Questions</h2>
-Here you can find some of the most common questions we get from players. If you cannot find an answer to your question, please contact us.
+<h2>常问问题</h2>
+在这里你可以找到一些我们从玩家那里得到的最常见的问题。如果您不能找到您的问题的答案，请与我们联系。
 <hr/>
-<h3>How do I connect to the server?</h3>
-We have an excellent connection guide for you to follow <a href="?p=connect" title="Connection Guide">here</a>. If you have problems with your installation though, please refer to our <a href="/forum/" title="Forum">Forum</a>.<br/>&nbsp;
+<h3>我如何连接到服务器?</h3>
+我们有一个优秀的连接指南供您遵循<a href="?p=connect" title="Connection Guide">点击这里</a>。如果您安装有问题，请参阅我们的<a href="/forum/" title="Forum">论坛</a>.<br/>&nbsp;
 
-<h3>Why do I have so high MS?</h3>
-Your latency may depend on several things. Our server is located in Germany. If you live far away, you may have slightly higher latency than other people. <br/>
-But for any other problems, please refer to your ISP's support, you could always try to ask us at the <a href="/forum/" title="Forum">Forum</a>, but we may not be able to help you with all of your problems.<br/>&nbsp;
+<h3>为什么我的延迟这么高?</h3>
+您的延迟可能取决于几个因素。我们的服务器位于中国。如果你住得很远，你可能会比其他人有稍高的延迟。<br/>
+但如果有其他问题，请参考您的ISP支持，您可以随时向我们查询 <a href="/forum/" title="Forum">Forum</a>，但我们可能无法帮助你解决所有的问题。<br/>&nbsp;
 
-<h3>How does voting work?</h3>
-Voting helps the server to get more traffic to our website, which will result in more players joining the server. It's very easy to vote, and you will be awarded with Vote Points which you may spend on in-game items using our <a href="?p=voteshop" title="Vote Shop">Vote Shop</a>. <i>Don't know how to vote?</i> Please check out our short Voting guide <a href="/?p=howtovote" title="Voting Guide">here</a>.<br/>
+<h3>投票是如何运作的?</h3>
+投票帮助服务器获得更多的流量到我们的网站，这将导致更多的玩家加入服务器。这是非常容易投票，你将获得投票点数，你可以花在游戏中的物品使用我们的<a href="?p=voteshop" title="Vote Shop">投票商店</a>。 <i>不知道怎么投票?</i> 请查看我们的简短投票指南 <a href="/?p=howtovote" title="Voting Guide">点击这里</a>。<br/>
 
 
 </div>

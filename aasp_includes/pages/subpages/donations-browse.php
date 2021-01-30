@@ -1,5 +1,5 @@
 <?php $page = new page; ?>
-<div class="box_right_title"><?php echo $page->titleLink(); ?> &raquo; Browse</div>
+<div class="box_right_title"><?php echo $page->titleLink(); ?> &raquo; 浏览</div>
 <?php 
 $server = new server;
 $account = new account;
@@ -10,14 +10,14 @@ $pages_query = mysql_query("SELECT COUNT(*) FROM payments_log");
 $pages = ceil(mysql_result($pages_query,0) / $per_page );
 
 if(mysql_result($pages_query,0)==0) {
-   echo "Seems like the donation log was empty!";
+   echo "捐款日志好像是空的!";
 } else {
 
 $page = (isset($_GET['page'])) ? (int)$_GET['page'] : 1;
 $start = ($page - 1) * $per_page;
 ?>
 <table class="center">
-       <tr><th>Date</th><th>User</th><th>Email</th><th>Amount</th><th>Status</th></tr>
+       <tr><th>日期</th><th>用户</th><th>Email</th><th>金额</th><th>状态</th></tr>
        <?php
 					        $server->selectDB('webdb');
 							$result = mysql_query("SELECT * FROM payments_log ORDER BY id DESC LIMIT ".$start.",".$per_page);
@@ -39,7 +39,7 @@ if($pages>=1 && $page <= $pages)
 	if($page>1)
 	{
 	   $prev = $page-1;
-	   echo '<a href="?p=donations&s=browse&page='.$prev.'" title="Previous">Previous</a> &nbsp;';
+	   echo '<a href="?p=donations&s=browse&page='.$prev.'" title="Previous">上一页</a> &nbsp;';
 	}
 	for($x=1; $x<=$pages; $x++)
 	{
@@ -52,7 +52,7 @@ if($pages>=1 && $page <= $pages)
 	if($page<$x - 1)
 	{
 	   $next = $page+1;
-	   echo '&nbsp; <a href="?p=donations&s=browse&page='.$next.'" title="Next">Next</a> &nbsp; &nbsp;';
+	   echo '&nbsp; <a href="?p=donations&s=browse&page='.$next.'" title="Next">下一页</a> &nbsp; &nbsp;';
 	}
 }
 }

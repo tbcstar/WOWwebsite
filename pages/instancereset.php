@@ -6,33 +6,33 @@
 <div id="leftcontent">
 <div class="box_two">
 
-<div class='box_two_title'>Instance Reset</div>
-Let's you reset the instance on your characters.<hr/>
+<div class='box_two_title'>副本重置</div>
+让你重置你的角色的副本CD。<hr/>
 <?php
 account::isNotLoggedIn();
 
 $service = "reset";
 
 if($GLOBALS['service'][$service]['price']==0) 
-      echo '<span class="attention">Instance Reset is free of charge.</span>';
+      echo '<span class="attention">副本重置是免费的。</span>';
 else
 { ?>
-<span class="attention">Instance Reset costs 
+<span class="attention">重置副本费用 
 <?php 
 echo $GLOBALS['service'][$service]['price'].' '.website::convertCurrency($GLOBALS['service'][$service]['currency']); ?></span>
 <?php 
 if($GLOBALS['service'][$service]['currency']=="vp")
-	echo "<span class='currency'>Vote Points: ".account::loadVP($_SESSION['cw_user'])."</span>";
+	echo "<span class='currency'>投票积分：".account::loadVP($_SESSION['cw_user'])."</span>";
 elseif($GLOBALS['service'][$service]['currency']=="dp")
 	echo "<span class='currency'>".$GLOBALS['donation']['coins_name'].": ".account::loadDP($_SESSION['cw_user'])."</span>";
 } 
 
 if (isset($_POST['ir_step1']) || isset($_POST['ir_step2'])) 
-	echo 'Selected realm: <b>'.server::getRealmName($_POST['ir_realm']).'</b><br/><br/>';
+	echo '选择服务器： <b>'.server::getRealmName($_POST['ir_realm']).'</b><br/><br/>';
 else
 {
 ?>
-Select realm: 
+选择服务器：
 &nbsp;
 <form action="?p=instancereset" method="post">
 <table>
@@ -66,12 +66,12 @@ if(!isset($_POST['ir_step1']) && !isset($_POST['ir_step2']) && !isset($_POST['ir
 if(isset($_POST['ir_step1']) || isset($_POST['ir_step2']) || isset($_POST['ir_step3']))
 {
 	if (isset($_POST['ir_step2'])) 
-		echo 'Selected character: <b>'.character::getCharName($_POST['ir_char'],server::getRealmId($_POST['ir_realm']))
+		echo '选择角色:<b>'.character::getCharName($_POST['ir_char'],server::getRealmId($_POST['ir_realm']))
 		.'</b><br/><br/>';
 else
 {		
 ?>
-Select character: 
+选择角色： 
 &nbsp;
 <form action="?p=instancereset" method="post">
 <table>
@@ -111,7 +111,7 @@ if(!isset($_POST['ir_step2']) && !isset($_POST['ir_step3']))
 if(isset($_POST['ir_step2']) || isset($_POST['ir_step3']))
 {
 ?>
-Select instance: 
+选择副本：
 &nbsp;
 <form action="?p=instancereset" method="post">
 <table>
@@ -127,7 +127,7 @@ Select instance:
 	 $result = mysql_query("SELECT instance FROM character_instance WHERE guid='".$guid."' AND permanent=1");
 	 if (mysql_num_rows($result)==0) 
 	 {
-		 echo "<option value='#'>No instance locks were found</option>";
+		 echo "<option value='#'>没有副本需要重置！</option>";
 		 $nope = true;
 	 }
 	 else
@@ -180,23 +180,23 @@ if(isset($_POST['ir_step3']))
 	
 	if($GLOBALS['service'][$service]['currency']=="vp")
 		if(account::hasVP($_SESSION['cw_user'],$GLOBALS['service'][$service]['price'])==FALSE)
-			echo '<span class="alert">You do not have enough Vote Points!';
+			echo '<span class="alert">你没有足够的投票积分！';
 		else
 		{
 			connect::selectDB($_POST['ir_realm']);
 			mysql_query("DELETE FROM instance WHERE id='".$instance."'");
 			account::deductVP(account::getAccountID($_SESSION['cw_user']),$GLOBALS['service'][$service]['price']);
-			echo '<span class="approved">The instance lock was removed!</span>';
+			echo '<span class="approved">副本CD已重置！</span>';
 		}
 	elseif($GLOBALS['service'][$service]['currency']=="dp")
 		if(account::hasDP($_SESSION['cw_user'],$GLOBALS['service'][$service]['price'])==FALSE)
-			echo '<span class="alert">You do not have enough '.$GLOBALS['donation']['coins_name'];
+			echo '<span class="alert">你的捐赠积分不够'.$GLOBALS['donation']['coins_name'];
 		else
 		{
 			connect::selectDB($_POST['ir_realm']);
 			mysql_query("DELETE FROM instance WHERE id='".$instance."'");
 			account::deductDP(account::getAccountID($_SESSION['cw_user']),$GLOBALS['service'][$service]['price']);
-			echo '<span class="approved">The instance lock was removed!</span>';
+			echo '<span class="approved">副本CD已重置！</span>';
 			
 			account::logThis("Performed an Instance reset on ".character::getCharName($guid,server::getRealmId($_POST['ir_realm'])),"instancereset",
 			server::getRealmId($_POST['ir_realm']));
@@ -204,7 +204,7 @@ if(isset($_POST['ir_step3']))
 }
 ?>
 <br/>
-<a href="?p=instancereset">Start over</a>
+<a href="?p=instancereset">重新开始</a>
 
 </div>
 <div id="footer">

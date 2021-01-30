@@ -10,49 +10,49 @@ account::isNotLoggedIn();
 <a href="?p=ucp">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-01.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-01.png" alt="" /> </div>
-<p>Account</p>
+<p>账户</p>
 </a>
 </li>
 <li>
 <a href="?p=shop">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-02.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-02.png" alt="" /> </div>
-<p>Shop</p>
+<p>商城</p>
 </a>
 </li>
 <li>
 <a href="?p=donate">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-03.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-03.png" alt="" /> </div>
-<p>Buy coins</p>
+<p>捐赠充值</p>
 </a>
 </li>
 <li>
 <a class="active" href="?p=characters">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-04.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-04.png" alt="" /> </div>
-<p>Characters</p>
+<p>角色</p>
 </a>
 </li>
 <li>
 <a href="#">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-05.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-05.png" alt="" /> </div>
-<p>Find character</p>
+<p>查找角色</p>
 </a>
 </li>
 <li>
 <a href="?p=stat">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-06.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-06.png" alt="" /> </div>
-<p>Statistics</p>
+<p>统计</p>
 </a>
 </li>
 <li>
 <a href="?p=vote">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-07.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-07.png" alt="" /> </div>
-<p>Vote</p>
+<p>投票</p>
 </a>
 </li>
 </ul>
@@ -67,22 +67,22 @@ account::isNotLoggedIn();
 <div class="head-content">
 <div class="breadcrumbs">
 <a href="?p=ucp">
-Control Panel </a>
+控制面板 </a>
 <span class="ico-raquo"></span>
 <a href="?p=shop">
-Shop </a>
+商城 </a>
 <span class="ico-raquo"></span>
 <div>
-Services </div>
+服务项目 </div>
 </div>
 <div class="realm_picker">
 <div class="">
-Actual realm: </div>
-<a href="#">
-Nefelin-WoW </a>
+所在服务器：</div>
+<a href="game.tbcstar.com">
+时光回溯 </a>
 </div>
 </div>
-<h3 class="main-title">Edit your character</h3>
+<h3 class="main-title">编辑你的角色</h3>
 <div class="shop-manchar">
 <div class="row">
 <div class="col">
@@ -90,7 +90,7 @@ Nefelin-WoW </a>
 <div class="item">
 <img src="/themes/cp_nefelin/images/manchar-01.jpg" alt="">
 <div class="item-content">
-Change faction <div class="price">
+改变阵营<div class="price">
 
 <span class="coin-gold"></span>
 <span class="numbers"> 350 </span>
@@ -106,7 +106,7 @@ Change faction <div class="price">
 <div class="item">
 <img src="/themes/cp_nefelin/images/manchar-02.jpg" alt="">
 <div class="item-content">
-Change race <div class="price">
+改变种族 <div class="price">
 
 <span class="coin-gold"></span>
 <span class="numbers"> 250 </span>
@@ -122,7 +122,7 @@ Change race <div class="price">
 <div class="item">
 <img src="/themes/cp_nefelin/images/manchar-03.jpg" alt="">
 <div class="item-content">
-Customization <div class="price">
+角色修改 <div class="price">
 
  <span class="coin-gold"></span>
 <span class="numbers"> 150 </span>
@@ -138,7 +138,7 @@ Customization <div class="price">
 <div class="item">
 <img src="/themes/cp_nefelin/images/manchar-04.jpg" alt="">
 <div class="item-content">
-Nickname change <div class="price">
+修改名字 <div class="price">
 
 <span class="coin-gold"></span>
 <span class="numbers"> 250 </span>
@@ -154,7 +154,7 @@ Nickname change <div class="price">
 <div class="item">
 <img src="/themes/cp_nefelin/images/manchar-06.jpg" alt="">
 <div class="item-content">
-Unstuck character </div>
+角色卡死</div>
 </div>
 </a>
 </div>
@@ -164,7 +164,7 @@ Unstuck character </div>
 <div class="item">
 <img src="/themes/cp_nefelin/images/manchar-06.jpg" alt="">
 <div class="item-content">
-Teleport character </div>
+角色传送</div>
 </div>
 </a>
 </div>
@@ -175,7 +175,7 @@ Teleport character </div>
 <div class="item">
 <img src="/themes/cp_nefelin/images/manchar-06.jpg" alt="">
 <div class="item-content">
-Level Up character </div>
+角色升级</div>
 </div>
 </a>
 </div>
@@ -185,7 +185,7 @@ Level Up character </div>
 <div class="item">
 <img src="/themes/cp_nefelin/images/manchar-07.jpg" alt="">
 <div class="item-content">
-Revive character 
+角色复活
 
 </div>
 </div>

@@ -7,22 +7,22 @@
 <div class="column">
 <div class="head-content">
 <div class="breadcrumbs">
-<a href="/main/main">
-Control Panel </a>
+<a href="?p=ucp">
+控制面板 </a>
 <span class="ico-raquo"></span>
-<a href="https://cp.elysium-project.org/shop">
-Shop </a>
+<a href="?p=shop">
+商城 </a>
 <span class="ico-raquo"></span>
-<a href="https://cp.elysium-project.org/game/work_list">
-Services </a>
+<a href="?p=work_list">
+服务项目 </a>
 <span class="ico-raquo"></span>
 <div>
-Unstuck character </div>
+角色恢复 </div>
 </div>
 <div class="realm_picker">
 <div class="">
-Actual realm: </div>
-<a href="https://elysium-project.org/main/realm">
+所在服务器： </div>
+<a href="game.tbcstar.com">
 Nefelin </a>
 </div>
 </div>
@@ -30,8 +30,8 @@ Nefelin </a>
 <div class="content-holder">
 <div class="content-frame">
 <div class="content">
-<h2>Select character</h2>
-<strong class="title">Your characters on realm <span>Nefelin </span>:</strong>
+<h2>查找角色</h2>
+<strong class="title">你在服务器上的角色 <span>Nefelin </span>:</strong>
 
 {alert}
 
@@ -39,11 +39,11 @@ Nefelin </a>
 <tr>
 <th>img2</th>
 <th>img</th>
-<th>Name</th>
-<th>Level</th>
-<th>Race</th>
-<th>Class</th>
-<th>Time in game</th>
+<th>名字</th>
+<th>等级</th>
+<th>阵营</th>
+<th>职业</th>
+<th>在线时长</th>
 <th>&nbsp;</th>
 </tr>
 <?php 
@@ -51,20 +51,20 @@ Nefelin </a>
 $service = "teleport";
 
 if($GLOBALS['service'][$service]['price']==0) 
-      echo '<span class="attention">Teleportation is free of charge.</span>';
+      echo '<span class="attention">传送是免费的。</span>';
 else
 { ?>
-<span class="attention">Teleportation costs 
+<span class="attention">传送费用 
 <?php 
 echo $GLOBALS['service'][$service]['price'].' '.website::convertCurrency($GLOBALS['service'][$service]['currency']); ?></span>
 <?php 
 if($GLOBALS['service'][$service]['currency']=="vp")
-	echo "<span class='currency'>Vote Points: ".account::loadVP($_SESSION['cw_user'])."</span>";
+	echo "<span class='currency'>投票积分：".account::loadVP($_SESSION['cw_user'])."</span>";
 elseif($GLOBALS['service'][$service]['currency']=="dp")
 	echo "<span class='currency'>".$GLOBALS['donation']['coins_name'].": ".account::loadDP($_SESSION['cw_user'])."</span>";
 } ?>
 <hr/>
-<h3 id="choosechar">Choose Character</h3> 
+<h3 id="choosechar">选择角色</h3> 
 <?php
 connect::selectDB('webdb');
 $result = mysql_query('SELECT char_db,name FROM realms ORDER BY id ASC');
@@ -97,7 +97,7 @@ while($row = mysql_fetch_assoc($result))
 <td><?php echo "".character::getClass($row['class']); ?></td>
 <td></td>
 <td></td>
-<td><?php } ?>Continue</a></td>
+<td><?php } ?>继续</a></td>
 </tr>
 
 </div>  

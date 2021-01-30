@@ -31,28 +31,28 @@
 <span class="burger"></span>
 </div>
 <div class="slogan">
-Open Beta Testing
+开放Beta测试
 </div>
 
 <nav class="navbar clearfix" role="navigation">
 <ul class="nav navbar-nav clearfix">
 <li class="active">
-<a href="#home"><span class="text">Home</span><span class="ico"><img src="/images/nav-side.png" alt=""></span></a>
+<a href="#home"><span class="text">首页</span><span class="ico"><img src="/images/nav-side.png" alt=""></span></a>
 </li>
 <li>
-<a href="#about"><span class="text">About us</span><span class="ico"><img src="/images/nav-side-03.png" alt=""></span></a>
+<a href="#about"><span class="text">介绍</span><span class="ico"><img src="/images/nav-side-03.png" alt=""></span></a>
 </li>
 <li>
-<a href="#classes"><span class="text">Why Progressive?</span><span class="ico"><img src="/images/nav-side-04.png" alt=""></span></a>
+<a href="#classes"><span class="text">为什么使用渐进模式？</span><span class="ico"><img src="/images/nav-side-04.png" alt=""></span></a>
 </li>
 <li>
-<a href="#why"><span class="text">Why TBC?</span><span class="ico"><img src="/images/nav-side-05.png" alt=""></span></a>
+<a href="#why"><span class="text">为什么选择TBC版本？</span><span class="ico"><img src="/images/nav-side-05.png" alt=""></span></a>
 </li>
 <li>
-<a href="#raids"><span class="text">Raids</span><span class="ico"><img src="/images/nav-side-06.png" alt=""></span></a>
+<a href="#raids"><span class="text">团队副本</span><span class="ico"><img src="/images/nav-side-06.png" alt=""></span></a>
 </li>
 <li>
-<a href="#betakey"><span class="text">Registration</span><span class="ico"><img src="/images/nav-side-07.png" alt=""></span></a>
+<a href="#betakey"><span class="text">注册账号</span><span class="ico"><img src="/images/nav-side-07.png" alt=""></span></a>
 </li>
 </ul>
 <div class="socials">
@@ -61,10 +61,10 @@ Open Beta Testing
 <a href="#" class="wow bounceInLeft"><img src="/images/ico-vk.png" alt=""></a>
 <a href="#" class="wow bounceInRight"><img src="/images/ico-yt.png" alt=""></a>
 </div>
-<div class="languages wow lightSpeedIn">
+<!--<div class="languages wow lightSpeedIn">
 <a href="/main/index.html" class="en active"></a>
 <a href="/ru/main/index.html" class="ru"></a>
-</div>
+</div>-->
 </nav>
 <div class="brand">
 <a class="logo" href=""><img src="/images/nefelin_logo_tbc.png" class="wow swing" alt="logo" role="banner" style="visibility: visible; animation-name: swing;"></a>
@@ -73,8 +73,8 @@ Open Beta Testing
 <a href="https://www.youtube.com/watch?v=IBHL_-biMrQ" class="various fancybox-media play wow flip"><img src="/images/play.png" alt=""></a>
 </div>
 <div class="buttons clearfix">
-<div class="rcol text-left wow bounceInLeft"><a href="#" class="btn scrollToForm" data-target="betakey-content">Play Now</a></div>
-<div class="rcol text-right wow bounceInRight"><a href="https://discord.gg/ptJVrp" class="btn">Discord</a></div>
+<div class="rcol text-left wow bounceInLeft"><a href="#" class="btn scrollToForm" data-target="betakey-content">B站视频</a></div>
+<div class="rcol text-right wow bounceInRight"><a href="https://qm.qq.com/cgi-bin/qm/qr?k=nWGwF-IsoA_fpk7CiTztc8iiI6VzRs5n&jump_from=webapi" class="btn">进入Q群</a></div>
 </div>
 </div>
 </section>
@@ -83,10 +83,10 @@ Open Beta Testing
 <main id="content-wrapper">
 <section class="section about" id="about">
 <div class="container">
-<h3 class="section-title wow pulse">About our project</h3>
+<h3 class="section-title wow pulse">关于我们的项目</h3>
 <article class="section-text wow flipInX">
-<p>Like you, the staff here at <strong>Nefelin-WoW Project</strong> have explored and conquered the vastness of World of Warcraft. And also like you, our love of the game grew and grew. So much, in fact, we desired to revive those emotions and moments experienced during the first WoW expansion... <strong>The Burning Crusade</strong>.</p>
-<p>However, we could not find a suitable place to relive all those unforgettable moments... so we decided to do it ourselves! And now, after 5 years of active development, we are finally ready to introduce our project... to YOU.</p>
+<p>和你一样，<strong>TBCstar项目</strong>已经探索并征服了浩瀚的魔兽世界。我们对这个游戏的热爱也与日俱增。事实上，我们非常想要恢复那些在魔兽世界第一个资料片中体验到的情感和时刻... <strong>燃烧的远征</strong>.</p>
+<p>然而，我们找不到一个合适的地方来重温那些难忘的时刻……所以我们决定自己动手!现在，经过5年的不断的开发和内部测试，我们终于准备好介绍我们的项目……给你。</p>
 </article>
 <div class="row items">
 <div class="col wow wobble">
@@ -95,8 +95,8 @@ Open Beta Testing
 <img src="/images/pref/pref-02.png" alt="">
 <img src="/images/pref/pref-hov-02.png" class="hov" alt="">
 </div>
-<h4 class="title">Pathfinding</h4>
-<div class="text">Every unit (creature, npc, pet) calculates path to reach their target without falling under textures, going through pillars etc.</div>
+<h4 class="title">寻路</h4>
+<div class="text">每个单位(生物，npc，宠物)计算路径到达他们的目标而不被纹理，通过柱子等。</div>
 </div>
 </div>
 <div class="col wow tada">
@@ -105,8 +105,8 @@ Open Beta Testing
 <img src="/images/pref/pref-11.png" alt="">
 <img src="/images/pref/pref-hov-11.png" class="hov" alt="">
 </div>
-<h4 class="title">Copy characters from Nefelin</h4>
-<div class="text">You can copy your characters from Nefelin to play on TBC, your characters will still exist on vanilla, so you can select where to play.</div>
+<h4 class="title">角色XP</h4>
+<div class="text">升级经验完全遵循暴雪的设定，只有周末是双倍XP，这对很多玩家来说是很友好的设置。</div>
 </div>
 </div>
 
@@ -119,8 +119,8 @@ Open Beta Testing
 <img src="/images/pref/pref-07.png" alt="">
 <img src="/images/pref/pref-hov-07.png" class="hov" alt="">
 </div>
-<h4 class="title">Automatic backup system</h4>
-<div class="text">Transports backups every day from main server to others. It backups the full server and all your characters every day. </div>
+<h4 class="title">自动备份系统</h4>
+<div class="text">每天从主服务器传输备份到其他服务器。它每天备份完整的服务器和你所有的角色。</div>
 </div>
 </div>
 <div class="col wow wobble">
@@ -129,8 +129,8 @@ Open Beta Testing
 <img src="/images/pref/pref-08.png" alt="">
 <img src="/images/pref/pref-hov-08.png" class="hov" alt="">
 </div>
-<h4 class="title">DDOS Protection</h4>
-<div class="text">We have a large experience in servers’ protection, so you can be sure that server will be uptime 99.9%.</div>
+<h4 class="title">DDOS保护</h4>
+<div class="text">我们在服务器保护方面有丰富的经验，所以你可以确保服务器的正常运行时间为99.9%。</div>
 </div>
 </div>
 <div class="col wow tada">
@@ -139,8 +139,8 @@ Open Beta Testing
 <img src="/images/pref/pref-09.png" alt="">
 <img src="/images/pref/pref-hov-09.png" class="hov" alt="">
 </div>
-<h4 class="title">Good Latency</h4>
-<div class="text">Our servers have 1Gbps internet connection, with it you will never have problems with connection or lags.</div>
+<h4 class="title">低延迟</h4>
+<div class="text">我们的服务器使用BGP双线接入，极大的降低了不同运营商连接游戏的延迟。</div>
 </div>
 </div>
 <div class="col wow wobble">
@@ -149,8 +149,8 @@ Open Beta Testing
 <img src="/images/pref/pref-10.png" alt="">
 <img src="/images/pref/pref-hov-10.png" class="hov" alt="">
 </div>
-<h4 class="title">Multilanguage support</h4>
-<div class="text">Our team is very big and at the moment we provide support on English and Russian languages, feel free to contact us if you have any problems.</div>
+<h4 class="title">趣味玩法</h4>
+<div class="text">我们用爱发电，并将一些独特、有趣的玩法带到我们的世界中，并期待你们的喜欢。</div>
 </div>
 </div>
 </div>
@@ -159,9 +159,9 @@ Open Beta Testing
 <section class="section classes" id="classes">
 <div class="container">
 <div class="text-block">
-<h3 class="section-title wow pulse">Why Progressive?</h3>
+<h3 class="section-title wow pulse">为什么使用渐进模式？</h3>
 <article class="section-text wow flipInX">
-<p>To begin, we answer the question: "What does «Progressive World?» mean?" This is a world in which all PvE content becomes available gradually. This means that you will not be able to visit the «Black Temple» or «Sunwell Plateau» immediately at server opening. We believe this method of release allows our community to more thoroughly enjoy «The Burning Crusade» and provides the best experience of of the expansion.</p>
+<p>首先，我们回答这个问题:“什么是渐进模式?什么意思?”这是一个所有PvE内容逐渐可用的世界。这意味着你将不能立即进入黑暗神殿或太阳井高地。我们相信这种发布方式可以让我们的社区更彻底地享受燃烧远征，并提供最好的资料片体验。</p>
 </article>
 </div>
 <div class="row">
@@ -174,7 +174,7 @@ Open Beta Testing
 <img src="/images/class/class-01.png" alt="">
 <img src="/images/class/class-hov-01.png" class="hov" alt="">
 </div>
-Warrior
+战士
 </a>
 </li>
 <li role="presentation" class="wow bounceInDown">
@@ -183,7 +183,7 @@ Warrior
 <img src="/images/class/class-02.png" alt="">
 <img src="/images/class/class-hov-02.png" class="hov" alt="">
 </div>
-Hunter
+猎人
 </a>
 </li>
 <li role="presentation" class="wow bounceInLeft">
@@ -192,7 +192,7 @@ Hunter
 <img src="/images/class/class-03.png" alt="">
 <img src="/images/class/class-hov-03.png" class="hov" alt="">
 </div>
-Priest
+牧师
 </a>
 </li>
 <li role="presentation" class="wow bounceInUp">
@@ -201,7 +201,7 @@ Priest
 <img src="/images/class/class-04.png" alt="">
 <img src="/images/class/class-hov-04.png" class="hov" alt="">
 </div>
-Shaman
+萨满
 </a>
 </li>
 <li role="presentation" class="wow bounceIn">
@@ -210,7 +210,7 @@ Shaman
 <img src="/images/class/class-05.png" alt="">
 <img src="/images/class/class-hov-05.png" class="hov" alt="">
 </div>
-Warlock
+术士
 </a>
 </li>
 <li role="presentation" class="wow bounceInUp">
@@ -219,7 +219,7 @@ Warlock
 <img src="/images/class/class-06.png" alt="">
 <img src="/images/class/class-hov-06.png" class="hov" alt="">
 </div>
-Druid
+德鲁伊
 </a>
 </li>
 <li role="presentation" class="wow bounceInLeft">
@@ -228,7 +228,7 @@ Druid
 <img src="/images/class/class-07.png" alt="">
 <img src="/images/class/class-hov-07.png" class="hov" alt="">
 </div>
-Paladin
+圣骑士
 </a>
 </li>
 <li role="presentation" class="wow bounceInDown">
@@ -237,7 +237,7 @@ Paladin
 <img src="/images/class/class-08.png" alt="">
 <img src="/images/class/class-hov-08.png" class="hov" alt="">
 </div>
-Rogue
+盗贼
 </a>
 </li>
 <li role="presentation" class="wow bounceInRight">
@@ -246,7 +246,7 @@ Rogue
 <img src="/images/class/class-09.png" alt="">
 <img src="/images/class/class-hov-09.png" class="hov" alt="">
 </div>
-Mage
+法师
 </a>
 </li>
 </ul>
@@ -258,127 +258,127 @@ Mage
 <div role="tabpanel" class="tab-pane active" id="class-warrior">
 <div class="class-item">
 <img src="/images/class/warrior-01.png" alt="">
-Tier <span class="numbers">4</span>
+T <span class="numbers">4</span>
 </div>
 <div class="class-item">
 <img src="/images/class/warrior-02.png" alt="">
-Tier <span class="numbers">5</span>
+T <span class="numbers">5</span>
 </div>
 <div class="class-item">
 <img src="/images/class/warrior-03.png" alt="">
-Tier <span class="numbers">6</span>
+T <span class="numbers">6</span>
 </div>
 </div>
 <div role="tabpanel" class="tab-pane" id="class-hunter">
 <div class="class-item">
 <img src="/images/class/hunter-01.png" alt="">
-Tier <span class="numbers">4</span>
+T <span class="numbers">4</span>
 </div>
 <div class="class-item">
 <img src="/images/class/hunter-02.png" alt="">
-Tier <span class="numbers">5</span>
+T <span class="numbers">5</span>
 </div>
 <div class="class-item">
 <img src="/images/class/hunter-03.png" alt="">
-Tier <span class="numbers">6</span>
+T <span class="numbers">6</span>
 </div>
 </div>
 <div role="tabpanel" class="tab-pane" id="class-priest">
 <div class="class-item">
 <img src="/images/class/priest-01.png" alt="">
-Tier <span class="numbers">4</span>
+T <span class="numbers">4</span>
 </div>
 <div class="class-item">
 <img src="/images/class/priest-02.png" alt="">
-Tier <span class="numbers">5</span>
+T <span class="numbers">5</span>
 </div>
 <div class="class-item">
 <img src="/images/class/priest-03.png" alt="">
-Tier <span class="numbers">6</span>
+T <span class="numbers">6</span>
 </div>
 </div>
 <div role="tabpanel" class="tab-pane" id="class-shaman">
 <div class="class-item">
 <img src="/images/class/shaman-01.png" alt="">
-Tier <span class="numbers">4</span>
+T <span class="numbers">4</span>
 </div>
 <div class="class-item">
 <img src="/images/class/shaman-02.png" alt="">
-Tier <span class="numbers">5</span>
+T <span class="numbers">5</span>
 </div>
 <div class="class-item">
 <img src="/images/class/shaman-03.png" alt="">
-Tier <span class="numbers">6</span>
+T <span class="numbers">6</span>
 </div>
 </div>
 <div role="tabpanel" class="tab-pane" id="class-warlock">
 <div class="class-item">
 <img src="/images/class/warlock-01.png" alt="">
-Tier <span class="numbers">4</span>
+T <span class="numbers">4</span>
 </div>
 <div class="class-item">
 <img src="/images/class/warlock-02.png" alt="">
-Tier <span class="numbers">5</span>
+T <span class="numbers">5</span>
 </div>
 <div class="class-item">
 <img src="/images/class/warlock-03.png" alt="">
-Tier <span class="numbers">6</span>
+T <span class="numbers">6</span>
 </div>
 </div>
 <div role="tabpanel" class="tab-pane" id="class-druid">
 <div class="class-item">
 <img src="/images/class/druid-01.png" alt="">
-Tier <span class="numbers">4</span>
+T <span class="numbers">4</span>
 </div>
 <div class="class-item">
 <img src="/images/class/druid-02.png" alt="">
-Tier <span class="numbers">5</span>
+T <span class="numbers">5</span>
 </div>
 <div class="class-item">
 <img src="/images/class/druid-03.png" alt="">
-Tier <span class="numbers">6</span>
+T <span class="numbers">6</span>
 </div>
 </div>
 <div role="tabpanel" class="tab-pane" id="class-paladin">
 <div class="class-item">
 <img src="/images/class/paladin-01.png" alt="">
-Tier <span class="numbers">4</span>
+T <span class="numbers">4</span>
 </div>
 <div class="class-item">
 <img src="/images/class/paladin-02.png" alt="">
-Tier <span class="numbers">5</span>
+T <span class="numbers">5</span>
 </div>
 <div class="class-item">
 <img src="/images/class/paladin-03.png" alt="">
-Tier <span class="numbers">6</span>
+T <span class="numbers">6</span>
 </div>
 </div>
 <div role="tabpanel" class="tab-pane" id="class-rogue">
 <div class="class-item">
 <img src="/images/class/rogue-01-new.png" alt="">
-Tier <span class="numbers">4</span>
+T <span class="numbers">4</span>
 </div>
 <div class="class-item">
 <img src="/images/class/rogue-02-new.png" alt="">
-Tier <span class="numbers">5</span>
+T <span class="numbers">5</span>
 </div>
 <div class="class-item">
 <img src="/images/class/rogue-03-new.png" alt="">
-Tier <span class="numbers">6</span>
+T <span class="numbers">6</span>
 </div>
 </div>
 <div role="tabpanel" class="tab-pane" id="class-mage">
 <div class="class-item">
 <img src="/images/class/mage-01.png" alt="">
-Tier <span class="numbers">4</span>
+T <span class="numbers">4</span>
 </div>
 <div class="class-item">
 <img src="/images/class/mage-02.png" alt="">
-Tier <span class="numbers">5</span>
+T <span class="numbers">5</span>
 </div>
 <div class="class-item">
 <img src="/images/class/mage-03.png" alt="">
- Tier <span class="numbers">6</span>
+ T <span class="numbers">6</span>
 </div>
 </div>
 </div>
@@ -387,10 +387,10 @@ Tier <span class="numbers">5</span>
 </section>
 <section class="section why" id="why">
 <div class="container">
-<h3 class="section-title wow pulse">Why The Burning Crusade?</h3>
+<h3 class="section-title wow pulse">为什么选择TBC版本？</h3>
 <article class="section-text wow flipInX">
-<p>The legendary patch that won many hearts. According to many players, The Burning Crusade is the best expansion in the history of World of Warcraft.</p>
-<p>Its balance between the classes, exciting dungeons & raids, unique and beautiful environments, and many interesting experiences lend to this view.</p>
+<p>通过不同论坛和投票统计。许多玩家认为燃烧的远征是魔兽世界历史上最好的资料片。</p>
+<p>它的职业平衡，令人兴奋的战场、副本、竞技场和独特而美丽的环境，以及许多有趣的经历都为这一版本增添了色彩。</p>
 </article>
 <div class="why-items">
 <div class="col wow bounceInRight">
@@ -398,56 +398,56 @@ Tier <span class="numbers">5</span>
 <img src="/images/why/why-01.png" alt="">
 <img src="/images/why/why-hov-01.png" class="hov" alt="">
 </div>
-<div class="text">Take a part in 9 raids</div>
+<div class="text">九大团队副本</div>
 </div>
 <div class="col wow bounceInRight">
 <div class="img">
 <img src="/images/why/why-02.png" alt="">
 <img src="/images/why/why-hov-02.png" class="hov" alt="">
 </div>
-<div class="text">Battle to Level 70</div>
+<div class="text">等级上限70级</div>
 </div>
 <div class="col wow bounceInLeft">
 <div class="img">
 <img src="/images/why/why-03.png" alt="">
 <img src="/images/why/why-hov-03.png" class="hov" alt="">
 </div>
-<div class="text">Implemented team PvP arena system</div>
+<div class="text">竞技场系统</div>
 </div>
 <div class="col wow bounceInLeft">
 <div class="img">
 <img src="/images/why/why-04.png" alt="">
 <img src="/images/why/why-hov-04.png" class="hov" alt="">
 </div>
-<div class="text">Flying mounts</div>
+<div class="text">飞行坐骑</div>
 </div>
 <div class="col wow bounceInUp">
 <div class="img">
 <img src="/images/why/why-05.png" alt="">
 <img src="/images/why/why-hov-05.png" class="hov" alt="">
 </div>
-<div class="text">New races Blood Elf and Draenei</div>
+<div class="text">新种族:血精灵和德莱尼</div>
 </div>
 <div class="col wow bounceInDown">
 <div class="img">
 <img src="/images/why/why-06.png" alt="">
 <img src="/images/why/why-hov-06.png" class="hov" alt="">
 </div>
-<div class="text">New battleground Eye of the Storm</div>
+<div class="text">新战场风暴之眼</div>
 </div>
 <div class="col wow bounceInUp">
 <div class="img">
 <img src="/images/why/why-07.png" alt="">
 <img src="/images/why/why-hov-07.png" class="hov" alt="">
 </div>
-<div class="text">New continent Outland</div>
+<div class="text">新大陆外域</div>
 </div>
 </div>
 </div>
 </section>
 <section class="section raids" id="raids">
 <div class="container">
-<h3 class="section-title">Take a part in Raids</h3>
+<h3 class="section-title">参加团队副本</h3>
 <div class="row">
 <div class="raid-tabs">
 
@@ -532,282 +532,282 @@ Tier <span class="numbers">5</span>
 <div class="tab-content">
 <div role="tabpanel" class="tab-pane clearfix active" id="raid-karazhan">
 <div class="place wow flip">
-<h3 class="title">Karazhan</h3>
+<h3 class="title">卡拉赞</h3>
 <img src="/images/raid/img-raid-karazhan.png" alt="">
-<div class="text">Medivh, the Last Guardian, made his home in Deadwind Pass in the bright tower of Karazhan. Though he was the greatest wizard of his day (and humanity's intended custodian), Medivh was secretly possessed by the dark spirit of Sargeras, the Destroyer of Worlds. Through Medivh, Sargeras opened the Dark Portal and allowed the orcs to wage war upon the kingdoms of Azeroth.</div>
+<div class="text">卡拉赞是魔兽世界中最受欢迎的副本之一，为燃烧的远征入门级团队副本。它属于10人副本，BOSS数目为11个，最终玛克扎尔王子掉落125等级紫装，其他BOSS掉落115等级紫装，同时馆长和玛克扎尔王子分别掉落T4手部和头部道具，可以换取120等级的T4套装部件或者123等级的S1套装部件。</div>
 </div>
 <div class="place-raids wow rotateIn">
 <div class="col">
 <img src="/images/raid/raid-attumen-the-hunsman.png" alt="">
-<p>Attument the Hunsman</p>
+<p>猎手阿图门</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-moroes.png" alt="">
-<p>Moroes</p>
+<p>莫罗斯</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-maiden-of-virtue.png" alt="">
-<p>Maiden of Virtue</p>
+<p>贞节圣女</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-opera-hall.png" alt="">
-<p>Opera Hall</p>
+<p>歌剧院</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-the-curator.png" alt="">
-<p>The Curator</p>
+<p>馆长</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-chess-event.png" alt="">
-<p>Chess Event</p>
+<p>国际象棋</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-terestian-illhoof.png" alt="">
-<p>Terestian Illhoof</p>
+<p>特雷斯坦·邪蹄</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-shade-of-aran.png" alt="">
-<p>Shade of Aran</p>
+<p>埃兰之影</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-netherspite.png" alt="">
-<p>Netherspite</p>
+<p>虚空幽龙</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-prince-malchezaar.png" alt="">
-<p>Prince Malchezaar</p>
+<p>玛克扎尔王子</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-nightbane.png" alt="">
-<p>Nightbane</p>
+<p>夜之魇</p>
 </div>
 </div>
 </div>
 <div role="tabpanel" class="tab-pane clearfix" id="raid-zulaman">
 <div class="place">
-<h3 class="title">Zul’aman</h3>
+<h3 class="title">祖阿曼</h3>
 <img src="/images/raid/img-raid-zulaman.png" alt="">
-<div class="text">Following years of battles alongside the old Horde, the troll warlord Zul'jin retired to the city of Zul'Aman, capital of the Amani trolls. There he called upon mysterious dark powers to rebuild his army. While the eyes of Azeroth focused on the fight against the Burning Legion and the expedition to Outland, treasure-seekers invaded Zul'Aman, rekindling Zul'jin's hatred of the outside world - particularly the high elves of Quel'Thalas. </div>
+<div class="text">在与老部落并肩作战多年之后，巨魔军阀祖尔金回到了阿马尼巨魔的首府祖尔曼城。在那里，他号召神秘的黑暗势力重建他的军队。当阿泽拉斯的目光集中在对抗燃烧的军团和远征外陆的时候，寻宝者入侵了祖阿曼，重新点燃了祖尔金对外界的仇恨——尤其是奎特拉斯的高等精灵。</div>
 </div>
 <div class="place-raids">
 <div class="col">
 <img src="/images/raid/raid-nalorakk.png" alt="">
-<p>Nalorakk</p>
+<p>纳洛拉克</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-akilzon.png" alt="">
-<p>Akil’zon</p>
+<p>埃基尔松</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-janalai.png" alt="">
-<p>Jan’alai</p>
+<p>加亚莱</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-halazzi.png" alt="">
-<p>Halazzi</p>
+<p>哈尔拉兹</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-hex-lord-malacrass.png" alt="">
-<p>Hex Lord Malacrass</p>
+<p>玛拉克拉斯</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-zuljin.png" alt="">
-<p>Zul’jin</p>
+<p>祖尔金</p>
 </div>
 </div>
 </div>
 <div role="tabpanel" class="tab-pane clearfix" id="raid-gruul">
 <div class="place">
-<h3 class="title">Gruul's Lair</h3>
+<h3 class="title">戈鲁尔的巢穴</h3>
 <img src="/images/raid/img-raid-gruul.png" alt="">
-<div class="text">When the infamous Dragon Aspect, Deathwing, discovered the Dark Portal and Draenor, he felt sure that few of Draenor's denizens would dare challenge the black dragonflight, so he scattered clutches of his eggs throughout the world.</div>
+<div class="text">当臭名昭著的恶龙——死亡之翼——发现了黑暗之门和德拉诺之后，他确信德拉诺的居民中很少有人敢挑战黑龙军团，所以他将自己的蛋散落在世界各地。</div>
 </div>
 <div class="place-raids">
 <div class="col">
 <img src="/images/raid/raid-high-king-mauglar.png" alt="">
-<p>High King Mauglar</p>
+<p>莫加尔大王</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-grull-the-dragonkiller.png" alt="">
-<p>Grull The Dragonkiller</p>
+<p>屠龙者格鲁尔</p>
 </div>
 </div>
 </div>
 <div role="tabpanel" class="tab-pane clearfix" id="raid-magtheridon">
 <div class="place">
-<h3 class="title">Magtheridon's Lair</h3>
+<h3 class="title">玛瑟里顿的巢穴</h3>
 <img src="/images/raid/img-raid-magtheridon.png" alt="">
-<div class="text">After the Legion invaded, Magtheridon controlled all but small pockets of Outland. Despite this, he was taken largely by surprise when Illidan and his allies conquered the Black Temple. Many believed that Magtheridon had been slain in the attack, but when Illidan discovered that Magtheridon's blood had a transformative, corrupting effect on orcs, the beaten pit lord was dragged to Hellfire Citadel.</div>
+<div class="text">在军团入侵后，玛瑟里顿控制了外域的所有领地。尽管如此，当伊利丹和他的盟友征服黑神庙时，他还是大吃一惊。许多人认为玛瑟里顿在这次攻击中被杀，但当伊利丹发现玛瑟里顿的血对兽人有变身、腐蚀的作用时，被打败的深渊领主被拖到了地狱火城堡。</div>
 </div>
 <div class="place-raids">
 <div class="col">
 <img src="/images/raid/raid-magtheridon.png" alt="">
-<p>Magtheridon</p>
+<p>玛瑟里顿</p>
 </div>
 </div>
 </div>
 <div role="tabpanel" class="tab-pane clearfix" id="raid-serpentshrine">
 <div class="place">
-<h3 class="title">Serpentshrine Cavern</h3>
+<h3 class="title">毒蛇神殿</h3>
 <img src="/images/raid/img-raid-serpentshrine-cavern.png" alt="">
-<div class="text">“Whoever controls the water, controls Outland.” <br> These are the words of Lord Illidan Stormrage to his most trusted lieutenant, Lady Vashj. Shortly after the Third War, when Illidan requested the aid of the naga, a group of naga led by Lady Vashj answered his call. Ever since, Vashj has displayed a fierce dedication to Illidan.</div>
+<div class="text">“谁控制了水，谁就控制了外域。这是伊利丹·怒风大人对他最信任的中尉瓦什姬夫人说的话。第三次战争后不久，当伊利丹请求娜迦的帮助时，一群由瓦什吉女士率领的娜迦人响应了他的请求。从那时起，瓦什吉就对伊利丹表现出了强烈的忠诚。</div>
 </div>
 <div class="place-raids">
 <div class="col">
 <img src="/images/raid/raid-hydros-the-unstable.png" alt="">
-<p>Hydros the Unstable</p>
+<p>不稳定的海度斯</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-fathom-lord-karathress.png" alt="">
-<p>Fathom - Lord Karathress</p>
+<p>深水领主卡拉瑟雷斯</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-the-lurker-below.png" alt="">
-<p>The Lurker Below</p>
+<p>鱼斯拉</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-morogrim-tidewalker.png" alt="">
-<p>Morogrim Tidewalker</p>
+<p>莫洛格里·踏潮者</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-leotheras-the-blind.png" alt="">
-<p>Leotheras the Blind</p>
+<p>盲眼者莱欧瑟拉斯</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-lady-vashj.png" alt="">
-<p>Lady Vashj</p>
+<p>瓦丝琪</p>
 </div>
 </div>
 </div>
 <div role="tabpanel" class="tab-pane clearfix" id="raid-tempest-keep">
 <div class="place">
-<h3 class="title">Tempest Keep</h3>
+<h3 class="title">风暴要塞</h3>
 <img src="/images/raid/img-raid-tempest-keep.png" alt="">
-<div class="text">The mighty Tempest Keep was created by the enigmatic naaru: sentient beings of pure energy and the sworn enemies of the Burning Legion. In addition to serving as a base of operations for the naaru, the structure itself possesses the technology to teleport through alternate dimensions, traveling from one location to another in the blink of an eye.</div>
+<div class="text">巨大的风暴要塞是由神秘的纳鲁创造的:纯能量众生和燃烧军团不共戴天的敌人。除了作为纳鲁的操作基地，该结构本身还拥有通过不同维度传送的技术，可以在眨眼间从一个地方移动到另一个地方。</div>
 </div>
 <div class="place-raids">
 <div class="col">
 <img src="/images/raid/raid-alar.png" alt="">
-<p>Al’ar</p>
+<p>奥的灰烬</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-high-astromancer-solarian.png" alt="">
-<p>High Astromancer Solarian</p>
+<p>大星术师索兰莉安</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-void-reaver.png" alt="">
-<p>Void Reaver</p>
+<p>空灵机甲</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-kaelthas-sunstrider.png" alt="">
-<p>Kael’thas Sunstrider</p>
+<p>凯尔萨斯·逐日者</p>
 </div>
 </div>
 </div>
 <div role="tabpanel" class="tab-pane clearfix" id="raid-mount-hyjal">
 <div class="place">
-<h3 class="title">The Battle for Mount Hyjal</h3>
+<h3 class="title">海加尔山</h3>
 <img src="/images/raid/img-raid-the-battle-for-mount-hyjal.png" alt="">
-<div class="text">Deep within the Caverns of Time, the brooding dragon Nozdormu has awakened. Since the world was young, the bronze dragonflight has safeguarded the winding labyrinth, monitoring the shifting timeways to ensure that the delicate balance of time is upheld.</div>
+<div class="text">在时间之穴的深处，沉睡的巨龙诺兹多姆苏醒了。在这个世界还很年轻的时候，青铜龙族就保护了这个蜿蜒的迷宫，监视着不断变化的时间路径，以确保时间的微妙平衡得以维持。</div>
 </div>
 <div class="place-raids">
 <div class="col">
 <img src="/images/raid/raid-rage-winterchill.png" alt="">
-<p>Rage Winterchill</p>
+<p>雷基·冬寒</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-azgalor.png" alt="">
-<p>Azgalor</p>
+<p>阿兹加洛</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-anetheron.png" alt="">
-<p>Anetheron</p>
+<p>安纳塞隆</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-archimonde.png" alt="">
-<p>Archimonde</p>
+<p>阿克蒙德</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-kazrogal.png" alt="">
-<p>Kaz’rogal</p>
+<p>卡兹洛加</p>
 </div>
 </div>
 </div>
 <div role="tabpanel" class="tab-pane clearfix" id="raid-black-temple">
 <div class="place">
-<h3 class="title">Black Temple</h3>
+<h3 class="title">黑暗神殿</h3>
 <img src="/images/raid/img-raid-black-temple.png" alt="">
-<div class="text">Long ago on Draenor, the Temple of Karabor was the center of draenei worship. But the devout priests who prayed there are long dead, slaughtered by marauding, demonically corrupted orcs. In the massacre's aftermath, the warlocks of the Shadow Council seized the structure and bestowed upon it a new name: the Black Temple.</div>
+<div class="text">黑暗神殿，是著名游戏《魔兽世界 燃烧的远征》中的副本。剧情是德莱尼在神殿的幸福生活开始，后遭兽人和深渊领主占领了神殿，而原来的德莱尼人从此流离失所。阿卡玛就是在长期的流浪和战斗中，由德莱尼的外形变成了现在失落者的外形，悄悄等待英雄的到来。主要首领有高阶督军纳因图斯、苏普雷姆斯等。</div>
 </div>
 <div class="place-raids">
 <div class="col">
 <img src="/images/raid/raid-high-warlord-najentus.png" alt="">
-<p>High Warlord Naj’entus</p>
+<p>高阶督军纳因图斯</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-reliquary-of-souls.png" alt="">
-<p>Reliquary of Souls</p>
+<p>灵魂之匣</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-supremus.png" alt="">
-<p>Supremus</p>
+<p>苏普雷姆斯</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-mother-shahraz.png" alt="">
-<p>Mother Shahraz</p>
+<p>莎赫拉丝主母</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-shade-of-akama.png" alt="">
-<p>Shade of Akama</p>
+<p>阿卡玛之影</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-the-illidari-council.png" alt="">
-<p>The Illidari Council</p>
+<p>伊利达雷议会</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-teron-gorefiend.png" alt="">
-<p>Teron Gorefiend</p>
+<p>塔隆·血魔</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-illidan-stormrage.png" alt="">
-<p>Illidan Stormrage</p>
+<p>伊利丹·怒风</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-gurtogg-bloodboil.png" alt="">
-<p>Gurtogg Bloodboil</p>
+<p>古尔图格·血沸</p>
 </div>
 </div>
 </div>
 <div role="tabpanel" class="tab-pane clearfix" id="raid-sunwell">
 <div class="place">
-<h3 class="title">The Sunwell</h3>
+<h3 class="title">太阳之井高地</h3>
 <img src="/images/raid/img-raid-the-sunwell.png" alt="">
-<div class="text">For millennia, the mystical pool of energy known as the Sunwell fueled the potent magic of the exiled high elves. Now, the remnants of this ancient fountain have become the Burning Legion's latest target as the demons prepare to summon their commander, Kil'jaeden, with the Sunwell's energy.</div>
+<div class="text">几千年来，被称为太阳之井的神秘能量池为被流放的高等精灵提供了强大的魔法。现在，这个古老喷泉的残余已经成为燃烧军团的最新目标，恶魔们正准备用太阳之井的能量召唤他们的指挥官基尔加丹。</div>
 </div>
 <div class="place-raids">
 <div class="col">
 <img src="/images/raid/raid-kalecgos.png" alt="">
-<p>Kalecgos</p>
+<p>卡雷苟斯</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-eredar-twins.png" alt="">
-<p>Eredar Twins</p>
+<p>艾瑞达双子</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-brutallus.png" alt="">
-<p>Brutallus</p>
+<p>布鲁塔卢斯</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-muru.png" alt="">
-<p>Mu’ru</p>
+<p>穆鲁</p>
 </div>
 <div class="col">
 <img src="/images/raid/raid-felmyst.png" alt="">
-<p>Felmyst</p>
+<p>菲米丝</p>
  </div>
 <div class="col">
 <img src="/images/raid/raid-kiljaeden.png" alt="">
-<p>Kil’jaeden</p>
+<p>基尔加丹</p>
 </div>
 </div>
 </div>
@@ -823,18 +823,18 @@ Tier <span class="numbers">5</span>
 <div class="section-panel"> <div class="container">  
 <div class="form-content registration-content"> 
 
-<h4 class="section-title text-center">Log In to Your Account</h4> 
+<h4 class="section-title text-center">登录到你的帐户</h4> 
 <div class="section-content wow lightSpeedIn animated" style="visibility: visible; animation-name: lightSpeedIn;"> 
 <form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post" id="login_form">
 <div class="row">
 <div class="form-group form-group-lg">
-<label>Username:</label>
+<label>用户名：</label>
 <div class="form-control">
 <input type="text" name="login_username" id='customID1'>
 </div>
 </div>
 <div class="form-group form-group-lg">
-<label>Password:</label>
+<label>密码：</label>
 <div class="form-control">
 <input type="password" name="login_password">
 </div>
@@ -843,14 +843,14 @@ Tier <span class="numbers">5</span>
  <div class="row"> 
 
  <div class="form-group text-left">
- <input type="submit" name="login" value="Log in">
+ <input type="submit" name="login" value="登录">
  <!--<button type="submit" class="btn btn-yellow">Log in</button> -->
  </div>
  </div>
  <div class="row text-center"> 
  <div class="form-link">
  
- <a href="" data-target="betakey-content" class="showFormContent">I want to Register a New Account</a>
+ <a href="" data-target="betakey-content" class="showFormContent">我想注册一个新账户</a>
  </div>
  </div>
  </form> 
@@ -859,47 +859,58 @@ Tier <span class="numbers">5</span>
  
  <div class="form-content betakey-content active"> 
  
- <h3 class="section-title text-center wow pulse" style="visibility: visible; animation-name: pulse;">Register an account</h3>
+ <h3 class="section-title text-center wow pulse" style="visibility: visible; animation-name: pulse;">注册账户</h3>
 <article class="section-text text-center wow flipInY" style="visibility: visible; animation-name: flipInY;"> 
-<p>The main task of the open beta testing is to identify as many bugs as possible, so that we can fix them before the release. In order to participate in the open beta testing, please register an account below. <br> We kindly request that you only sign up for the open beta testing if you intend to fully participate in bug testing.</p></article> 
- <h4 class="section-title text-center">I want to Register an account</h4> 
+<p>公开beta测试的主要任务是识别尽可能多的bug，以便我们可以在发布之前修复它们。为了参加公开测试，请在下面注册一个账号。 <br> 如果您想要完全参与bug测试，我们恳请您注册账号参与测试。</p></article> 
+ <h4 class="section-title text-center">我想注册一个账户</h4> 
+ <!--start-->
+ <div id="tips" class="text-center">
+ </div>
+ <!--end-->
  <div class="section-content wow lightSpeedIn" style="visibility: visible; animation-name: lightSpeedIn;"> 
- <form action=""> 
+ <form action="/includes/scripts/register.php" id=info method="post"> 
 <div class="row">
 <div class="form-group">
-<label>Your E-mail:</label>
+<label>E-mail：</label>
 <div class="form-control">
-<input type="text" name="Account[email]">
+<input type="text" name="email">
 </div>
 </div>
 <div class="form-group">
-<label>Username:</label>
+<label>用户名：</label>
 <div class="form-control">
-<input type="text" name="Account[username]">
+<input type="text" name="username">
+</div>
+</div>
+<div type="hidden">
+<input type="hidden" name="raf" value="0">
+</div>
+</div>
+<div type="hidden">
+<input type="hidden" name="register" value="true" value="0">
+</div>
+<div class="form-group">
+<label>密码：</label>
+<div class="form-control">
+<input type="password" name="password">
 </div>
 </div>
 <div class="form-group">
-<label>Password:</label>
+<label>确认密码：</label>
 <div class="form-control">
-<input type="password" name="Account[password]">
-</div>
-</div>
-<div class="form-group">
-<label>Confirm Password:</label>
-<div class="form-control">
-<input type="password" name="Account[password2]">
+<input type="password" name="password_repeat">
 </div>
 </div>
 </div>
  <div class="row">
 
- <div class="form-group text-left"> 
- <button type="submit" class="btn btn-yellow">Sign Up</button> 
+ <div class="form-group text-center"> 
+ <button type="button" name="subInfo" id="subInfo" class="btn btn-yellow">注册</button> 
  </div>
  </div>
  <div class="row text-center">
  <div class="form-link">
- <a href="" data-target="registration-content" class="showFormContent">I already have an Account</a>
+ <a href="" data-target="registration-content" class="showFormContent">我已经有一个账户</a>
  </div>
  </div>
  </form> 
@@ -908,7 +919,7 @@ Tier <span class="numbers">5</span>
  </div>
  </div>
  
- <div class="copyrights"> <div class="container"> <div class="go-forum text-center"><a href="" class="btn">Go to Forum</a></div><div class="row"> <div class="copy"> © 2019 Gaming portal <a href="">Nefelin-WoW.Com</a> </div><div class="u wow fadeInUp" style="visibility: hidden; animation-name: none;"> </div></div></div></div></section> </footer>
+ <div class="copyrights"> <div class="container"> <div class="go-forum text-center"><a href="" class="btn">前往论坛</a></div><div class="row"> <div class="copy"> © 2021 时光回溯 <a href="">tbcstar.com</a> </div><div class="u wow fadeInUp" style="visibility: hidden; animation-name: none;"> </div></div></div></div></section> </footer>
 
 
 <script src="/css/js/jquery-2.1.0.min.js" type="text/javascript"></script>
@@ -918,7 +929,37 @@ Tier <span class="numbers">5</span>
 <script src="/css/js/jquery.fancybox-media.js" type="text/javascript"></script>
 <script src="/css/js/wow.min.js" type="text/javascript"></script>
 <script src="/css/js/tab.js" type="text/javascript"></script>
-<script src="https://unsimpleworld.com/portfolio/html-preview/blackrock-landing-page-world-of-warcraft/js/custom.js" type="text/javascript"></script>
+<script src="/javascript/custom.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#subInfo").click(function(){
+        $("#subInfo").text("正在注册中...");
+        $("#subInfo").attr("disabled","true");
+        $.post("/includes/scripts/register.php",$('#info').serialize(),function(data){
+            var data=data.trim();
+            console.log(data);
+            if(data=="1"){
+                var r=confirm("注册成功");
+                if(r==true){
+                    window.location.href="/?p=account"
+                }else{
+                    $("#subInfo").text("注册");
+                    $("#subInfo").attr("disabled","false");
+                    return;
+                }
+            }else{
+                $("#subInfo").text("注册");
+                $("#subInfo").attr("disabled","false");
+                document.getElementById("tips").innerHTML = data;
+            };
+        });
+  });
+});
+
+</script>
+
+
 
 <?php } ?>
 

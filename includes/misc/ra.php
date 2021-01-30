@@ -16,6 +16,6 @@ function sendRA($command,$ra_user,$ra_pass,$server,$realm_port)
 		fclose($telnet);
 	}
 	else
-		die('Connection problems...Aborting');
+		die('连接问题...正在断开');
 }
 ?>

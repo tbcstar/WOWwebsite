@@ -54,7 +54,7 @@ if($_POST['action']=='getMinicart')
 	
 	if(!isset($_SESSION[$_POST['cart']]))
 	{
-		echo "<b>Show Cart:</b> 0 Items (0 ".$curr.")";
+		echo "<b>显示购物车:</b> 0 物品 (0 ".$curr.")";
 		exit();
 	}
 	
@@ -72,7 +72,7 @@ if($_POST['action']=='getMinicart')
 			$totalPrice = $totalPrice + ( $_SESSION[$_POST['cart']][$entry]['quantity'] * $row['price'] );
 	  }
 
-	echo "<b>Show Cart:</b> ".$num." Items (".$totalPrice." ".$curr.")";
+	echo "<b>显示购物车:</b> ".$num." 物品 (".$totalPrice." ".$curr.")";
 }
 
 if($_POST['action']=='saveQuantity') 
@@ -94,7 +94,7 @@ if($_POST['action']=='checkout')
 	
 	if(isset($_SESSION['donateCart'])) 
 	{
-	 #####Donation Cart
+	 #####捐赠购物车
 	 foreach($_SESSION['donateCart'] as $entry => $value) 
 	 {
 		$result = mysql_query("SELECT price FROM shopitems WHERE entry='".$entry."' AND in_shop='donate'");
@@ -107,7 +107,7 @@ if($_POST['action']=='checkout')
 	
 			
 	  if(account::hasDP($_SESSION['cw_user'],$totalPrice)==FALSE)
-		  die("You do not have enough ".$GLOBALS['donation']['coins_name']."!");
+		  die("你的积分不足".$GLOBALS['donation']['coins_name']."!");
 
 	  $host = $GLOBALS['realms'][$values[1]]['host'];
 	  $rank_user = $GLOBALS['realms'][$values[1]]['rank_user'];
@@ -123,9 +123,9 @@ if($_POST['action']=='checkout')
 			while($num>0) 
 			{
 				if($num>12) 
-				$command = "send items ".character::getCharname($values[0],$values[1])." \"Your requested item\" \"Thanks for supporting us!\" ".$entry.":12 ";
+				$command = "send items ".character::getCharname($values[0],$values[1])." \"您购买的物品\" \"感谢您对我们的支持！\" ".$entry.":12 ";
 				else
-				$command = "send items ".character::getCharname($values[0],$values[1])." \"Your requested item\" \"Thanks for supporting us!\" ".$entry.":".$num." ";
+				$command = "send items ".character::getCharname($values[0],$values[1])." \"您购买的物品\" \"感谢您对我们的支持！\" ".$entry.":".$num." ";
 			 shop::logItem("donate",$entry,$values[0],account::getAccountID($_SESSION['cw_user']),$values[1],$num);
 			 sendRA($command,$rank_user,$rank_pass,$host,$ra_port);	
 			 
@@ -135,7 +135,7 @@ if($_POST['action']=='checkout')
 		  } 
 		  else 
 		  {
-		    $command = "send items ".character::getCharname($values[0],$values[1])." \"Your requested item\" \"Thanks for supporting us!\" ".$entry.":".$_SESSION['donateCart'][$entry]['quantity']." ";
+		    $command = "send items ".character::getCharname($values[0],$values[1])." \"您购买的物品\" \"感谢您对我们的支持！\" ".$entry.":".$_SESSION['donateCart'][$entry]['quantity']." ";
 			shop::logItem("donate",$entry,$values[0],account::getAccountID($_SESSION['cw_user']),$values[1],$_SESSION['donateCart'][$entry]['quantity']);
 		    sendRA($command,$rank_user,$rank_pass,$host,$ra_port);	
 		  }
@@ -148,7 +148,7 @@ if($_POST['action']=='checkout')
    
    if(isset($_SESSION['voteCart'])) 
    {
-	 #####Donation Cart
+	 #####捐赠购物车
 	 foreach($_SESSION['voteCart'] as $entry => $value) 
 	 {
 		$result = mysql_query("SELECT price FROM shopitems WHERE entry='".$entry."' AND in_shop='vote'");
@@ -160,7 +160,7 @@ if($_POST['action']=='checkout')
 	  }
 	  
 	  if(account::hasVP($_SESSION['cw_user'],$totalPrice)==FALSE)
-		  die("You do not have enough Vote Points!");
+		  die("你没有足够的投票积分！");
 
 	  $host = $GLOBALS['realms'][$values[1]]['host'];
 	  $rank_user = $GLOBALS['realms'][$values[1]]['rank_user'];
@@ -176,9 +176,9 @@ if($_POST['action']=='checkout')
 			while($num>0) 
 			{
 				if($num>12) 
-				$command = "send items ".character::getCharname($values[0],$values[1])." \"Your requested item\" \"Thanks for supporting us!\" ".$entry.":12 ";
+				$command = "send items ".character::getCharname($values[0],$values[1])." \"您购买的物品\" \"感谢您对我们的支持！\" ".$entry.":12 ";
 				else
-					$command = "send items ".character::getCharname($values[0],$values[1])." \"Your requested item\" \"Thanks for supporting us!\" ".$entry.":".$num." ";
+					$command = "send items ".character::getCharname($values[0],$values[1])." \"您购买的物品\" \"感谢您对我们的支持！\" ".$entry.":".$num." ";
 				 shop::logItem("vote",$entry,$values[0],account::getAccountID($_SESSION['cw_user']),$values[1],$num);	
 		         sendRA($command,$rank_user,$rank_pass,$host,$ra_port);	
 					$num = $num - 12;
@@ -187,7 +187,7 @@ if($_POST['action']=='checkout')
 		  } 
 		  else 
 		  {
-		    $command = "send items ".character::getCharname($values[0],$values[1])." \"Your requested item\" \"Thanks for supporting us!\" ".$entry.":".$_SESSION['voteCart'][$entry]['quantity']." ";
+		    $command = "send items ".character::getCharname($values[0],$values[1])." \"您购买的物品\" \"感谢您对我们的支持！\" ".$entry.":".$_SESSION['voteCart'][$entry]['quantity']." ";
 			shop::logItem("vote",$entry,$values[0],account::getAccountID($_SESSION['cw_user']),$values[1],$_SESSION['voteCart'][$entry]['quantity']); 
 		    sendRA($command,$rank_user,$rank_pass,$host,$ra_port);	
 		  }

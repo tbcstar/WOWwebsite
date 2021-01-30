@@ -13,12 +13,12 @@ $start = ($page - 1) * $per_page;
 if(isset($_SESSION['cw_staff']) && !isset($_SESSION['cw_admin']))
 {
 	if($_SESSION['cw_staff_level'] < $GLOBALS['adminPanel_minlvl'])
-		exit('Hey! You shouldn\'t be here!');
+		exit('嘿!你不应该出现在这里!');
 }
 ?>
-<div class="box_right_title">Admin log</div>
+<div class="box_right_title">管理日志</div>
 <table class="center">
-       <tr><th>Date</th><th>User</th><th>Action</th><th>IP</th></tr>
+       <tr><th>日期</th><th>用户</th><th>行为</th><th>IP</th></tr>
        <?php
 					        $server->selectDB('webdb');
 							$result = mysql_query("SELECT * FROM admin_log ORDER BY id DESC LIMIT ".$start.",".$per_page);
@@ -39,7 +39,7 @@ if(isset($_SESSION['cw_staff']) && !isset($_SESSION['cw_admin']))
 								if($page>1)
 								{
 								   $prev = $page-1;
-								   echo '<a href="?p=logs&s=admin&page='.$prev.'" title="Previous">Previous</a> &nbsp;';
+								   echo '<a href="?p=logs&s=admin&page='.$prev.'" title="Previous">上一页</a> &nbsp;';
 								}
 								for($x=1; $x<=$pages; $x++)
 								{
@@ -52,7 +52,7 @@ if(isset($_SESSION['cw_staff']) && !isset($_SESSION['cw_admin']))
 								if($page<$x - 1)
 								{
 								   $next = $page+1;
-								   echo '&nbsp; <a href="?p=logs&s=admin&page='.$next.'" title="Next">Next</a> &nbsp; &nbsp;';
+								   echo '&nbsp; <a href="?p=logs&s=admin&page='.$next.'" title="Next">下一页</a> &nbsp; &nbsp;';
 								}
 							}
 						?>

@@ -10,30 +10,30 @@ $service_desc = array(
 	'race' 
 	=> 
 	'<ul>
-		<li>You can select a new character race only from those in the same faction that have the character’s class available. You cannot change a characters class.</li>
-		<li>A character’s current home city reputation level will switch values with their new home city and their home city racial mounts will convert to those of their new race.</li>
-		<li>A realm transfer is not included in a race change.</li>
+		<li>您可以根据您的阵营选择对应种族进行改变，但不能改变职业。</li>
+		<li>根据您选择的新种族，您的声望、种族技能和出生地都会发生变化。</li>
+		<li>服务器的迁移不包含新种族更改。</li>
 	</ul>'
 ,
 	'name' 
 	=> 
 	'<ul>
-		<li>A name change can not be reversed once completed, except by a second name change operation (subject to the same costs and limitations).</li>
+		<li>除非要求更改名称，否则不能更改名称(费用和限制相同)。</li>
 	</ul>'
 ,
 	'appearance' 
 	=> 
 	'<ul>
-		<li>This service lets you change your character’s gender, face, hair and skin color, hairstyle, name, and other cosmetic features determined by their race and gender combination. You cannot, however, change your character’s race or class.</li>
-		<li>If you change the character’s name during this process, the name you choose must be available on the character’s realm.</li>
-		<li>A Character Appearance Change cannot be reversed once completed.</li>
+		<li>这项服务允许你改变你的性别，你的脸，头发，肤色，发型，名字和其他由性别和种族组合决定的特征。然而，你不能改变你角色的种族。</li>
+		<li>如果在此过程中更改角色的名称，则您选择的名称将在创建角色的服务器中可用。</li>
+		<li>除非要求对外观进行新的修改(费用和限制相同)，否则外观的修改一旦完成就不能逆转。</li>
 	</ul>'
 ,
 	'faction' 
 	=> 
 	'<ul>
-		<li>During this process, you will select a new character race from the opposite-faction races that have the character’s class available. You cannot change a character’s class.</li>
-		<li>A realm transfer is not included in a faction change.</li>
+		<li>在这个过程中，你必须选择一个与前一个阵营相反的种族。你不能改变你角色的等级。</li>
+		<li>服务器的变化不包括在阵营的变化中。</li>
 	</ul>'
 	
 	,
@@ -41,14 +41,14 @@ $service_desc = array(
 	'unstuck' 
 	=> 
 	'<ul>
-		<li>test</li>
-		<li>test</li>
+		<li>测试</li>
+		<li>测试</li>
 	</ul>'
 			
 );
 
 if($GLOBALS['service'][$service]['status']!="TRUE") 
-	echo "This page is currently unavailable.";
+	echo "此页面目前不可用。";
 else
 {
 ?>
@@ -62,49 +62,49 @@ else
 <a href="?p=ucp">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-01.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-01.png" alt="" /> </div>
-<p>Account</p>
+<p>账户</p>
 </a>
 </li>
 <li>
 <a href="?p=shop">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-02.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-02.png" alt="" /> </div>
-<p>Shop</p>
+<p>商城</p>
 </a>
 </li>
 <li>
 <a href="?p=donate">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-03.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-03.png" alt="" /> </div>
-<p>Buy coins</p>
+<p>捐赠充值</p>
 </a>
 </li>
 <li>
 <a class="active" href="?p=characters">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-04.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-04.png" alt="" /> </div>
-<p>Characters</p>
+<p>角色</p>
 </a>
 </li>
 <li>
 <a href="#">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-05.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-05.png" alt="" /> </div>
-<p>Find character</p>
+<p>查找角色</p>
 </a>
 </li>
 <li>
 <a href="?p=stat">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-06.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-06.png" alt="" /> </div>
-<p>Statistics</p>
+<p>统计</p>
 </a>
 </li>
 <li>
 <a href="?p=vote">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-07.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-07.png" alt="" /> </div>
-<p>Vote</p>
+<p>投票</p>
 </a>
 </li>
 </ul>
@@ -120,30 +120,30 @@ else
 <div class="head-content">
 <div class="breadcrumbs">
 <a href="?p=ucp">
-Control Panel </a>
+控制面板 </a>
 <span class="ico-raquo"></span>
 <a href="?p=shop">
-Shop </a>
+商城 </a>
 <span class="ico-raquo"></span>
 <a href="?p=work_list">
-Services </a>
+服务项目 </a>
 <span class="ico-raquo"></span>
 <div>
 <?php echo $service_title; ?> </div>
 </div>
 <div class="realm_picker">
 <div class="">
-Actual realm: </div>
-<a href="#">
-Nefelin-WoW </a>
+所在服务器： </div>
+<a href="game.tbcstar.com">
+时光回溯 </a>
 </div>
 </div>
 <div class="content-box standart">
 <div class="content-holder">
 <div class="content-frame">
 <div class="content">
-<h2>Select character</h2>
-<strong class="title">Your characters on realm <span>Nefelin-WoW </span>:</strong>
+<h2>选择角色</h2>
+<strong class="title">你在服务器上的角色<span>时光回溯 </span>:</strong>
 <style>
 h4 {
     margin: 1px;
@@ -197,19 +197,19 @@ span.attention, span.notice, span.alert, span.download, span.approved, span.medi
 <table class="table">
 <tr>
 <th>img</th>
-<th>Name</th>
-<th>Level</th>
-<th>Race</th>
-<th>Class</th>
+<th>名字</th>
+<th>等级</th>
+<th>种族</th>
+<th>职业</th>
 </tr>
 
-<div class="box_two_title">Confirm <?php echo $service_title; ?></div>
+<div class="box_two_title">确认 <?php echo $service_title; ?></div>
 <?php
 if($GLOBALS['service'][$service]['price']==0) 
-      	echo '<span class="attention">'.$service_title.' is free of charge.</span>';
+      	echo '<span class="attention">'.$service_title.' 是免费的。</span>';
 else
 { ?>
-<span class="attention"><?php echo $service_title; ?> costs 
+<span class="attention"><?php echo $service_title; ?> 费用 
 <?php 
 echo $GLOBALS['service'][$service]['price'].' '.website::convertCurrency($GLOBALS['service'][$service]['currency']); ?></span>
 <?php 
@@ -253,7 +253,7 @@ elseif($GLOBALS['service'][$service]['currency']=="dp")
 
  <!--<td><?php echo $realm; ?>
 					<?php if($row['online']==1)
-                   echo "<br/><span class='red_text'>Please log out before trying to unstuck.</span>";?>
+                   echo "<br/><span class='red_text'>在尝试解卡之前，请先退出游戏。</span>";?>
                 </td>-->
 
 </table>
@@ -262,7 +262,7 @@ elseif($GLOBALS['service'][$service]['currency']=="dp")
 
 
 &nbsp;
-    <h4>Conditions and Disclaimers</h4>
+    <h4>条件和免责声明</h4>
     <?php
 	echo $service_desc[$service];
 	?>

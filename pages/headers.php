@@ -8,7 +8,7 @@
 <link rel="stylesheet" type="text/css" href="/themes/cp_nefelin/css/animate.css" /> 
 <link rel="stylesheet" type="text/css" href="/themes/cp_nefelin/css/style.css" /> 
 <link rel="stylesheet" type="text/css" href="/themes/cp_nefelin/css/armory.css" /> 
-<link rel="stylesheet" href="https://malihu.github.io/custom-scrollbar/jquery.mCustomScrollbar.min.css">
+<link rel="stylesheet" href="/css/jquery.mCustomScrollbar.min.css">
 <script type="text/javascript" src="javascript/jquery.js"></script>
 <script type="text/javascript" src="javascript/main.js"></script>
 </head>
@@ -17,13 +17,13 @@
 <header id="header">
 <div class="container">
 <nav class="navbar clearfix" role="navigation">
-<div class="languages wow lightSpeedIn">
+<!--<div class="languages wow lightSpeedIn">
 <div class="caret"></div>
 <a class="en active" href="/en"></a><a class="ru" href="/ru"></a>
-</div>
+</div>-->
 <ul class="nav navbar-nav clearfix wow flip" style="display:inline !important;">
-<li style="display:inline"><a href="./">Site</a></li>
-<li><a href="#" target="_blank">Forum</a></li>
+<li style="display:inline"><a href="./">网站</a></li>
+<li><a href="forum.tbcstar.com" target="_blank">论坛</a></li>
 </ul>
 <div class="brand">
 <a class="logo" href="./">

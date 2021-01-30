@@ -6,7 +6,7 @@
 <div id="leftcontent">
 <div class="box_two">
 
-<div class='box_two_title'>Forgot Password</div>
+<div class='box_two_title'>忘记密码</div>
 <?php 
 account::isLoggedIn();
 if (isset($_POST['forgotpw'])) 
@@ -14,18 +14,18 @@ if (isset($_POST['forgotpw']))
 
 if(isset($_GET['code']) || isset($_GET['account'])) {
  if (!isset($_GET['code']) || !isset($_GET['account']))
-	 echo "<b class='red_text'>Link error, one or more required values are missing.</b>";
+	 echo "<b class='red_text'>链接错误，缺少一个或多个必需的值。</b>";
  else 
  {
 	 connect::selectDB('webdb');
 	 $code = mysql_real_escape_string($_GET['code']); $account = mysql_real_escape_string($_GET['account']);
 	 $result = mysql_query("SELECT COUNT('id') FROM password_reset WHERE code='".$code."' AND account_id='".$account."'");
 	 if (mysql_result($result,0)==0)
-		 echo "<b class='red_text'>The values specified does not match the ones in the database.</b>";
+		 echo "<b class='red_text'>指定的值与数据库中的值不匹配。</b>";
 	 else 
 	 {
 		 $newPass = RandomString();
-		 echo "<b class='yellow_text'>Your new password is: ".$newPass." <br/><br/>Please sign in and change your password.</b>";
+		 echo "<b class='yellow_text'>您的新密码是: ".$newPass." <br/><br/>请登录并更改您的密码。</b>";
 		 mysql_query("DELETE FROM password_reset WHERE account_id = '".$account."'");
 		 $account_name = account::getAccountName($account);
 		 
@@ -36,16 +36,16 @@ if(isset($_GET['code']) || isset($_GET['account'])) {
  }
 }
 if (!isset($ignoreForgotForm)) { ?> 
-To reset your password, please type your username & the Email address you registered with. An email will be sent to you, containing a link to reset your password. <br/><br/>
+要重置密码，请输入您的用户名和注册的电子邮件地址。您将收到一封包含重置密码链接的电子邮件。<br/><br/>
 
 <form action="?p=forgotpw" method="post">
 <table width="80%">
     <tr>
-         <td align="right">Username:</td> 
+         <td align="right">用户名：</td> 
          <td><input type="text" name="forgot_username" /></td>
     </tr>
     <tr>
-         <td align="right">Email:</td> 
+         <td align="right">E-mail:</td> 
          <td><input type="text" name="forgot_email" /></td>
     </tr>
     <tr>

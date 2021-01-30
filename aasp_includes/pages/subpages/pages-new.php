@@ -11,17 +11,17 @@ if(isset($_POST['newpage'])) {
 		mysql_query("INSERT INTO custom_pages VALUES ('','".$name."','".$filename."','".$content."',
 		'".date("Y-m-d H:i:s")."')");
 
-		echo "<h3>The page was successfully created.</h3> 
+		echo "<h3>页面已成功创建。</h3> 
 		<a href='".$GLOBALS['website_domain']."?p=".$filename."' target='_blank'>View Page</a><br/><br/>";
 	}
 } ?>
-<div class="box_right_title"><?php echo $page->titleLink(); ?> &raquo; New page</div>
+<div class="box_right_title"><?php echo $page->titleLink(); ?> &raquo; 新建页面</div>
 <form action="?p=pages&s=new" method="post">
-Name <br/>
+名称 <br/>
 <input type="text" name="newpage_name"><br/>
-Filename <i>(This is what the ?p=FILENAME will refer to. Eg. ?p=connect where Filename is 'connect')<br/>
+文件名 <i>(This is what the ?p=FILENAME will refer to. Eg. ?p=connect where Filename is 'connect')<br/>
 <input type="text" name="newpage_filename"><br/>
-Content<br/>
+内容<br/>
 <textarea cols="77" rows="14" id="wysiwyg" name="newpage_content">
 <?php if(isset($_POST['newpage_content'])) { echo $_POST['newpage_content']; } ?></textarea>    <br/>
-<input type="submit" value="Create" name="newpage">
+<input type="submit" value="创建" name="newpage">

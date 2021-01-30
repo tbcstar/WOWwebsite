@@ -48,7 +48,7 @@ if (isset($_POST['siteid']))
 		echo $row['url'];
 	}
 	else
-		die("Error!");
+		die("错误！");
 }
 
 ?>

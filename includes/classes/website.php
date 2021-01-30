@@ -1,6 +1,6 @@
 <?php
 ########################
-## Scripts containing website functions will be added here. News for example.
+## 包含网站功能的脚本将在这里添加。例如新闻。
 #######################
 
 class website {
@@ -8,7 +8,7 @@ class website {
 	public static function getNews() 
 	{
 		if ($GLOBALS['news']['enable']==true) {
-			echo '<div class="box_two_title">Latest News</div>';
+			echo '<div class="box_two_title">最新新闻</div>';
 		
 		if (cache::exists('news')==TRUE) 
 				cache::loadCache('news');
@@ -18,7 +18,7 @@ class website {
 			
 		    $result = mysql_query("SELECT * FROM news ORDER BY id DESC LIMIT ".$GLOBALS['news']['maxShown']);
 			if (mysql_num_rows($result)==0) 
-				echo 'No news was found';
+				echo '没有发现任何新闻';
 			else 
 			{
 				$output = NULL;
@@ -70,20 +70,20 @@ class website {
 						$commentsNum = mysql_query("SELECT COUNT(id) FROM news_comments WHERE newsid='".$row['id']."'");
 						 
 						if($GLOBALS['news']['enableComments']==TRUE) 
-							 $comments = '| <a href="?p=news&amp;newsid='.$row['id'].'">Comments ('.mysql_result($commentsNum,0).')</a>';
+							 $comments = '| <a href="?p=news&amp;newsid='.$row['id'].'">评论 ('.mysql_result($commentsNum,0).')</a>';
 						  else 
 							 $comments = '';
 						 
 						echo $newsPT2 = '
 						<br/><br/><br/>
-						<i class="gray_text"> Written by '.$row['author'].' | '.$row['date'].' '.$comments.'</i>
+						<i class="gray_text"> 作者 '.$row['author'].' | '.$row['date'].' '.$comments.'</i>
 						</td> 
 						</tr>
 					    </table>';
 						$output .= $newsPT2;  
 						unset($newsPT2);			
 				}
-					echo '<hr/><a href="?p=news">View older news...</a>';
+					echo '<hr/><a href="?p=news">查看往期新闻...</a>';
 					cache::buildCache('news',$output);
 			} 
 		} 
@@ -137,7 +137,7 @@ class website {
 		connect::selectDB('webdb');
 		$result = mysql_query("SELECT * FROM votingsites ORDER BY id DESC");
 		if (mysql_num_rows($result)==0) 
-			buildError("Couldnt fetch any voting links from the database. ".mysql_error());
+			buildError("无法从数据库中获取任何投票链接。".mysql_error());
 		else
 		{ 
 			while($row = mysql_fetch_assoc($result)) 
@@ -197,9 +197,9 @@ class website {
 	
 	public static function sendEmail($to,$from,$subject,$body) 
 	{
-		$headers  = 'MIME-Version: 1.0' . "\r\n";
-        $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-		$headers .= 'From: '.$from . "\r\n";
+		$headers  = 'MIME版本：1.0' . "\r\n";
+        $headers .= '内容类型：text/html; charset=iso-8859-1' . "\r\n";
+		$headers .= '来自：'.$from . "\r\n";
 		
 		mail($to,$subject,$body,$headers);
 	}
@@ -209,7 +209,7 @@ class website {
 		if($currency=='dp') 
 			return $GLOBALS['donation']['coins_name'];
 		elseif($currency=='vp') 
-			return "Vote Points";
+			return "投票积分";
 	}
 }
 

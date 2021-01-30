@@ -4,13 +4,13 @@ if(!isset($_SESSION))
 
 if(isset($_SESSION['cw_staff']) && !isset($_SESSION['cw_staff_id']))
 {
-	exit('Seems like you\'re missing 1 or more sessions. You\'ve been logged out due to security reasons.');	
+	exit('似乎缺少一个或多个会话。 由于安全原因，您已断开连接。');	
 	session_destroy();
 }
 
 if(isset($_SESSION['cw_admin']) && !isset($_SESSION['cw_admin_id']))
 {
-	exit('Seems like you\'re missing 1 or more sessions. You\'ve been logged out due to security reasons.');	
+	exit('似乎缺少一个或多个会话。 由于安全原因，您已断开连接。');	
 	session_destroy();
 }
 	
@@ -72,11 +72,11 @@ class server
 		$fp = fsockopen($row['host'], $row['port'], $errno, $errstr, 1);
 		if (!$fp) 
 		{
-		   return '<font color="#990000">Offline</font>';
+		   return '<font color="#990000">离线</font>';
 		}
 		else 
 		{
-		 	return 'Online';
+		 	return '在线';
 		}
 	}
 	
@@ -114,7 +114,7 @@ class server
 		$this->selectDB('webdb');
 		$result = mysql_query("SELECT id FROM realms");
 		if(mysql_num_rows($result)==0) 
-			$this->faction_ratio = "Unknown";
+			$this->faction_ratio = "未知";
 		else 
 		{
 			$t = 0;
@@ -154,6 +154,7 @@ class server
 	public function connectToRealmDB($realmid) 
 	{ 
 		$this->selectDB('webdb');
+		$sql="SELECT mysql_host,mysql_user,mysql_pass,char_db FROM realms WHERE id='".(int)$realmid."'";
 		$getRealmData = mysql_query("SELECT mysql_host,mysql_user,mysql_pass,char_db FROM realms WHERE id='".(int)$realmid."'");
 		if(mysql_num_rows($getRealmData)>0)
 		{
@@ -162,14 +163,14 @@ class server
 			|| $row['mysql_pass'] != $GLOBALS['connection']['password'])
 			{
 				mysql_connect($row['mysql_host'],$row['mysql_user'],$row['mysql_pass'])or 
-				buildError("<b>Database Connection error:</b> A connection could not be established to Realm. Error: ".mysql_error(),NULL);
+				buildError("<b>数据库连接错误:</b>无法建立到Realm的连接。错误：".mysql_error(),NULL);
 			}
 			else
 			{
 				$this->connect();
 			}
 			mysql_select_db($row['char_db'])or 
-			buildError("<b>Database Selection error:</b> The realm database could not be selected. Error: ".mysql_error(),NULL);
+			buildError("<b>数据库选择错误:</b>无法选择Realm数据库。错误：".mysql_error(),NULL);
 		}
 	}
 	
@@ -239,7 +240,7 @@ class server
 		$m_pass = mysql_real_escape_string($m_pass);
 		
 		if (empty($name) || empty($host) || empty($port) || empty($chardb) || empty($rank_user) || empty($rank_pass))
-			echo "<pre><b class='red_text'>Please enter all required fields!</b></pre><br/>";
+			echo "<pre><b class='red_text'>请输入所有必需的字段!</b></pre><br/>";
 		else 
 		{
 			if(empty($m_host))
@@ -259,9 +260,9 @@ class server
 		  '".$rank_user."','".$rank_pass."','".$ra_port."','".$soap_port."','".$host."','".$sendtype."','".$m_host."',
 		  '".$m_user."','".$m_pass."')");
 		  
-		  $this->logThis("Added the realm ".$name."<br/>");
+		  $this->logThis("添加服务器".$name."<br/>");
 		  
-			echo '<pre><h3>&raquo; Successfully added the realm '.$name.'!</h3></pre><br/>';
+			echo '<pre><h3>&raquo; 成功添加服务器 '.$name.'!</h3></pre><br/>';
 		}
 	}
 	
@@ -273,7 +274,7 @@ class server
 		$row = mysql_fetch_assoc($result);
 		
 		if(empty($row['name']))
-		   return "<i>Unknown</i>";
+		   return "<i>未知</i>";
 		else   
 		   return $row['name'];
 	}
@@ -289,9 +290,9 @@ class server
 		if(mysql_result($result,0)>1)
 		{
 			echo '<div class="box_right">
-        		  <div class="box_right_title">Notifications</div>';
-			echo 'You have '.mysql_result($result,0).' votelog records that are 30 days or older. Since these are not really needed in general. 
-					 We suggest you clear these. ';	  
+        		  <div class="box_right_title">通知</div>';
+			echo '你有 '.mysql_result($result,0).' 30天或以上的投票记录。 这是没有必要的。
+					 我们建议您清除记录。 ';	  
 			echo '</div>';
 		}
 	}	
@@ -313,14 +314,14 @@ class server
 		
 		
 		
-		echo 'Selected realm: <b>'.$this->getRealmName($rid).'</b> <a href="#" onclick="changePresetRealmStatus()">(Change Realm)</a><hr/>';
+		echo '选择服务器： <b>'.$this->getRealmName($rid).'</b> <a href="#" onclick="changePresetRealmStatus()">(变更服务器)</a><hr/>';
 		 ?>
         <table>
                <tr valign="top">
                    <td width="70%">
-                        Server Status: <br/>
+                        服务器状态: <br/>
                         Uptime: <br/>
-                        Players online: <br/>
+                        在线玩家: <br/>
                    </td>
                    <td>
                    <b>
@@ -332,13 +333,13 @@ class server
                </tr>
             </table>
             <hr/>
-            <b>General Status:</b><br/>
+            <b>总体状态:</b><br/>
             <table>
                <tr valign="top">
                    <td width="70%">
-                        Active connections: <br/>
-                        Accounts created today: <br/>
-                        Active accounts (This month)
+                        在线账户： <br/>
+                        今天创建的账户: <br/>
+                        活跃账户(本月)
                    </td>
                    <td>
                    <b>
@@ -377,7 +378,7 @@ class account
 		$row = mysql_fetch_assoc($result);
 		
 		if(empty($row['username']))
-		   return "<i>Unknown</i>";
+		   return "<i>未知</i>";
 		else
 		   return ucfirst(strtolower($row['username']));
 	}
@@ -390,12 +391,12 @@ class account
 		
 		$result = mysql_query("SELECT name FROM characters WHERE guid='".(int)$id."'");
 		if(mysql_num_rows($result)==0)
-		   return "<i>Unknown</i>";
+		   return "<i>未知</i>";
 		else
 		{   
 		$row = mysql_fetch_assoc($result);
 		   if(empty($row['name'])) 
-		      return '<i>Unknown</i>';
+		      return '<i>未知</i>';
 		    else  
 		      return $row['name'];
 		}
@@ -444,7 +445,7 @@ class account
 		
 		$result = mysql_query("SELECT * FROM account_banned WHERE id='".(int)$id."' AND active = 1 ORDER by bandate DESC LIMIT 1");
 		if(mysql_num_rows($result)==0)
-			return "<span class='green_text'>Active</span>";
+			return "<span class='green_text'>有效的</span>";
 
 		$row = mysql_fetch_assoc($result);
 		if($row['unbandate'] < $row['bandate'])
@@ -453,10 +454,10 @@ class account
 			$time = date("Y-m-d H:i", $row['unbandate']);
 
 		return 
-		"<font size='-4'><b class='red_text'>Banned</b><br/>
-		Unban date: <b>".$time."</b><br/>
-		Banned by: <b>".$row['bannedby']."</b><br/>
-		Reason: <b>".$row['banreason']."</b></font>
+		"<font size='-4'><b class='red_text'>禁用的</b><br/>
+		封禁日期：<b>".$time."</b><br/>
+		封禁名单：<b>".$row['bannedby']."</b><br/>
+		原因： <b>".$row['banreason']."</b></font>
 		";
 	}
 	
@@ -505,8 +506,8 @@ class page {
 	   {
 		   if($GLOBALS['staffPanel_permissions'][$page]!=true) 
 		   {
-			 header("Location: ?p=notice&e=<h2>Not authorized!</h2>
-					You are not allowed to view this page!"); 
+			 header("Location: ?p=notice&e=<h2>未经授权</h2>
+					您无权查看此页面！"); 
 		   }
 	   }
    }
@@ -528,7 +529,7 @@ class page {
 	
 	public function titleLink() 
 	{
-		return '<a href="?p='.$_GET['p'].'" title="Back to '.ucfirst($_GET['p']).'">'.ucfirst($_GET['p']).'</a>';
+		return '<a href="?p='.$_GET['p'].'" title="返回 '.ucfirst($_GET['p']).'">'.ucfirst($_GET['p']).'</a>';
 	}
 	
 	public function addSlideImage($upload,$path,$url) 
@@ -541,7 +542,7 @@ class page {
 			//No path set, upload image.
 			if($upload['error']>0) 
 			{
-				echo "<span class='red_text'><b>Error:</b> File uploading was not successfull!</span>";
+				echo "<span class='red_text'><b>Error:</b> 文件上传失败!</span>";
 				$abort = true;
 			}
 			else 
@@ -587,55 +588,55 @@ class character
 	  switch($value) 
 	  {
 		 default:
-		 return "Unknown";
+		 return "未知";
 		 break;
 		 #######
 		 case(1):
-		 return "Human";
+		 return "人类";
 		 break;
 		 #######		 
 		 case(2):
-		 return "Orc";
+		 return "兽人";
 		 break;
 		 #######
 		 case(3):
-		 return "Dwarf";
+		 return "矮人";
 		 break;
 		 #######
 		 case(4):
-		 return "Night Elf";
+		 return "暗夜精灵";
 		 break;
 		 #######
 		 case(5):
-		 return "Undead";
+		 return "不死族";
 		 break; 
 		 #######
 		 case(6):
-		 return "Tauren";
+		 return "牛头人";
 		 break;
 		 #######
 		 case(7):
-		 return "Gnome";
+		 return "侏儒";
 		 break;
 		 #######
 		 case(8):
-		 return "Troll";
+		 return "巨魔";
 		 break;
 		 #######
 		 case(9):
-		 return "Goblin";
+		 return "哥布林";
 		 break;
 		 #######
 		 case(10):
-		 return "Blood Elf";
+		 return "血精灵";
 		 break;
 		 #######
 		 case(11):
-		 return "Dranei";
+		 return "德莱尼";
 		 break;
 		 #######
 		 case(22):
-		 return "Worgen";
+		 return "狼人";
 		 break;
          #######
 	  }
@@ -644,11 +645,11 @@ class character
   public static function getGender($value) 
   {
 	 if($value==1) 
-		 return "Female";
+		 return "女性";
 	 elseif($value=9)
-		 return "Male";
+		 return "男性";
 	 else 
-		 return "Unknown";
+		 return "未知";
   }
   
   public static function getClass($value) 
@@ -656,52 +657,52 @@ class character
 	  switch($value) 
 	  {
 		 default:
-		 return "Unknown";
+		 return "未知";
 		 break;
 		 #######
 		 case(1):
-		 return "Warrior";
+		 return "战士";
 		 break;
 		 #######
 		 case(2):
-		 return "Paladin";
+		 return "圣骑士";
 		 break;
 		 #######
 		 case(3):
-		 return "Hunter";
+		 return "猎人";
 		 break;
 		 #######
 		 case(4):
-		 return "Rogue";
+		 return "盗贼";
 		 break;
 		 #######
 		 case(5):
-		 return "Priest";
+		 return "牧师";
 		 break;
 		 #######
 		 case(6):
-		 return "Death Knight";
+		 return "死亡骑士";
 		 break;
 		 #######
 		 case(7):
-		 return "Shaman";
+		 return "萨满";
 		 break;
 		 #######
 		 case(8):
-		 return "Mage";
+		 return "法师";
 		 break;
 		 #######
 		 case(9):
-		 return "Warlock";
+		 return "术士";
 		 break;
 		 #######
 		 case(11):
-		 return "Druid";
+		 return "德鲁伊";
 		 break;
 		 ####### 
 		 #######
 		 case(12):
-		 return "Monk";
+		 return "武僧";
 		 break;
 		 ####### 
 	  }

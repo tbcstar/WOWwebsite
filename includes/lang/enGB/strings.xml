@@ -1,29 +1,29 @@
-<!-- Attention! This project is not active. Modifying this wont affect your website at all -->
+<!-- 注意!这个项目不活跃。修改这个不会影响你的网站 -->
 <pagenames>
-          <home>Home</home>
-		  <myaccount>My Account</myaccount>
-		  <vote>Vote</vote>
-		  <donate>Donate</donate>
-		  <accountpanel>Account Panel</accountpanel>
-		  <changepass>Change Password</changepass>
-		  <latestnews>Latest News</latestnews>
-		  <voteshop>Vote Shop</voteshop>
-		  <donationshop>Donation Shop</donationshop>
-		  <raf>Refer-A-Friend</raf>
-		  <adminpanel>Admin Panel</adminpanel>
-		  <register>Register</register>
-		  <forgotpassword>Forgot Password</forgotpassword>
-		  <characterunstuck>Character Unstuck</characterunstuck>
+          <home>首页</home>
+		  <myaccount>我的帐户</myaccount>
+		  <vote>投票</vote>
+		  <donate>捐赠</donate>
+		  <accountpanel>账户面板</accountpanel>
+		  <changepass>修改密码</changepass>
+		  <latestnews>最新新闻</latestnews>
+		  <voteshop>投票商店</voteshop>
+		  <donationshop>公益商城</donationshop>
+		  <raf>邀请朋友</raf>
+		  <adminpanel>管理面板</adminpanel>
+		  <register>注册帐户</register>
+		  <forgotpassword>忘记密码</forgotpassword>
+		  <characterunstuck>解锁角色</characterunstuck>
 		  
 </pagenames>
 <titles>
-        <accountmanagement>Account Management</accountmanagement>
-		<serverstatus>Server Status</serverstatus>
-		<services>Services</services>
-		<characterservices>Character Services</characterservices>
-		<accountservices>Account Services</accountservices>
-		<settings>Settings</settings>
-		<unstuck>Unstuck</unstuck>
-		<revive>Revive</revive>
-		<teleport>Teleport</teleport>
+        <accountmanagement>账户管理</accountmanagement>
+		<serverstatus>服务器状态</serverstatus>
+		<services>服务项目</services>
+		<characterservices>角色服务</characterservices>
+		<accountservices>账户服务</accountservices>
+		<settings>设置</settings>
+		<unstuck>解锁</unstuck>
+		<revive>复活</revive>
+		<teleport>传送</teleport>
 </titles>

@@ -12,23 +12,23 @@ $server->selectDB('webdb');
 if($_POST['function']=='post') 
 {
 	if(empty($_POST['title']) || empty($_POST['author']) || empty($_POST['content']))
-		die('<span class="red_text">Please enter all fields.</span>');
+		die('<span class="red_text">请输入所有字段。</span>');
 
 	mysql_query("INSERT INTO news VALUES ('','".mysql_real_escape_string($_POST['title'])."','".mysql_real_escape_string($_POST['content'])."',
 	'".mysql_real_escape_string($_POST['author'])."','".mysql_real_escape_string($_POST['image'])."',
 	'".date("Y-m-d H:i:s")."')");
-	$server->logThis("Posted a news post");
-	echo "Successfully posted news.";
+	$server->logThis("发布新闻");
+	echo "发布新闻成功。";
 }
 ################################
 elseif($_POST['function']=='delete') 
 {
 	if(empty($_POST['id']))
-		die('No ID specified. Aborting...');
+		die('未指定ID。正在中止...');
 
 	mysql_query("DELETE FROM news WHERE id='".mysql_real_escape_string($_POST['id'])."'");
 	mysql_query("DELETE FROM news_comments WHERE id='".mysql_real_escape_string($_POST['id'])."'");
-	$server->logThis("Deleted a news post");
+	$server->logThis("删除了一条新闻");
 }
 ##############################
 elseif($_POST['function']=='edit') 
@@ -39,11 +39,11 @@ elseif($_POST['function']=='edit')
 	$content = mysql_real_escape_string($_POST['content']);
 	
 	if(empty($id) || empty($title) || empty($content))
-	 	die("Please enter both fields.");
+	 	die("请输入两个字段。");
     else 
 	{
 		mysql_query("UPDATE news SET title='".$title."', author='".$author."', body='".$content."' WHERE id='".$id."'");
-		$server->logThis("Updated news post with ID: <b>".$id."</b>");
+		$server->logThis("更新新闻内容，ID： <b>".$id."</b>");
 		return;
 	}
 }
@@ -54,8 +54,8 @@ elseif($_POST['function']=='getNewsContent')
 	$row = mysql_fetch_assoc($result);
 	$content = str_replace('<br />', "\n", $row['body']);
 	
-	echo "Title: <br/><input type='text' id='editnews_title' value='".$row['title']."'><br/>Content:<br/><textarea cols='55' rows='8' id='editnews_content'>"
-	.$content."</textarea><br/>Author:<br/><input type='text' id='editnews_author'><br/><input type='submit' value='Save' onclick='editNewsNow(".$row['id'].")'>";
+	echo "标题： <br/><input type='text' id='editnews_title' value='".$row['title']."'><br/>内容：<br/><textarea cols='55' rows='8' id='editnews_content'>"
+	.$content."</textarea><br/>作者：<br/><input type='text' id='editnews_author'><br/><input type='submit' value='Save' onclick='editNewsNow(".$row['id'].")'>";
 }
 
 ?>

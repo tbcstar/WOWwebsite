@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title><?php echo $GLOBALS['website_title']; ?> Staff Panel</title>
+<title><?php echo $GLOBALS['website_title']; ?> 员工面板</title>
 <link rel="stylesheet" href="../aasp_includes/styles/default/style.css" />
 <link rel="stylesheet" href="../aasp_includes/styles/wysiwyg.css" />
 <script type="text/javascript" src="../javascript/jquery.js"></script>
@@ -15,62 +15,62 @@
 <div id="leftcontent">
         <div id="menu_left">
         	<ul>
-        			  <li id="menu_head">Menu</li>
+        			  <li id="menu_head">菜单</li>
                       
-                      <li>Dashboard</li>
+                      <li>仪表盘</li>
                       <ul class="hidden" <?php activeMenu('dashboard'); ?>>
-                          <a href="?p=dashboard">Dashboard</a>
+                          <a href="?p=dashboard">仪表盘</a>
                       </ul>
                       <?php
                       if($GLOBALS['staffPanel_permissions']['Pages']==true)
                       {
                       ?>     
-                      <li>Pages</li>
+                      <li>页面</li>
                            <ul class="hidden" <?php activeMenu('pages'); ?>>
-                               <a href="?p=pages">All Pages</a>
-                               <a href="?p=pages&s=new">Add New</a>
+                               <a href="?p=pages">所有页面</a>
+                               <a href="?p=pages&s=new">添加页面</a>
                            </ul>
                       <?php
                       }
                       if($GLOBALS['staffPanel_permissions']['News']==true)
                       {
                       ?>
-                      <li>News</li>
+                      <li>新闻</li>
                            <ul class="hidden" <?php activeMenu('news'); ?>>
-                               <a href="?p=news">Post news</a>
-                               <a href="?p=news&s=manage">Manage news</a>
+                               <a href="?p=news">发布新闻</a>
+                               <a href="?p=news&s=manage">管理新闻</a>
                            </ul>
                       <?php
                       }
                       if($GLOBALS['staffPanel_permissions']['Shop']==true)
                       {
                       ?>          
-                      <li>Shop</li>
+                      <li>商城</li>
                             <ul class="hidden" <?php activeMenu('shop'); ?>>
-                               <a href="?p=shop">Overview</a>
-                               <a href="?p=shop&s=add">Add items</a>
-                               <a href="?p=shop&s=manage">Manage items</a>
-                               <a href="?p=shop&s=tools">Tools</a>
+                               <a href="?p=shop">概述</a>
+                               <a href="?p=shop&s=add">添加物品</a>
+                               <a href="?p=shop&s=manage">管理物品</a>
+                               <a href="?p=shop&s=tools">工具</a>
                            </ul> 
                       <?php
                       }
                       if($GLOBALS['staffPanel_permissions']['Donations']==true)
                       {
                       ?>     
-                      <li>Donations</li>
+                      <li>捐赠</li>
                            <ul class="hidden" <?php activeMenu('donations'); ?>>
-                               <a href="?p=donations">Overview</a>
-                               <a href="?p=donations&s=browse">Browse</a>
+                               <a href="?p=donations">概述</a>
+                               <a href="?p=donations&s=browse">浏览</a>
                            </ul> 
                       <?php
                       }
                       if($GLOBALS['staffPanel_permissions']['Logs']==true)
                       {
                       ?>     
-                      <li>Logs</li>
+                      <li>日志</li>
                             <ul class="hidden" <?php activeMenu('logs'); ?>>
-                               <a href="?p=logs&s=voteshop">Vote shop</a>
-                               <a href="?p=logs&s=donateshop">Donation shop</a>
+                               <a href="?p=logs&s=voteshop">投票商店</a>
+                               <a href="?p=logs&s=donateshop">公益商城</a>
                            </ul> 
                       <?php
                       }
@@ -79,40 +79,40 @@
                       ?>     
                       <li>Interface</li>
                             <ul class="hidden" <?php activeMenu('interface'); ?>>
-                               <a href="?p=interface">Template</a>
-                               <a href="?p=interface&s=menu">Menu</a>
-                               <a href="?p=interface&s=slideshow">Slideshow</a>
-                               <a href="?p=interface&s=plugins">Plugins</a>
+                               <a href="?p=interface">模板</a>
+                               <a href="?p=interface&s=menu">菜单</a>
+                               <a href="?p=interface&s=slideshow">幻灯片</a>
+                               <a href="?p=interface&s=plugins">插件</a>
                            </ul> 
                       <?php
                       }
                       if($GLOBALS['staffPanel_permissions']['Users']==true)
                       {
                       ?>     
-                      <li>Users</li>
+                      <li>用户</li>
                             <ul class="hidden" <?php activeMenu('users'); ?>>
-                               <a href="?p=users">Overview</a>
-                               <a href="?p=users&s=manage">Manage Users</a>
+                               <a href="?p=users">概述</a>
+                               <a href="?p=users&s=manage">管理用户</a>
                            </ul> 
                       <?php
                       }
                       if($GLOBALS['staffPanel_permissions']['Realms']==true)
                       {
                       ?>     
-                      <li>Realms</li>
+                      <li>服务器</li>
                             <ul class="hidden" <?php activeMenu('realms'); ?>>
-                               <a href="?p=realms">New realm</a>
-                               <a href="?p=realms&s=manage">Manage realm(s)</a>
+                               <a href="?p=realms">新增服务器</a>
+                               <a href="?p=realms&s=manage">管理服务器</a>
                            </ul> 
                       <?php
                       }
                       if($GLOBALS['staffPanel_permissions']['Services']==true)
                       {
                       ?>     
-                      <li>Services</li>
+                      <li>服务项目</li>
                             <ul class="hidden" <?php activeMenu('services'); ?>>
-                               <a href="?p=services&s=voting">Voting Links</a>
-                               <a href="?p=services&s=charservice">Character Services</a>
+                               <a href="?p=services&s=voting">投票链接</a>
+                               <a href="?p=services&s=charservice">角色服务</a>
                            </ul> 
                       <?php
                       }
@@ -126,7 +126,7 @@
                                <a href="?p=tools&s=tickets">Tickets</a>
                                <?php } ?>
                                <?php if($GLOBALS['staffPanel_permissions']['Tools->Account Access']==true) { ?>
-                               <a href="?p=tools&s=accountaccess">Account Access</a>
+                               <a href="?p=tools&s=accountaccess">账户访问</a>
                                <?php } ?>
                            </ul>  
                      <?php
@@ -138,10 +138,10 @@
 
 <div id="header">
 <div id="header_text">
-  <?php if(isset($_SESSION['cw_staff'])) { ?> Welcome  
+  <?php if(isset($_SESSION['cw_staff'])) { ?> 欢迎  
      <b><?php echo $_SESSION['cw_staff']; ?> </b> 
-     <a href="?p=logout"><i>(Log out)</i></a> &nbsp; | &nbsp;
-     <a href="<?php echo $GLOBALS['website_domain']; ?>" title="View your site">View your site</a>
+     <a href="?p=logout"><i>(注销)</i></a> &nbsp; | &nbsp;
+     <a href="<?php echo $GLOBALS['website_domain']; ?>" title="View your site">查看您的网站</a>
      <?php } else {
          echo "Please log in.";
      }?>
@@ -154,7 +154,7 @@
 <?php if(!isset($_SESSION['cw_staff'])) { ?>  
 <br/>
 <center>
-<h2>Please log in</h2>
+<h2>请登录</h2>
   <input type="text" placeholder="Username" id="login_username" style="border: 1px solid #ccc;"/><br/> 
   <input type="password" placeholder="Password" id="login_password" style="border: 1px solid #ccc;"/><br/>
   <input type="submit" value="Log in" onclick="login('staff')"/> <br/>
@@ -189,12 +189,12 @@
     <div id="rightcontent">
 		 <?php if($GLOBALS['forum']['type']=='phpbb' && $GLOBALS['forum']['autoAccountCreate']==TRUE) { ?>
          <div class="box_right">
-         <div class="box_right_title">Recent forum activity</div>
+         <div class="box_right_title">最近的论坛活动</div>
             <table>
                 <tr>
-                    <th>Account</th>
-                    <th>Message</th>
-                    <th>Topic</th>
+                    <th>账户</th>
+                    <th>消息</th>
+                    <th>主题</th>
                 </tr>
 			<?php
             $server->selectDB($GLOBALS['forum']['forum_db']);
@@ -214,20 +214,20 @@
                     target="_blank"><?php echo $user['username']; ?></a></td>
                     <td><?php echo limit_characters(stripBBcode($string));?></td>
                     <td><a href="http://heroic-wow.net/forum/viewtopic.php?t=<?php echo $row['topic_id']?>" title="View this topic" target="_blank">
-                    	View topic</a></td>
+                    	查看主题</a></td>
                 </tr>
             <?php } ?>
         </table>
          </div> 
              <?php } ?>
      <div class="box_right">
-            <div class="box_right_title">Server Status</div>
+            <div class="box_right_title">服务器状态</div>
             <table>
                <tr valign="top">
                    <td>
-                        Players online: <br/>
+                        在线玩家：<br/>
                         Active connections: <br/>
-                        New accounts today: <br/>
+                        今天新帐户:<br/>
                    </td>
                    <td>
                    <b>
@@ -241,7 +241,7 @@
      </div>    
                          
     <div class="box_right">
-    <div class="box_right_title">Website Configuration</div>
+    <div class="box_right_title">网站配置</div>
     <table>
            <tr valign="top">
                <td>

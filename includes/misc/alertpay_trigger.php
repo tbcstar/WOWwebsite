@@ -1,32 +1,32 @@
 <?php
 /**
  * 
- * Sample IPN Handler for Item Payments
+ * 项目付款的示例IPN处理程序
  * 
- * The purpose of this code is to help you to understand how to process the Instant Payment Notification 
- * variables for a payment received through AlertPay's buttons and integrate it in your PHP site. The following
- * code will ONLY handle ITEM payments. For handling IPNs for SUBSCRIPTIONS, please refer to the appropriate
- * sample code file.
+ * 本代码的目的是帮助您理解如何处理即时付款通知
+ * 通过AlertPay按钮接收的付款的变量，并将其集成到您的PHP站点中。以下
+ * 代码将只处理项目付款。处理订阅的IPNs，请参考适当的
+ * 示例代码文件。
  *	
- * Put this code into the page which you have specified as Alert URL.
- * The variables being read from the $_POST object in the code below are pre-defined IPN variables and the
- * the conditional blocks provide you the logical placeholders to process the IPN variables. It is your responsibility
- * to write appropriate code as per your requirements.
+ * 将此代码放入您指定为Alert URL的页面中。
+ * 从下面代码中的$_POST对象中读取的变量是预定义的IPN变量和
+ * 条件块为您提供了处理IPN变量的逻辑占位符。这是你的责任
+ * 根据您的需求编写适当的代码。
  *	
- * If you have any questions about this script or any suggestions, please visit us at: dev.alertpay.com
+ * 如果您对这个脚本有任何问题或建议，请访问我们的网站:dev.alertpay.com
  * 
  *
- * THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY
- * OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT
- * LIMITED TO THE IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE.
+ * 此代码和信息是“按原样”提供的，没有担保
+ * 包括但不包括在内的任何种类的，无论是明示的还是暗示的
+ * 限于对某一特定目的的适用性的默示保证。
  * 
  * @author AlertPay
  * @copyright 2010
  */
  
-	//The value is the Security Code generated from the IPN section of your AlertPay account. Please change it to yours.
+	//该值是由AlertPay帐户的IPN部分生成的安全代码。请换成你的。
 	define("IPN_SECURITY_CODE", "NY86MQyPXGcUXJ2v");
-	define("MY_MERCHANT_EMAIL", "a.hedling@hotmail.com");
+	define("MY_MERCHANT_EMAIL", "youremail@gmail.com");
 
 	//Setting information about the transaction
 	$receivedSecurityCode = $_POST['ap_securitycode'];
@@ -84,7 +84,7 @@
 			// Take appropriate action.
 		}
 		else {
-			if ($transactionStatus == "Success") {
+			if ($transactionStatus == "Sucesso") {
 				if ($testModeStatus == "1") {
 					// Since Test Mode is ON, no transaction reference number will be returned.
 					// Your site is currently being integrated with AlertPay IPN for TESTING PURPOSES

@@ -6,8 +6,8 @@
 <div id="leftcontent">
 <div class="box_two">
 <?php account::isNotLoggedIn(); ?>
-<div class='box_two_title'>Donate</div>
-Enter your desired donation value, and then click the donation button.<br/><hr/>
+<div class='box_two_title'>捐赠</div>
+输入您想要的捐赠值，然后点击捐赠按钮。<br/><hr/>
 <table align="center">
        <tr>
            <td align="center"><img src="styles/global/images/paypal.png"></td>
@@ -18,7 +18,7 @@ Enter your desired donation value, and then click the donation button.<br/><hr/>
 			   if($GLOBALS['donation']['donationType']==1)
 			   {
 			   ?>
-               	<input type="text" onKeyUp="changeAmount(this,'open')" value="Enter amount of coins you wish to buy..." onclick="this.value=''">
+               	<input type="text" onKeyUp="changeAmount(this,'open')" value="输入您希望购买的积分数量..." onclick="this.value=''">
                <?php } 
 			   elseif($GLOBALS['donation']['donationType']==2)
 			   {
@@ -43,7 +43,7 @@ Enter your desired donation value, and then click the donation button.<br/><hr/>
           <input type="hidden" name="business" value="<?php echo $GLOBALS['donation']['paypal_email']; ?>" />
           <input type="hidden" id="item_name" name="item_name" value="<?php echo $GLOBALS['donation']['coins_name']; ?>" />
           <input type="hidden" id="item_number" name="item_number" value="" />
-          <!-- ATTENTION HACKERS: Don't try changing anything here, it won't work, you won't receive a reward, and we'll keep your money. -->
+          <!-- 注意，黑客们:不要尝试改变任何东西，这不会起作用，你不会得到奖励，我们会保留你的钱。 -->
           <input type="hidden" id="amount" name="amount" value="<?php
           if($GLOBALS['donation']['donationType']==2) 
 		     echo $GLOBALS['donationList'][0][2]; 
@@ -66,7 +66,7 @@ Enter your desired donation value, and then click the donation button.<br/><hr/>
 	 	?>
      <tr>
          <td align="center">
-         	<br/>Please read our <a href="#refundpolicy" onclick="viewRefundPolicy()">Refund Policy</a> before donating.
+         	<br/>请阅读我们的 <a href="#refundpolicy" onclick="viewRefundPolicy()">退款政策</a> 在捐赠之前。
          <td>
      </tr>
      <?php } ?>

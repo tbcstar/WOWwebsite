@@ -16,7 +16,7 @@ if($_POST['action']=='addsingle')
 	$shop = mysql_real_escape_string($_POST['shop']);
 	
 	if(empty($entry) || empty($price) || empty($shop))
-		die("Please enter all fields.");
+		die("请输入所有字段。");
 
 	$server->selectDB('worlddb');
 	$get = mysql_query("SELECT name,displayid,ItemLevel,quality,AllowableRace,AllowableClass,class,subclass,Flags
@@ -38,7 +38,7 @@ if($_POST['action']=='addsingle')
 	
 	$server->logThis("Added ".$row['name']." to the ".$shop." shop");
 	
-	echo 'Successfully added item';
+	echo '物品添加成功。';
 }
 ###############################
 if($_POST['action']=='addmulti') 
@@ -51,14 +51,14 @@ if($_POST['action']=='addmulti')
 	$type = mysql_real_escape_string($_POST['type']);
 	
 	if(empty($il_from) || empty($il_to) || empty($price) || empty($shop))
-		die("Please enter all fields.");
+		die("请输入所有字段。");
 		
 	$advanced = "";
 	if($type!="all") 
 	{
 		if($type=="15-5" || $type=="15-5")  
 		{
-			//Mount or pet
+			//坐骑或宠物
 			$type = explode('-',$type);
 			
 			$advanced.= " AND class='".$type[0]."' AND subclass='".$type[1]."'";
@@ -97,7 +97,7 @@ if($_POST['action']=='addmulti')
 	}
 	
 	$server->logThis("Added multiple items to the ".$shop." shop");
-	echo 'Successfully added '.$c.' items';
+	echo '添加成功'.$c.' 物品';
 }
 ###############################
 if($_POST['action']=='clear') 
@@ -121,10 +121,10 @@ if($_POST['action']=='modsingle')
 	$shop = mysql_real_escape_string($_POST['shop']);
 	
 	if(empty($entry) || empty($price) || empty($shop))
-		die("Please enter all fields.");
+		die("请输入所有字段。");
 	
 	mysql_query("UPDATE shopitems SET price='".$price."' WHERE entry='".$entry."' AND in_shop='".$shop."'");
-	echo 'Successfully modified item';
+	echo '成功修改物品';
 }
 ###############################
 if($_POST['action']=='delsingle') 
@@ -133,10 +133,10 @@ if($_POST['action']=='delsingle')
 	$shop = mysql_real_escape_string($_POST['shop']);
 	
 	if(empty($entry) || empty($shop))
-		die("Please enter all fields.");
+		die("请输入所有字段。");
 	
 	mysql_query("DELETE FROM shopitems WHERE entry='".$entry."' AND in_shop='".$shop."'");
-	echo 'Successfully removed item';
+	echo '成功删除物品';
 }
 ###############################
 if($_POST['action']=='modmulti') 
@@ -149,14 +149,14 @@ if($_POST['action']=='modmulti')
 	$type = mysql_real_escape_string($_POST['type']);
 	
 	if(empty($il_from) || empty($il_to) || empty($price) || empty($shop))
-		die("Please enter all fields.");
+		die("请输入所有字段。");
 		
 	$advanced = "";
 	if($type!="all") 
 	{
 		if($type=="15-5" || $type=="15-5")  
 		{
-			//Mount or pet
+			//坐骑或宠物
 			$type = explode('-',$type);
 			
 			$advanced.= " AND type='".$type[0]."' AND subtype='".$type[1]."'";
@@ -171,7 +171,7 @@ if($_POST['action']=='modmulti')
 	$count = mysql_query("COUNT(*) FROM shopitems WHERE itemlevel >='".$il_from."' AND itemlevel <='".$il_to."' ".$advanced);
 		
 	mysql_query("UPDATE shopitems SET price='".$price."' WHERE itemlevel >='".$il_from."' AND itemlevel <='".$il_to."' ".$advanced);	
-	echo 'Successfully modified '.$count.' items!';	
+	echo '成功修改'.$count.' 物品！';	
 }
 ###############################
 if($_POST['action']=='delmulti') 
@@ -183,14 +183,14 @@ if($_POST['action']=='delmulti')
 	$type = mysql_real_escape_string($_POST['type']);
 	
 	if(empty($il_from) || empty($il_to) || empty($shop))
-		die("Please enter all fields.");
+		die("请输入所有字段。");
 		
 	$advanced = "";
 	if($type!="all") 
 	{
 		if($type=="15-5" || $type=="15-5")  
 		{
-			//Mount or pet
+			//坐骑或宠物
 			$type = explode('-',$type);
 			
 			$advanced.= " AND type='".$type[0]."' AND subtype='".$type[1]."'";
@@ -205,7 +205,7 @@ if($_POST['action']=='delmulti')
 	$count = mysql_query("COUNT(*) FROM shopitems WHERE itemlevel >='".$il_from."' AND itemlevel <='".$il_to."' ".$advanced);
 		
 	mysql_query("DELETE FROM shopitems WHERE itemlevel >='".$il_from."' AND itemlevel <='".$il_to."' ".$advanced);
-	echo 'Successfully removed '.$count.' items!';	
+	echo '成功删除'.$count.' 物品！';	
 }
 ###############################
 ?>

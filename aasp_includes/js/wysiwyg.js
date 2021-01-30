@@ -3,7 +3,7 @@
  * (0.97.2 - From infinity)
  *
  * Copyright (c) 2008-2009 Juan M Martinez, 2010-2011 Akzhan Abdulin and all contributors
- * https://github.com/akzhan/jwysiwyg
+ * https://github.com/jwysiwyg/jwysiwyg
  *
  * Dual licensed under the MIT and GPL licenses:
  *   http://www.opensource.org/licenses/mit-license.php

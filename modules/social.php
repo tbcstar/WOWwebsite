@@ -2,7 +2,7 @@
 if($GLOBALS['social']['enableFacebookModule']==TRUE) { 
 ?>
 	<div class="box_one">
-	<div class="box_one_title">Find us on Facebook</div>
+	<div class="box_one_title">在Facebook上找到我们</div>
     <div id="fb-root"></div>
 		<script>
 		(function(d, s, id) {

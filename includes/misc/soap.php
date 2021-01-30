@@ -4,7 +4,7 @@ function sendSoap($command,$username,$password,$host,$soapport) {
 $client = new SoapClient(NULL,
 	array(
 		"location" => "http://$host:$soapport/",
-		"uri" => "urn:TC",
+		"uri" => "urn:AC",
 		"style" => SOAP_RPC,
 		'login' => $username,
 		'password' => $password
@@ -13,12 +13,12 @@ try
 {
     $result = $client->executeCommand(new SoapParam($command, "command"));
 
-    echo "Command succeeded! Output:<br />\n";
+    echo "命令成功!输出:<br />\n";
     echo $result;
 }
 catch (Exception $e)
 {
-    echo "Command failed! Reason:<br />\n";
+    echo "命令失败!原因:<br />\n";
     echo $e->getMessage();
 	}
 }

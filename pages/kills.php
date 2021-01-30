@@ -9,49 +9,49 @@ account::isNotLoggedIn();
 <a href="?p=ucp">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-01.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-01.png" alt="" /> </div>
-<p>Account</p>
+<p>账户</p>
 </a>
 </li>
 <li>
 <a href="?p=shop">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-02.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-02.png" alt="" /> </div>
-<p>Shop</p>
+<p>商城</p>
 </a>
 </li>
 <li>
 <a href="?p=donate">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-03.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-03.png" alt="" /> </div>
-<p>Buy coins</p>
+<p>捐赠充值</p>
 </a>
 </li>
 <li>
 <a href="?p=characters">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-04.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-04.png" alt="" /> </div>
-<p>Characters</p>
+<p>角色</p>
 </a>
 </li>
 <li>
 <a href="#">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-05.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-05.png" alt="" /> </div>
-<p>Find character</p>
+<p>查找角色</p>
 </a>
 </li>
 <li>
 <a class="active" href="?p=stat">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-06.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-06.png" alt="" /> </div>
-<p>Statistics</p>
+<p>统计</p>
 </a>
 </li>
 <li>
 <a href="?p=vote">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-07.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-07.png" alt="" /> </div>
-<p>Vote</p>
+<p>投票</p>
 </a>
 </li>
 </ul>
@@ -64,40 +64,40 @@ account::isNotLoggedIn();
 <div class="column">
 <div class="head-content">
 <div class="breadcrumbs">
-<a href="/main/main">
-Control Panel </a>
+<a href="?p=ucp">
+控制面板 </a>
 <span class="ico-raquo"></span>
-<a href="https://cp.elysium-project.org/stat">
-Statistics </a>
+<a href="?p=stat">
+统计 </a>
 <span class="ico-raquo"></span>
 <div>
-Honor Ranking </div>
+荣誉排名 </div>
 </div>
 <div class="realm_picker">
 <div class="">
-Actual realm: </div>
-<a href="https://elysium-project.org/main/realm">
-Nefelin-WoW </a>
+所在服务器： </div>
+<a href="game.tbcstar.com">
+时光回溯 </a>
 </div>
 </div>
 <div class="content-box standart">
 <div class="content-holder">
 <div class="content-frame">
 <div class="content">
-<h2>Honor Ranking</h2>
+<h2>荣誉排名</h2>
 <br />
 
 <?php
 
 ######################################################
-# SQL Connection
+# SQL连接
 ######################################################
 $db_user = "root";
-$db_pass = "ascent" ;
-$db_host = "87.254.177.88";
+$db_pass = "A112233a" ;
+$db_host = "game.tbcstar.com:3310";
 
 ######################################################
-# VoteShop Website Connection
+# 投票商店网站连接
 ######################################################
 
 mysql_connect("$db_host","$db_user", "$db_pass");
@@ -107,7 +107,7 @@ mysql_connect("$db_host","$db_user", "$db_pass");
 $arena_top = "characters";
 
 ######################################################
-# Player Online Table
+# 玩家在线表
 ######################################################
 
 $player_online = "characters";
@@ -127,22 +127,22 @@ $msg = mysql_num_rows($result);
      echo '
 <table class="table">
 <tr>
-<th>#</th>
-<th>Nickname</th>
-<th>Level</th>
-<th>Faction</th>
-<th>Total Kills</th>
+<th>名次</th>
+<th>名字</th>
+<th>等级</th>
+<th>阵营</th>
+<th>总击杀数</th>
 </tr>
-<center><br />No TOP 5 PVP!</center>
+<center><br />不是PVP前5名！</center>
 ';}else{
 echo '
 <table class="table">
 <tr>
-<th>#</th>
-<th>Nickname</th>
-<th>Level</th>
-<th>Faction</th>
-<th>Total Kills</th>
+<th>名次</th>
+<th>名字</th>
+<th>等级</th>
+<th>阵营</th>
+<th>总击杀数</th>
 </tr>
 ';
  while ($row = mysql_fetch_array ($result))
@@ -157,8 +157,8 @@ $a=$a+1;
        else{$faction = "<img src='images/icons/faction_horde.gif' width='20' height='20' alt='Horde'/>";}
 	   
 	   if($row['race']=="1" or $row['race']=="3" or $row['race']=="4" or $row['race']=="7" or  $row['race']=="11")
-       {$faction2 = "Aliance";}
-       else{$faction2 = "Horde";}
+       {$faction2 = "联盟";}
+       else{$faction2 = "部落";}
    
 echo '
 
@@ -167,7 +167,7 @@ echo '
 <td>'.$a.'</td>
 <td>
 <div class="pull-right">'.$faction.'</div>
-<a href="https://cp.elysium-project.org/armory/char-1-5326438">'.$row['name'].'</a> </td>
+<a href="跳转到角色详细页面（参考https://cp.elysium-project.org/armory/char-1-5326438）">'.$row['name'].'</a> </td>
 <td>'.$row['level'].'</td>
 <td>'.$faction2.'</td>
 <td>

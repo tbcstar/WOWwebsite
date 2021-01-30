@@ -1,4 +1,4 @@
-<h2>Page not found</h2>
-Sorry, but the requested page was not found!<br/><hr/>
-<a href="?p=home">&raquo; Back to the homepage</a><br/>
-<a href= "javascript:history.go(-1)">&raquo; Back to the previous page</A>
+<h2>页面未找到</h2>
+对不起，您访问的页面没有找到!<br/><hr/>
+<a href="?p=home">&raquo; 返回首页</a><br/>
+<a href= "javascript:history.go(-1)">&raquo; 返回上一页</A>

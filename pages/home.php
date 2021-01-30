@@ -11,8 +11,8 @@
 	 
 	 if ($GLOBALS['enableSlideShow']==false && $GLOBALS['news']['enable']==false)  
 	 {
-		 buildError("<b>Configuration file error.</b>Neither the slideshow or the news are displayed, the homepage will be empty.");
-		 echo "Seems like the homepage was empty!";
+		 buildError("<b>配置文件错误。</b>幻灯片和新闻都不显示，主页将是空的。");
+		 echo "看起来主页是空的!";
 	 }
 ?>
 

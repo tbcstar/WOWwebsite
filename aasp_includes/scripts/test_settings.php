@@ -8,20 +8,20 @@ if(isset($_POST['test']))
 {
 	$errors = array();
 	
-	/* Test Connection */
+	/* 测试连接 */
 	if(!mysql_connect($GLOBALS['connection']['host'],$GLOBALS['connection']['user'],
 	$GLOBALS['connection']['password'])) 
-		$errors[] = "mySQL connection error. Please check your settings.";
+		$errors[] = "mySQL连接错误。请检查您的设置。";
 	else 
 	{
 		if(!mysql_select_db($GLOBALS['connection']['webdb']))
-			$errors[] = "Database error. Could not connect to the website database.";
+			$errors[] = "数据库错误。无法连接到网站数据库。";
 		
 		if(!mysql_select_db($GLOBALS['connection']['logondb']))
-			$errors[] = "Database error. Could not connect to the logon database.";
+			$errors[] = "数据库错误。无法连接到登录数据库。";
 		
 		if(!mysql_select_db($GLOBALS['connection']['worlddb']))
-			$errors[] = "Database error. Could not connect to the world database.";
+			$errors[] = "数据库错误。无法连接到世界数据库。";
 	}
 	
 	if (!empty($errors)) 
@@ -33,7 +33,7 @@ if(isset($_POST['test']))
 			
 		} 
 		else
-			echo "No errors occured. Settings are correct.";
+			echo "没有错误发生。设置是正确的。";
 }
 ###############################
 ?>

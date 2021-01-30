@@ -9,7 +9,7 @@
  
  if(!file_exists("styles/".$template['path']."/style.css") || !file_exists("styles/".$template['path']."/template.html")) 
  {
-	 buildError("<b>Template Error: </b>The active template does not exist or missing files.",NULL);
+	 buildError("<b>模板错误:</b>活动模板不存在或缺少文件。",NULL);
 	 exit_page();
  }
  

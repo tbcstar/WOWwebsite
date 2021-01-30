@@ -8,10 +8,10 @@
 		$page->outputSubPage();
 	} else {
 ?>
-<div class="box_right_title">Template</div>          
+<div class="box_right_title">网站模板</div>          
     
- Here you can choose which template that should be active on your website. This is also where you install new themes for your website.<br/><br/>
- <h3>Choose Template</h3>
+ 在这里，你可以选择启用那个模板，也可以在这里安装新的模板。<br/><br/>
+ <h3>选择模板</h3>
         <select id="choose_template">
                 <?php
                 $result = mysql_query("SELECT * FROM template ORDER BY id ASC");
@@ -27,17 +27,17 @@
         </select>
         <input type="submit" value="Save" onclick="setTemplate()"/><hr/><p/>
         
-        <h3>Install a new template</h3>
-        <a href="#" onclick="templateInstallGuide()">How to install new templates on your website</a><br/><br/><br/>
-        Path to the template<br/>
+        <h3>安装一个新模板</h3>
+        <a href="#" onclick="templateInstallGuide()">如何在你的网站上安装新模板</a><br/><br/><br/>
+        模板的路径<br/>
         <input type="text" id="installtemplate_path"/><br/>
-        Choose a name<br/>
+        选择一个名字<br/>
         <input type="text" id="installtemplate_name"/><br/>
-        <input type="submit" value="Install" onclick="installTemplate()"/>
+        <input type="submit" value="安装" onclick="installTemplate()"/>
         <hr/>
         <p/>
         
-        <h3>Uninstall a template</h3>
+        <h3>卸载一个模板</h3>
         <select id="uninstall_template_id">
                 <?php
                 $result = mysql_query("SELECT * FROM template ORDER BY id ASC");
@@ -51,5 +51,5 @@
                 }
                 ?>
         </select>
-        <input type="submit" value="Uninstall" onclick="uninstallTemplate()"/> 
+        <input type="submit" value="卸载" onclick="uninstallTemplate()"/> 
  <?php } ?>

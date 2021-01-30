@@ -26,49 +26,49 @@
 <a href="?p=ucp">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-01.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-01.png" alt="" /> </div>
-<p>Account</p>
+<p>账户</p>
 </a>
 </li>
 <li>
 <a class="active" href="?p=shop">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-02.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-02.png" alt="" /> </div>
-<p>Shop</p>
+<p>商城</p>
 </a>
 </li>
 <li>
 <a href="?p=donate">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-03.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-03.png" alt="" /> </div>
-<p>Buy coins</p>
+<p>捐赠充值</p>
 </a>
 </li>
 <li>
 <a href="?p=characters">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-04.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-04.png" alt="" /> </div>
-<p>Characters</p>
+<p>角色</p>
 </a>
 </li>
 <li>
 <a href="#">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-05.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-05.png" alt="" /> </div>
-<p>Find character</p>
+<p>查找角色</p>
 </a>
 </li>
 <li>
 <a href="?p=stat">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-06.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-06.png" alt="" /> </div>
-<p>Statistics</p>
+<p>统计</p>
 </a>
 </li>
 <li>
 <a href="?p=vote">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-07.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-07.png" alt="" /> </div>
-<p>Vote</p>
+<p>投票</p>
 </a>
 </li>
 </ul>
@@ -83,19 +83,19 @@
 <div class="head-content">
 <div class="breadcrumbs">
 <a href="?p=ucp">
-Control Panel </a>
+控制面板 </a>
 <span class="ico-raquo"></span>
 <a href="?p=shop">
-Shop </a>
+商城 </a>
 <span class="ico-raquo"></span>
 <div>
-Items Shop </div>
+商品 </div>
 </div>
 <div class="realm_picker">
 <div class="">
-Actual realm: </div>
-<a href="#">
-Nefelin-WoW </a>
+所在服务器： </div>
+<a href="game.tbcstar.com">
+时光回溯 </a>
 </div>
 </div>
 
@@ -106,7 +106,7 @@ Nefelin-WoW </a>
 <?php 
  account::isNotLoggedIn();
 
- /* Declare some general variables */ 
+ /* 声明一些通用变量 */ 
  $shopPage = mysql_real_escape_string($_GET['p']);
  $shopVar = "vote";
  $shopCurrency = "Vote Points";
@@ -114,23 +114,23 @@ Nefelin-WoW </a>
  $selected = 'selected="selected"';
  ///////////////////////////////
  ?>
-<div class='box_two_title'>Vote Shop
+<div class='box_two_title'>投票商店
 
-<div id='cartHolder' onclick='window.location="?p=cart"'>Loading Cart...</div> 
+<div id='cartHolder' onclick='window.location="?p=cart"'>加载购物车...</div> 
         <div id='cartArrow'>
         <img src='styles/default/images/arrow.png' border='none'/></div>
 </div>
 
 <?php
 if($GLOBALS[$shopVar.'Shop']['enableShop']==FALSE)
-	echo "<span class='attention'><b>Attention! </b>The shop is currently closed. Please check back later.</span>";
+	echo "<span class='attention'><b>注意！</b>商城暂未开放。请稍后再来。</span>";
 else 
 {
 ?>
 
 <span class='currency'><?php echo $shopCurrency; ?>: 
 <?php echo account::loadVP($_SESSION['cw_user']); ?></span>
-<?php if (!isset($_GET['search'])) { $inputValue = "Search for an item..."; } else { $inputValue = $_GET['search_value']; } 
+<?php if (!isset($_GET['search'])) { $inputValue = "搜索物品..."; } else { $inputValue = $_GET['search_value']; } 
 
 if($GLOBALS[$shopVar.'Shop']['shopType']==1)
 {
@@ -145,25 +145,25 @@ if($GLOBALS[$shopVar.'Shop']['shopType']==1)
             <tr>
         </table>
         <?php if($GLOBALS[$shopVar.'Shop']['enableAdvancedSearch']==TRUE) { ?> <br/>
-        Advanced Search<br/>
+        高级搜索<br/>
 		<table width="56%">
 		                   <tr>	<td>	
                             <select name="q" style="width: 100%">
-                                <option>--Quality--</option>
+                                <option>--品质--</option>
                                 <option value="0" <?php if(isset($_GET['q']) && $_GET['q']==0 && $_GET['q']!="--Quality--" 
 								&& isset($_GET['q'])) 
 								{ echo $selected; } ?>>
                                 Poor</option>
-                                <option value="1" <?php if(isset($_GET['q']) && $_GET['q']==1) { echo $selected; } ?>>Common</option>
-                                <option value="2" <?php if(isset($_GET['q']) && $_GET['q']==2) { echo $selected; } ?>>Uncommon</option>
-                                <option value="3" <?php if(isset($_GET['q']) && $_GET['q']==3) { echo $selected; } ?>>Rare</option>
-                                <option value="4" <?php if(isset($_GET['q']) && $_GET['q']==4) { echo $selected; } ?>>Epic</option>
-                                <option value="5" <?php if(isset($_GET['q']) && $_GET['q']==5) { echo $selected; } ?>>Legendary</option>
-                                <option value="7" <?php if(isset($_GET['q']) && $_GET['q']==7) { echo $selected; } ?>>Heirloom</option>
+                                <option value="1" <?php if(isset($_GET['q']) && $_GET['q']==1) { echo $selected; } ?>>白色</option>
+                                <option value="2" <?php if(isset($_GET['q']) && $_GET['q']==2) { echo $selected; } ?>>绿色</option>
+                                <option value="3" <?php if(isset($_GET['q']) && $_GET['q']==3) { echo $selected; } ?>>蓝色</option>
+                                <option value="4" <?php if(isset($_GET['q']) && $_GET['q']==4) { echo $selected; } ?>>紫色</option>
+                                <option value="5" <?php if(isset($_GET['q']) && $_GET['q']==5) { echo $selected; } ?>>橙色</option>
+                                <option value="7" <?php if(isset($_GET['q']) && $_GET['q']==7) { echo $selected; } ?>>传家宝</option>
                             </select>	
                            </td>
                            <td>	<select name="r" style="width: 100%">
-                                    <option>--Results--</option>
+                                    <option>--结果--</option>
                                     <option value="50" <?php if(isset($_GET['r']) && $_GET['r']==50) { echo $selected; }?>>50</option>
                                     <option value="100" <?php if(isset($_GET['r']) && $_GET['r']==100) { echo $selected; }?>>100</option>
                                     <option value="150" <?php if(isset($_GET['r']) && $_GET['r']==150) { echo $selected; }?>>150</option>
@@ -175,18 +175,18 @@ if($GLOBALS[$shopVar.'Shop']['shopType']==1)
                             <tr>	
                             <td>	
 								<select name="t" style="width: 100%">
-                                <option>--Type--</option>
+                                <option>--类型--</option>
                                 <option value="0" <?php if(isset($_GET['t']) && $_GET['t']==0 && $_GET['t']!="--Type--"
 								&& isset($_GET['q'])) 
-								{ echo $selected; } ?>>Consumable</option>
-                                <option value="1" <?php if(isset($_GET['t']) && $_GET['t']==1) { echo $selected; } ?>>Container</option>
-                                <option value="2" <?php if(isset($_GET['t']) && $_GET['t']==2) { echo $selected; } ?>>Weapons</option>
-                                <option value="3" <?php if(isset($_GET['t']) && $_GET['t']==3) { echo $selected; } ?>>Gem</option>
-                                <option value="4" <?php if(isset($_GET['t']) && $_GET['t']==4) { echo $selected; } ?>>Armor</option>
-                                <option value="15" <?php if(isset($_GET['t']) && $_GET['t']==15) { echo $selected; } ?>>Miscellaneous</option>
-                                <option value="16"<?php if(isset($_GET['t']) && $_GET['t']==16) { echo $selected; } ?>>Glyph</option>
-                                <option value="15-5" <?php if(isset($_GET['t']) && $_GET['t']=="15-5") { echo $selected; } ?>>Mount</option>
-                                <option value="15-2" <?php if(isset($_GET['t']) && $_GET['t']=="15-2") { echo $selected; } ?>>Pet</option>
+								{ echo $selected; } ?>>消耗品</option>
+                                <option value="1" <?php if(isset($_GET['t']) && $_GET['t']==1) { echo $selected; } ?>>背包</option>
+                                <option value="2" <?php if(isset($_GET['t']) && $_GET['t']==2) { echo $selected; } ?>>武器</option>
+                                <option value="3" <?php if(isset($_GET['t']) && $_GET['t']==3) { echo $selected; } ?>>珠宝</option>
+                                <option value="4" <?php if(isset($_GET['t']) && $_GET['t']==4) { echo $selected; } ?>>护甲</option>
+                                <option value="15" <?php if(isset($_GET['t']) && $_GET['t']==15) { echo $selected; } ?>>其它</option>
+                                <option value="16"<?php if(isset($_GET['t']) && $_GET['t']==16) { echo $selected; } ?>>图腾</option>
+                                <option value="15-5" <?php if(isset($_GET['t']) && $_GET['t']=="15-5") { echo $selected; } ?>>坐骑</option>
+                                <option value="15-2" <?php if(isset($_GET['t']) && $_GET['t']=="15-2") { echo $selected; } ?>>宠物</option>
                                 </select>	
                            </td> 
                            <td>	 
@@ -196,31 +196,31 @@ if($GLOBALS[$shopVar.'Shop']['shopType']==1)
                             <tr>
                                 <td>
                                 <select name="f" style="width: 100%">
-                                    <option>--Faction--</option>
-                                    <option value="1" <?php if(isset($_GET['f']) && $_GET['f']==1) { echo $selected; }?>>Horde Only</option>
-                                    <option value="2" <?php if(isset($_GET['f']) && $_GET['f']==2) { echo $selected; }?>>Alliance Only</option>
+                                    <option>--阵营--</option>
+                                    <option value="1" <?php if(isset($_GET['f']) && $_GET['f']==1) { echo $selected; }?>>部落</option>
+                                    <option value="2" <?php if(isset($_GET['f']) && $_GET['f']==2) { echo $selected; }?>>联盟</option>
                                 </select>
                                 </td>
                                 <td>
                                 <select name="c" style="width: 100%">
-                                    <option>--Class--</option>
-                                    <option value="1" <?php if(isset($_GET['c']) && $_GET['c']==1) { echo $selected; }?>>Warrior Only</option>
-                                    <option value="2" <?php if(isset($_GET['c']) && $_GET['c']==2) { echo $selected; }?>>Paladin Only</option>
-                                    <option value="4" <?php if(isset($_GET['c']) && $_GET['c']==4) { echo $selected; }?>>Hunter Only</option>
-                                    <option value="8" <?php if(isset($_GET['c']) && $_GET['c']==8) { echo $selected; }?>>Rogue Only</option>
-                                    <option value="16" <?php if(isset($_GET['c']) && $_GET['c']==16) { echo $selected; }?>>Priest Only</option>
-                                    <option value="32" <?php if(isset($_GET['c']) && $_GET['c']==32) { echo $selected; }?>>Death Knight Only</option>
-                                    <option value="64" <?php if(isset($_GET['c']) && $_GET['c']==64) { echo $selected; }?>>Shaman Only</option>
-                                    <option value="128" <?php if(isset($_GET['c']) && $_GET['c']==128) { echo $selected; }?>>Mage Only</option>
-                                    <option value="256" <?php if(isset($_GET['c']) && $_GET['c']==256) { echo $selected; }?>>Warlock Only</option>
-                                    <option value="1024" <?php if(isset($_GET['c']) && $_GET['c']==1024) { echo $selected; }?>>Druid Only</option>
+                                    <option>--职业--</option>
+                                    <option value="1" <?php if(isset($_GET['c']) && $_GET['c']==1) { echo $selected; }?>>战士</option>
+                                    <option value="2" <?php if(isset($_GET['c']) && $_GET['c']==2) { echo $selected; }?>>圣骑士</option>
+                                    <option value="4" <?php if(isset($_GET['c']) && $_GET['c']==4) { echo $selected; }?>>猎人</option>
+                                    <option value="8" <?php if(isset($_GET['c']) && $_GET['c']==8) { echo $selected; }?>>盗贼</option>
+                                    <option value="16" <?php if(isset($_GET['c']) && $_GET['c']==16) { echo $selected; }?>>牧师</option>
+                                    <option value="32" <?php if(isset($_GET['c']) && $_GET['c']==32) { echo $selected; }?>>死亡骑士</option>
+                                    <option value="64" <?php if(isset($_GET['c']) && $_GET['c']==64) { echo $selected; }?>>萨满</option>
+                                    <option value="128" <?php if(isset($_GET['c']) && $_GET['c']==128) { echo $selected; }?>>法师</option>
+                                    <option value="256" <?php if(isset($_GET['c']) && $_GET['c']==256) { echo $selected; }?>>术士</option>
+                                    <option value="1024" <?php if(isset($_GET['c']) && $_GET['c']==1024) { echo $selected; }?>>德鲁伊</option>
                                 </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                             <select name="ilfrom" style="width: 100%">
-                                            <option>--Item level from--</option>
+                                            <option>--物品等级--</option>
                                             <?php
 											    for ($i = 1; $i <= $GLOBALS['maxItemLevel']; $i++) 
 												{
@@ -236,7 +236,7 @@ if($GLOBALS[$shopVar.'Shop']['shopType']==1)
                                 </td>
                                 <td>
                                             <select name="ilto" style="width: 100%">
-                                            <option>--Item level to--</option>
+                                            <option>--物品等级--</option>
                                             <?php
 											    for ($i = $GLOBALS['maxItemLevel']; $i >= 1; $i--) 
 												{

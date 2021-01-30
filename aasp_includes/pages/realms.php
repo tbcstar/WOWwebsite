@@ -8,7 +8,7 @@
 		$page->outputSubPage();
 	} else {
 ?>
-<div class='box_right_title'>New Realm</div>
+<div class='box_right_title'>新服务器</div>
 <?php if(isset($_POST['add_realm'])) {
 	$server->addRealm($_POST['realm_id'],$_POST['realm_name'],$_POST['realm_desc'],$_POST['realm_host'],$_POST['realm_port']
 			,$_POST['realm_chardb'],$_POST['realm_sendtype'],$_POST['realm_rank_username'],
@@ -17,39 +17,39 @@
 }?>
 
                         <form action="?p=realms" method="post" style="line-height: 15px;">
-                        <b>General Realm Information</b><hr/>
-                        Realm ID: <br/>
-                        <input type="text" name="realm_id" placeholder="Default: 1"/> <br/>
-                        <i class='blue_text'>This must be the same ID of the one you have specified in your realmlist table in Auth. 
-                        					 Otherwise the uptime won't work properly if you have more than 1 realm.</i><br/>
-                        Realm Name: <br/>
-                        <input type="text" name="realm_name" placeholder="Default: Sample Realm"/> <br/>
-                        (Optional) Realm Description: <br/>
-                        <input type="text" name="realm_desc" placeholder="Default: Blizzlike 3x"/> <br/>
-                        Realm Port: <br/>
-                        <input type="text" name="realm_port" placeholder="Default: 8085"/> <br/>
-                        Host: (IP or DNS) <br/>
-                        <input type="text" name="realm_host" placeholder="Default: 127.0.0.1"/> <br/>
+                        <b>服务器常规信息</b><hr/>
+                        服务器ID：<br/>
+                        <input type="text" name="realm_id" placeholder="默认: 1"/> <br/>
+                        <i class='blue_text'>这个ID必须与您在Realm中的realmlist表中指定的ID相同。
+                        					 否则正常运行时间将不起作用。</i><br/>
+                        服务器名称：<br/>
+                        <input type="text" name="realm_name" placeholder="默认: 时光回溯"/> <br/>
+                        （可选）服务器说明：<br/>
+                        <input type="text" name="realm_desc" placeholder="默认: Blizzlike 3x"/> <br/>
+                        服务器端口：<br/>
+                        <input type="text" name="realm_port" placeholder="默认: 8085"/> <br/>
+                        主机：(IP 或 域名)<br/>
+                        <input type="text" name="realm_host" placeholder="默认: 127.0.0.1"/> <br/>
                         
                         <br/>
-                        <b>Remote Console information</b> <i>(Vote- & Donation shop)</i><hr/>
-                        Remote console <i>(You can always change this later)</i>: <br/>
+                        <b>远程控制台信息</b> <i>（投票&捐赠商店）</i><hr/>
+                        远程控制台<i>（以后你可以随时修改）</i>: <br/>
                         <select name="realm_sendtype">
                                  <option value="ra">RA</option>
                                  <option value="soap">SOAP</option>
                         </select><br/>
-                        <i class='blue_text'>Specify a level 3 GM account(Used for the remote console)<br/>
-                        Tip: Do not use your admin account. Use a level 3 account.</i><br/>
-                        Username: <br/>
+                        <i class='blue_text'>指定一个级别3的GM帐户(用于远程控制台)<br/>
+                        提示:不要使用你的管理帐户。使用3级帐户。</i><br/>
+                        用户名： <br/>
                         <input type="text" name="realm_rank_username" placeholder="Default: rauser"/> <br/>
-                        Password: <br/>
+                        密码：<br/>
                         <input type="password" name="realm_rank_password" placeholder="Default: rapassword"/> <br/>
-                        RA port: <i>(Can be ignored if you have chosen SOAP)</i> <br/>
+                        RA port: <i>如果您选择了SOAP，则可以忽略)</i> <br/>
                         <input type="text" name="realm_ra_port" placeholder="Default: 3443"/> <br/>
-                        SOAP port: <i>(Can be ignored if you have chosen RA)</i> <br/>
+                        SOAP port: <i>(如果你选择了RA，可以忽略)</i> <br/>
                         <input type="text" name="realm_soap_port" placeholder="Default: 7878"/> <br/>
                         <br/>
-                        <b>MySQL information</b> <i>(If left blank, settings will be copied from your configuration file)</i><hr/>
+                        <b>MySQL信息</b> <i>(如果留空，设置将从配置文件中复制)</i><hr/>
                         MySQL Host: <br/>
                         <input type="text" name="realm_m_host" placeholder="Default: 127.0.0.1"/><br/>
                         MySQL User: <br/>
@@ -59,6 +59,6 @@
                         Character Database: <br/>
                         <input type="text" name="realm_chardb" placeholder="Default: characters"/> <br/>
                         <hr/>
-                        <input type="submit" value="Add" name="add_realm" />                     
+                        <input type="submit" value="添加" name="add_realm" />                     
                         </form>
 <?php } ?>
