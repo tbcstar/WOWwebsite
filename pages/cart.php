@@ -1,6 +1,9 @@
-<?php include "headers.php" ?>
+<?php
+include "headers.php"
+include "menus.php"
 
-<?php include "menus.php" ?>
+global $Account, $Connect;
+?>
 
 <main id="content-wrapper">
 <div class="container">
@@ -69,8 +72,8 @@ span.attention, span.notice, span.alert, span.download, span.approved, span.medi
 	</style>
 {alert}
 <?php
-echo '<span class="currency">投票积分： '.account::loadVP($_SESSION['cw_user']).'<br/>
-'.$GLOBALS['donation']['coins_name'].': '.account::loadDP($_SESSION['cw_user']).'
+echo '<span class="currency">投票积分： '.$Account->loadVP($_SESSION['cw_user']).'<br/>
+'.$GLOBALS['donation']['coins_name'].': '.$Account->loadDP($_SESSION['cw_user']).'
 </span>';
 
 if(isset($_GET['return']) && $_GET['return']=="true")
@@ -78,7 +81,7 @@ if(isset($_GET['return']) && $_GET['return']=="true")
 elseif(isset($_GET['return']) && $_GET['return']!="true")
 	echo "<span class='alert'>".$_GET['return']."</span>";
 
-account::isNotLoggedIn();
+$Account->isNotLoggedIn();
 connect::selectDB('webdb');
 
 $counter = 0;
@@ -190,7 +193,7 @@ if(isset($_SESSION['donateCart']) && !empty($_SESSION['donateCart']) || isset($_
     
 	 <select id="checkout_values">
      <?php
-	     account::getCharactersForShop($_SESSION['cw_user']);
+	     $Account->getCharactersForShop($_SESSION['cw_user']);
 	 ?>
      </select>
      <input class="btn" type='submit' value='Checkout'  onclick='checkout()'></td>

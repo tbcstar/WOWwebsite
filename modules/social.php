@@ -1,5 +1,5 @@
 <?php
-if($GLOBALS['social']['enableFacebookModule']==TRUE) { 
+if($GLOBALS['social']['enableFacebookModule'] == TRUE) { 
 ?>
 	<div class="box_one">
 	<div class="box_one_title">在Facebook上找到我们</div>

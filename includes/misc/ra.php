@@ -1,5 +1,6 @@
 <?php
-function sendRA($command,$ra_user,$ra_pass,$server,$realm_port) 
+
+function sendRA($command, $ra_user, $ra_pass, $server, $realm_port)
 {
 	$telnet = @fsockopen($server, $realm_port, $error, $error_str, 3);
 	if($telnet)
@@ -16,6 +17,6 @@ function sendRA($command,$ra_user,$ra_pass,$server,$realm_port)
 		fclose($telnet);
 	}
 	else
+	{
 		die('连接问题...正在断开');
-}
-?>
+} 

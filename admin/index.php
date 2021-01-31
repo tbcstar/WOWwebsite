@@ -1,6 +1,6 @@
 <?php require('includes/loader.php'); ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE>
+<html>
 <head>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -27,71 +27,71 @@
 <div id="overlay"></div>
 <div id="loading"><img src="/aasp_includes/styles/default/images/ajax-loader.gif" /></div>
 <div id="leftcontent">
-        <div id="menu_left">
-                          <ul>
-                              <li id="menu_head">菜单</li>
-                              <li>仪表盘</li>
-                                   <ul class="hidden" <?php activeMenu('dashboard'); ?>>
-                                       <a href="?p=dashboard">控制面板</a>
-                                       <a href="?p=updates">更新</a>
-                                   </ul>
-                              <li>页面</li>
-                                   <ul class="hidden" <?php activeMenu('pages'); ?>>
-                                       <a href="?p=pages">所有页面</a>
-                                       <a href="?p=pages&s=new">添加新页面</a>
-                                   </ul>
-                              <li>新闻</li>
-                                   <ul class="hidden" <?php activeMenu('news'); ?>>
-                                       <a href="?p=news">发布新闻</a>
-                                       <a href="?p=news&s=manage">管理新闻</a>
-                                   </ul>     
-                              <li>商城</li>
-                                    <ul class="hidden" <?php activeMenu('shop'); ?>>
-                                       <a href="?p=shop">总览</a>
-                                       <a href="?p=shop&s=add">添加物品</a>
-                                       <a href="?p=shop&s=manage">管理物品</a>
-                                       <a href="?p=shop&s=tools">工具</a>
-                                   </ul> 
-                              <li>捐赠</li>
-                                   <ul class="hidden" <?php activeMenu('donations'); ?>>
-                                       <a href="?p=donations">总览</a>
-                                       <a href="?p=donations&s=browse">浏览</a>
-                                   </ul> 
-                              <li>日志</li>
-                                    <ul class="hidden" <?php activeMenu('logs'); ?>>
-                                       <a href="?p=logs&s=voteshop">投票商店</a>
-                                       <a href="?p=logs&s=donateshop">公益商城</a>
-                                       <a href="?p=logs&s=admin">管理面板</a>
-                                   </ul> 
-                              <li>Interface</li>
-                                    <ul class="hidden" <?php activeMenu('interface'); ?>>
-                                       <a href="?p=interface">模板</a>
-                                       <a href="?p=interface&s=menu">菜单</a>
-                                       <a href="?p=interface&s=slideshow">幻灯片</a>
-                                       <a href="?p=interface&s=plugins">插件</a>
-                                   </ul> 
-                              <li>用户</li>
-                                    <ul class="hidden" <?php activeMenu('users'); ?>>
-                                       <a href="?p=users">总览</a>
-                                       <a href="?p=users&s=manage">管理用户</a>
-                                   </ul> 
-                              <li>服务器</li>
-                                    <ul class="hidden" <?php activeMenu('realms'); ?>>
-                                       <a href="?p=realms">添加服务器</a>
-                                       <a href="?p=realms&s=manage">服务器管理</a>
-                                   </ul> 
-                              <li>服务项目</li>
-                                    <ul class="hidden" <?php activeMenu('services'); ?>>
-                                       <a href="?p=services&s=voting">投票链接</a>
-                                       <a href="?p=services&s=charservice">角色服务</a>
-                                   </ul> 
-                              <li>工具</li>
-                                    <ul class="hidden" <?php activeMenu('tools'); ?>>
-                                       <a href="?p=tools&s=tickets">工单</a>
-                                       <a href="?p=tools&s=accountaccess">账号访问</a>
-                                   </ul>      
-                          </ul>
-         </div>
+    <div id="menu_left">
+		<ul>
+			<li id="menu_head">菜单</li>
+			<li>仪表盘</li>
+				<ul class="hidden" <?php activeMenu('dashboard'); ?>>
+					<a href="?p=dashboard">控制面板</a>
+					<a href="?p=updates">更新</a>
+                </ul>
+            <li>页面</li>
+                <ul class="hidden" <?php activeMenu('pages'); ?>>
+                    <a href="?p=pages">所有页面</a>
+                    <a href="?p=pages&s=new">添加新页面</a>
+                 </ul>
+            <li>新闻</li>
+                <ul class="hidden" <?php activeMenu('news'); ?>>
+                    <a href="?p=news">发布新闻</a>
+                    <a href="?p=news&s=manage">管理新闻</a>
+                </ul>     
+            <li>商城</li>
+                <ul class="hidden" <?php activeMenu('shop'); ?>>
+                    <a href="?p=shop">总览</a>
+                    <a href="?p=shop&s=add">添加物品</a>
+                    <a href="?p=shop&s=manage">管理物品</a>
+                    <a href="?p=shop&s=tools">工具</a>
+                </ul> 
+            <li>捐赠</li>
+                <ul class="hidden" <?php activeMenu('donations'); ?>>
+                    <a href="?p=donations">总览</a>
+                    <a href="?p=donations&s=browse">浏览</a>
+                </ul> 
+            <li>日志</li>
+                <ul class="hidden" <?php activeMenu('logs'); ?>>
+                    <a href="?p=logs&s=voteshop">投票商店</a>
+                    <a href="?p=logs&s=donateshop">公益商城</a>
+                    <a href="?p=logs&s=admin">管理面板</a>
+                </ul> 
+            <li>Interface</li>
+                <ul class="hidden" <?php activeMenu('interface'); ?>>
+                    <a href="?p=interface">模板</a>
+                    <a href="?p=interface&s=menu">菜单</a>
+                    <a href="?p=interface&s=slideshow">幻灯片</a>
+                    <a href="?p=interface&s=plugins">插件</a>
+                </ul> 
+            <li>用户</li>
+                <ul class="hidden" <?php activeMenu('users'); ?>>
+                    <a href="?p=users">总览</a>
+                    <a href="?p=users&s=manage">管理用户</a>
+                </ul> 
+            <li>服务器</li>
+                <ul class="hidden" <?php activeMenu('realms'); ?>>
+                    <a href="?p=realms">添加服务器</a>
+                    <a href="?p=realms&s=manage">服务器管理</a>
+                </ul> 
+            <li>服务项目</li>
+                <ul class="hidden" <?php activeMenu('services'); ?>>
+                    <a href="?p=services&s=voting">投票链接</a>
+                    <a href="?p=services&s=charservice">角色服务</a>
+                </ul> 
+            <li>工具</li>
+                <ul class="hidden" <?php activeMenu('tools'); ?>>
+                    <a href="?p=tools&s=tickets">工单</a>
+                    <a href="?p=tools&s=accountaccess">账号访问</a>
+                </ul>      
+		</ul>
+    </div>
 </div>
 
 <div id="header">
@@ -152,17 +152,18 @@
                     <th>主题</th>
                 </tr>
 			<?php
+        global $conn;
             $server->selectDB($GLOBALS['forum']['forum_db']);
-            $result = mysql_query("SELECT poster_id,post_text,post_time,topic_id FROM phpbb_posts ORDER BY post_id DESC LIMIT 10");
-            while($row = mysql_fetch_assoc($result)) 
+            $result = mysqli_query($conn, "SELECT poster_id,post_text,post_time,topic_id FROM phpbb_posts ORDER BY post_id DESC LIMIT 10");
+            while($row = mysqli_fetch_assoc($result)) 
 			{
                 $string = $row['post_text']; 
                 //获取用户名		
-                $getUser = mysql_query("SELECT username FROM phpbb_users WHERE user_id='".$row['poster_id']."'"); 
-				$user = mysql_fetch_assoc($getUser);
+                $getUser = mysqli_query($conn, "SELECT username FROM phpbb_users WHERE user_id='".$row['poster_id']."'"); 
+				$user = mysqli_fetch_assoc($getUser);
                 //Get topic
-                $getTopic = mysql_query("SELECT topic_title FROM phpbb_topics WHERE topic_id='".$row['topic_id']."'"); 
-				$topic = mysql_fetch_assoc($getTopic);
+                $getTopic = mysqli_query($conn, "SELECT topic_title FROM phpbb_topics WHERE topic_id='".$row['topic_id']."'"); 
+				$topic = mysqli_fetch_assoc($getTopic);
             ?>
                 <tr class="center">
                     <td><a href="http://heroic-wow.net/forum/memberlist.php?mode=viewprofile&u=<?php echo $row['poster_id']; ?>" title="View profile" 
@@ -218,8 +219,8 @@
                <?php echo $GLOBALS['connection']['worlddb']; ?><br/>
                <?php 
                      $server->selectDB('webdb');
-                     $get = mysql_query("SELECT version FROM db_version");
-                     $row = mysql_fetch_assoc($get);
+                     $get = mysqli_query($conn, "SELECT version FROM db_version");
+                     $row = mysqli_fetch_assoc($get);
                      echo $row['version']; ?>
                </b>
                </td>

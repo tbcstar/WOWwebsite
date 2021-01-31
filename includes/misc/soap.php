@@ -1,5 +1,6 @@
 <?php	
-function sendSoap($command,$username,$password,$host,$soapport) {
+
+function sendSoap($command, $username, $password, $host, $soapport) {
 
 $client = new SoapClient(NULL,
 	array(
@@ -20,7 +21,4 @@ catch (Exception $e)
 {
     echo "命令失败!原因:<br />\n";
     echo $e->getMessage();
-	}
 }
-
-?>

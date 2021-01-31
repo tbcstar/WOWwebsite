@@ -1,7 +1,8 @@
 <?php
 
-function qpc_post($varname){
-	return trim(stripslashes((get_magic_quotes_gpc()) ? $_POST[$varname] : addslashes($_POST[$varname])));
+function qpc_post($varname)
+{
+	return trim( stripslashes( (get_magic_quotes_gpc() ) ? $_POST[$varname] : addslashes( $_POST[$varname]) ) );
 }
 
 define('THIS_SCRIPT', 'vb_register.php');
@@ -23,19 +24,20 @@ $userdm->set('referrerid', qpc_post('referrername'));
 $userdm->set('timezoneoffset', qpc_post('timezoneoffset'));
 $userdm->set_bitfield('options', 'adminemail', intval(qpc_post('adminemail')));
 $userdm->set_bitfield('options', 'showemail', intval(qpc_post('showemail')));
-$firstname=qpc_post('firstname');
-$lastname=qpc_post('lastname');
-$dst_setting = intval(qpc_post('dst'));
+$firstname		= qpc_post('firstname');
+$lastname		= qpc_post('lastname');
+$dst_setting 	= intval(qpc_post('dst'));
 
 switch ($dst_setting)
 {
 	case 0:
 	case 1:
 		$userdm->set_bitfield('options', 'dstonoff', $dst_setting);
-	break;
+		break;
+
 	case 2:
 		$userdm->set_bitfield('options', 'dstauto', 1);
-	break;
+		break;
 }
 
 #如果有错误(电子邮件没有设置，电子邮件禁止，用户名，等等)，你可以检查错误使用
@@ -51,6 +53,4 @@ else
 	# 如果一切都好
 	$newuserid = $userdm->save();
 	echo "1";
-}
-
-?>
+} 

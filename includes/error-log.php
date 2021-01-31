@@ -19,9 +19,12 @@ $fh = fopen($myFile, 'w') or die("无法打开文件");
 $stringData = "";
 fwrite($fh, $stringData);
 fclose($fh);
-  ?><meta http-equiv="Refresh" content="0; url=<?php echo $_SERVER['PHP_SELF']; ?>"><?php
+  	?>
+	<meta http-equiv="Refresh" content="0; url=<?php echo $_SERVER['PHP_SELF']; ?>">
+  	<?php
 }
-if(!$file = file_get_contents("../error.log")) {
+if(!$file = file_get_contents('../error.log')) 
+{
   echo "该脚本无法从error.log文件中获取任何内容。";
 }
 

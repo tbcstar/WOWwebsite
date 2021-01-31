@@ -1,5 +1,6 @@
-<?php 
-account::isNotLoggedIn();
+<?php
+global $Account;
+$Account->isNotLoggedIn();
 ?>
 
 <?php include "header.php" ?>
@@ -23,7 +24,7 @@ account::isNotLoggedIn();
 <span class="cp-icon ico-coins"></span>
 <p>帐户余额</p>
 <p>
-<span class="coin-gold"></span> <span class="count-gold"><?php echo account::loadVP($_SESSION['cw_user']); ?></span>
+<span class="coin-gold"></span> <span class="count-gold"><?php echo $Account->loadVP($_SESSION['cw_user']); ?></span>
 </p>
 </div>
 <div class="cp-item wow shake">

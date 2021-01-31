@@ -1,8 +1,10 @@
 <?php  
 if ($compression['gzip'] == true) 
 {
- if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) 
- 	ob_start("ob_gzhandler");
+ 	if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip'))
+ 	{
+ 		ob_start("ob_gzhandler");
+ 	}
 }
 
 if ($compression['sanitize_output'] == true) 
@@ -24,5 +26,4 @@ if ($compression['sanitize_output'] == true)
 }
 
 ob_start("sanitize_output");
-}
-?>
+} 

@@ -4,51 +4,63 @@ require('../ext_scripts_class_loader.php');
 
 if (isset($_POST['siteid'])) 
 {
+
+	global $Connect, $Account, $Website, $conn;
+
 	$siteid = (int)$_POST['siteid'];
 
-	connect::selectDB('webdb');
+	$Connect->selectDB('webdb');
 	
-	if(website::checkIfVoted($siteid,$GLOBALS['connection']['webdb'])==TRUE)
-		die("?p=vote");
-	
-	connect::selectDB('webdb');
-	$check = mysql_query("SELECT COUNT(*) FROM votingsites WHERE id='".$siteid."'");
-	if(mysql_result($check,0)==0)
-	   die("?p=vote");
-	
-	if($GLOBALS['vote']['type']=='instant')
+	if($Website->checkIfVoted($siteid,$GLOBALS['connection']['webdb']) == TRUE)
 	{
-		$acct_id = account::getAccountID($_SESSION['cw_user']);
-		
+		die("?p=vote");
+	}
+	
+	$Connect->selectDB('webdb');
+	$check = mysqli_query($conn, "SELECT COUNT(*) FROM votingsites WHERE id='".$siteid."'");
+	if(mysqli_result($check,0) == 0)
+	{
+	   die("?p=vote");
+	}
+	
+	if($GLOBALS['vote']['type'] == 'instant')
+	{
+		$acct_id = $Account->getAccountID($_SESSION['cw_user']);
+
+		if(empty($acct_id))
+		{
+			exit();
+		}
+
 		$next_vote = time() + $GLOBALS['vote']['timer'];
 		
-		connect::selectDB('webdb');
+		$Connect->selectDB('webdb');
 		
-		mysql_query("INSERT INTO votelog VALUES('','".$siteid."',
+		mysqli_query($conn, "INSERT INTO votelog (siteid,userid,timestamp,next_vote,ip)
 		'".$acct_id."','".time()."','".$next_vote."','".$_SERVER['REMOTE_ADDR']."')");
 		 
-		$getSiteData = mysql_query("SELECT points,url FROM votingsites WHERE id='".$siteid."'");
-		$row = mysql_fetch_assoc($getSiteData);
+		$getSiteData = mysqli_query($conn, "SELECT points,url FROM votingsites WHERE id='".$siteid."'");
+		$row = mysqli_fetch_assoc($getSiteData);
 		
 		//Update the points table.
 		$add = $row['points'] * $GLOBALS['vote']['multiplier'];
-		mysql_query("UPDATE account_data SET vp=vp + ".$add." WHERE id=".$acct_id);
+		mysqli_query("UPDATE account_data SET vp=vp + ".$add." WHERE id=".$acct_id);
 		
 		echo $row['url'];
 	}
-	elseif($GLOBALS['vote']['type']=='confirm')
+	elseif($GLOBALS['vote']['type'] == 'confirm')
 	{
-		connect::selectDB('webdb');
-		$getSiteData = mysql_query("SELECT points,url FROM votingsites WHERE id='".(int)$_POST['siteid']."'");
-		$row = mysql_fetch_assoc($getSiteData);
+		$Connect->selectDB('webdb');
+		$getSiteData 	= mysqli_query($conn, "SELECT points,url FROM votingsites WHERE id='".(int)$_POST['siteid']."'");
+		$row 			= mysqli_fetch_assoc($getSiteData);
 		
 		
-		$_SESSION['votingUrlID']=(int)$_POST['siteid'];
+		$_SESSION['votingUrlID'] = (int)$_POST['siteid'];
 		
 		echo $row['url'];
 	}
 	else
+	{
 		die("错误！");
-}
-
-?>
+	}
+} 

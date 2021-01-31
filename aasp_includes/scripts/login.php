@@ -2,34 +2,35 @@
 define('INIT_SITE', TRUE);
 include('../../includes/misc/headers.php');
 include('../../includes/configuration.php');;
-mysql_connect($GLOBALS['connection']['host'],$GLOBALS['connection']['user'],$GLOBALS['connection']['password']);
+
+global $conn;
 
 ###############################
 if(isset($_POST['login'])) 
 {
-	 $username = mysql_real_escape_string(strtoupper(trim($_POST['username']))); 
-	 $password = mysql_real_escape_string(strtoupper(trim($_POST['password'])));
+	 $username = mysqli_real_escape_string($conn, strtoupper(trim($_POST['username']))); 
+	 $password = mysqli_real_escape_string($conn, strtoupper(trim($_POST['password'])));
 	 if(empty($username) || empty($password))
 		 die("请输入账号和密码。");
 	 
 		 $password = sha1("".$username.":".$password."");
-		 mysql_select_db($GLOBALS['connection']['logondb']);
+		 mysqli_select_db($conn, $GLOBALS['connection']['logondb']);
 		 
-		 $result = mysql_query("SELECT COUNT(id) FROM account WHERE username='".$username."' AND 
+		 $result = mysqli_query($conn, "SELECT COUNT(id) FROM account WHERE username='".$username."' AND 
 		 sha_pass_hash = '".$password."'");
-		 if(mysql_result($result,0)==0)
+		 if(mysqli_result($result,0)==0)
 			 die("无效的用户名和密码。");
 		 
-		 $getId = mysql_query("SELECT id FROM account WHERE username='".$username."'");
-		 $row = mysql_fetch_assoc($getId);
+		 $getId = mysqli_query($conn, "SELECT id FROM account WHERE username='".$username."'");
+		 $row = mysqli_fetch_assoc($getId);
 		 $uid = $row['id'];
-		 $result = mysql_query("SELECT gmlevel FROM account_access WHERE id='".$uid."' 
+		 $result = mysqli_query($conn, "SELECT gmlevel FROM account_access WHERE id='".$uid."' 
 		 AND gmlevel >= '".$GLOBALS[$_POST['panel'].'Panel_minlvl']."'");
 		
-		 if(mysql_num_rows($result)==0)
+		 if(mysqli_num_rows($result)==0)
 			 die("使用的帐户无法登录!");
 			 
-		 $rank = mysql_fetch_assoc($result);	 
+		 $rank = mysqli_fetch_assoc($result);	 
 		 
 		 $_SESSION['cw_'.$_POST['panel']]=ucfirst(strtolower($username));
 		 $_SESSION['cw_'.$_POST['panel'].'_id']=$uid;

@@ -3,76 +3,88 @@
 ## 包含网站功能的脚本将在这里添加。例如新闻。
 #######################
 
-class website {
+class Website 
+{
 	
 	public static function getNews() 
 	{
-		if ($GLOBALS['news']['enable']==true) {
+		global $Cache, $Connection, $conn, $Website;
+		if ($GLOBALS['news']['enable'] == true)
+		{
 			echo '<div class="box_two_title">最新新闻</div>';
 		
-		if (cache::exists('news')==TRUE) 
-				cache::loadCache('news');
-		else 
-		{
-	        connect::selectDB('webdb');
-			
-		    $result = mysql_query("SELECT * FROM news ORDER BY id DESC LIMIT ".$GLOBALS['news']['maxShown']);
-			if (mysql_num_rows($result)==0) 
-				echo '没有发现任何新闻';
+			if ($Cache->exists('news') == true) 
+			{
+				$Cache->loadCache('news');
+			}
 			else 
 			{
-				$output = NULL;
-				while($row = mysql_fetch_assoc($result)) 
+		        $Connect->selectDB('webdb');
+
+			    $result = mysqli_query($conn, "SELECT * FROM news ORDER BY id DESC LIMIT ".$GLOBALS['news']['maxShown']);
+				if (mysqli_num_rows($result) == 0)
 				{
-					if(file_exists($row['image']))
+					echo '没有发现任何新闻';
+				}
+				else 
+				{
+					$output = null;
+					while($row = mysqli_fetch_assoc($result)) 
 					{
-					echo $newsPT1 =  '
-					       <table class="news" width="100%"> 
-						        <tr>
-								    <td><h3 class="yellow_text">'.$row['title'].'</h3></td>
-							    </tr>
-						   </table>
-                           <table class="news_content" cellpadding="4"> 
-						       <tr>
-						          <td><img src="'.$row['image'].'" alt=""/></td> 
-						          <td>';
-					}
-					else
-					{
-						echo $newsPT1 =  '
-					       <table class="news" width="100%"> 
-						        <tr>
-								    <td><h3 class="yellow_text">'.$row['title'].'</h3></td>
-							    </tr>
-						   </table>
-                           <table class="news_content" cellpadding="4"> 
-						       <tr>
-						           <td>';
-					}
-					   $output .= $newsPT1;  unset($newsPT1);		
+						if(file_exists($row['image']))
+						{
+							echo $newsPT1 =  '
+						       <table class="news" width="100%"> 
+							        <tr>
+									    <td><h3 class="yellow_text">'.$row['title'].'</h3></td>
+								    </tr>
+							   </table>
+	                           <table class="news_content" cellpadding="4"> 
+							       <tr>
+							          <td><img src="'.$row['image'].'" alt=""/></td> 
+							          <td>';
+						}
+						else
+						{
+							echo $newsPT1 =  '
+						       <table class="news" width="100%"> 
+							        <tr>
+									    <td><h3 class="yellow_text">'.$row['title'].'</h3></td>
+								    </tr>
+							   </table>
+	                           <table class="news_content" cellpadding="4"> 
+							       <tr>
+							           <td>';
+						}
+					   	$output .= $newsPT1;  
+					   	unset($newsPT1);
 						
 						$text = preg_replace("
-						  #((http|https|ftp)://(\S*?\.\S*?))(\s|\;|\)|\]|\[|\{|\}|,|\"|'|:|\<|$|\.\s)#ie",
-						 "'<a href=\"$1\" target=\"_blank\">http://$3</a>$4'",
-						 $row['body']
+					  		#((http|https|ftp)://(\S*?\.\S*?))(\s|\;|\)|\]|\[|\{|\}|,|\"|'|:|\<|$|\.\s)#ie",
+					 		"'<a href=\"$1\" target=\"_blank\">http://$3</a>$4'",
+					 		$row['body']
 						);
 							
-						if ($GLOBALS['news']['limitHomeCharacters']==true) 
+						if ($GLOBALS['news']['limitHomeCharacters'] == true) 
 						{ 
-							echo website::limit_characters($text,200);
-							$output.= website::limit_characters($row['body'],200);
+							echo $Website->limit_characters($text,200);
+							$output.= $Website->limit_characters($row['body'],200);
 						} 
 						else 
 						{
-							 echo nl2br($text); 
-							 $output .= nl2br($row['body']); 
+							echo nl2br($text); 
+							$output .= nl2br($row['body']); 
 						}
-						$commentsNum = mysql_query("SELECT COUNT(id) FROM news_comments WHERE newsid='".$row['id']."'");
-						 
-						if($GLOBALS['news']['enableComments']==TRUE) 
-							 $comments = '| <a href="?p=news&amp;newsid='.$row['id'].'">评论 ('.mysql_result($commentsNum,0).')</a>';
-						  else 
-							 $comments = '';
+						$result = mysqli_query($conn, "SELECT COUNT(id) FROM news_comments WHERE newsid='".$row['id']."'");
+						$commentsNum = mysqli_fetch_row($result);
+						if($GLOBALS['news']['enableComments'] == true)
+						{
+							$comments = '| <a href="?p=news&amp;newsid='.$row['id'].'">Comments ('. $commentsNum[0] .')</a>';
+						}
+						else
+						{
+							$comments = '';
+						}
 						 
 						echo $newsPT2 = '
 						<br/><br/><br/>
@@ -81,39 +93,42 @@ class website {
 						</tr>
 					    </table>';
 						$output .= $newsPT2;  
-						unset($newsPT2);			
-				}
+						unset($newsPT2);	
+					}
 					echo '<hr/><a href="?p=news">查看往期新闻...</a>';
-					cache::buildCache('news',$output);
+					$Cache->buildCache('news',$output);						
+				}
 			} 
 		} 
-	} 
-}
+	}
 
-	
 	public static function getSlideShowImages() 
 	{
-		if (cache::exists('slideshow')==TRUE) 
-			cache::loadCache('slideshow');
+		global $Cache, $Connect, $conn;
+		if ($Cache->exists('slideshow') == true)
+		{
+			$Cache->loadCache('slideshow');
+		}
 	    else 
 	    {
-		connect::selectDB('webdb');
-		$result = mysql_query("SELECT path,link FROM slider_images ORDER BY position ASC");
-		while($row = mysql_fetch_assoc($result)) 
+			$Connect->selectDB('webdb');
+			$result = mysqli_query($conn, "SELECT path, link FROM slider_images ORDER BY position ASC");
+			while($row = mysqli_fetch_assoc($result)) 
 		{
 			echo $outPutPT = '<a href="'.$row['link'].'"><img border="none" src="'.$row['path'].'" alt="" class="slideshow_image"></a>';
 			$output .= $outPutPT;
 		}
-		cache::buildCache('slideshow',$output);
-	  }
+			$Cache->buildCache('slideshow',$output);
+	  	}
 	}
 	
 	public static function getSlideShowImageNumbers() 
 	{
-		connect::selectDB('webdb');
-		$result = mysql_query("SELECT position FROM slider_images ORDER BY position ASC");
+		global $Connect, $conn;
+		$Connect->selectDB('webdb');
+		$result = mysqli_query($conn, "SELECT position FROM slider_images ORDER BY position ASC");
 		$x =  1;
-		while($row = mysql_fetch_assoc($result)) 
+		while($row = mysqli_fetch_assoc($result)) 
 		{
 			echo '<a href="#" rel="',$x,'">',$x,'</a>';
 			$x++;
@@ -121,26 +136,30 @@ class website {
 		unset($x);
 	}
 	
-	public static function limit_characters($str,$n) 
-	{        
+	public static function limit_characters($str, $n) 
+	{
 		$str = preg_replace("/<img[^>]+\>/i", "(image)", $str); 
 	
 		if (strlen ($str) <= $n)
+		{
 			return $str;		
-		else 
+		}
+		else
+		{
 			return substr ($str, 0, $n).'...';
+		}
     }
-	
-	
+
 	public static function loadVotingLinks() 
 	{
-		connect::selectDB('webdb');
-		$result = mysql_query("SELECT * FROM votingsites ORDER BY id DESC");
-		if (mysql_num_rows($result)==0) 
-			buildError("无法从数据库中获取任何投票链接。".mysql_error());
+		global $Connect, $conn, $Account;
+		$Connect->selectDB('webdb');
+		$result = mysqli_query($conn, "SELECT * FROM votingsites ORDER BY id DESC");
+		if (mysqli_num_rows($result) == 0) 
+			buildError("无法从数据库中获取任何投票链接。 ".mysqli_error($conn));
 		else
 		{ 
-			while($row = mysql_fetch_assoc($result)) 
+			while($row = mysqli_fetch_assoc($result)) 
 			{
 			?>
 			
@@ -152,22 +171,22 @@ class website {
 
 </div>
  
-<div class="bonus"><?php if(website::checkIfVoted($row['id'])==FALSE) {?> 
+<div class="bonus"><?php if($Website->checkIfVoted($row['id'])==FALSE) {?> 
 					
 <?php
 						 }
 						 else 
 						 {
-							 $getNext = mysql_query("SELECT next_vote FROM ".$GLOBALS['connection']['webdb'].".votelog 
+							 $getNext = mysqli_query($conn, "SELECT next_vote FROM ".$GLOBALS['connection']['webdb'].".votelog 
 							 WHERE userid='".account::getAccountID($_SESSION['cw_user'])."' 
 							 AND siteid='".$row['id']."' ORDER BY id DESC LIMIT 1");
 							 
-							 $row = mysql_fetch_assoc($getNext);
+							 $row = mysqli_fetch_assoc($getNext);
 							 $time = $row['next_vote'] - time();
 							
 							 echo '<font color="red">'.convTime($time);
 						 }
-						 ?></font><br><br><span class="coin-silver"></span> <span class="numbers"></span> 2 coin</div>
+						 ?></font><br><br><span class="coin-silver"></span> <span class="numbers"></span> 2点积分</div>
 						 <input type='submit' target='_blank' class='btn btn-low-green' value='Vote'  onclick="vote('<?php echo $row['id']; ?> ',this)">
 </div>
 </div>
@@ -180,22 +199,27 @@ class website {
 	
 	public static function checkIfVoted($siteid) 
 	{
+		global $Account, $Connect, $conn;
 		$siteid = (int)$siteid;
 	    $db = $GLOBALS['connection']['webdb'];
-		$acct_id = account::getAccountID($_SESSION['cw_user']);
+		$acct_id = $Account->getAccountID($_SESSION['cw_user']);
 		
-		connect::selectDB('webdb');
+		$Connect->selectDB('webdb');
 		
-		$result = mysql_query("SELECT COUNT(id) FROM votelog 
+		$result = mysqli_query($conn, "SELECT COUNT(id) FROM votelog 
 		WHERE userid='".$acct_id."' AND siteid='".$siteid."' AND next_vote > ".time()."");
 
-		if (mysql_result($result,0)==0) 
-			return FALSE;
-		 else 
-			return TRUE;
+		if (mysqli_result($result,0) == 0)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
 	}
 	
-	public static function sendEmail($to,$from,$subject,$body) 
+	public static function sendEmail($to, $from, $subject, $body) 
 	{
 		$headers  = 'MIME版本：1.0' . "\r\n";
         $headers .= '内容类型：text/html; charset=iso-8859-1' . "\r\n";
@@ -206,12 +230,16 @@ class website {
 	
 	public static function convertCurrency($currency) 
 	{
-		if($currency=='dp') 
+		if($currency == 'dp')
+		{
 			return $GLOBALS['donation']['coins_name'];
-		elseif($currency=='vp') 
+		}
+		elseif($currency == 'vp')
+		{
 			return "投票积分";
+		}
 	}
 }
 
-?>
+$Website = new Website(); 
 

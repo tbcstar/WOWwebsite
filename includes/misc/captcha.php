@@ -12,7 +12,7 @@
 	
 	$text_color = imagecolorallocate($image, 0, 0, 0);
 	
-	for($x=1; $x<=30; $x++) 
+	for($x = 1; $x <= 30; $x++) 
 	{
 		$x1 = rand(1,100);
 		$y1 = rand(1,100);
@@ -23,6 +23,4 @@
 	}
 	
 	imagettftext($image, $font_size, 0, 15, 30, $text_color, 'arial.ttf', $_SESSION['captcha_numero']);
-	imagejpeg($image);
-
-?>
+	imagejpeg($image); 

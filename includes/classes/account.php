@@ -3,62 +3,72 @@
 ##  Account functions goes here
 ##############
 
-class account {
+class Account 
+{
 	
 	###############################
 	####### 登录方法
 	###############################
-	public static function logIn($username,$password,$last_page,$remember) 
+	public static function logIn($username, $password, $last_page, $remember) 
 	{
-		if (!isset($username) || !isset($password) || $username=="Username..." || $password=="Password...") 
+		if (!isset($username) || !isset($password) || $username == "Username..." || $password == "Password...")
+		{
 			echo '<span class="red_text">请输入账号密码。</span>'; 
+		}
 		else 
 		{
-			$username = mysql_real_escape_string(trim(strtoupper($username)));
-			$password = mysql_real_escape_string(trim(strtoupper($password)));
+			global $Connect, $conn;
+			$username = mysqli_real_escape_string($conn, trim(strtoupper($username)));
+			$password = mysqli_real_escape_string($conn, trim(strtoupper($password)));
 			
-			connect::selectDB('logondb');
-			$checkForAccount = mysql_query("SELECT COUNT(id) FROM account WHERE username='".$username."'");
-			if (mysql_result($checkForAccount,0)==0) 
+			$Connect->selectDB('logondb');
+			$checkForAccount = mysqli_query($conn, "SELECT COUNT(id) FROM account WHERE username='". $username ."'");
+			if (mysqli_result($checkForAccount,0) == 0)
+			{
 				echo '
-			
 			<div id="ajax_notification" class="notification_red" style="z-index: 999999; display: block;">无效的用户名。</div>
-			
 
 			';	
+			}
 			else 
 			{
-				if($remember!=835727313) 
+				if($remember != 835727313)
 					$password = sha1("".$username.":".$password.""); 
 					
-				$result = mysql_query("SELECT id FROM account WHERE username='".$username."' AND sha_pass_hash='".$password."'");
-				if (mysql_num_rows($result)==0) 
+				$result = mysqli_query($conn, "SELECT id FROM account WHERE username='". $username ."' AND sha_pass_hash='". $password ."'");
+				if (mysqli_num_rows($result)==0) 
 					echo '
 				<div id="ajax_notification" class="notification_red" style="z-index: 999999; display: block;">错误的密码。</div>
 
 			';
 				else 
 				{
-					if($remember=='on') 
-						setcookie("cw_rememberMe", $username.' * '.$password, time()+30758400);
+					if($remember=='on')
+					{ 
+						setcookie("cw_rememberMe", $username .' * '. $password, time()+30758400);
 						//Set "remember me" cookie. Expires in 1 year.
-						 
-					$id = mysql_fetch_assoc($result); 
+					}
+
+					$id = mysqli_fetch_assoc($result); 
 					$id = $id['id'];
 					
 					self::GMLogin($username);
-					$_SESSION['cw_user']=ucfirst(strtolower($username));
-					$_SESSION['cw_user_id']=$id;
+					$_SESSION['cw_user'] = ucfirst(strtolower($username));
+					$_SESSION['cw_user_id'] = $id;
 					
-					connect::selectDB('webdb');
-					$count = mysql_query("SELECT COUNT FROM account_data WHERE id='".$id."'");
-					if(mysql_result($count,0)==0)
-						mysql_query("INSERT INTO account_data VALUES('".$id."','0','0','')");
+					$Connect->selectDB('webdb');
+					$count = mysqli_query($conn, "SELECT COUNT(*) FROM account_data WHERE id='". $id ."'");
+					if(mysqli_result($count,0)==0)
+						mysqli_query($conn, "INSERT INTO account_data VALUES('".$id."','0','0')");
 					
 					if(!empty($last_page))
+					{
 					   header("Location: ".$last_page);
+					}
 					else
+					{
 					   header("Location: index.php"); 
+					}
 				}
 			}
 			
@@ -70,11 +80,12 @@ class account {
 	{
 		//未使用的函数
 		$user_info = array();
-		
-		connect::selectDB('logondb');
-		$account_info = mysql_query("SELECT id, username, email, joindate, locked, last_ip, expansion FROM account 
-		WHERE username='".$_SESSION['cw_user']."'");
-		while($row = mysql_fetch_array($account_info)) 
+		global $Connect, $conn;
+		$Connect->selectDB('logondb');
+
+		$account_info = mysqli_query($conn, "SELECT id, username, email, joindate, locked, last_ip, expansion FROM account 
+		WHERE username='". $_SESSION['cw_user'] ."'");
+		while($row = mysqli_fetch_array($account_info)) 
 		{
 			$user_info[] = $row;
 		}
@@ -99,69 +110,92 @@ class account {
 	
 	
 	###############################
-	####### Registration method
+	####### 注册方法
 	###############################
-	public function register($username,$email,$password,$repeat_password,$captcha,$raf) 
+	public function register($username, $email, $password, $repeat_password, $captcha, $raf) 
 	{
 		$errors = array();
 		
-		if (empty($username))  
+		if (empty($username))
+		{
 			$errors[] = '输入用户名。';
+		}
 			
-		if (empty($email)) 
+		if (empty($email))
+		{
 			$errors[] = '输入电子邮件地址。';
+		}
 			
-		if (empty($password)) 
+		if (empty($password))
+		{
 			$errors[] = '输入密码。';
+		}
 			
-		if (empty($repeat_password)) 
+		if (empty($repeat_password))
+		{
 			$errors[] = '再次输入密码。';
+		}
 			
-		if($username==$password) 
+		if($username == $password)
+		{
 			$errors[] = '您的密码不能是您的用户名!';
+		}
 			
 		else 
 		{
 			session_start();
-			/*if($GLOBALS['registration']['captcha']==TRUE) 
+			/*if($GLOBALS['registration']['captcha'] == TRUE) 
 			{ 
-				if($captcha!=$_SESSION['captcha_numero']) 
+				if($captcha!=$_SESSION['captcha_numero'])
+				{ 
 					$errors[] = '验证码不正确!';
+				}
 			}*/
 			
-			if (strlen($username)>$GLOBALS['registration']['userMaxLength'] || strlen($username)<$GLOBALS['registration']['userMinLength']) 
-				$errors[] = '用户名必须介于'.$GLOBALS['registration']['userMinLength'].' 和 '.$GLOBALS['registration']['userMaxLength'].' letters.';
-				
-			if (strlen($password)>$GLOBALS['registration']['passMaxLength'] || strlen($password)<$GLOBALS['registration']['passMinLength']) 
-				$errors[] = '密码必须介于'.$GLOBALS['registration']['passMinLength'].' 和 '.$GLOBALS['registration']['passMaxLength'].' letters.';
-				
-			if ($GLOBALS['registration']['validateEmail']==true) 
+			if (strlen($username)>$GLOBALS['registration']['userMaxLength'] || strlen($username)<$GLOBALS['registration']['userMinLength'])
 			{
-			    if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) 
+				$errors[] = '用户名必须介于'.$GLOBALS['registration']['userMinLength'].' 和 '.$GLOBALS['registration']['userMaxLength'].' letters.';
+			} 
+
+			if (strlen($password)>$GLOBALS['registration']['passMaxLength'] || strlen($password)<$GLOBALS['registration']['passMinLength'])
+			{
+				$errors[] = '密码必须介于'.$GLOBALS['registration']['passMinLength'].' 和 '.$GLOBALS['registration']['passMaxLength'].' letters.';
+			}
+				
+			if ($GLOBALS['registration']['validateEmail'] == true)
+			{
+			    if (filter_var($email, FILTER_VALIDATE_EMAIL) === false)
+			    {
 				       $errors[] = '输入一个有效的电子邮件地址。';
+			    }
 			}
 			
 		}
 		
-		$username_clean = mysql_real_escape_string(trim($username));
-		$password_clean = mysql_real_escape_string(trim($password));
-		$username = mysql_real_escape_string(trim(strtoupper(strip_tags($username))));
-		$email = mysql_real_escape_string(trim(strip_tags($email)));
-		$password = mysql_real_escape_string(trim(strtoupper(strip_tags($password))));
-		$repeat_password = trim(strtoupper($repeat_password));
-		$raf = (int)$raf;
+		global $Connect, $conn;
+		$username_clean 	= mysqli_real_escape_string($conn, trim($username));
+		$password_clean 	= mysqli_real_escape_string($conn, trim($password));
+		$username 			= mysqli_real_escape_string($conn, trim(strtoupper(strip_tags($username))));
+		$email 				= mysqli_real_escape_string($conn, trim(strip_tags($email)));
+		$password 			= mysqli_real_escape_string($conn, trim(strtoupper(strip_tags($password))));
+		$repeat_password 	= trim(strtoupper($repeat_password));
+		$raf 				= (int)$raf;
 		
 		
-		connect::selectDB('logondb');
+		$Connect->selectDB('logondb');
 		
 		//检查现有用户
-		$result = mysql_query("SELECT COUNT(id) FROM account WHERE username='".$username."'");
-		
-		if (mysql_result($result,0)>0) 
+		$result = mysqli_query($conn, "SELECT COUNT(id) FROM account WHERE username='". $username ."'");
+
+		if (mysqli_result($result,0) > 0)
+		{
 			$errors[] = '用户名已经存在!';
+		}
 		
-		if ($password != $repeat_password) 
+		if ($password != $repeat_password)
+		{
 			$errors[] = '密码不匹配!';
+		}
 		
 		if (!empty($errors)) 
 		{
@@ -178,150 +212,165 @@ class account {
 		{
 			$password = sha1("".$username.":".$password."");
 		
-			mysql_query("INSERT INTO account (username,email,sha_pass_hash,joindate,expansion,recruiter) 
-			VALUES('".$username."','".$email."','".$password."','".date("Y-m-d H:i:s")."','".$GLOBALS['core_expansion']."','".$raf."') "); 
+			mysqli_query($conn, "INSERT INTO account (username,email,sha_pass_hash,joindate,expansion,recruiter) 
+			VALUES('". $username ."','". $email ."','". $password ."','". date("Y-m-d H:i:s") ."','". $GLOBALS['core_expansion'] ."','". $raf ."') "); 
 			
-			$getID = mysql_query("SELECT id FROM account WHERE username='".$username."'");
-			$row = mysql_fetch_assoc($getID);
-			connect::selectDB('webdb');
-			mysql_query("INSERT INTO account_data VALUES('".$row['id']."','','','')"); 
+			$getID 	= mysqli_query($conn, "SELECT id FROM account WHERE username='". $username ."'");
+			$row 	= mysqli_fetch_assoc($getID);
+
+			$Connect->selectDB('webdb');
+			mysqli_query($conn, "INSERT INTO account_data VALUES('".$row['id']."','','','')"); 
+
+			$result = mysqli_query($conn, "SELECT id FROM account WHERE username='". $username_clean ."'");	 
+			$id 	= mysqli_fetch_assoc($result); 
+			$id 	= $id['id'];
+
+			self::GMLogin($username_clean);
+
+			$_SESSION['cw_user'] 	= ucfirst(strtolower($username_clean));
+			$_SESSION['cw_user_id'] = $id;
 			
-			$result = mysql_query("SELECT id FROM account WHERE username='".$username_clean."'");
-						 
-			$id = mysql_fetch_assoc($result); 
-			$id = $id['id'];
-					
-			account::GMLogin($username_clean);
-			$_SESSION['cw_user']=ucfirst(strtolower($username_clean));
-			$_SESSION['cw_user_id']=$id;
-			
-			account::forumRegister($username_clean,$password_clean,$email);
+			self::forumRegister($username_clean,$password_clean,$email);
 		}
 
 	}
 	
 	
-	public static function forumRegister($username,$password,$email) 
+	public static function forumRegister($username, $password, $email) 
 	{
-	 date_default_timezone_set($GLOBALS['timezone']);
-	 
-     global $phpbb_root_path, $phpEx, $user, $db, $config, $cache, $template;
-	 if($GLOBALS['forum']['type']=='phpbb' && $GLOBALS['forum']['autoAccountCreate']==TRUE) 
-	 {
-		     ////////PHPBB集成//////////////
+	date_default_timezone_set($GLOBALS['timezone']);
+
+    global $phpbb_root_path, $phpEx, $user, $db, $config, $cache, $template;
+	if($GLOBALS['forum']['type'] == 'phpbb' && $GLOBALS['forum']['autoAccountCreate'] == TRUE) 
+	{
+	////////PHPBB集成//////////////
 			ini_set('display_errors',1);
 			define('IN_PHPBB', true);
-			define('ROOT_PATH', '../..'.$GLOBALS['forum']['forum_path']);
+			define('ROOT_PATH', '../..'. $GLOBALS['forum']['forum_path']);
 
 			$phpEx = "php";
 			$phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : ROOT_PATH;
-			
+
 			if(file_exists($phpbb_root_path . 'common.' . $phpEx) && file_exists($phpbb_root_path . 'includes/functions_user.' . $phpEx)) 
 			{
-			include($phpbb_root_path . 'common.' . $phpEx);
-			
-			include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
-			
-			$arrTime = getdate();
-			$unixTime = strtotime($arrTime['year'] . "-" . $arrTime['mon'] . '-' . $arrTime['mday'] . " " . $arrTime['hours'] . ":" . $arrTime['minutes'] . ":" . $arrTime['seconds']);
+				include($phpbb_root_path .'common.'. $phpEx);
+				
+				include($phpbb_root_path .'includes/functions_user.'. $phpEx);
+				
+				$arrTime = getdate();
+				$unixTime = strtotime($arrTime['year']."-".$arrTime['mon'].'-'.$arrTime['mday']." ".$arrTime['hours'].":".
+													$arrTime['minutes'].":".$arrTime['seconds']);
 
-			$user_row = array(
-			'username'              => $username,
-			'user_password'         => phpbb_hash($password),
-			'user_email'            => $email,
-			'group_id'              => (int) 2,
-			'user_timezone'         => (float) 0,
-			'user_dst'              => "0",
-			'user_lang'             => "en",
-			'user_type'             => 0,
-			'user_actkey'           => "",
-			'user_ip'               => $_SERVER['REMOTE_HOST'],
-			'user_regdate'          => $unixTime,
-			'user_inactive_reason'  => 0,
-			'user_inactive_time'    => 0
-			);
+				$user_row = array(
+					'username'              => $username,
+					'user_password'         => phpbb_hash($password),
+					'user_email'            => $email,
+					'group_id'              => (int) 2,
+					'user_timezone'         => (float) 0,
+					'user_dst'              => "0",
+					'user_lang'             => "en",
+					'user_type'             => 0,
+					'user_actkey'           => "",
+					'user_ip'               => $_SERVER['REMOTE_HOST'],
+					'user_regdate'          => $unixTime,
+					'user_inactive_reason'  => 0,
+					'user_inactive_time'    => 0
+				);
 
-			// All the information has been compiled, add the user
-			// tables affected: users table, profile_fields_data table, groups table, and config table.
-			$user_id = user_add($user_row);
+				// All the information has been compiled, add the user
+				// tables affected: users table, profile_fields_data table, groups table, and config table.
+				$user_id = user_add($user_row);
 			}
-	  	}
+  		}
 	}
 	
 	###############################
-	####### Check if a user is logged in method.
+	####### 检查用户是否登录方法。
 	###############################
 	public static function isLoggedIn() 
 	{
-		if (isset($_SESSION['cw_user'])) 
+		if (isset($_SESSION['cw_user']))
+		{
 			header("Location: ?p=account");
+		}
 	}
 	
 	
 	
 	###############################
-	####### Check if a user is NOT logged in method.
+	####### 检查用户是否未登录方法。
 	###############################
 	public static function isNotLoggedIn() 
 	{
-		if (!isset($_SESSION['cw_user'])) 
-			header("Location: ?p=login&r=".$_SERVER['REQUEST_URI']);
+		if (!isset($_SESSION['cw_user']))
+		{
+			header("Location: ?p=login&r=". $_SERVER['REQUEST_URI']);
+		}
 	}
 	
 	public static function isNotGmLoggedIn() 
 	{
 		if (!isset($_SESSION['cw_gmlevel']))
+		{
 			header("Location: ?p=home");
+		}
 	}
 	
 	
 	###############################
-	####### Return ban status method.
+	####### 返回禁止状态方法。
 	###############################
 	public static function checkBanStatus($user) 
 	{
-		connect::selectDB('logondb');
+		global $Connect, $conn;
+		$Connect->selectDB('logondb');
 		$acct_id = self::getAccountID($user);
 		
-		$result = mysql_query("SELECT bandate,unbandate,banreason FROM account_banned WHERE id='".$acct_id."' AND active=1");
-		if (mysql_num_rows($result)>0) 
+		$result = mysqli_query($conn, "SELECT bandate,unbandate,banreason FROM account_banned WHERE id='". $acct_id ."' AND active=1");
+		if (mysqli_num_rows($result) > 0) 
 		{
-			$row = mysql_fetch_assoc($result);
-			if($row['bandate'] > $row['unbandate']) 
+			$row = mysqli_fetch_assoc($result);
+			if($row['bandate'] > $row['unbandate'])
+			{
 				$duration = 'Infinite';
+			}
 			else 
 			{
 				$duration = $row['unbandate'] - $row['bandate'];
-				$duration = ($duration / 60)/60;
+				$duration = ($duration / 60) / 60;
 				$duration = $duration.' hours';  
 			}
 				echo '<span class="yellow_text">禁用<br/>
-				Reason: '.$row['banreason'].'<br/>
-				Time left: '.$duration.'</span>';
+				Reason: '. $row['banreason'] .'<br/>
+				Time left: '. $duration. '</span>';
 		} 
-		else 
+		else
+		{
 			echo '<b class="green_text">启用</b>';
+		}
 	}
 	
 	
 	###############################
-	####### Return account ID method.
+	####### 返回帐户ID方法。
 	###############################
 	public static function getAccountID($user) 
 	{
-		$user = mysql_real_escape_string($user);
-		connect::selectDB('logondb');
-		$result = mysql_query("SELECT id FROM account WHERE username='".$user."'");
-		$row = mysql_fetch_assoc($result);
+		global $Connect, $conn;
+		$user = mysqli_real_escape_string($conn, $user);
+		$Connect->selectDB('logondb');
+		$result = mysqli_query($conn, "SELECT id FROM account WHERE username='".$user."'");
+		$row 	= mysqli_fetch_assoc($result);
 		return $row['id'];
 	}
 	
 	public static function getAccountName($id) 
 	{
+		global $Connect, $conn;
 		$id = (int)$id;
-		connect::selectDB('logondb');
-		$result = mysql_query("SELECT username FROM account WHERE id='".$id."'");
-		$row = mysql_fetch_assoc($result);
+		$Connect->selectDB('logondb');
+		$result = mysqli_query($conn, "SELECT username FROM account WHERE id='".$id."'");
+		$row 	= mysqli_fetch_assoc($result);
 		return $row['username'];
 	}
 	
@@ -331,9 +380,10 @@ class account {
 	###############################
 	public function getRemember() 
 	{
-		if (isset($_COOKIE['cw_rememberMe']) && !isset($_SESSION['cw_user'])) {
+		if (isset($_COOKIE['cw_rememberMe']) && !isset($_SESSION['cw_user'])) 
+		{
 			$account_data = explode("*", $_COOKIE['cw_rememberMe']);
-			$this->logIn($account_data[0],$account_data[1],$_SERVER['REQUEST_URI'],835727313);
+			self::logIn($account_data[0],$account_data[1],$_SERVER['REQUEST_URI'],835727313);
 		}	
 	}
 	
@@ -343,14 +393,17 @@ class account {
 	###############################
 	public static function loadVP($account_name) 
 	{
+		global $Connect, $conn;
 		$acct_id = self::getAccountID($account_name);
-		connect::selectDB('webdb');
-		$result = mysql_query("SELECT vp FROM account_data WHERE id=".$acct_id);
-		if (mysql_num_rows($result)==0) 
+		$Connect->selectDB('webdb');
+		$result = mysqli_query($conn, "SELECT vp FROM account_data WHERE id=".$acct_id);
+		if (mysqli_num_rows($result) == 0)
+		{
 			return 0;
+		}
 		else 
 		{
-			$row = mysql_fetch_assoc($result);
+			$row = mysqli_fetch_assoc($result);
 			return $row['vp'];
 		}
 	}
@@ -358,14 +411,17 @@ class account {
 	
 	public static function loadDP($account_name) 
 	{
+		global $Connect, $conn;
 	    $acct_id = self::getAccountID($account_name);
-		connect::selectDB('webdb');
-		$result = mysql_query("SELECT dp FROM account_data WHERE id=".$acct_id);
-		if (mysql_num_rows($result)==0) 
+		$Connect->selectDB('webdb');
+		$result = mysqli_query($conn, "SELECT dp FROM account_data WHERE id=". $acct_id);
+		if (mysqli_num_rows($result) == 0)
+		{
 			return 0;
+		}
 		else 
 		{
-			$row = mysql_fetch_assoc($result);
+			$row = mysqli_fetch_assoc($result);
 			return $row['dp'];
 		}
 	}
@@ -373,79 +429,89 @@ class account {
 	
 	
 	###############################
-	####### Return email method.
+	####### 返回电子邮件的方法。
 	###############################
 	public static function getEmail($account_name) 
 	{
-		$account_name = mysql_real_escape_string($account_name);
-		connect::selectDB('logondb');
-		$result = mysql_query("SELECT email FROM account WHERE username='".$account_name."'");
-		$row = mysql_fetch_assoc($result);
+		global $Connect, $conn;
+		$account_name = mysqli_real_escape_string($conn, $account_name);
+		$Connect->selectDB('logondb');
+		$result = mysqli_query($conn, "SELECT email FROM account WHERE username='". $account_name ."'");
+		$row 	= mysqli_fetch_assoc($result);
 		return $row['email'];
 	}
 	
 	
 	###############################
-	####### Return online status method.
+	####### 返回在线状态方法。
 	###############################
 	public static function getOnlineStatus($account_name) 
 	{
-		$account_name = mysql_real_escape_string($account_name);
-		connect::selectDB('logondb');
-		$result = mysql_query("SELECT COUNT(online) FROM account WHERE username='".$account_name."' AND online=1");
-		if (mysql_result($result,0)==0) 
+		global $Connect, $conn;
+		$account_name = mysqli_real_escape_string($conn, $account_name);
+		$Connect->selectDB('logondb');
+		$result 	= mysqli_query($conn, "SELECT COUNT(online) FROM account WHERE username='". $account_name ."' AND online=1");
+		if (mysqli_result($result,0) == 0)
+		{
 			return '<b class="red_text">离线</b>';
+		}
 		else
+		{
 			return '<b class="green_text">在线</b>';
+		}
 	}
-	
 	
 	###############################
 	####### Return Join date method.
 	###############################
 	public static function getJoindate($account_name) 
 	{
-		$account_name = mysql_real_escape_string($account_name);
-		connect::selectDB('logondb');
-		$result = mysql_query("SELECT joindate FROM account WHERE username='".$account_name."'");
-		$row = mysql_fetch_assoc($result);
+		global $Connect, $conn;
+		$account_name = mysqli_real_escape_string($conn, $account_name);
+		$Connect->selectDB('logondb');
+		$result = mysqli_query($conn, "SELECT joindate FROM account WHERE username='". $account_name ."'");
+		$row 	= mysqli_fetch_assoc($result);
 		return $row['joindate'];
 	}
-	
 	
 	###############################
 	####### 如果用户是级别为2及以上的GM，则返回一个GM会话。
 	###############################
 	public static function GMLogin($account_name) 
 	{
-		connect::selectDB('logondb');
+		global $Connect, $conn;
+		$Connect->selectDB('logondb');
 		$acct_id = self::getAccountID($account_name);
 		
-		$result = mysql_query("SELECT gmlevel FROM account_access WHERE gmlevel > 2 AND id=".$acct_id);
-		if(mysql_num_rows($result)>0) 
+		$result = mysqli_query($conn, "SELECT gmlevel FROM account_access WHERE gmlevel > 2 AND id=".$acct_id);
+		if(mysqli_num_rows($result) > 0) 
 		{
-			$row = mysql_fetch_assoc($result);
-			$_SESSION['cw_gmlevel']=$row['gmlevel'];
+			$row = mysqli_fetch_assoc($result);
+			$_SESSION['cw_gmlevel'] = $row['gmlevel'];
 		}
 		
 	}
 	
 	public static function getCharactersForShop($account_name) 
 	{
+		global $Connect, $conn;
+
 		$acct_id = self::getAccountID($account_name);
-		connect::selectDB('webdb');
-		$getRealms = mysql_query("SELECT id,name FROM realms");
-		while($row = mysql_fetch_assoc($getRealms)) 
+
+		$Connect->selectDB('webdb');
+
+		$getRealms = mysqli_query($conn, "SELECT id,name FROM realms");
+		while($row = mysqli_fetch_assoc($getRealms)) 
 		{
-			connect::connectToRealmDB($row['id']);
-			$result = mysql_query("SELECT name,guid FROM characters WHERE account='".$acct_id."'");
-			if(mysql_num_rows($result)==0 && !isset($x))
+			$Connect->connectToRealmDB($row['id']);
+			$result = mysqli_query($conn, "SELECT name,guid FROM characters WHERE account='".$acct_id."'");
+			if(mysqli_num_rows($result) == 0 && !isset($x))
 			{
 				$x = true;
-			     echo '<option value="">没有发现角色！</option>';
+			    echo '<option value="">没有发现角色！</option>';
 			}
-				  
-			while($char = mysql_fetch_assoc($result)) 
+
+			while($char = mysqli_fetch_assoc($result)) 
 			{
 				echo '<option value="'.$char['guid'].'*'.$row['id'].'">'.$char['name'].' - '.$row['name'].'</option>';
 			}
@@ -453,255 +519,303 @@ class account {
 	}
 	
 	
-	public static function changeEmail($email,$current_pass) 
+	public static function changeEmail($email, $current_pass) 
 	{
-
 		$errors = array();
-		if (empty($current_pass)) 
+
+		if (empty($current_pass))
+		{
 			$errors[] = '请输入您的当前密码'; 
+		}
 		else 
 		{
-			if (empty($email)) 
-				$errors[] = '请输入电子邮件地址。';
-			
-			connect::selectDB('logondb');
-			$username = mysql_real_escape_string(trim(strtoupper($_SESSION['cw_user'])));
-			$password = mysql_real_escape_string(trim(strtoupper($current_pass)));
-			
-			$password = sha1("".$username.":".$password."");
-
-			$result = mysql_query("SELECT COUNT(id) FROM account WHERE username='".$username."' AND sha_pass_hash='".$password."'");
-			if (mysql_result($result,0)==0) 
-				$errors[] = '当前密码不正确。';
-			
-			
-			if ($GLOBALS['registration']['validateEmail']==true) 
+			if (empty($email))
 			{
-			    if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) 
-				    $errors[] = '输入一个有效的电子邮件地址。';
-				 else 
-					 mysql_query("UPDATE account SET email='".$email."' WHERE username='".$_SESSION['cw_user']."'");
+				$errors[] = '请输入电子邮件地址。';
+			}
+
+			global $Connect, $conn;
+
+			$Connect->selectDB('logondb');
+
+			$username = mysqli_real_escape_string($conn, trim(strtoupper($_SESSION['cw_user'])));
+			$password = mysqli_real_escape_string($conn, trim(strtoupper($current_pass)));
+			
+			$password = sha1("". $username .":". $password ."");
+
+			$result = mysqli_query($conn, "SELECT COUNT(id) FROM account WHERE username='". $username ."' AND sha_pass_hash='". $password ."'");
+			if (mysqli_result($result, 0) == 0)
+			{
+				$errors[] = '当前密码不正确。';
+			}
+			
+			if ($GLOBALS['registration']['validateEmail'] == true) 
+			{
+			    if (filter_var($email, FILTER_VALIDATE_EMAIL) === false)
+			    {
+			    	$errors[] = '请输入有效的电子邮件地址。';
+			    }
+				else
+				{
+					mysqli_query($conn, "UPDATE account SET email='".$email."' WHERE username='".$_SESSION['cw_user']."'");	
+				}
 			}
 			
 		}
-		if(empty($errors)) 
+
+		if(empty($errors))
+		{
 			echo '您的帐号更新成功。';
+		}
 		else 
 		{
 			echo '<div class="news" style="padding: 5px;">
 			<h4 class="red_text">出现以下错误:</h4>';
-				   foreach($errors as $error) 
-				   {
-					 echo  '<strong class="yellow_text">*', $error ,'</strong><br/>';
-				   }
+			foreach($errors as $error) 
+			{
+				echo  '<strong class="yellow_text">*', $error ,'</strong><br/>';
+			}
 			echo '</div>';
 		}
 	}
-	
-	
-	
+
 	//用于更改密码页面。
-	public static function changePass($old,$new,$new_repeat) 
+	public static function changePass($old, $new, $new_repeat) 
 	{
-		$_POST['cur_pass']=mysql_real_escape_string(trim($old));
-		$_POST['new_pass']=mysql_real_escape_string(trim($new));
-		$_POST['new_pass_repeat']=mysql_real_escape_string(trim($new_repeat));
+		global $Connect, $conn;
+		$_POST['cur_pass'] 			= mysqli_real_escape_string(trim($old));
+		$_POST['new_pass'] 			= mysqli_real_escape_string(trim($new));
+		$_POST['new_pass_repeat']	= mysqli_real_escape_string(trim($new_repeat));
 		
 		//检查是否所有字段值都已输入
-		if (!isset($_POST['cur_pass']) || !isset($_POST['new_pass']) || !isset($_POST['new_pass_repeat'])) 
+		if (!isset($_POST['cur_pass']) || !isset($_POST['new_pass']) || !isset($_POST['new_pass_repeat']))
+		{
 			echo '<b class="red_text">请输入所有字段!</b>';
+		}
 	    else 
 		{
 			//检查新密码是否匹配?
 			if ($_POST['new_pass'] != $_POST['new_pass_repeat'])
+			{
 				echo '<b class="red_text">新密码不匹配!</b>';
+			}
 			else 
 			{
-			  if (strlen($_POST['new_pass']) < $GLOBALS['registration']['passMinLength'] || 
-			      strlen($_POST['new_pass'] > $GLOBALS['registration']['passMaxLength'])) 
-				  echo '<b class="red_text">您的密码不能小于6位或大于32位！</b>';
-			  else 
-			  {
-				//让我们检查一下旧密码是否正确!
-				$username = strtoupper(mysql_real_escape_string($_SESSION['cw_user']));
-				connect::selectDB('logondb');
-				$getPass = mysql_query("SELECT `sha_pass_hash` FROM `account` WHERE `username`='".$username."'");
-				$row = mysql_fetch_assoc($getPass);
-				$thePass = $row['sha_pass_hash'];
-				
-				$pass = mysql_real_escape_string(strtoupper($_POST['cur_pass']));
-				$pass_hash = SHA1($username.':'.$pass);
-				
-				$new_pass = mysql_real_escape_string(strtoupper($_POST['new_pass']));
-				$new_pass_hash = SHA1($username.':'.$new_pass);
-				
-				if ($thePass != $pass_hash) 
-					echo '<b class="red_text">旧密码不正确!</b>';
+				if (strlen($_POST['new_pass']) < $GLOBALS['registration']['passMinLength'] || 
+					strlen($_POST['new_pass']) > $GLOBALS['registration']['passMaxLength'])
+				{
+					echo '<b class="red_text">您的密码必须在6到32个数之间</b>';
+				}
 				else 
 				{
-					//成功,更改密码
-					echo '您的密码已修改!';
-					mysql_query("UPDATE `account` SET `sha_pass_hash`='$new_pass_hash' WHERE `username`='".$username."'");
-					mysql_query("UPDATE `account` SET `v`='0' AND `s`='0' WHERE username='".$username."'");
+					//让我们检查一下旧密码是否正确!
+					$username 		= mysqli_real_escape_string($conn, strtoupper($_SESSION['cw_user']));
+
+					$Connect->selectDB('logondb');
+
+					$getPass 		= mysqli_query($conn, "SELECT `sha_pass_hash` FROM `account` WHERE `username`='".$username."'");
+					$row 			= mysqli_fetch_assoc($getPass);
+					$thePass 		= $row['sha_pass_hash'];
+
+					$pass 			= mysqli_real_escape_string($conn, strtoupper($_POST['cur_pass']));
+					$pass_hash 		= sha1($username.':'.$pass);
+
+					$new_pass 		= mysqli_real_escape_string($conn, strtoupper($_POST['new_pass']));
+					$new_pass_hash 	= sha1($username.':'.$new_pass);
+
+					if ($thePass != $pass_hash)
+					{
+						echo '<b class="red_text">旧密码不正确!</b>';
+					}
+					else 
+					{
+						//成功,更改密码
+						echo '您的密码已更改!';
+						mysqli_query($conn, "UPDATE account SET sha_pass_hash='". $new_pass_hash ."' WHERE username='". $username ."'");
+						mysqli_query($conn, "UPDATE account SET v='0' AND s='0' WHERE username='". $username ."'");
+					}
 				}
 			}
-		  }
 		}
 	}
 	
 	public static function changePassword($account_name,$password) 
 	{
-			$username = mysql_real_escape_string(strtoupper($account_name));
-			$pass = mysql_real_escape_string(strtoupper($password));
+			$username = mysqli_real_escape_string(strtoupper($account_name));
+			$pass = mysqli_real_escape_string(strtoupper($password));
 			$pass_hash = SHA1($username.':'.$pass);
 			
-			connect::selectDB('logondb');
-			mysql_query("UPDATE `account` SET `sha_pass_hash`='$pass_hash' WHERE `username`='".$username."'");
-			mysql_query("UPDATE `account` SET `v`='0' AND `s`='0' WHERE username='".$username."'");
+			$Connect->selectDB('logondb');
+			mysqli_query($conn, "UPDATE `account` SET `sha_pass_hash`='$pass_hash' WHERE `username`='".$username."'");
+			mysqli_query($conn, "UPDATE `account` SET `v`='0' AND `s`='0' WHERE username='".$username."'");
 			
-			account::logThis("Changed password","passwordchange",NULL);
+			self::logThis("Changed password","passwordchange",NULL);
 	}
 	
 	public static function forgotPW($account_name, $account_email) 
 	{
-		$account_name = mysql_real_escape_string($account_name);
-		$account_email = mysql_real_escape_string($account_email);
+		global $Connect, $conn; global $Website; global $Account;
+		$account_name 	= mysqli_real_escape_string($conn, $account_name);
+		$account_email 	= mysqli_real_escape_string($conn, $account_email);
 		
-		if (empty($account_name) || empty($account_email)) 
+		if (empty($account_name) || empty($account_email))
+		{
 			echo '<b class="red_text">请输入用户名和Email。</b>';
+		}
 		else 
 		{
-			connect::selectDB('logondb');
-			$result = mysql_query("SELECT COUNT('id') FROM account 
-								 WHERE username='".$account_name."' AND email='".$account_email."'");
+			$Connect->selectDB('logondb');
+			$result = mysqli_query($conn, "SELECT COUNT('id') FROM account WHERE username='". $account_name ."' AND email='". $account_email ."'");
 			
-			if (mysql_result($result,0)==0) 
+			if (mysqli_result($result, 0) == 0)
+			{
 				echo '<b class="red_text">用户名或电子邮件不正确。</b>';
+			}
 			else 
 			{
 				//Success, lets send an email & add the forgotpw thingy.
 				$code = RandomString();
-				website::sendEmail($account_email,$GLOBALS['default_email'],'找回密码',"
+				$Website->sendEmail($account_email, $GLOBALS['default_email'],'忘记密码',"
 				你好。<br/><br/>
-				要求为帐户重设密码 ".$account_name." <br/>
+				要求为帐户重设密码 ". $account_name ." <br/>
 				如果要重置密码，请单击下面的链接：<br/>
-				<a href='".$GLOBALS['website_domain']."?p=forgotpw&code=".$code."&account=".account::getAccountID($account_name)."'>
-				".$GLOBALS['website_domain']."?p=forgotpw&code=".$code."&account=".account::getAccountID($account_name)."</a>
+				<a href='". $GLOBALS['website_domain'] ."?p=forgotpw&code=". $code ."&account=". self::getAccountID($account_name) ."'>
+				". $GLOBALS['website_domain'] ."?p=forgotpw&code=". $code ."&account=". self::getAccountID($account_name) ."</a>
 				
 				<br/><br/>
 				
 				如果您没有请求此消息，请忽略此消息。<br/><br/>
-				来自TBCstar的问候。
-				");
+				来自TBCstar的问候。");
+
 				$account_id = self::getAccountID($account_name);
-				connect::selectDB('webdb');
+				$Connect->selectDB('webdb');
 				
-				mysql_query("DELETE FROM password_reset WHERE account_id='".$account_id."'");
-				mysql_query("INSERT INTO password_reset VALUES ('','".$code."','".$account_id."')");
+				mysqli_query($conn, "DELETE FROM password_reset WHERE account_id='".$account_id."'");
+				mysqli_query($conn, "INSERT INTO password_reset VALUES ('','". $code ."','". $account_id ."')");
 				echo "
 				包含重置密码链接的电子邮件已发送到您指定的电子邮件地址。
 				如果您在此之前已经提交了其他密码重置请求，则这些请求将不起作用。<br/>";
-				}	
-			}	
+			}
 		}
-	
-		public static function hasVP($account_name,$points) 
+
+		function hasVP($account_name,$points) 
 		{
-			$points = (int)$points;
+			global $Connect, $conn;
+			$points 	= (int)$points;
 			$account_id = self::getAccountID($account_name);
-			connect::selectDB('webdb');
-			$result = mysql_query("SELECT COUNT('id') FROM account_data WHERE vp >= '".$points."' 
-			AND id='".$account_id."'");
+			$Connect->selectDB('webdb');
+			$result 	= mysqli_query($conn, "SELECT COUNT('id') FROM account_data WHERE vp >= '". $points ."' AND id='". $account_id ."'");
 			
-			if (mysql_result($result,0)==0) 
+			if (mysqli_result($result, 0) == 0)
+			{
 				return FALSE;
+			}
 			else
+			{
 				return TRUE;
+			}
 		}
 		
-		public static function hasDP($account_name,$points) 
+		function hasDP($account_name, $points) 
 		{
-			$points = (int)$points;
+			global $Connect, $conn;
+			$points 	= (int)$points;
 			$account_id = self::getAccountID($account_name);
-			connect::selectDB('webdb');
-			$result = mysql_query("SELECT COUNT('id') FROM account_data WHERE dp >= '".$points."' 
-			AND id='".$account_id."'");
+			$Connect->selectDB('webdb');
+			$result 	= mysqli_query($conn, "SELECT COUNT('id') FROM account_data WHERE dp >= '". $points ."' AND id='". $account_id ."'");
 			
-			if (mysql_result($result,0)==0)
+			if (mysqli_result($result, 0) == 0)
+			{
 				return FALSE;
+			}
 			else
+			{
 				return TRUE;
+			}
 		}
 		
-		
-		public static function deductVP($account_id,$points) 
+		function deductVP($account_id, $points) 
 		{
-			$points = (int)$points;
+			global $Connect, $conn;
+
+			$points 	= (int)$points;
 			$account_id = (int)$account_id;
-			connect::selectDB('webdb');
+			$Connect->selectDB('webdb');
             
-			mysql_query("UPDATE account_data SET vp=vp - ".$points." WHERE id='".$account_id."'");
+			mysqli_query($conn, "UPDATE account_data SET vp=vp - ".$points." WHERE id='".$account_id."'");
 		}
 		
-		public static function deductDP($account_id,$points) 
+		function deductDP($account_id, $points) 
 		{
-			$points = (int)$points;
+			global $Connect, $conn;
+			$points 	= (int)$points;
 			$account_id = (int)$account_id;
-			connect::selectDB('webdb');
+			$Connect->selectDB('webdb');
             
-			mysql_query("UPDATE account_data SET dp=dp - ".$points." WHERE id='".$account_id."'");
+			mysqli_query($conn, "UPDATE account_data SET dp=dp - ".$points." WHERE id='".$account_id."'");
 		}
 		
-		public static function addDP($account_id,$points)
+		function addDP($account_id, $points)
 		{
+			global $Connect, $conn;
+
 			$account_id = (int)$account_id;
-			$points = (int)$points;
-			connect::selectDB('webdb');
+			$points 	= (int)$points;
+			$Connect->selectDB('webdb');
 			
-			mysql_query("UPDATE account_data SET dp=dp + ".$points." WHERE id='".$account_id."'");
+			mysqli_query($conn, "UPDATE account_data SET dp=dp + ".$points." WHERE id='".$account_id."'");
 		}
 		
-		public static function addVP($account_id,$points)
+		function addVP($account_id, $points)
 		{
+			global $Connect, $conn;
 			$account_id = (int)$account_id;
-			$points = (int)$points;
-			connect::selectDB('webdb');
+			$points 	= (int)$points;
+			$Connect->selectDB('webdb');
 			
-			mysql_query("UPDATE account_data SET dp=dp + ".$points." WHERE id='".$account_id."'");
+			mysqli_query($conn, "UPDATE account_data SET dp=dp + ".$points." WHERE id='". $account_id ."'");
 		}
 		
-		public static function getAccountIDFromCharId($char_id,$realm_id) 
+		function getAccountIDFromCharId($char_id, $realm_id) 
 		{
+			global $Connect, $conn;
 			$char_id = (int)$char_id;
 			$realm_id = (int)$realm_id;
-			connect::selectDB('webdb');
-			connect::connectToRealmDB($realm_id);
+			$Connect->selectDB('webdb');
+			$Connect->connectToRealmDB($realm_id);
 			
-			$result = mysql_query("SELECT account FROM characters WHERE guid='".$char_id."'");
-			$row = mysql_fetch_assoc($result);
+			$result = mysqli_query($conn, "SELECT account FROM characters WHERE guid='". $char_id ."'");
+			$row 	= mysqli_fetch_assoc($result);
 			return $row['account'];
 		}
 		
-		
-		public static function isGM($account_name) 
+		function isGM($account_name) 
 		{
-	         $account_id = self::getAccountID($account_name);
-			 $result = mysql_query("SELECT COUNT(id) FROM account_access WHERE id='".$account_id."' AND gmlevel >= 1");
-			 if (mysql_result($result,0)>0)
-				 return TRUE;
-			 else
-				 return FALSE;
+			global $conn;
+	        $account_id = self::getAccountID($account_name);
+			$result = mysqli_query($conn, "SELECT COUNT(id) FROM account_access WHERE id='". $account_id ."' AND gmlevel >= 1");
+			if (mysqli_result($result,0) > 0)
+			{
+				return TRUE;
+			}
+			else
+			{
+				return FALSE;
+			}
 		}
 		
-		public static function logThis($desc,$service,$realmid)
+		function logThis($desc, $service, $realmid)
 		{
-			$desc = mysql_real_escape_string($desc);
-			$realmid = (int)$realmid;
-			$service = mysql_real_escape_string($service);
-			$account = (int)$_SESSION['cw_user_id'];
+			global $Connect, $conn;
+			$desc 		= mysqli_real_escape_string($conn, $desc);
+			$realmid 	= (int)$realmid;
+			$service 	= mysqli_real_escape_string($conn, $service);
+			$account 	= (int)$_SESSION['cw_user_id'];
 			
-			connect::selectDB('webdb');
-			mysql_query("INSERT INTO user_log VALUES('','".$account."','".$service."','".time()."','".$_SERVER['REMOTE_ADDR']."','".$realmid."','".$desc."')");
+			$Connect->selectDB('webdb');
+			mysqli_query($conn, "INSERT INTO user_log VALUES('','". $account ."','". $service ."','". time() ."','". $_SERVER['REMOTE_ADDR'] ."','". $realmid ."','". $desc ."')");
+		}
 	}
 }
-?>
+
+$Account = new Account(); 

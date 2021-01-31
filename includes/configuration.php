@@ -33,7 +33,7 @@
 	 //Example: http://yourserver.com/
 	 //如果你的网站在子目录下， include that aswell. Ex: http://yourserver.com/cataclysm/
 	 
-	 $showLoadTime = true; 
+	 $showLoadTime = false; 
 	 //在页脚显示页面加载时间。
 	 
 	 $footer_text = 'Copyright &copy; TBCstar | 时光回溯 2021<br/>
@@ -43,17 +43,19 @@
 	 $timezone = 'Asia/Shanghai'; //为你的网站设置时区。默认:欧洲/贝尔格莱德(GMT +1)
 	 //支持时区的完整列表可以在这里找到: http://php.net/manual/en/timezones.php
 	 
-	 $core_expansion = 1; //服务器的版本。
+	 $core_expansion = 2; //服务器的版本。
 	 // 0 = Vanilla
 	 // 1 = The Burning Crusade
 	 // 2 = Wrath of The Lich King
 	 // 3 = Cataclysm
+	 // 4 = Mists Of Pandaria
+	 // 5 = Legion
 	 
 	 $adminPanel_enable = true; //启用或禁用管理员面板。
 	 $staffPanel_enable = false; //启用或禁用Staff面板。
 	 
-	 $adminPanel_minlvl = 3; //最低的GM级别，其中帐户能够登录到管理面板。默认值:5
-	 $staffPanel_minlvl = 2; //能够登录到员工面板的最低GM级别。默认值:3
+	 $adminPanel_minlvl = 5; //最低的GM级别，其中帐户能够登录到管理面板。默认值:5
+	 $staffPanel_minlvl = 3; //能够登录到员工面板的最低GM级别。默认值:3
 	 
 	 $staffPanel_permissions['Pages'] = true;
 	 $staffPanel_permissions['News'] = true;
@@ -149,7 +151,7 @@
 	$registration['passMaxLength'] = 22;
 	$registration['passMinLength'] = 5;
 	$registration['validateEmail'] = false;
-	$registration['captcha'] = true;
+	$registration['captcha'] = false;
 	
 	//userMaxLength = 用户名的最大长度
 	//userMinLength = 用户名的最小长度
@@ -283,7 +285,7 @@
 		break;
 	}
 	
-	if($GLOBALS['core_expansion']>1) 
+	if($GLOBALS['core_expansion']>2) 
 		$tooltip_href = 'wotlk.cavernoftime.com/';
 	else
 		$tooltip_href = 'wotlk.cavernoftime.com/';
@@ -293,19 +295,23 @@
 	
 	//设置错误处理。
 	if(file_exists('includes/classes/error.php'))
+	{
 		require('includes/classes/error.php');
-		
+	}
 	elseif(file_exists('../classes/error.php'))
+	{
 		require('../classes/error.php');
-		
+	}
 	elseif(file_exists('../includes/classes/error.php'))
+	{
 		require('../includes/classes/error.php');
-	
+	}
 	elseif(file_exists('../../includes/classes/error.php'))
+	{
 		require('../../includes/classes/error.php');
-	
+	}
 	elseif(file_exists('../../../includes/classes/error.php'))
+	{
 		require('../../../includes/classes/error.php');
-	
+	}
 	loadCustomErrors(); //加载自定义错误
-?>
