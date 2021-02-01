@@ -70,7 +70,7 @@ function buyShopItem(type, entry, last_page, account_name)
     $.post("includes/scripts/sendReward.php", {item_entry: entry, character_realm: character.value, send_mode: type, last_page: last_page},
         function (data)
         {
-            popUp("Item Purchased", "The item was purchased and sent to your character via mail.");
+            popUp("Item Purchased", "物品被购买并通过邮件发送给你的角色。");
             $("#shopContent").html(data);
             $.post("includes/scripts/misc.php", {element: type, account: account_name},
                 function (data)
@@ -93,7 +93,7 @@ function redirect(url)
 
 function confirmItemDelete(url)
 {
-    var btn = confirm("Do you really wish to delete this item?");
+    var btn = confirm("您真的要删除此物品吗?");
     if (btn == true)
     {
         redirect(url);
@@ -158,7 +158,7 @@ function register(captchastate)
 
     var raf = document.getElementById("referer").value;
 
-    popUp("Account Creation", "Your account is being registered...");
+    popUp("Account Creation", "您的帐号正在注册中...");
 
     $.post("includes/scripts/register.php", 
         {
@@ -174,7 +174,7 @@ function register(captchastate)
             {
                 if (data == true)
                 {
-                    popUp("Account Created", "Your account has been created successfully. You will be redirected to the account page in 5 seconds...");
+                    popUp("Account Created", "您的帐户已成功创建。您将在5秒内被重定向到帐户页面...");
                     $("#username").val("");
                     $("#email").val("");
                     $("#password").val("");
@@ -219,7 +219,7 @@ function unstuck(guid, char_db)
     $.post("includes/scripts/character.php", {action: "unstuck", guid: guid, char_db: char_db},
         function (data)
         {
-            popUp("Unstucked!", "Your character was successfully unstucked!");
+            popUp("Unstucked!", "你的角色成功地摆脱了困境!");
         });
 }
 
@@ -229,7 +229,7 @@ function revive(guid, char_db)
     $.post("includes/scripts/character.php", {action: "revive", guid: guid, char_db: char_db},
         function (data)
         {
-            popUp("Revived!", "Your character was successfully revived!");
+            popUp("Revived!", "你的角色成功复活了!");
         });
 }
 
@@ -328,7 +328,7 @@ function checkout()
 {
     var values = document.getElementById("checkout_values").value;
 
-    popUp("Proccessing...", "Proccessing your payment & sending the items...");
+    popUp("Proccessing...", "处理您的付款和发送物品...");
     $.post("includes/scripts/shop.php", {action: "checkout", values: values},
         function (data)
         {
@@ -391,7 +391,7 @@ function selectChar(values, box)
 
 function portTo(locationTo, char_db, character)
 {
-    popUp("Confirm Teleport", "Are you sure you wish to teleport this character to " + locationTo + "?<br/><br/>\
+    popUp("Confirm Teleport", "你确定要传送这个角色到 " + locationTo + "?<br/><br/>\
 	<input type='button' value='Yes' onclick='portNow(\"" + character + "\",\"" + locationTo + "\",\"" + char_db + "\")'> \
 	<input type='button' value='No' onclick='closePopup()'>");
 }
@@ -407,7 +407,7 @@ function portNow(character, location, char_db)
 
 function removeNewsComment(id)
 {
-    popUp("Remove comment", "Are you sure you wish to remove this comment?<br/><br/>\
+    popUp("Remove comment", "您确定要删除此评论吗?<br/><br/>\
 	<input type='button' value='Yes' onclick='removeNewsCommentNow(" + id + ")'> \
 	<input type='button' value='No' onclick='closePopup()'>");
 }
@@ -426,7 +426,7 @@ function removeNewsCommentNow(id)
 
 function removeShopItem(entry, shop)
 {
-    popUp("Remove item", "Are you sure you wish to remove this item?<br/><br/>\
+    popUp("Remove item", "您确定要删除该物品吗?<br/><br/>\
 	<input type='button' value='Yes' onclick='removeShopItemNow(" + entry + ",\"" + shop + "\")'> \
 	<input type='button' value='No' onclick='closePopup()'>");
     $("#popup").css("top", mouseY - 150);
@@ -459,7 +459,7 @@ function editShopItemNow(entry, shop)
     $.post("includes/scripts/shop.php", {action: "editItem", entry: entry, shop: shop, price: price},
         function (data)
         {
-            popUp("Edit item", "Saved! Refresh the page to see the result.");
+            popUp("Edit item", "得救了!刷新页面以查看结果。");
             $("#popup").css("top", mouseY - 150);
         });
 }

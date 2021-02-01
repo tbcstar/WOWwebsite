@@ -26,7 +26,7 @@ if(isset($_POST['check']))
 		$username = mysqli_real_escape_string($conn, $_POST['value']);
 		
 		$result = mysqli_query($conn, "SELECT COUNT(id) FROM account WHERE username='".$username."'");
-		if(mysqli_data_seek($result,0) == 0)
+		if(mysqli_data_seek($result, 0) == 1)
 		{
 			echo "<i class='green_text'>此用户名可用</i>";
 		}

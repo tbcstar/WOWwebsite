@@ -6,11 +6,15 @@ function login(panel)
 	showLoader();
 	
 	$.post("../aasp_includes/scripts/login.php", { login: true, username: username, password: password, panel: panel },
-       function(data) {
-          if(data==true) {
-			 window.location="index.php";
-		  } else {
-			 $("#login_status").html(data); 
+       function(data) 
+       {
+          if(data==true) 
+          {
+				window.location="index.php";
+		  } 
+		  else 
+		  {
+				$("#login_status").html(data); 
 		  }
 		  hideLoader();
    });
@@ -28,7 +32,7 @@ function save_account_data()
 	
 	$.post("../aasp_includes/scripts/account.php", { action: 'edit', email: email, password: password, vp: vp, dp: dp,id: id},
        function(data) {
-			 $("#loading").html(data); 
+			$("#loading").html(data); 
    });
 }
 

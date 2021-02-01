@@ -152,12 +152,12 @@ class Account
 				}
 			}*/
 			
-			if (strlen($username)>$GLOBALS['registration']['userMaxLength'] || strlen($username)<$GLOBALS['registration']['userMinLength'])
+			if (strlen($username) > $GLOBALS['registration']['userMaxLength'] || strlen($username) < $GLOBALS['registration']['userMinLength'])
 			{
 				$errors[] = '用户名必须介于'.$GLOBALS['registration']['userMinLength'].' 和 '.$GLOBALS['registration']['userMaxLength'].' letters.';
 			} 
 
-			if (strlen($password)>$GLOBALS['registration']['passMaxLength'] || strlen($password)<$GLOBALS['registration']['passMinLength'])
+			if (strlen($password) > $GLOBALS['registration']['passMaxLength'] || strlen($password) < $GLOBALS['registration']['passMinLength'])
 			{
 				$errors[] = '密码必须介于'.$GLOBALS['registration']['passMinLength'].' 和 '.$GLOBALS['registration']['passMaxLength'].' letters.';
 			}
@@ -185,9 +185,9 @@ class Account
 		$Connect->selectDB('logondb');
 		
 		//检查现有用户
-		$result = mysqli_query($conn, "SELECT COUNT(id) FROM account WHERE username='". $username ."'");
+		$result = mysqli_query($conn, "SELECT COUNT(id) FROM account WHERE username='". $username ."';");
 
-		if (mysqli_data_seek($result,0) > 0)
+		if (mysqli_data_seek($result, 0) > 1)
 		{
 			$errors[] = '用户名已经存在!';
 		}
