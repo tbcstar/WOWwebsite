@@ -69,22 +69,6 @@ class Connect
 		}
 			return TRUE;
 	}
-
-	public static function checkRevision() 
-	{
-		connect::selectDB('webdb');
-		$getRevision = mysqli_query($conn, "SELECT version FROM db_version LIMIT 1");
-		$row = mysqli_fetch_assoc($getRevision);
-		 
-		if ($GLOBALS['current_revision']!=$row['version']) 
-		{
-			buildError("<b>错误的数据库版本:</b> 数据库和内核不匹配。预期:".$GLOBALS['current_revision'].", 已安装: ".$row['version'],NULL);
-			if ($GLOBALS['shutDownOnMismatch']==true) 
-			{
-				die("<b>错误的数据库版本:</b> 数据库和内核不匹配。预期:".$GLOBALS['current_revision'].", 已安装: ".$row['version']);
-			}
-		} 
-	}
 }
 
 	$Connect 	= new Connect();

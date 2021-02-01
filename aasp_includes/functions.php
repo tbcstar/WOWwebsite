@@ -728,10 +728,10 @@
 
     }
 
-    $GameServer = new GameServer();
-    $GameAccount = new GameAccount();
-    $GamePage = new GamePage();
-    $GameCharacter = new GameCharacter();
+    $GameServer		= new GameServer();
+    $GameAccount	= new GameAccount();
+    $GamePage		= new GamePage();
+    $GameCharacter	= new GameCharacter();
 
     function activeMenu($p)
     {

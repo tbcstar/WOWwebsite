@@ -303,14 +303,12 @@ class Shop
                                	<?php 
 							   	if ($shop == "donate")
 							   	{
-									{
-									 	echo $GLOBALS['donation']['coins_name'];
-									}
-									else
-									{
-										echo '投票积分';
-									}
-							   	}
+								echo $GLOBALS['donation']['coins_name'];
+								}
+                                else
+								{
+								echo '投票积分';
+								}
 							   	?>
                                	</font>
 

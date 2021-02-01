@@ -25,7 +25,6 @@
 	 //Example: '123.456.678', '987.654.321'
 	 
 	 $website_title = 'TBCstar | 时光回溯 | 亚洲最佳无类型服务器'; //网站的标题，显示在用户的浏览器中。
-	 $shutDownOnMismatch = false; //这决定了当数据库和网站核心之间存在不匹配时，网站是否会关闭。
 	 
 	 $default_email = 'admin@tbcstar.com'; //将发送wich电子邮件的默认电子邮件地址。
 
@@ -96,7 +95,7 @@
 	/* 网站压缩设置   
 	/*************************/
 	
-	$compression['gzip'] = true; //这很难解释，但它可能大大提高你的网站速度。
+	$compression['gzip'] = false; //这很难解释，但它可能大大提高你的网站速度。
 	$compression['sanitize_output'] = true; //将删除所编写的HTML代码中的所有空白。这应该会稍微提高网站速度。
 	//“模仿者”将很难窃取你的HTML代码:>
 	

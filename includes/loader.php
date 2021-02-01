@@ -40,7 +40,6 @@ require('includes/misc/connect.php'); //Load connection class
 global $Connect;
 
 $Connect->connectToDB();
-$Connect->checkRevision();
 
 require('includes/misc/func_lib.php'); 
 require('includes/misc/compress.php'); 
