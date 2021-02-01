@@ -89,8 +89,8 @@ global $Account;
 <div class="container">
 <h3 class="section-title wow pulse">关于我们的项目</h3>
 <article class="section-text wow flipInX">
-<p>和你一样，<strong>TBCstar项目</strong>已经探索并征服了浩瀚的魔兽世界。我们对这个游戏的热爱也与日俱增。事实上，我们非常想要恢复那些在魔兽世界第一个资料片中体验到的情感和时刻... <strong>燃烧的远征</strong>.</p>
-<p>然而，我们找不到一个合适的地方来重温那些难忘的时刻……所以我们决定自己动手!现在，经过5年的不断的开发和内部测试，我们终于准备好介绍我们的项目……给你。</p>
+<p>独特的无类别玩法，<strong>TBCstar团队</strong>已经探索并征服了浩瀚的魔兽世界。我们对这个游戏的热爱也与日俱增。事实上，我们非常想要恢复那些在魔兽世界第一个资料片中体验到的情感和时刻... <strong>燃烧的远征</strong>.</p>
+<p>同时，我们还希望有一些非常特别的玩法和创意……所以我们决定自己动手!现在，经过5年的不断的开发和内部测试，我们终于准备好介绍我们的项目……给你。</p>
 </article>
 <div class="row items">
 <div class="col wow wobble">
@@ -110,7 +110,7 @@ global $Account;
 <img src="/images/pref/pref-hov-11.png" class="hov" alt="">
 </div>
 <h4 class="title">角色XP</h4>
-<div class="text">升级经验完全遵循暴雪的设定，只有周末是双倍XP，这对很多玩家来说是很友好的设置。</div>
+<div class="text">1-58的升级经验是双倍，58-70只有周末是双倍XP，这对很多玩家来说是很友好的设置。</div>
 </div>
 </div>
 
@@ -165,7 +165,7 @@ global $Account;
 <div class="text-block">
 <h3 class="section-title wow pulse">为什么使用渐进模式？</h3>
 <article class="section-text wow flipInX">
-<p>首先，我们回答这个问题:“什么是渐进模式?什么意思?”这是一个所有PvE内容逐渐可用的世界。这意味着你将不能立即进入黑暗神殿或太阳井高地。我们相信这种发布方式可以让我们的社区更彻底地享受燃烧远征，并提供最好的资料片体验。</p>
+<p>首先，我们回答这个问题:“什么是渐进模式?什么意思?”这是一个所有PvE内容逐渐可用的世界。这意味着你将不能立即进入黑暗神殿或太阳井高地。我们相信这种发布方式可以让我们更彻底地享受燃烧远征，并提供最好的资料片体验。</p>
 </article>
 </div>
 <div class="row">
@@ -416,7 +416,7 @@ T <span class="numbers">5</span>
 <img src="/images/why/why-03.png" alt="">
 <img src="/images/why/why-hov-03.png" class="hov" alt="">
 </div>
-<div class="text">竞技场系统</div>
+<div class="text">竞技场开放</div>
 </div>
 <div class="col wow bounceInLeft">
 <div class="img">
@@ -430,21 +430,21 @@ T <span class="numbers">5</span>
 <img src="/images/why/why-05.png" alt="">
 <img src="/images/why/why-hov-05.png" class="hov" alt="">
 </div>
-<div class="text">新种族:血精灵和德莱尼</div>
+<div class="text">新种族:血精灵/德莱尼（Beta测试结束后开放狼人和地精）</div>
 </div>
 <div class="col wow bounceInDown">
 <div class="img">
 <img src="/images/why/why-06.png" alt="">
 <img src="/images/why/why-hov-06.png" class="hov" alt="">
 </div>
-<div class="text">新战场风暴之眼</div>
+<div class="text">新的战场</div>
 </div>
 <div class="col wow bounceInUp">
 <div class="img">
 <img src="/images/why/why-07.png" alt="">
 <img src="/images/why/why-hov-07.png" class="hov" alt="">
 </div>
-<div class="text">新大陆外域</div>
+<div class="text">新的地图</div>
 </div>
 </div>
 </div>
@@ -867,54 +867,43 @@ T <span class="numbers">5</span>
 <article class="section-text text-center wow flipInY" style="visibility: visible; animation-name: flipInY;"> 
 <p>公开beta测试的主要任务是识别尽可能多的bug，以便我们可以在发布之前修复它们。为了参加公开测试，请在下面注册一个账号。 <br> 如果您想要完全参与bug测试，我们恳请您注册账号参与测试。</p></article> 
  <h4 class="section-title text-center">我想注册一个账户</h4> 
- <!--start-->
- <div id="tips" class="text-center">
- </div>
- <!--end-->
  <div class="section-content wow lightSpeedIn" style="visibility: visible; animation-name: lightSpeedIn;"> 
  <form action="/includes/scripts/register.php" id=info method="post"> 
 <div class="row">
 <div class="form-group">
 <label>E-mail：</label>
 <div class="form-control">
-<input type="text" name="email">
+<input type="text" name="Account[email]">
 </div>
 </div>
 <div class="form-group">
 <label>用户名：</label>
 <div class="form-control">
-<input type="text" name="username">
+<input type="text" name="Account[username]">
 </div>
-</div>
-<div type="hidden">
-<input type="hidden" name="raf" value="0">
-</div>
-</div>
-<div type="hidden">
-<input type="hidden" name="register" value="true" value="0">
 </div>
 <div class="form-group">
 <label>密码：</label>
 <div class="form-control">
-<input type="password" name="password">
+<input type="password" name="Account[password]">
 </div>
 </div>
 <div class="form-group">
 <label>确认密码：</label>
 <div class="form-control">
-<input type="password" name="password_repeat">
+<input type="password" name="Account[password2]">
 </div>
 </div>
 </div>
  <div class="row">
 
  <div class="form-group text-center"> 
- <button type="button" name="subInfo" id="subInfo" class="btn btn-yellow">注册</button> 
+ <button type="submit" class="btn btn-yellow">注册</button>
  </div>
  </div>
  <div class="row text-center">
  <div class="form-link">
- <a href="" data-target="registration-content" class="showFormContent">我已经有一个账户</a>
+<a href="" data-target="registration-content" class="showFormContent">我已经有一个账户了</a>
  </div>
  </div>
  </form> 
@@ -934,36 +923,6 @@ T <span class="numbers">5</span>
 <script src="/css/js/wow.min.js" type="text/javascript"></script>
 <script src="/css/js/tab.js" type="text/javascript"></script>
 <script src="/javascript/custom.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-$(document).ready(function(){
-  $("#subInfo").click(function(){
-        $("#subInfo").text("正在注册中...");
-        $("#subInfo").attr("disabled","true");
-        $.post("/includes/scripts/register.php",$('#info').serialize(),function(data){
-            var data=data.trim();
-            console.log(data);
-            if(data=="1"){
-                var r=confirm("注册成功");
-                if(r==true){
-                    window.location.href="/?p=account"
-                }else{
-                    $("#subInfo").text("注册");
-                    $("#subInfo").attr("disabled","false");
-                    return;
-                }
-            }else{
-                $("#subInfo").text("注册");
-                $("#subInfo").attr("disabled","false");
-                document.getElementById("tips").innerHTML = data;
-            };
-        });
-  });
-});
-
-</script>
-
-
 
 <?php } ?>
 
