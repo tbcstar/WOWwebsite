@@ -76,9 +76,11 @@
 时光回溯 </a>
 </div>
 </div>
-<?php account::isNotLoggedIn(); 
+<?php 
+global $Account;
+$Account->isNotLoggedIn(); 
 if (isset($_POST['save'])) {
-	account::changeEmail($_POST['email'],$_POST['current_pass']);
+	$Account->changeEmail($_POST['email'],$_POST['current_pass']);
 }
 ?><br /><br /><br />
 <div class="content-box main">
@@ -89,7 +91,7 @@ if (isset($_POST['save'])) {
 <form action="?p=settings" method="post">
 <div class="row">
 <label for="PasswordForm_password">E-mail地址</label>:<br />
-<input class="default" name="email" type="text" value="<?php echo account::getEmail($_SESSION['cw_user']); ?>" /> </div>
+<input class="default" name="email" type="text" value="<?php echo $Account->getEmail($_SESSION['cw_user']); ?>" /> </div>
 <div class="row">
 <label for="PasswordForm_password">当前密码</label>:<br />
 <input class="default" type="password" name="current_pass"/> </div>

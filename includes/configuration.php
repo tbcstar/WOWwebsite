@@ -109,7 +109,7 @@
 	/*************************/
 	$news['enable'] = true; // 启用/禁用网页上的新闻系统。
 	$news['maxShown'] = 2; //将在主页上显示的新闻帖子的最大数量。
-							 //人们仍然可以通过点击“所有新闻”按钮查看所有的文章。
+							//人们仍然可以通过点击“所有新闻”按钮查看所有的文章。
 	$news['enableComments'] = true; //让人们能够评论你的新闻帖子。
 	$news['limitHomeCharacters'] = false; //这将限制在新闻帖子中显示的字符。人们将不得不点击“阅读更多…”按钮
 	//阅读整篇新闻。
@@ -242,8 +242,8 @@
 	/*************************/
 	$forum['type'] = 'phpbb';
 	$forum['autoAccountCreate'] = true;
-	$forum['forum_path'] = "forum.tbcstar.com";
-	$forum['forum_db'] = 'tbcstarBBS';
+	$forum['forum_path'] = "/forum/";
+	$forum['forum_db'] = 'phpbbs';
 	
 	// type = 你使用的论坛类型。(phpbb链入页面)
 	// autoAccountCreate = 当用户在网站注册时，此功能创建一个论坛帐户。
@@ -315,3 +315,4 @@
 		require('../../../includes/classes/error.php');
 	}
 	loadCustomErrors(); //加载自定义错误
+	?> 

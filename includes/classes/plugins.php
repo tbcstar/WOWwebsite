@@ -15,21 +15,24 @@ class Plugins
 				$count 	= 0;
 				
 				$folder = scandir('plugins/');
-				foreach($folder as $folderName)
+				if (is_array($folder) || is_object($folder))
 				{
-					if(!in_array($folderName,$bad))
+					foreach($folder as $folderName)
 					{
-						$Connect->selectDB('webdb');
-						if(file_exists('plugins/'. $folderName .'/config.php'))
+						if(!in_array($folderName,$bad))
 						{
-							include('plugins/'. $folderName .'/config.php');
+							$Connect->selectDB('webdb');
+							if(file_exists('plugins/'. $folderName .'/config.php'))
+							{
+								include('plugins/'. $folderName .'/config.php');
+							}
+
+							$loaded_plugins[] = $folderName;
+							$count++;
 						}
-						
-						$loaded_plugins[] = $folderName;
-						$count++;
 					}
 				}
-				
+
 				if($count == 0)
 				{
 					$_SESSION['loaded_plugins'] = NULL;
@@ -51,26 +54,29 @@ class Plugins
 				global $Connect; global $conn;
 				$bad = array('.','..','index.html');
 				$loaded = array();
-				foreach($_SESSION['loaded_plugins'] as $folderName)
-				{	
-					$Connect->selectDB('webdb');
-					$chk = mysqli_query($conn, "SELECT COUNT(*) FROM disabled_plugins WHERE foldername='". mysqli_real_escape_string($conn, $folderName) ."'");
-					if(mysqli_field_seek($chk, 0) == 0 && file_exists('plugins/' . $folderName . '/'. $type . '/'))
+				if (is_array($_SESSION['loaded_plugins']) || is_object($_SESSION['loaded_plugins']))
+				{
+					foreach($_SESSION['loaded_plugins'] as $folderName)
 					{	
-						$folder = scandir('plugins/' . $folderName . '/'. $type . '/');
-						
-						foreach($folder as $fileName)
-						{
-							
-							if(!in_array($fileName,$bad))
-							{
-								$loaded[] = 'plugins/' . $folderName . '/'. $type . '/'.$fileName;
-							}
-						}
+						$Connect->selectDB('webdb');
+						$chk = mysqli_query($conn, "SELECT COUNT(*) FROM disabled_plugins WHERE foldername='". mysqli_real_escape_string($conn, $folderName) ."'");
+						if(mysqli_field_seek($chk, 0) == 0 && file_exists('plugins/' . $folderName . '/'. $type . '/'))
+						{	
+							$folder = scandir('plugins/' . $folderName . '/'. $type . '/');
 
-						$_SESSION['loaded_plugins_' . $type] = $loaded;
+							foreach($folder as $fileName)
+							{
+								if(!in_array($fileName,$bad))
+								{
+									$loaded[] = 'plugins/' . $folderName . '/'. $type . '/'.$fileName;
+								}
+							}
+
+							$_SESSION['loaded_plugins_' . $type] = $loaded;
+						}
 					}
 				}
+
 			}
 		}
 	}
@@ -83,15 +89,19 @@ class Plugins
 			if($type == 'pages')
 			{	
 				$count = 0;
-				foreach($_SESSION['loaded_plugins_' . $type] as $filename)
+				if (is_array($_SESSION['loaded_plugins_' . $type]) || is_object($_SESSION['loaded_plugins_' . $type]))
 				{
-					$name = basename(substr($filename,0,-4));
-					if($name == $_GET['p'])
+					foreach($_SESSION['loaded_plugins_' . $type] as $filename)
 					{
-						include($filename);
-						$count = 1;
+						$name = basename(substr($filename,0,-4));
+						if($name == $_GET['p'])
+						{
+							include($filename);
+							$count = 1;
+						}
 					}
 				}
+
 				if($count == 0)
 				{
 					include('pages/404.php');
@@ -100,26 +110,35 @@ class Plugins
 			###########################
 			elseif($type == 'javascript')
 			{
-				foreach($_SESSION['loaded_plugins_' . $type] as $filename)
+				if (is_array($_SESSION['loaded_plugins_' . $type]) || is_object($_SESSION['loaded_plugins_' . $type]))
 				{
-					
-					echo '<script type="text/javascript" src="'.$filename.'"></script>';
+					foreach($_SESSION['loaded_plugins_' . $type] as $filename)
+					{
+						echo '<script type="text/javascript" src="'.$filename.'"></script>';
+					}
 				}
+
 			}
 			###########################
 			elseif($type == 'styles')
 			{
-				foreach($_SESSION['loaded_plugins_' . $type] as $filename)
+				if (is_array($_SESSION['loaded_plugins_' . $type]) || is_object($_SESSION['loaded_plugins_' . $type]))
 				{
-					echo '<link rel="stylesheet" href="'.$filename.'" />';
+					foreach($_SESSION['loaded_plugins_' . $type] as $filename)
+					{
+						echo '<link rel="stylesheet" href="'.$filename.'" />';
+					}
 				}
 			}
 			###########################
 			elseif($type == 'classes')
 			{
-				foreach($_SESSION['loaded_plugins_' . $type] as $filename)
+				if (is_array($_SESSION['loaded_plugins_' . $type]) || is_object($_SESSION['loaded_plugins_' . $type]))
 				{
-					include($filename);
+					foreach($_SESSION['loaded_plugins_' . $type] as $filename)
+					{
+						include($filename);
+					}
 				}
 			}
 		}

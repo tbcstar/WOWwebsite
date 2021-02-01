@@ -6,10 +6,14 @@
 <div id="leftcontent">
 <div class="box_two">
 
+<?php
+global $Account, $Website, $Server, $Character, $Connect, $conn;
+?>
+
 <div class='box_two_title'>副本重置</div>
 让你重置你的角色的副本CD。<hr/>
 <?php
-account::isNotLoggedIn();
+$Account->isNotLoggedIn();
 
 $service = "reset";
 
@@ -19,16 +23,16 @@ else
 { ?>
 <span class="attention">重置副本费用 
 <?php 
-echo $GLOBALS['service'][$service]['price'].' '.website::convertCurrency($GLOBALS['service'][$service]['currency']); ?></span>
+echo $GLOBALS['service'][$service]['price'].' '.$Website->convertCurrency($GLOBALS['service'][$service]['currency']); ?></span>
 <?php 
 if($GLOBALS['service'][$service]['currency']=="vp")
-	echo "<span class='currency'>投票积分：".account::loadVP($_SESSION['cw_user'])."</span>";
+	echo "<span class='currency'>投票积分：".$Account->loadVP($_SESSION['cw_user'])."</span>";
 elseif($GLOBALS['service'][$service]['currency']=="dp")
-	echo "<span class='currency'>".$GLOBALS['donation']['coins_name'].": ".account::loadDP($_SESSION['cw_user'])."</span>";
+	echo "<span class='currency'>".$GLOBALS['donation']['coins_name'].": ".$Account->loadDP($_SESSION['cw_user'])."</span>";
 } 
 
 if (isset($_POST['ir_step1']) || isset($_POST['ir_step2'])) 
-	echo '选择服务器： <b>'.server::getRealmName($_POST['ir_realm']).'</b><br/><br/>';
+	echo '选择服务器： <b>'.$Server->getRealmName($_POST['ir_realm']).'</b><br/><br/>';
 else
 {
 ?>
@@ -40,8 +44,8 @@ else
 <td>
 <select name="ir_realm">
 	 <?php
-	 $result = mysql_query("SELECT name,char_db FROM realms");
-	 while($row = mysql_fetch_assoc($result))
+	 $result = mysqli_query($conn, "SELECT name,char_db FROM realms");
+	 while($row = mysqli_fetch_assoc($result))
 	 {
 		 if(isset($_POST['ir_realm']) && $_POST['ir_realm'] == $row['char_db'])
 		 	echo '<option value="'.$row['char_db'].'" selected>';
@@ -66,7 +70,7 @@ if(!isset($_POST['ir_step1']) && !isset($_POST['ir_step2']) && !isset($_POST['ir
 if(isset($_POST['ir_step1']) || isset($_POST['ir_step2']) || isset($_POST['ir_step3']))
 {
 	if (isset($_POST['ir_step2'])) 
-		echo '选择角色:<b>'.character::getCharName($_POST['ir_char'],server::getRealmId($_POST['ir_realm']))
+		echo '选择角色:<b>'.$Character->getCharName($_POST['ir_char'],$Server->getRealmId($_POST['ir_realm']))
 		.'</b><br/><br/>';
 else
 {		
@@ -80,11 +84,11 @@ else
 <input type="hidden" name="ir_realm" value="<?php echo $_POST['ir_realm']; ?>">
 <select name="ir_char">
 	 <?php
-	 $acc_id = account::getAccountID($_SESSION['username']);
-	 connect::selectDB($_POST['ir_realm']);
-	 $result = mysql_query("SELECT name,guid FROM characters WHERE account='".$acc_id."'");
-	 
-	 while($row = mysql_fetch_assoc($result))
+	 $acc_id = $Account->getAccountID($_SESSION['username']);
+	 $Connect->selectDB($_POST['ir_realm']);
+	 $result = mysqli_query($conn, "SELECT name,guid FROM characters WHERE account='".$acc_id."'");
+
+	 while($row = mysqli_fetch_assoc($result))
 	 {
 		if(isset($_POST['ir_char']) && $_POST['ir_char'] == $row['guid'])
 		 	echo '<option value="'.$row['guid'].'" selected>';
@@ -122,24 +126,24 @@ if(isset($_POST['ir_step2']) || isset($_POST['ir_step3']))
 <select name="ir_instance">
 	 <?php
 	 $guid = (int)$_POST['ir_char'];
-	 connect::selectDB($_POST['ir_realm']);
-			
-	 $result = mysql_query("SELECT instance FROM character_instance WHERE guid='".$guid."' AND permanent=1");
-	 if (mysql_num_rows($result)==0) 
+	 $Connect->selectDB($_POST['ir_realm']);
+
+	 $result = mysqli_query($conn, "SELECT instance FROM character_instance WHERE guid='".$guid."' AND permanent=1");
+	 if (mysqli_num_rows($result)==0) 
 	 {
 		 echo "<option value='#'>没有副本需要重置！</option>";
 		 $nope = true;
 	 }
 	 else
 	 {
-		 while($row = mysql_fetch_assoc($result)) 
+		 while($row = mysqli_fetch_assoc($result)) 
 		 {
-			 $getI = mysql_query("SELECT id, map, difficulty FROM instance WHERE id='".$row['instance']."'");
-			 $instance = mysql_fetch_assoc($getI); 
+			 $getI = mysqli_query($conn, "SELECT id, map, difficulty FROM instance WHERE id='".$row['instance']."'");
+			 $instance = mysqli_fetch_assoc($getI); 
 			 
-			 connect::selectDB('webdb');
-			 $getName = mysql_query("SELECT name FROM instance_data WHERE map='".$instance['map']."'");
-			 $name = mysql_fetch_assoc($getName);
+			 $Connect->selectDB('webdb');
+			 $getName = mysqli_query($conn, "SELECT name FROM instance_data WHERE map='".$instance['map']."'");
+			 $name = mysqli_fetch_assoc($getName);
 			 
 			 if(empty($name['name']))
 			 	$name = "Unknown Instance";
@@ -179,27 +183,27 @@ if(isset($_POST['ir_step3']))
 	$instance = (int)$_POST['ir_instance'];
 	
 	if($GLOBALS['service'][$service]['currency']=="vp")
-		if(account::hasVP($_SESSION['cw_user'],$GLOBALS['service'][$service]['price'])==FALSE)
+		if($Account->hasVP($_SESSION['cw_user'],$GLOBALS['service'][$service]['price'])==FALSE)
 			echo '<span class="alert">你没有足够的投票积分！';
 		else
 		{
-			connect::selectDB($_POST['ir_realm']);
-			mysql_query("DELETE FROM instance WHERE id='".$instance."'");
-			account::deductVP(account::getAccountID($_SESSION['cw_user']),$GLOBALS['service'][$service]['price']);
+			$Connect->selectDB($_POST['ir_realm']);
+			mysqli_query($conn, "DELETE FROM instance WHERE id='".$instance."'");
+			$Account->deductVP($Account->getAccountID($_SESSION['cw_user']),$GLOBALS['service'][$service]['price']);
 			echo '<span class="approved">副本CD已重置！</span>';
 		}
 	elseif($GLOBALS['service'][$service]['currency']=="dp")
-		if(account::hasDP($_SESSION['cw_user'],$GLOBALS['service'][$service]['price'])==FALSE)
+		if($Account->hasDP($_SESSION['cw_user'],$GLOBALS['service'][$service]['price'])==FALSE)
 			echo '<span class="alert">你的捐赠积分不够'.$GLOBALS['donation']['coins_name'];
 		else
 		{
-			connect::selectDB($_POST['ir_realm']);
-			mysql_query("DELETE FROM instance WHERE id='".$instance."'");
-			account::deductDP(account::getAccountID($_SESSION['cw_user']),$GLOBALS['service'][$service]['price']);
+			$Connect->selectDB($_POST['ir_realm']);
+			mysqli_query($conn, "DELETE FROM instance WHERE id='".$instance."'");
+			$Account->deductDP($Account->getAccountID($_SESSION['cw_user']),$GLOBALS['service'][$service]['price']);
 			echo '<span class="approved">副本CD已重置！</span>';
 			
-			account::logThis("Performed an Instance reset on ".character::getCharName($guid,server::getRealmId($_POST['ir_realm'])),"instancereset",
-			server::getRealmId($_POST['ir_realm']));
+			$Account->logThis("Performed an Instance reset on ".$Character->getCharName($guid,$Server->getRealmId($_POST['ir_realm'])),"instancereset",
+			$Server->getRealmId($_POST['ir_realm']));
 		}
 }
 ?>

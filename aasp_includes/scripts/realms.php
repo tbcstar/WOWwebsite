@@ -3,87 +3,99 @@ define('INIT_SITE', TRUE);
 include('../../includes/misc/headers.php');
 include('../../includes/configuration.php');
 include('../functions.php');
-$server = new server;
-$account = new account;
+global $Server, $Account, $conn;
 
-$server->selectDB('webdb');
+$Server->selectDB('webdb');
 
 ##############################
-if($GLOBALS['core_expansion']==3)
+if($GLOBALS['core_expansion'] == 3)
+{
 	$guidString = 'playerGuid';
+}
 else
+{
 	$guidString = 'guid';	
+}
 
-if($GLOBALS['core_expansion']==3)
+if($GLOBALS['core_expansion'] == 3)
+{
 	$closedString = 'closed';
+}
 else
+{
 	$closedString = 'closedBy';
+}
 	
-if($GLOBALS['core_expansion']==3)
-
+if($GLOBALS['core_expansion'] == 3)
+{
 	$ticketString = 'guid';
+}
 else
+{
 	$ticketString = 'ticketId';
+}
 ############################			
 
 if($_POST['action']=='edit') 
 {
-	$id = (int)$_POST['id'];
+	$id 	= (int)$_POST['id'];
 	$new_id = (int)$_POST['new_id'];
-	$name = mysql_real_escape_string(trim($_POST['name']));
-	$host = mysql_real_escape_string(trim($_POST['host']));
-	$port = (int)$_POST['port'];
-	$chardb = mysql_real_escape_string(trim($_POST['chardb']));
+	$name 	= mysqli_real_escape_string($conn, trim($_POST['name']));
+	$host 	= mysqli_real_escape_string($conn, trim($_POST['host']));
+	$port 	= (int)$_POST['port'];
+	$chardb = mysqli_real_escape_string($conn, trim($_POST['chardb']));
 	
 	if(empty($name) || empty($host) || empty($port) || empty($chardb))
 		die("<span class='red_text'>请输入所有字段。</span><br/>");
 	
-	$server->logThis("更新了以下服务器信息".$name);
+	$Server->logThis("更新了以下服务器信息".$name);
 	
-	mysql_query("UPDATE realms SET id='".$new_id."',name='".$name."',host='".$host."',port='".$port."',char_db='".$chardb."' WHERE id='".$id."'");
+	mysqli_query($conn, "UPDATE realms SET id='".$new_id."',name='".$name."',host='".$host."',port='".$port."',char_db='".$chardb."' WHERE id='".$id."';");
 	return TRUE;
 }
 ###############################
-if($_POST['action']=='delete') 
+if($_POST['action'] == 'delete') 
 {
 	$id = (int)$_POST['id'];
 	
-	mysql_query("DELETE FROM realms WHERE id='".$id."'");
+	mysqli_query($conn, "DELETE FROM realms WHERE id='".$id."';");
 	
-	$server->logThis("删除一个服务器");
+	$Server->logThis("删除一个服务器");
 }
 ###############################
-if($_POST['action']=='edit_console') 
+if($_POST['action'] == 'edit_console') 
 {
-	$id = (int)$_POST['id'];
-	$type = mysql_real_escape_string($_POST['type']);
-	$user = mysql_real_escape_string(trim($_POST['user']));
-	$pass = mysql_real_escape_string(trim($_POST['pass']));
+	$id		= (int)$_POST['id'];
+	$type	= mysqli_real_escape_string($conn, $_POST['type']);
+	$user	= mysqli_real_escape_string($conn, trim($_POST['user']));
+	$pass	= mysqli_real_escape_string($conn, trim($_POST['pass']));
 	
 	if(empty($id) || empty($type) || empty($user) || empty($pass))
+	{
 		die();
+	}
 
-	$server->logThis("更新了带有ID的服务器的控制台信息：".$id);
+	$Server->logThis("更新了带有ID的服务器的控制台信息：".$id);
 	
-	mysql_query("UPDATE realms SET sendType='".$type."',rank_user='".$user."',rank_pass='".$pass."' WHERE id='".$id."'");
+	mysqli_query($conn, "UPDATE realms SET sendType='".$type."',rank_user='".$user."',rank_pass='".$pass."' WHERE id='".$id."';");
 	return TRUE;
 }
 ###############################
-if($_POST['action']=='loadTickets') 
+if($_POST['action'] == 'loadTickets') 
 {
 	$offline = $_POST['offline'];
-	$realm = mysql_real_escape_string($_POST['realm']);
+	$realm = mysqli_real_escape_string($conn, $_POST['realm']);
 	
-	$_SESSION['lastTicketRealm']=$realm;
-	$_SESSION['lastTicketRealmOffline']=$offline;
+	$_SESSION['lastTicketRealm'] = $realm;
+	$_SESSION['lastTicketRealmOffline'] = $offline;
 	
 	if($realm == "NULL")
 	   die("<pre>请选择一个服务器。</pre>");
 	
-	$server->selectDB($realm);
+	$Server->selectDB($realm);
 	
-	$result = mysql_query("SELECT ".$ticketString.",name,message,createtime,".$guidString.",".$closedString." FROM gm_tickets ORDER BY ticketId DESC");
-	if(mysql_num_rows($result)==0)
+	$result = mysqli_query($conn, "SELECT ".$ticketString.",name,message,createtime,".$guidString.",".$closedString." FROM gm_tickets ORDER BY ticketId DESC;");
+	if(mysqli_num_rows($result) == 0)
 	   die("<pre>没有找到tickets！</pre>");
 	   
 	echo '
@@ -99,27 +111,36 @@ if($_POST['action']=='loadTickets')
        </tr>
 	';
 	
-	while($row = mysql_fetch_assoc($result)) 
+	while($row = mysqli_fetch_assoc($result)) 
 	{
-		$get = mysql_query("SELECT COUNT(online) FROM characters WHERE guid='".$row[$guidString]."' AND online='1'");
-		if(mysql_result($get,0)==0 && $offline == "on") {
-		echo '<tr>';
+		$get = mysqli_query($conn, "SELECT COUNT(online) FROM characters WHERE guid='".$row[$guidString]."' AND online='1';");
+		if(mysqli_data_seek($get,0) == 0 && $offline == "on") 
+		{
+			echo '<tr>';
 			echo '<td><a href="?p=tools&s=tickets&guid='.$row[$ticketString].'&db='.$realm.'">'.$row[$ticketString].'</td>';
 			echo '<td><a href="?p=tools&s=tickets&guid='.$row[$ticketString].'&db='.$realm.'">'.$row['name'].'</td>';
 			echo '<td><a href="?p=tools&s=tickets&guid='.$row[$ticketString].'&db='.$realm.'">'.substr($row['message'],0,15).'...</td>';
 			echo '<td><a href="?p=tools&s=tickets&guid='.$row[$ticketString].'&db='.$realm.'">'.date('Y-m-d H:i:s',$row['createtime']).'</a></td>';
 			
-			if($row[$closedString]==1) 
+			if($row[$closedString] == 1)
+			{
 				echo '<td><font color="red">关闭</font></td>';
+			}
 			else
+			{
 				echo '<td><font color="green">打开</font></td>';		
-			
-			$get = mysql_query("SELECT COUNT(online) FROM characters WHERE guid='".$row[$guidString]."' AND online='1'");
-			if(mysql_result($get,0)>0)
+			}
+
+			$get = mysqli_query($conn, "SELECT COUNT(online) FROM characters WHERE guid='".$row[$guidString]."' AND online='1';");
+			if(mysqli_data_seek($get,0) > 0)
+			{
 			   echo '<td><font color="green">在线</font></td>';
+			}
 			else
+			{
 			   echo '<td><font color="red">离线</font></td>';
-			   
+			}
+
 			?> <td><a href="#" onclick="deleteTicket('<?php echo $row[$ticketString]; ?>','<?php echo $realm; ?>')">删除</a>
              		&nbsp;
                     <?php if($row[$closedString]==1) 
@@ -141,40 +162,40 @@ if($_POST['action']=='loadTickets')
 	   
 }
 ###############################
-if($_POST['action']=='deleteTicket') 
+if($_POST['action'] == 'deleteTicket') 
 {
 	$id = (int)$_POST['id'];
-	$db = mysql_real_escape_string($_POST['db']);
-	mysql_select_db($db);
+	$db = mysqli_real_escape_string($conn, $_POST['db']);
+	mysqli_select_db($db);
 	
-	mysql_query("DELETE FROM gm_tickets WHERE ".$ticketString."='".$id."'");
+	mysqli_query($conn, "DELETE FROM gm_tickets WHERE ".$ticketString."='".$id."'?");
 }
 ###############################
-if($_POST['action']=='closeTicket') 
+if($_POST['action'] == 'closeTicket') 
 {
 	$id = (int)$_POST['id'];
-	$db = mysql_real_escape_string($_POST['db']);
-	mysql_select_db($db);
+	$db = mysqli_real_escape_string($conn, $_POST['db']);
+	mysqli_select_db($db);
 	
-	mysql_query("UPDATE gm_tickets SET ".$closedString."=1 WHERE ".$ticketString."='".$id."'");
+	mysqli_query($conn, "UPDATE gm_tickets SET ".$closedString."=1 WHERE ".$ticketString."='".$id."';");
 }
 ###############################
-if($_POST['action']=='openTicket')
+if($_POST['action'] == 'openTicket')
 {
 	$id = (int)$_POST['id'];
-	$db = mysql_real_escape_string($_POST['db']);
-	mysql_select_db($db);
+	$db = mysqli_real_escape_string($conn, $_POST['db']);
+	mysqli_select_db($db);
 	
-	mysql_query("UPDATE gm_tickets SET ".$closedString."=0 WHERE ".$ticketString."='".$id."'");
+	mysqli_query($conn, "UPDATE gm_tickets SET ".$closedString."=0 WHERE ".$ticketString."='".$id."';");
 }
 ###############################
-if($_POST['action']=='getPresetRealms')
+if($_POST['action'] == 'getPresetRealms')
 {
 	echo '<h3>请选择一个服务器</h3><hr/>';
-	$server->selectDB('webdb');
+	$Server->selectDB('webdb');
 	
-	$result = mysql_query('SELECT id,name,description FROM realms ORDER BY id ASC');
-	while($row = mysql_fetch_assoc($result))
+	$result = mysqli_query($conn, 'SELECT id,name,description FROM realms ORDER BY id ASC;');
+	while($row = mysqli_fetch_assoc($result))
 	{
 		echo '<table width="100%">';
 			echo '<tr>';

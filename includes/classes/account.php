@@ -23,7 +23,7 @@ class Account
 			
 			$Connect->selectDB('logondb');
 			$checkForAccount = mysqli_query($conn, "SELECT COUNT(id) FROM account WHERE username='". $username ."'");
-			if (mysqli_result($checkForAccount,0) == 0)
+			if (mysqli_data_seek($checkForAccount,0) == 0)
 			{
 				echo '
 			<div id="ajax_notification" class="notification_red" style="z-index: 999999; display: block;">无效的用户名。</div>
@@ -58,7 +58,7 @@ class Account
 					
 					$Connect->selectDB('webdb');
 					$count = mysqli_query($conn, "SELECT COUNT(*) FROM account_data WHERE id='". $id ."'");
-					if(mysqli_result($count,0)==0)
+					if(mysqli_data_seek($count,0)==0)
 						mysqli_query($conn, "INSERT INTO account_data VALUES('".$id."','0','0')");
 					
 					if(!empty($last_page))
@@ -187,7 +187,7 @@ class Account
 		//检查现有用户
 		$result = mysqli_query($conn, "SELECT COUNT(id) FROM account WHERE username='". $username ."'");
 
-		if (mysqli_result($result,0) > 0)
+		if (mysqli_data_seek($result,0) > 0)
 		{
 			$errors[] = '用户名已经存在!';
 		}
@@ -201,10 +201,14 @@ class Account
 		{
 			//发现错误。
 			echo "<div class='news' style='padding: 5px;'><h4>出现以下错误:</h4>";
-			foreach($errors as $error) 
-			{
-				echo  "<strong>*", $error ,"</strong><br/>";
-			}
+				if (is_array($errors) || is_object($errors))
+				{
+					foreach($errors as $error) 
+					{
+						echo  "<strong>*", $error ,"</strong><br/>";
+					}
+				}
+
 			echo "</div>";
 			exit();
 		} 
@@ -451,7 +455,7 @@ class Account
 		$account_name = mysqli_real_escape_string($conn, $account_name);
 		$Connect->selectDB('logondb');
 		$result 	= mysqli_query($conn, "SELECT COUNT(online) FROM account WHERE username='". $account_name ."' AND online=1");
-		if (mysqli_result($result,0) == 0)
+		if (mysqli_data_seek($result,0) == 0)
 		{
 			return '<b class="red_text">离线</b>';
 		}
@@ -544,7 +548,7 @@ class Account
 			$password = sha1("". $username .":". $password ."");
 
 			$result = mysqli_query($conn, "SELECT COUNT(id) FROM account WHERE username='". $username ."' AND sha_pass_hash='". $password ."'");
-			if (mysqli_result($result, 0) == 0)
+			if (mysqli_data_seek($result, 0) == 0)
 			{
 				$errors[] = '当前密码不正确。';
 			}
@@ -571,9 +575,12 @@ class Account
 		{
 			echo '<div class="news" style="padding: 5px;">
 			<h4 class="red_text">出现以下错误:</h4>';
-			foreach($errors as $error) 
+			if (is_array($errors) || is_object($errors))
 			{
-				echo  '<strong class="yellow_text">*', $error ,'</strong><br/>';
+				foreach($errors as $error) 
+				{
+					echo  '<strong class="yellow_text">*', $error ,'</strong><br/>';
+				}
 			}
 			echo '</div>';
 		}
@@ -667,7 +674,7 @@ class Account
 			$Connect->selectDB('logondb');
 			$result = mysqli_query($conn, "SELECT COUNT('id') FROM account WHERE username='". $account_name ."' AND email='". $account_email ."'");
 			
-			if (mysqli_result($result, 0) == 0)
+			if (mysqli_data_seek($result, 0) == 0)
 			{
 				echo '<b class="red_text">用户名或电子邮件不正确。</b>';
 			}
@@ -706,7 +713,7 @@ class Account
 			$Connect->selectDB('webdb');
 			$result 	= mysqli_query($conn, "SELECT COUNT('id') FROM account_data WHERE vp >= '". $points ."' AND id='". $account_id ."'");
 			
-			if (mysqli_result($result, 0) == 0)
+			if (mysqli_data_seek($result, 0) == 0)
 			{
 				return FALSE;
 			}
@@ -724,7 +731,7 @@ class Account
 			$Connect->selectDB('webdb');
 			$result 	= mysqli_query($conn, "SELECT COUNT('id') FROM account_data WHERE dp >= '". $points ."' AND id='". $account_id ."'");
 			
-			if (mysqli_result($result, 0) == 0)
+			if (mysqli_data_seek($result, 0) == 0)
 			{
 				return FALSE;
 			}
@@ -794,7 +801,7 @@ class Account
 			global $conn;
 	        $account_id = self::getAccountID($account_name);
 			$result = mysqli_query($conn, "SELECT COUNT(id) FROM account_access WHERE id='". $account_id ."' AND gmlevel >= 1");
-			if (mysqli_result($result,0) > 0)
+			if (mysqli_data_seek($result,0) > 0)
 			{
 				return TRUE;
 			}

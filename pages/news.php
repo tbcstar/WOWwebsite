@@ -8,11 +8,12 @@
 <?php
 if (isset($_GET['newsid'])) 
 {
+	global $Connect, $Website, $conn;
 	$id = (int)$_GET['newsid'];
-	connect::selectDB('webdb');
+	$Connect->selectDB('webdb');
 	
-	$result = mysql_query("SELECT * FROM news WHERE id='".$id."'");
-	$row = mysql_fetch_assoc($result); ?>
+	$result = mysqli_query($conn, "SELECT * FROM news WHERE id='".$id."'");
+	$row = mysqli_fetch_assoc($result); ?>
     <div class='box_two_title'><?php echo $row['title']; ?></div>
     <?php 
 	$text = preg_replace("
@@ -25,13 +26,13 @@ if (isset($_GET['newsid']))
     <br/><br/>
     <span class='yellow_text'>作者 <b><?php echo $row['author'];?></b> | <?php echo $row['date']; ?></span>
     <?php if ($GLOBALS['news']['enableComments']==true) 
-	 { 
-		 $result = mysql_query("SELECT poster FROM news_comments WHERE newsid='".$id."' ORDER BY id DESC LIMIT 1");
-		 $rows = mysql_fetch_assoc($result);
-	 if($rows['poster'] == $_SESSION['cw_user_id'] && isset($_SESSION['cw_user'])) 
+	{ 
+		$result = mysqli_query($conn, "SELECT poster FROM news_comments WHERE newsid='".$id."' ORDER BY id DESC LIMIT 1");
+		$rows = mysqli_fetch_assoc($result);
+	if($rows['poster'] == $_SESSION['cw_user_id'] && isset($_SESSION['cw_user'])) 
 		echo "<p>您不能连续发表2条评论！</p>"; 
-	 else 
-	 {
+	else 
+	{
 	?>
     <hr/>
     <h4 class="yellow_text">评论</h4>
@@ -52,26 +53,26 @@ if (isset($_GET['newsid']))
 	{
 		if (isset($_POST['text']) && isset($_SESSION['cw_user']) && strlen($_POST['text'])<1000) 
 		{
-			$text = mysql_real_escape_string(trim(htmlentities($_POST['text'])));
+			$text = mysqli_real_escape_string($conn, trim(htmlentities($_POST['text'])));
 			$ip = $_SERVER['REMOTE_ADDR'];
-			connect::selectDB('logondb');
+			$Connect->selectDB('logondb');
 			
-			$getAcct = mysql_query("SELECT `id` FROM `account` WHERE `username` = '{$_SESSION['cw_user']}'"); $row = mysql_fetch_assoc($getAcct);
+			$getAcct = mysqli_query($conn, "SELECT `id` FROM `account` WHERE `username` = '{$_SESSION['cw_user']}'"); $row = mysqli_fetch_assoc($getAcct);
 			$acct = $row['id'];
-			connect::selectDB('webdb'); 
-			mysql_query("INSERT INTO news_comments VALUE ('','".$id."','".$text."','".$acct."','".$ip."')");
+			$Connect->selectDB('webdb'); 
+			mysqli_query($conn, "INSERT INTO news_comments VALUE ('','".$id."','".$text."','".$acct."','".$ip."')");
 			
 			header("Location: ?p=news&id=".$_GET['id']."");
 		}
 	}
 	
-    $result = mysql_query("SELECT * FROM news_comments WHERE newsid='".$row['id']."' ORDER BY id ASC");
-	if (mysql_num_rows($result)==0)
+    $result = mysqli_query($conn, "SELECT * FROM news_comments WHERE newsid='".$row['id']."' ORDER BY id ASC");
+	if (mysqli_num_rows($result)==0)
 		echo "<span class='alert'>还没有发表任何评论!</span>";
 	else 
 	{
 		$c = 0;
-		while($row = mysql_fetch_assoc($result))
+		while($row = mysqli_fetch_assoc($result))
 		{
 			$c++;
 			$text = preg_replace("
@@ -79,21 +80,21 @@ if (isset($_GET['newsid']))
              "'<a href=\"$1\" target=\"_blank\">http://$3</a>$4'",
              $row['text']
             );
-			connect::selectDB('logondb');
-			$query = mysql_query("SELECT username,id FROM account WHERE id='".$row['poster']."'"); 
-			$pi = mysql_fetch_assoc($query); 
-			$user = ucfirst(strtolower($pi['username']));
+			$Connect->selectDB('logondb');
+			$query	= mysqli_query($conn, "SELECT username,id FROM account WHERE id='".$row['poster']."'"); 
+			$pi		= mysqli_fetch_assoc($query); 
+			$user	= ucfirst(strtolower($pi['username']));
 			
-			$getGM = mysql_query("SELECT COUNT(gmlevel) FROM account_access WHERE id='".$pi['id']."' AND gmlevel>'0'");
+			$getGM = mysqli_query($conn, "SELECT COUNT(gmlevel) FROM account_access WHERE id='".$pi['id']."' AND gmlevel>'0'");
 			?>
 			<div class="news_comment" id="comment-<?php echo $row['id']; ?>"> 
                 <div class="news_comment_user"><?php echo $user; 
-				if(mysql_result($getGM,0)>0)
+				if(mysqli_data_seek($getGM,0) > 0)
 					echo "<br/><span class='blue_text' style='font-size: 11px;'>职员</span>";?>
                 </div> 
-                <div class="news_comment_body"><?php if(mysql_result($getGM,0)>0) { echo "<span class='blue_text'>"; }?>
+                <div class="news_comment_body"><?php if(mysqli_data_seek($getGM,0)>0) { echo "<span class='blue_text'>"; }?>
 				<?php echo nl2br(htmlentities($text));
-                if(mysql_result($getGM,0)>0) { echo "</span>"; }
+                if(mysqli_data_seek($getGM,0)>0) { echo "</span>"; }
 				
 				if(isset($_SESSION['cw_gmlevel']) && $_SESSION['cw_gmlevel']>=$GLOBALS['adminPanel_minlvl'] || 
 				isset($_SESSION['cw_gmlevel']) && $_SESSION['cw_gmlevel']>=$GLOBALS['staffPanel_minlvl'] && $GLOBALS['editNewsComments']==true)
@@ -111,8 +112,8 @@ if (isset($_GET['newsid']))
 }
 else
 {
-	 $result = mysql_query("SELECT * FROM news ORDER BY id DESC");
-	 while($row = mysql_fetch_assoc($result)) 
+	 $result = mysqli_query($conn, "SELECT * FROM news ORDER BY id DESC");
+	 while($row = mysqli_fetch_assoc($result)) 
 	 {
 			if(file_exists($row['image']))
 			{
@@ -148,24 +149,24 @@ else
 			
 			if ($GLOBALS['news']['limitHomeCharacters']==true) 
 			{ 		
-					echo website::limit_characters(htmlentities($text,200));
-					$output.= website::limit_characters($row['body'],200);
+					echo $Website->limit_characters(htmlentities($text,200));
+					$output.= $Website->limit_characters($row['body'],200);
 				 } 
 				 else 
 				 {
 					 echo nl2br(htmlentities($text)); 
 					 $output .= nl2br($row['body']); 
 				}
-			 $commentsNum = mysql_query("SELECT COUNT(id) FROM news_comments WHERE newsid='".$row['id']."'");
+			 $commentsNum = mysqli_query($conn, "SELECT COUNT(id) FROM news_comments WHERE newsid='".$row['id']."'");
 							 
 			 if($GLOBALS['news']['enableComments']==TRUE) 
-				 $comments = '| <a href="?p=news&amp;newsid='.$row['id'].'">评论 ('.mysql_result($commentsNum,0).')</a>';
+				 $comments = '| <a href="?p=news&amp;newsid='.$row['id'].'">评论 ('.mysqli_data_seek($commentsNum,0).')</a>';
 			 else
 				 $comments = '';
 			 
 			 echo '
 			 <br/><br/><br/>
-			 <i class="gray_text"> Written by '.$row['author'].' | '.$row['date'].' '.$comments.'</i>
+			 <i class="gray_text"> 作者 '.$row['author'].' | '.$row['date'].' '.$comments.'</i>
 			 </td> 
 			 </tr>
 			 </table>';

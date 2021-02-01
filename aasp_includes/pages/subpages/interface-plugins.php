@@ -1,5 +1,4 @@
-<?php $page = new page;
-	  $server = new server; ?>
+<?php global $Page, $Server, $conn;?>
 <div class="box_right_title">插件</div>
 <table>
 	<tr>
@@ -13,29 +12,34 @@
 	$bad = array('.','..','index.html');
 	
 	$folder = scandir('../plugins/');
-	foreach($folder as $folderName)
+
+	if (is_array($folder) || is_object($folder))
 	{
-		if(!in_array($folderName,$bad))
+		foreach($folder as $folderName)
 		{
-			if(file_exists('../plugins/'.$folderName.'/info.php'))
+			if(!in_array($folderName,$bad))
 			{
-				include('../plugins/'.$folderName.'/info.php');
-				?> <tr class="center" onclick="window.location='?p=interface&s=viewplugin&plugin=<?php echo $folderName; ?>'"> <?php
-					echo '<td><a href="?p=interface&s=viewplugin&plugin='.$folderName.'">'.$title.'</a></td>';
-					echo '<td>'.substr($desc,0,40).'</td>';
-					echo '<td>'.$author.'</td>';
-					echo '<td>'.$created.'</td>';
-					$server->selectDB('webdb');
-					$chk = mysql_query("SELECT COUNT(*) FROM disabled_plugins WHERE foldername='".mysql_real_escape_string($folderName)."'");
-					if(mysql_result($chk,0)>0)
-						echo '<td>禁用</td>';
-					else
-						echo '<td>启用</td>';
-				echo '</tr>';
+				if(file_exists('../plugins/'.$folderName.'/info.php'))
+				{
+					include('../plugins/'.$folderName.'/info.php');
+					?> <tr class="center" onclick="window.location='?p=interface&s=viewplugin&plugin=<?php echo $folderName; ?>'"> <?php
+						echo '<td><a href="?p=interface&s=viewplugin&plugin='.$folderName.'">'.$title.'</a></td>';
+						echo '<td>'.substr($desc,0,40).'</td>';
+						echo '<td>'.$author.'</td>';
+						echo '<td>'.$created.'</td>';
+						$server->selectDB('webdb');
+						$chk = mysqli_query($conn, "SELECT COUNT(*) FROM disabled_plugins WHERE foldername='".mysqli_real_escape_string($conn, $folderName)."';");
+						if(mysqli_data_seek($chk,0)>0)
+							echo '<td>禁用</td>';
+						else
+							echo '<td>启用</td>';
+					echo '</tr>';
+				}
 			}
 		}
 	}
-	
+
+
 	if($count==0)
 	{
 		$_SESSION['loaded_plugins'] = NULL;

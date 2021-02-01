@@ -67,14 +67,17 @@ if(isset($_POST['serverStatus']))
 {
    	echo '<div class="box_one_title">服务器状态</div>';
 	$num = 0;
-	foreach ($GLOBALS['realms'] as $k => $v) 
+	if (is_array($GLOBALS['realms']) || is_object($GLOBALS['realms']))
 	{
-		if ($num != 0) 
-		{ 
-			echo "<hr/>"; 
+		foreach ($GLOBALS['realms'] as $k => $v) 
+		{
+			if ($num != 0) 
+			{ 
+				echo "<hr/>"; 
+			}
+			$Server->serverStatus($k);
+			$num++;
 		}
-		$Server->serverStatus($k);
-		$num++;
 	}
 	if ($num == 0) 
 	{

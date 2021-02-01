@@ -1,3 +1,6 @@
+<?php
+global $Account, $Website, $Connect;
+?>
 <?php include "headers.php" ?>
 <?php include "menus.php" ?>
 <script type="text/javascript" src="/javascript/jquery.js"></script>
@@ -24,7 +27,7 @@
 <div class="">
 所在服务器：</div>
 <a href="game.tbcstar.com">
-Nefelin </a>
+时光回溯 </a>
 </div>
 </div>
 <div class="content-box standart">
@@ -32,7 +35,7 @@ Nefelin </a>
 <div class="content-frame">
 <div class="content">
 <h2>查找角色</h2>
-<strong class="title">你在服务器上的角色 <span>Nefelin </span>:</strong>
+<strong class="title">你在服务器上的角色 <span>时光回溯 </span>:</strong>
 
 {alert}
 
@@ -54,29 +57,29 @@ if($GLOBALS['service'][$service]['price']==0)
       echo '';
 else
 { ?>
-<span class="attention">解除成本
+<span class="attention">费用
 <?php 
-echo $GLOBALS['service'][$service]['price'].' '.website::convertCurrency($GLOBALS['service'][$service]['currency']); ?></span>
+echo $GLOBALS['service'][$service]['price'].' '.$Website->convertCurrency($GLOBALS['service'][$service]['currency']); ?></span>
 <?php 
 if($GLOBALS['service'][$service]['currency']=="vp")
-	echo "<span class='currency'> ".account::loadVP($_SESSION['cw_user'])."</span>";
+	echo "<span class='currency'> ".$Account->loadVP($_SESSION['cw_user'])."</span>";
 elseif($GLOBALS['service'][$service]['currency']=="dp")
-	echo "<span class='currency'>".$GLOBALS['donation']['coins_name'].": ".account::loadDP($_SESSION['cw_user'])."</span>";
+	echo "<span class='currency'>".$GLOBALS['donation']['coins_name'].": ".$Account->loadDP($_SESSION['cw_user'])."</span>";
 } 
 
-account::isNotLoggedIn();
-connect::selectDB('webdb');
+$Account->isNotLoggedIn();
+$Connect->selectDB('webdb');
 $num = 0;
-$result = mysql_query('SELECT char_db,name FROM realms ORDER BY id ASC');
-while($row = mysql_fetch_assoc($result)) 
+$result = mysqli_query($conn, 'SELECT char_db,name FROM realms ORDER BY id ASC');
+while($row = mysqli_fetch_assoc($result)) 
 {
-	$acct_id = account::getAccountID($_SESSION['cw_user']);
+	$acct_id = $Account->getAccountID($_SESSION['cw_user']);
 	$realm = $row['name'];
 	$char_db = $row['char_db'];
 		          	
-	connect::selectDB($char_db);
-	$result = mysql_query('SELECT name,guid,gender,class,race,level,online FROM characters WHERE account='.$acct_id);
-	while($row = mysql_fetch_assoc($result)) {
+	$Connect->selectDB($char_db);
+	$result = mysqli_query($conn, 'SELECT name,guid,gender,class,race,level,online FROM characters WHERE account='.$acct_id);
+	while($row = mysqli_fetch_assoc($result)) {
 	?>
 
 <tr>
@@ -92,8 +95,8 @@ while($row = mysql_fetch_assoc($result))
 
 <td><?php echo $row['name']; ?></td>
 <td><?php echo $row['level']; ?></td>
-<td><?php echo "".character::getRace($row['race']); ?></td>
-<td><?php echo "".character::getClass($row['class']); ?></td>
+<td><?php echo "".$Character->getRace($row['race']); ?></td>
+<td><?php echo "".$Character->getClass($row['class']); ?></td>
 <td>0 h. 19 m. 34 s.</td>
 
  <!--<td><?php echo $realm; ?>

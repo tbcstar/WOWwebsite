@@ -9,13 +9,13 @@ class Connect
 	{
 		if(self::$connectedTo != 'global')
 		{
-			if (!$conn = mysqli_connect($GLOBALS['connection']['host'],$GLOBALS['connection']['user'],$GLOBALS['connection']['password']))
+			if ($conn = mysqli_connect($GLOBALS['connection']['host'], $GLOBALS['connection']['user'], $GLOBALS['connection']['password']))
 			{
-				buildError("<b>数据库连接错误:</b> 无法建立连接。错误: ".mysqli_error($conn),NULL);
+				return $conn; 
 			}
 			else
 			{
-				return $conn;
+				buildError("<b>数据库连接错误:</b> 无法建立连接。错误: ". mysqli_error($conn), NULL);
 			}
 			self::$connectedTo = 'global';
 		}
@@ -24,7 +24,7 @@ class Connect
 	public static function connectToRealmDB($realmid) 
 	{ 
 		self::selectDB('webdb');
-		
+
 		if($GLOBALS['realms'][$realmid]['mysqli_host'] != $GLOBALS['connection']['host'] 
 		|| $GLOBALS['realms'][$realmid]['mysqli_user'] != $GLOBALS['connection']['user'] 
 		|| $GLOBALS['realms'][$realmid]['mysqli_pass'] != $GLOBALS['connection']['password'])
@@ -33,14 +33,14 @@ class Connect
 						$GLOBALS['realms'][$realmid]['mysqli_user'],
 						$GLOBALS['realms'][$realmid]['mysqli_pass'])
 						or 
-						buildError("<b>数据库连接错误:</b> 无法建立到Realm的连接。错误: ".mysqli_error($conn),NULL);
+						buildError("<b>数据库连接错误:</b> 无法建立到Realm的连接。错误: ". mysqli_error($conn),NULL);
 		}
 		else
 		{
 			self::connectToDB();
 		}
 		mysqli_select_db($conn, $GLOBALS['realms'][$realmid]['chardb']) or 
-		buildError("<b>数据库选择错误:</b> 无法选择realm数据库。错误: ".mysqli_error($conn),NULL);
+		buildError("<b>数据库选择错误:</b> 无法选择realm数据库。错误: ". mysqli_error($conn),NULL);
 		self::$connectedTo = 'chardb';
 	}
 	 
@@ -78,10 +78,10 @@ class Connect
 		 
 		if ($GLOBALS['current_revision']!=$row['version']) 
 		{
-			buildError("<b>错误的数据库版本:</b> 数据库和内核不匹配。预期:".$GLOBALS['current_revision'].", Installed: ".$row['version'],NULL);
+			buildError("<b>错误的数据库版本:</b> 数据库和内核不匹配。预期:".$GLOBALS['current_revision'].", 已安装: ".$row['version'],NULL);
 			if ($GLOBALS['shutDownOnMismatch']==true) 
 			{
-				die("<b>错误的数据库版本:</b> 数据库和内核不匹配。预期:".$GLOBALS['current_revision'].", Installed: ".$row['version']);
+				die("<b>错误的数据库版本:</b> 数据库和内核不匹配。预期:".$GLOBALS['current_revision'].", 已安装: ".$row['version']);
 			}
 		} 
 	}
@@ -130,7 +130,7 @@ class Connect
 		$service[$row['service']]['price']=$row['price'];
 		$service[$row['service']]['currency']=$row['currency'];
 	}
-	mysqli_close($conn);
+
 
 	## Unset Magic Quotes
 	if (get_magic_quotes_gpc()) 
@@ -138,17 +138,20 @@ class Connect
 		$process = array(&$_GET, &$_POST, &$_COOKIE, &$_REQUEST);
 		while (list($key, $val) = each($process)) 
 		{
-			foreach ($val as $k => $v) 
+			if (is_array($val) || is_object($val))
 			{
-				unset($process[$key][$k]);
-				if (is_array($v)) 
+				foreach ($val as $k => $v) 
 				{
-					$process[$key][stripslashes($k)] = $v;
-					$process[] = &$process[$key][stripslashes($k)];
-				} 
-				else 
-				{
-					$process[$key][stripslashes($k)] = stripslashes($v);
+					unset($process[$key][$k]);
+					if (is_array($v)) 
+					{
+						$process[$key][stripslashes($k)] = $v;
+						$process[] = &$process[$key][stripslashes($k)];
+					} 
+					else 
+					{
+						$process[$key][stripslashes($k)] = stripslashes($v);
+					}
 				}
 			}
 		}

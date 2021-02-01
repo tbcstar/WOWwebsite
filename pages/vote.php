@@ -1,5 +1,6 @@
 <?php 
-account::isNotLoggedIn();
+global $Account, $Website;
+$Account->isNotLoggedIn();
 ?>
 <?php include "headers.php" ?>
 <div class="container">
@@ -75,7 +76,7 @@ account::isNotLoggedIn();
 <div class="">
 所在服务器：</div>
 <a href="game.tbcstar.com">
-Nefelin-WoW </a>
+时光回溯 </a>
 </div>
 </div>
 <ul class="vote-nav clearfix">
@@ -92,13 +93,13 @@ Nefelin-WoW </a>
 <p>To receive the coins you need<br>to write <span>the name of your account</span> (if needed)</p>
 </li>
 </ul>
-<h3 class="main-title">Choose TOP for voting</h3>
+<h3 class="main-title">选择TOP进行投票</h3>
 <div class="vote">
 <div class="row">
 
-<h4 class="yellow_text">Coin points: <?php echo account::loadVP($_SESSION['cw_user']); ?></h4>
+<h4 class="yellow_text">投票积分：<?php echo $Account->loadVP($_SESSION['cw_user']); ?></h4>
 
-<?php website::loadVotingLinks(); ?>
+<?php $Website->loadVotingLinks(); ?>
 
 </div>
 </div>

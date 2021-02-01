@@ -1,10 +1,13 @@
 <?php 
-    $server->selectDB('webdb'); 
- 	$page = new page;
+	global $Server, $Page;
+    $Server->selectDB('webdb');
 	
-    if($page->validateSubPage() == TRUE) {
-		$page->outputSubPage();
-	} else {
+    if($Page->validateSubPage() == TRUE) 
+    {
+		$Page->outputSubPage();
+	} 
+	else 
+	{
 		?>
         <div class='box_right_title'>嘿!你不应该在这里!</div>
         

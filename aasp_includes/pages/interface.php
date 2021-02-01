@@ -1,29 +1,39 @@
 <?php 
-	$server->selectDB('webdb'); 
- 	$page = new page;
+
+    global $Server, $Page, $conn;
+	$Server->selectDB('webdb'); 
+ 	$Page = new page;
 	
-	$page->validatePageAccess('Interface');
+	$Page->validatePageAccess('Interface');
 	
-    if($page->validateSubPage() == TRUE) {
-		$page->outputSubPage();
-	} else {
+    if($Page->validateSubPage() == TRUE) 
+    {
+		$Page->outputSubPage();
+	} 
+    else 
+    {
 ?>
 <div class="box_right_title">网站模板</div>          
     
- 在这里，你可以选择启用那个模板，也可以在这里安装新的模板。<br/><br/>
- <h3>选择模板</h3>
+	在这里，你可以选择启用那个模板，也可以在这里安装新的模板。<br/><br/>
+    <h3>选择模板</h3>
         <select id="choose_template">
-                <?php
-                $result = mysql_query("SELECT * FROM template ORDER BY id ASC");
-                while($row = mysql_fetch_assoc($result)) {
-                    if($row['applied']==1) 
-                        echo "<option selected='selected' value='".$row['id']."'>[Active] ";
-                    else 
-                        echo "<option value='".$row['id']."'>";
-                        
-                    echo $row['name']."</option>";
+        <?php
+            $result = mysqli_query($conn, "SELECT * FROM template ORDER BY id ASC;");
+            while($row = mysqli_fetch_assoc($result)) 
+            {
+                if($row['applied'] == 1)
+                {
+                    echo "<option selected='selected' value='".$row['id']."'>[Active] ";
                 }
-                ?>
+                else
+                {
+                    echo "<option value='".$row['id']."'>";
+                }
+
+                echo $row['name']."</option>";
+            }
+        ?>
         </select>
         <input type="submit" value="Save" onclick="setTemplate()"/><hr/><p/>
         
@@ -39,17 +49,22 @@
         
         <h3>卸载一个模板</h3>
         <select id="uninstall_template_id">
-                <?php
-                $result = mysql_query("SELECT * FROM template ORDER BY id ASC");
-                while($row = mysql_fetch_assoc($result)) {
-                    if($row['applied']==1) 
-                        echo "<option selected='selected' value='".$row['id']."'>[Active] ";
-                    else 
-                        echo "<option value='".$row['id']."'>";
-                        
-                    echo $row['name']."</option>";
+        <?php
+            $result = mysqli_query($conn, "SELECT * FROM template ORDER BY id ASC;");
+            while($row = mysqli_fetch_assoc($result)) 
+            {
+                if($row['applied'] == 1)
+                {
+                    echo "<option selected='selected' value='".$row['id']."'>[Active] ";
                 }
-                ?>
+                else
+                {
+                    echo "<option value='".$row['id']."'>";
+                }
+
+                echo $row['name']."</option>";
+            }
+        ?>
         </select>
         <input type="submit" value="卸载" onclick="uninstallTemplate()"/> 
  <?php } ?>

@@ -5,7 +5,11 @@
 
 <div id="leftcontent">
 <div class="box_two">
-<?php account::isNotLoggedIn(); ?>
+
+<?php
+global $Account;
+$Account->isNotLoggedIn(); ?>
+
 <div class='box_two_title'>捐赠</div>
 输入您想要的捐赠值，然后点击捐赠按钮。<br/><hr/>
 <table align="center">
@@ -55,7 +59,7 @@
           <input type="hidden" name="currency_code" value="<?php echo $GLOBALS['donation']['currency']; ?>" />
           <input type="hidden" name="lc" value="US" />
           <input type="hidden" name="bn" value="PP-ShopCartBF" />
-          <input type="hidden" name="custom" value="<?php echo account::getAccountID($_SESSION['cw_user']); ?>">
+          <input type="hidden" name="custom" value="<?php echo $Account->getAccountID($_SESSION['cw_user']); ?>">
          </form>
          </td>
      </tr>

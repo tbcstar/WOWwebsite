@@ -1,6 +1,10 @@
+<?php
+global $Account;
+?>
+
 <?php if (!isset($_SESSION['cw_user'])) { 
  	  if (isset($_POST['login'])) 
-	  	account::logIn($_POST['login_username'],$_POST['login_password'],$_SERVER['REQUEST_URI'],$_POST['login_remember']);
+	  	$Account->logIn($_POST['login_username'],$_POST['login_password'],$_SERVER['REQUEST_URI'],$_POST['login_remember']);
 ?>
 
 <link href="css/jquery.fancybox.css" rel="stylesheet">

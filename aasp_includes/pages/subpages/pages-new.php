@@ -1,21 +1,21 @@
-<?php $page = new page;
+<?php global $Page, $conn;
 if(isset($_POST['newpage'])) {
 	
-	$name = mysql_real_escape_string($_POST['newpage_name']);
-	$filename = trim(strtolower(mysql_real_escape_string($_POST['newpage_filename'])));
-	$content = mysql_real_escape_string(htmlentities($_POST['newpage_content']));
+	$name 		= mysqli_real_escape_string($conn, $_POST['newpage_name']);
+	$filename 	= mysqli_real_escape_string($conn, trim(strtolower($_POST['newpage_filename'])));
+	$content 	= mysqli_real_escape_string($conn, htmlentities($_POST['newpage_content']));
 	
 	if(empty($name) || empty($filename) || empty($content)) {
-		echo "<h3>Please enter <u>all</u> fields.</h3>";
+		echo "<h3>请输入 <u>所有</u> 字段。</h3>";
 	} else {
-		mysql_query("INSERT INTO custom_pages VALUES ('','".$name."','".$filename."','".$content."',
+		mysqli_query($conn, "INSERT INTO custom_pages VALUES ('','".$name."','".$filename."','".$content."',
 		'".date("Y-m-d H:i:s")."')");
 
 		echo "<h3>页面已成功创建。</h3> 
-		<a href='".$GLOBALS['website_domain']."?p=".$filename."' target='_blank'>View Page</a><br/><br/>";
+		<a href='".$GLOBALS['website_domain']."?p=".$filename."' target='_blank'>查看页面</a><br/><br/>";
 	}
 } ?>
-<div class="box_right_title"><?php echo $page->titleLink(); ?> &raquo; 新建页面</div>
+<div class="box_right_title"><?php echo $Page->titleLink(); ?> &raquo; 新建页面</div>
 <form action="?p=pages&s=new" method="post">
 名称 <br/>
 <input type="text" name="newpage_name"><br/>

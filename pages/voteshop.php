@@ -104,10 +104,11 @@
 
 
 <?php 
- account::isNotLoggedIn();
+ global $Account, $Shop, $conn;
+ $Account->isNotLoggedIn();
 
  /* 声明一些通用变量 */ 
- $shopPage = mysql_real_escape_string($_GET['p']);
+ $shopPage = mysqli_real_escape_string($conn, $_GET['p']);
  $shopVar = "vote";
  $shopCurrency = "Vote Points";
  
@@ -129,7 +130,7 @@ else
 ?>
 
 <span class='currency'><?php echo $shopCurrency; ?>: 
-<?php echo account::loadVP($_SESSION['cw_user']); ?></span>
+<?php echo $Account->loadVP($_SESSION['cw_user']); ?></span>
 <?php if (!isset($_GET['search'])) { $inputValue = "搜索物品..."; } else { $inputValue = $_GET['search_value']; } 
 
 if($GLOBALS[$shopVar.'Shop']['shopType']==1)
@@ -266,13 +267,13 @@ if($GLOBALS[$shopVar.'Shop']['shopType']==1)
  
 <?php 
 if (isset($_GET['search'])) {
-		shop::search($_GET['search_value'],$shopVar,$_GET['q'],$_GET['t'],$_GET['ilfrom'],$_GET['ilto'],$_GET['r'],$_GET['f'],$_GET['c'],$_GET['st']);
+		$Shop->search($_GET['search_value'],$shopVar,$_GET['q'],$_GET['t'],$_GET['ilfrom'],$_GET['ilto'],$_GET['r'],$_GET['f'],$_GET['c'],$_GET['st']);
 	}
 }
 elseif($GLOBALS[$shopVar.'Shop']['shopType']==2)
 {
 	//List all items.
-	shop::listAll($shopVar);	
+	$Shop->listAll($shopVar);	
 	}
 }
 ?>

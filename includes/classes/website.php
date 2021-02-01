@@ -209,7 +209,7 @@ class Website
 		$result = mysqli_query($conn, "SELECT COUNT(id) FROM votelog 
 		WHERE userid='".$acct_id."' AND siteid='".$siteid."' AND next_vote > ".time()."");
 
-		if (mysqli_result($result,0) == 0)
+		if (mysqli_data_seek($result,0) == 0)
 		{
 			return false;
 		}

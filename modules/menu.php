@@ -20,7 +20,7 @@ if (mysqli_num_rows($getMenuLinks) == 0)
 while($row = mysqli_fetch_assoc($getMenuLinks)) 
 {
 	$curr = substr($row['url'],3);
-	if ($_GET['p']==$curr
+	if ($_GET['p'] == $curr)
 	{
 		echo '<a href="'.$row['url'].'" class="current">'.$row['title'].'</a>';
 	}

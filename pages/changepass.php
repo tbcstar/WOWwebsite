@@ -8,9 +8,9 @@
 
 <div class='box_two_title'更改密码</div>
 <?php
-account::isNotLoggedIn();
+$Account->isNotLoggedIn();
 if (isset($_POST['change_pass']))
-	account::changePass($_POST['cur_pass'],$_POST['new_pass'],$_POST['new_pass_repeat']);
+	$Account->changePass($_POST['cur_pass'],$_POST['new_pass'],$_POST['new_pass_repeat']);
 ?>
 <form action="?p=changepass" method="post">
 <table width="70%">

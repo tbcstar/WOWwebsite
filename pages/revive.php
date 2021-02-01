@@ -47,6 +47,7 @@
 <th>&nbsp;</th>
 </tr>
 <?php 
+global $Website, $Account, $Connect, $Character;
 
 $service = "revive";
 
@@ -56,27 +57,27 @@ else
 { ?>
 <span class="attention">恢复成本 
 <?php 
-echo $GLOBALS['service'][$service]['price'].' '.website::convertCurrency($GLOBALS['service'][$service]['currency']); ?></span>
+echo $GLOBALS['service'][$service]['price'].' '.$Website->convertCurrency($GLOBALS['service'][$service]['currency']); ?></span>
 <?php 
 if($GLOBALS['service'][$service]['currency']=="vp")
-	echo "<span class='currency'>投票积分： ".account::loadVP($_SESSION['cw_user'])."</span>";
+	echo "<span class='currency'>投票积分： ".$Account->loadVP($_SESSION['cw_user'])."</span>";
 elseif($GLOBALS['service'][$service]['currency']=="dp")
-	echo "<span class='currency'>".$GLOBALS['donation']['coins_name'].": ".account::loadDP($_SESSION['cw_user'])."</span>";
+	echo "<span class='currency'>".$GLOBALS['donation']['coins_name'].": ".$Account->loadDP($_SESSION['cw_user'])."</span>";
 } 
 
-account::isNotLoggedIn();
-connect::selectDB('webdb');
+$Account->isNotLoggedIn();
+$Connect->selectDB('webdb');
 $num = 0;
-$result = mysql_query('SELECT char_db,name FROM realms ORDER BY id ASC');
-while($row = mysql_fetch_assoc($result)) 
+$result = mysqli_query($conn, 'SELECT char_db,name FROM realms ORDER BY id ASC');
+while($row = mysqli_fetch_assoc($result)) 
 {
-         $acct_id = account::getAccountID($_SESSION['cw_user']);
+         $acct_id = $Account->getAccountID($_SESSION['cw_user']);
 		 $realm = $row['name'];
 		 $char_db = $row['char_db'];
 		          	
-		connect::selectDB($char_db);
-		$result = mysql_query('SELECT name,guid,gender,class,race,level,online FROM characters WHERE account='.$acct_id);
-		while($row = mysql_fetch_assoc($result)) {
+		$Connect->selectDB($char_db);
+		$result = mysqli_query($conn, 'SELECT name,guid,gender,class,race,level,online FROM characters WHERE account='.$acct_id);
+		while($row = mysqli_fetch_assoc($result)) {
 	
 	?>
 	
@@ -93,8 +94,8 @@ while($row = mysql_fetch_assoc($result))
 
 <td><?php echo $row['name']; ?></td>
 <td><?php echo $row['level']; ?></td>
-<td><?php echo "".character::getRace($row['race']); ?></td>
-<td><?php echo "".character::getClass($row['class']); ?></td>
+<td><?php echo "".$Character->getRace($row['race']); ?></td>
+<td><?php echo "".$Character->getClass($row['class']); ?></td>
 <td>0 h. 19 m. 34 s.</td>
 
  <!--<td><?php echo $realm; ?>

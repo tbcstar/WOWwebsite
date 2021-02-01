@@ -1,21 +1,24 @@
-<?php $page = new page; $server = new server; ?>
-<div class="box_right_title"><?php echo $page->titleLink(); ?> &raquo; 幻灯片</div>
+<?php global $Page, $Server, $conn; ?>
+<div class="box_right_title"><?php echo $Page->titleLink(); ?> &raquo; 幻灯片</div>
 <?php 
-if($GLOBALS['enableSlideShow']==true) 
-$status = '启用';
+if($GLOBALS['enableSlideShow'] == true)
+{
+	$status = '启用';
+}
 else
-$status = '禁用';
+{
+	$status = '禁用';
+}
 
-$server->selectDB('webdb');
-$count = mysql_query("SELECT COUNT(*) FROM slider_images");
+$Server->selectDB('webdb');
+$count = mysqli_query($conn, "SELECT COUNT(*) FROM slider_images");
 ?>
-幻灯片是 <b><?php echo $status; ?></b>。 你有<b><?php echo round(mysql_result($count,0)); ?></b>幻灯片中的图像。
+幻灯片是 <b><?php echo $status; ?></b>。 你有<b><?php echo round(mysqli_data_seek($count,0)); ?></b>幻灯片中的图像。
 <hr/>
 <?php 
 if(isset($_POST['addSlideImage']))
 {
-	$page = new page;
-	$page->addSlideImage($_FILES['slideImage_upload'],$_POST['slideImage_path'],$_POST['slideImage_url']);
+	$Page->addSlideImage($_FILES['slideImage_upload'], $_POST['slideImage_path'], $_POST['slideImage_url']);
 }
 ?>
 <a href="#addimage" onclick="addSlideImage()" class="content_hider">添加图片</a>
@@ -32,9 +35,9 @@ if(isset($_POST['addSlideImage']))
 </div>
 <br/>&nbsp;<br/>
 <?php 
-$server->selectDB('webdb');
-$result = mysql_query("SELECT * FROM slider_images ORDER BY position ASC");
-if(mysql_num_rows($result)==0) 
+$Server->selectDB('webdb');
+$result = mysqli_query($conn, "SELECT * FROM slider_images ORDER BY position ASC");
+if(mysqli_num_rows($result) == 0) 
 {
 	echo "幻灯片中没有图片！";
 }
@@ -42,7 +45,7 @@ else
 {
 	echo '<table>';
 	$c = 1;
-	while($row = mysql_fetch_assoc($result))
+	while($row = mysqli_fetch_assoc($result))
 	{
 		echo '<tr class="center">';
 		echo '<td><h2>&nbsp; '.$c.' &nbsp;</h2><br/>

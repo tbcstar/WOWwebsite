@@ -5,7 +5,7 @@ class Page
 	var $page = null;
 	var $values = array();
 
-	function Page($template) 
+	function __construct($template) 
 	{
 		if (file_exists($template))
 		{
@@ -25,11 +25,16 @@ class Page
 	function replace_tags($tags = array()) 
 	{
 	  	if (sizeof($tags) > 0)
-	  	foreach ($tags as $tag => $data) 
 	  	{
-			$data = (file_exists($data)) ? $this->parse($data) : $data;
-			$this->page = preg_replace("({" . $tag . "})", $data, $this->page);
-  		}
+	  		if (is_array($tags) || is_object($tags))
+			{
+			  	foreach ($tags as $tag => $data) 
+			  	{
+					$data = (file_exists($data)) ? $this->parse($data) : $data;
+					$this->page = preg_replace("({" . $tag . "})", $data, $this->page);
+		  		}
+			}
+		}
 	}
 
 	function setVar($key,$array) 
@@ -48,11 +53,14 @@ class Page
 		{
 			if(isset($_SESSION['loaded_plugins_modules']))
 			{
-				foreach($_SESSION['loaded_plugins_modules'] as $filename)
+				if (is_array($_SESSION['loaded_plugins_modules']) || is_object($_SESSION['loaded_plugins_modules']))
 				{
-					$name = basename(substr($filename, 0, -4));
+					foreach($_SESSION['loaded_plugins_modules'] as $filename)
+					{
+						$name = basename(substr($filename, 0, -4));
 
-					$this->replace_tags(array($name => $filename));
+						$this->replace_tags(array($name => $filename));
+					}
 				}
 			}
 		}

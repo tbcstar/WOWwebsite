@@ -18,7 +18,7 @@ if (isset($_POST['siteid']))
 	
 	$Connect->selectDB('webdb');
 	$check = mysqli_query($conn, "SELECT COUNT(*) FROM votingsites WHERE id='".$siteid."'");
-	if(mysqli_result($check,0) == 0)
+	if(mysqli_data_seek($check,0) == 0)
 	{
 	   die("?p=vote");
 	}
@@ -44,7 +44,7 @@ if (isset($_POST['siteid']))
 		
 		//Update the points table.
 		$add = $row['points'] * $GLOBALS['vote']['multiplier'];
-		mysqli_query("UPDATE account_data SET vp=vp + ".$add." WHERE id=".$acct_id);
+		mysqli_query($conn, "UPDATE account_data SET vp=vp + ".$add." WHERE id=".$acct_id);
 		
 		echo $row['url'];
 	}

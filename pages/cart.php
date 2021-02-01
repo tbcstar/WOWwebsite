@@ -82,7 +82,7 @@ elseif(isset($_GET['return']) && $_GET['return']!="true")
 	echo "<span class='alert'>".$_GET['return']."</span>";
 
 $Account->isNotLoggedIn();
-connect::selectDB('webdb');
+$Connect->selectDB('webdb');
 
 $counter = 0;
 $totalDP = 0;
@@ -95,27 +95,32 @@ if(isset($_SESSION['donateCart']) && !empty($_SESSION['donateCart']))
 	echo '<h3>公益商城</h3>';
 	
 	$sql = "SELECT * FROM shopitems WHERE entry IN(";
-	foreach($_SESSION['donateCart'] as $entry => $value) {
-		if($_SESSION['donateCart'][$entry]['quantity']!=0) {
-		  $sql .= $entry. ',';
-		  
-		  connect::selectDB($GLOBALS['connection']['worlddb']);
-		  $result = mysql_query("SELECT maxcount FROM item_template WHERE entry='".$entry."' AND maxcount>0");
-		  if(mysql_result($result,0)!=0)
-			  $_SESSION['donateCart'][$entry]['quantity']=1;
-		  
-		   connect::selectDB($GLOBALS['connection']['webdb']);
-		}
-	  }
-	  
-	  $sql = substr($sql,0,-1) . ") AND in_shop='donate' ORDER BY `itemlevel` ASC";
+	if (is_array($_SESSION['donateCart']) || is_object($_SESSION['donateCart']))
+	{
+		foreach($_SESSION['donateCart'] as $entry => $value) 
+		{
+			if($_SESSION['donateCart'][$entry]['quantity']!=0) 
+			{
+			  $sql .= $entry. ',';
 
-      $query = mysql_query($sql);
+			  $Connect->selectDB($GLOBALS['connection']['worlddb']);
+			  $result = mysqli_query($conn, "SELECT maxcount FROM item_template WHERE entry='".$entry."' AND maxcount>0");
+			  if(mysqli_data_seek($result,0)!=0)
+				  $_SESSION['donateCart'][$entry]['quantity']=1;
+
+			   $Connect->selectDB($GLOBALS['connection']['webdb']);
+			}
+		}
+	}
+	  
+	$sql = substr($sql,0,-1) . ") AND in_shop='donate' ORDER BY `itemlevel` ASC";
+
+    $query = mysqli_query($conn, $sql);
 ?>
 <table width="100%" >
 <tr id="cartHead"><th>名称</th><th>数量</th><th>价格</th><th>结算</th></tr>
 <?php
-while($row = mysql_fetch_array($query)) 
+while($row = mysqli_fetch_array($query)) 
 {
 	?><tr align="center">
         <td><a href="http://<?php echo $GLOBALS['tooltip_href']; ?>item=<?php echo $row['entry']; ?>"><?php echo $row['name']; ?></a></td> <td>
@@ -142,26 +147,29 @@ if(isset($_SESSION['voteCart']) && !empty($_SESSION['voteCart']))
 
 	 echo '<br>投票商店<br>';
 	$sql = "SELECT * FROM shopitems WHERE entry IN(";
-	foreach($_SESSION['voteCart'] as $entry => $value) {
-		if($_SESSION['voteCart'][$entry]['quantity']!=0) {
-		  $sql .= $entry. ',';
-		  connect::selectDB($GLOBALS['connection']['worlddb']);
-		  $result = mysql_query("SELECT maxcount FROM item_template WHERE entry='".$entry."' AND maxcount>0");
-		  if(mysql_result($result,0)!=0)
-			  $_SESSION['voteCart'][$entry]['quantity']=1;
+	if (is_array($_SESSION['voteCart']) || is_object($_SESSION['voteCart']))
+	{
+		foreach($_SESSION['voteCart'] as $entry => $value) {
+			if($_SESSION['voteCart'][$entry]['quantity']!=0) {
+			  $sql .= $entry. ',';
+			  $Connect->selectDB($GLOBALS['connection']['worlddb']);
+			  $result = mysqli_query($conn, "SELECT maxcount FROM item_template WHERE entry='".$entry."' AND maxcount>0");
+			  if(mysqli_data_seek($result,0)!=0)
+				  $_SESSION['voteCart'][$entry]['quantity']=1;
 
-		   connect::selectDB($GLOBALS['connection']['webdb']);
+			   $Connect->selectDB($GLOBALS['connection']['webdb']);
+			}
 		}
-	  }
+	}
 	  
 	  $sql = substr($sql,0,-1) . ") AND in_shop='vote' ORDER BY `itemlevel` ASC";
 
-$query = mysql_query($sql);
+$query = mysqli_query($conn, $sql);
 ?>
 <table width="100%" >
 <tr id="cartHead"><th>名称</th><th>数量</th><th>价格</th><th>结算</th></tr>
 <?php
-while($row = mysql_fetch_array($query)) {
+while($row = mysqli_fetch_array($query)) {
 	?><tr align="center">
         <td><a href="http://<?php echo $GLOBALS['tooltip_href']; ?>item=<?php echo $row['entry']; ?>"><?php echo $row['name']; ?></a></td> <td>
         <input type="text" value="<?php echo $_SESSION['voteCart'][$row['entry']]['quantity']; ?>" style="width: 30px;"

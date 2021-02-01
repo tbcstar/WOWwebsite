@@ -69,11 +69,14 @@ if($GLOBALS['enablePlugins'] == true)
 {
 	if($_SESSION['loaded_plugins'] != NULL)
 	{
-		foreach($_SESSION['loaded_plugins'] as $folderName)
+		if (is_array($_SESSION['loaded_plugins']) || is_object($_SESSION['loaded_plugins']))
 		{
-			if(file_exists('plugins/'.$folderName.'/config.php'))
+			foreach($_SESSION['loaded_plugins'] as $folderName)
 			{
-				include_once('plugins/'.$folderName.'/config.php');
+				if(file_exists('plugins/'.$folderName.'/config.php'))
+				{
+					include_once('plugins/'.$folderName.'/config.php');
+				}
 			}
 		}
 	}
@@ -125,7 +128,6 @@ if(!isset($_SESSION['last_ip']) && isset($_SESSION['cw_user']))
 {
 	$_SESSION['last_ip'] = $_SERVER['REMOTE_ADDR'];
 }
-
 elseif(isset($_SESSION['last_ip']) && isset($_SESSION['cw_user'])) 
 {
 	if($_SESSION['last_ip']!=$_SERVER['REMOTE_ADDR'])
@@ -137,5 +139,3 @@ elseif(isset($_SESSION['last_ip']) && isset($_SESSION['cw_user']))
 		$_SESSION['last_ip']=$_SERVER['REMOTE_ADDR'];
 	}
 }
-?>
-

@@ -17,7 +17,7 @@ elseif(isset($_SESSION['loaded_plugins_pages']) && $GLOBALS['enablePlugins'] == 
 elseif(in_array($page.'.php',$pages)) 
 {
 	$result = mysqli_query($conn, "SELECT COUNT(filename) FROM disabled_pages WHERE filename='".$page."'");
-	if(mysqli_result($result,0)==0)
+	if(mysqli_data_seek($result,0)==0)
 	{
 		include('pages/'.$page.'.php');
 	}
@@ -32,7 +32,7 @@ else
 	if(mysqli_num_rows($result)>0) 
 	{	  
 		$check = mysqli_query($conn, "SELECT COUNT(filename) FROM disabled_pages WHERE filename='".$page."'");
-		if(mysqli_result($check,0) == 0) 
+		if(mysqli_data_seek($check,0) == 0) 
 		{
 			$row = mysqli_fetch_assoc($result);
 			echo html_entity_decode($row['content']); 

@@ -1,9 +1,6 @@
-<?php 
-$server = new server;
-$account = new account;
-$page = new page;
+<?php global $Page, $Server, $Account, $conn;
 
-$page->validatePageAccess('Tools->Account Access');
+$Page->validatePageAccess('Tools->Account Access');
 
 ?>
 <div class="box_right_title">账号访问</div>
@@ -20,18 +17,18 @@ $page->validatePageAccess('Tools->Account Access');
         <th>动作</th>
     </tr>
     <?php
-	$server->selectDB('logondb');
-	$result = mysql_query("SELECT * FROM account_access");
-	if(mysql_num_rows($result)==0) 
+	$Server->selectDB('logondb');
+	$result = mysqli_query($conn, "SELECT * FROM account_access");
+	if(mysqli_num_rows($result)==0) 
 	 	echo "<b>没有发现GM账户!</b>";	
 	else
 	{
-		while($row = mysql_fetch_assoc($result)) 
+		while($row = mysqli_fetch_assoc($result)) 
 		{
 			?>
             <tr style="text-align:center;">
             	<td><?php echo $row['id']; ?></td>
-                <td><?php echo $account->getAccName($row['id']); ?></td>
+                <td><?php echo $Account->getAccName($row['id']); ?></td>
                 <td><?php echo $row['gmlevel']; ?></td>
                 <td>
                 <?php 
@@ -39,18 +36,18 @@ $page->validatePageAccess('Tools->Account Access');
 						echo '所有';
 					else
 					{
-						$getRealm = mysql_query("SELECT name FROM realmlist WHERE id='".$row['RealmID']."'");
-						if(mysql_num_rows($getRealm)==0)
-							echo 'Unknown';
-						$rows = mysql_fetch_assoc($getRealm);
+						$getRealm = mysqli_query($conn, "SELECT name FROM realmlist WHERE id='".$row['RealmID']."'");
+						if(mysqli_num_rows($getRealm)==0)
+							echo '未知';
+						$rows = mysqli_fetch_assoc($getRealm);
 						echo $rows['name'];
 					}
 				?>
                 </td>
                 <td>
                 <?php
-					$getData = mysql_query("SELECT last_login,online FROM account WHERE id='".$row['id']."'");
-					$rows = mysql_fetch_assoc($getData);
+					$getData = mysqli_query($conn, "SELECT last_login,online FROM account WHERE id='".$row['id']."'");
+					$rows = mysqli_fetch_assoc($getData);
 					if($rows['online']==0)
 					 	echo '<font color="red">离线</font>';
 					else

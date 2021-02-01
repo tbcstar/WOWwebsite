@@ -75,18 +75,21 @@ if ($_POST['action'] == 'getLocations')
         );
 	}
 	echo '<h3>选择位置</h3>';
-	foreach ($locations_name as $v) 
+	if (is_array($locations_name) || is_object($locations_name))
 	{
-	 	?>
-        <div class="charBox" style="cursor:pointer;" onclick="portTo('<?php echo $v; ?>','<?php echo $values[1]; ?>','<?php echo $values[0]; ?>')">
-        <table width="100%">
-               <tr> <td width="15%"><img src="styles/global/images/icons/<?php echo $locations_image[$v]?>.jpg" /></td>
-               <td align="left" width="90%"><b><?php echo $v; ?></b><br/>
-                </td>
-               </tr>
-        </table>
-        </div>
-		<?php 
+		foreach ($locations_name as $v) 
+		{
+		 	?>
+	        <div class="charBox" style="cursor:pointer;" onclick="portTo('<?php echo $v; ?>','<?php echo $values[1]; ?>','<?php echo $values[0]; ?>')">
+	        <table width="100%">
+	               <tr> <td width="15%"><img src="styles/global/images/icons/<?php echo $locations_image[$v]?>.jpg" /></td>
+	               <td align="left" width="90%"><b><?php echo $v; ?></b><br/>
+	                </td>
+	               </tr>
+	        </table>
+	        </div>
+			<?php 
+		}
 	}
 }
 

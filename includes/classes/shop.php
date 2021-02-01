@@ -79,13 +79,13 @@ class Shop
 
 			$count = mysqli_query($conn, "SELECT COUNT(id) FROM shopitems WHERE name LIKE '%".$value."%' AND in_shop = '".$shop."' ".$advanced);
 		
-			if(mysqli_result($count, 0) == 0)
+			if(mysqli_data_seek($count, 0) == 0)
 			{
 					$count = 0;
 			}
 			else
 			{
-				$count = mysqli_result($count,0);
+				$count = mysqli_data_seek($count,0);
 			}
 			
 			if($results!="--结果--")

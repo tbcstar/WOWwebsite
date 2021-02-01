@@ -1,8 +1,12 @@
 <?php 
-account::isLoggedIn();
+global $Account;
+?>
+
+<?php 
+$Account->isLoggedIn();
 console.log($_POST['register']);
 if ($_POST['register']) {
-	account::register($_POST['username'],$_POST['email'],$_POST['password'],$_POST['password_repeat'],$_POST['referer'],$_POST['captcha']);
+	$Account->register($_POST['username'],$_POST['email'],$_POST['password'],$_POST['password_repeat'],$_POST['referer'],$_POST['captcha']);
 } 
 ?>
 

@@ -8,19 +8,23 @@ global $Connect, $conn;
 
 $send = 'cmd=_notify-validate';
 
-foreach ($_POST as $key => $value)
+if (is_array($_POST) || is_object($_POST))
 {
-	if(get_magic_quotes_gpc() == 1)
+	foreach ($_POST as $key => $value)
 	{
-	    $value = urlencode(stripslashes($value));
+		if(get_magic_quotes_gpc() == 1)
+		{
+		    $value = urlencode(stripslashes($value));
+		}
+		else
+		{
+	    	$value = urlencode($value);
+		}
+
+	 	$send .= "&$key=$value";
 	}
-	else
-	{
-    	$value = urlencode($value);
-	}
-	 
- 	$send .= "&$key=$value";
 }
+
 
 $head .= "POST /cgi-bin/webscr HTTP/1.0\r\n";
 $head .= "Content-Type: application/x-www-form-urlencoded\r\n";
@@ -123,7 +127,7 @@ if ($fp !== false)
 	{
 		if($GLOBALS['donation']['donationType'] == 2)
 		{
-			 mysqli_query("INSERT INTO payments_log(userid,paymentstatus,buyer_email,firstname,
+			 mysqli_query($conn, "INSERT INTO payments_log(userid,paymentstatus,buyer_email,firstname,
 			 lastname,mc_gross,paymentdate,datecreation) values ('".$custom."','".$payment_status." - INVALID FUUUU ".$_POST['mc_gross']."','".$payer_email."',
 			 '".$first_name."','".$last_name."','".$mc_gross."','".$payment_date."','".$fecha."')");
 		}

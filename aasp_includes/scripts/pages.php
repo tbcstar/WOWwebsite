@@ -3,73 +3,75 @@ define('INIT_SITE', TRUE);
 include('../../includes/misc/headers.php');
 include('../../includes/configuration.php');
 include('../functions.php');
-$server = new server;
-$account = new account;
+global $Server, $Account, $conn;
 
-$server->selectDB('webdb');
+$Server->selectDB('webdb');
 
 ###############################
-if($_POST['action']=='toggle')
+if($_POST['action'] == 'toggle')
  {
-	if($_POST['value']==1) {
+	if($_POST['value'] == 1) 
+	{
 		//开启
-		mysql_query("DELETE FROM disabled_pages WHERE filename='".mysql_real_escape_string($_POST['filename'])."'");
+		mysqli_query($conn, "DELETE FROM disabled_pages WHERE filename='".mysqli_real_escape_string($conn, $_POST['filename'])."';");
 	} 
-	elseif($_POST['value']==2) 
+	elseif($_POST['value'] == 2) 
 	{
 		//禁用
-		mysql_query("INSERT IGNORE disabled_pages values('".mysql_real_escape_string($_POST['filename'])."')");
+		mysqli_query($conn, "INSERT IGNORE disabled_pages values('".mysqli_real_escape_string($conn, $_POST['filename'])."');");
 	}
 }
 ###############################
-if($_POST['action']=='delete') 
+if($_POST['action'] == 'delete') 
 {
-	mysql_query("DELETE FROM custom_pages WHERE filename='".mysql_real_escape_string($_POST['filename'])."'");
+	mysqli_query($conn, "DELETE FROM custom_pages WHERE filename='".mysqli_real_escape_string($conn, $_POST['filename'])."';");
 	return;
 }
 ###############################
-if($_POST['action']=='saveVoteLink') 
+if($_POST['action'] == 'saveVoteLink') 
 {
-	$id = (int)$_POST['id'];
-	$title = mysql_real_escape_string($_POST['title']);
+	$id 	= (int)$_POST['id'];
+	$title 	= mysqli_real_escape_string($conn, $_POST['title']);
 	$points = (int)$_POST['points'];
-	$image = mysql_real_escape_string($_POST['image']);
-	$url = mysql_real_escape_string($_POST['url']);
+	$image 	= mysqli_real_escape_string($conn, $_POST['image']);
+	$url 	= mysqli_real_escape_string($conn, $_POST['url']);
 	
 	if(!empty($id))
 	{
-		mysql_query("UPDATE votingsites SET title='".$title."',points='".$points."',image='".$image."',url='".$url."'
-		WHERE id='".$id."'");
+		mysqli_query($conn, "UPDATE votingsites SET title='".$title."',points='".$points."',image='".$image."',url='".$url."'
+		WHERE id='".$id."';");
 	}
 }
 ###############################
-if($_POST['action']=='removeVoteLink') 
+if($_POST['action'] == 'removeVoteLink') 
 {
 	$id = (int)$_POST['id'];
 	
-	mysql_query("DELETE FROM votingsites WHERE id='".$id."'");
+	mysqli_query($conn, "DELETE FROM votingsites WHERE id='".$id."';");
 }
 ###############################
-if($_POST['action']=='addVoteLink') 
+if($_POST['action'] == 'addVoteLink') 
 {
-	$title = mysql_real_escape_string($_POST['title']);
+	$title 	= mysqli_real_escape_string($conn, $_POST['title']);
 	$points = (int)$_POST['points'];
-	$image = mysql_real_escape_string($_POST['image']);
-	$url = mysql_real_escape_string($_POST['url']);
+	$image 	= mysqli_real_escape_string($conn, $_POST['image']);
+	$url 	= mysqli_real_escape_string($conn, $_POST['url']);
 	
 	if(!empty($title) && !empty($points) && !empty($image) && !empty($url))
-	  mysql_query("INSERT INTO votingsites VALUES('','".$title."','".$points."','".$image."','".$url."')");
+	{
+		mysqli_query($conn, "INSERT INTO votingsites VALUES('','".$title."','".$points."','".$image."','".$url."');");
+	}
 }
 ###############################
-if($_POST['action']=='saveServicePrice') 
+if($_POST['action'] == 'saveServicePrice') 
 {
-	$service = mysql_real_escape_string($_POST['service']);
-	$price = (int)$_POST['price'];
-	$currency = mysql_real_escape_string($_POST['currency']);
-	$enabled = mysql_real_escape_string($_POST['enabled']);
+	$service 	= mysqli_real_escape_string($conn, $_POST['service']);
+	$price 		= (int)$_POST['price'];
+	$currency 	= mysqli_real_escape_string($conn, $_POST['currency']);
+	$enabled 	= mysqli_real_escape_string($conn, $_POST['enabled']);
 	
-	mysql_query("UPDATE service_prices SET price='".$price."',currency='".$currency."',enabled='".$enabled."' 
-	WHERE service='".$service."'");
+	mysqli_query($conn, "UPDATE service_prices SET price='".$price."',currency='".$currency."',enabled='".$enabled."' 
+	WHERE service='".$service."';");
 }
 ###############################
 ?>

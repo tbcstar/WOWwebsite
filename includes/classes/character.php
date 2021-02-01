@@ -7,7 +7,7 @@ class Character
 	{
 		global $Connect, $conn, $Account;
 		$guid 	= (int)$guid;
-		$rid 	= server::getRealmId($char_db);
+		$rid 	= $Server->getRealmId($char_db);
 		$Connect->connectToRealmDB($rid);
 		
         if(self::isOnline($guid) == TRUE)
@@ -60,7 +60,7 @@ class Character
 	
 	public static function revive($guid,$char_db) 
 	{
-		global $Connect, $conn, $Server;
+		global $Connect, $conn, $Server, $Account;
 		$guid 	= (int)$guid;
 		$rid 	= $Server->getRealmId($char_db);
 		$Connect->connectToRealmDB($rid);
@@ -105,7 +105,7 @@ class Character
 	
 	public static function instant80($values) 
 	{
-		global $Connect, $conn;
+		global $Connect, $Account, $conn;
 		die("此功能被禁用。 <br/><i>还有，你不应该在这里…</i>");
 		$values = mysqli_real_escape_string($conn, $values);
 		$values = explode("*", $values);
@@ -154,7 +154,7 @@ class Character
 		global $conn;
 		$char_guid 	= (int)$char_guid;
 		$result 	= mysqli_query($conn, "SELECT COUNT('guid') FROM characters WHERE guid='".$char_guid."' AND online=1");
-		if (mysqli_result($result,0) == 0)
+		if (mysqli_data_seek($result,0) == 0)
 		{
 			return FALSE;
 		}

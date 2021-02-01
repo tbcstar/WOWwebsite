@@ -1,7 +1,9 @@
 <?php
-account::isNotLoggedIn();
+
+global $Account;
+$Account->isNotLoggedIn();
 
 echo "<h2>注销</h2>";
 
-account::logOut($_GET['last_page']);
+$Account->logOut($_GET['last_page']);
 ?>
