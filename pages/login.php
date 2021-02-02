@@ -430,7 +430,14 @@ T <span class="numbers">5</span>
 <img src="/images/why/why-05.png" alt="">
 <img src="/images/why/why-hov-05.png" class="hov" alt="">
 </div>
-<div class="text">新种族:血精灵/德莱尼（Beta测试结束后开放狼人和地精）</div>
+<div class="text">新种族:血精灵/德莱尼</div>
+</div>
+<div class="col wow bounceInUp">
+<div class="img">
+<img src="/images/why/why-05.png" alt="">
+<img src="/images/why/why-hov-05.png" class="hov" alt="">
+</div>
+<div class="text">新种族:狼人/地精</div>
 </div>
 <div class="col wow bounceInDown">
 <div class="img">
