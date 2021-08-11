@@ -19,4 +19,5 @@ function sendRA($command, $ra_user, $ra_pass, $server, $realm_port)
 	else
 	{
 		die('连接问题...正在断开');
+	}
 } 

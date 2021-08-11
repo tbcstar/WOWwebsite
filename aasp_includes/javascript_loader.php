@@ -7,12 +7,12 @@
 <?php
     if ($GLOBALS['core_expansion'] > 2)
     {
-		//核心在WOTLK之上。 使用WoWHead,反之使用openwow
-		echo '<script type="text/javascript" src="http://static.wowhead.com/widgets/power.js"></script>';
+		//核心在WOTLK之上。 使用WoWHead,反之使用cavernoftime
+		echo '<script type="text/javascript" src="https://static.wowhead.com/widgets/power.js"></script>';
     }
     else
     {
-		echo '<script type="text/javascript" src="http://cdn.cavernoftime.com/api/tooltip.js"></script>';
+		echo '<script type="text/javascript" src="https://cdn.cavernoftime.com/api/tooltip.js"></script>';
     }
 ?>
 <script type="text/javascript" src="../aasp_includes/js/wysiwyg.js"></script>

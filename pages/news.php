@@ -53,7 +53,7 @@ if (isset($_GET['newsid']))
 	{
 		if (isset($_POST['text']) && isset($_SESSION['cw_user']) && strlen($_POST['text'])<1000) 
 		{
-			$text = mysqli_real_escape_string($conn, trim(htmlentities($_POST['text'])));
+			$text = mysqli_real_escape_string($conn, trim($_POST['text']));
 			$ip = $_SERVER['REMOTE_ADDR'];
 			$Connect->selectDB('logondb');
 			

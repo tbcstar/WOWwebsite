@@ -18,7 +18,7 @@ class Cache
 		} 
 		else
 		{
-			self::deleteCache($filename);
+			$this->deleteCache($filename);
 		}
 	}
 	
@@ -37,7 +37,7 @@ class Cache
 		} 
 		else
 		{
-			self::deleteCache($filename);
+			$this->deleteCache($filename);
 		}
 	}
 	

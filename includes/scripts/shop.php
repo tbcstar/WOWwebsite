@@ -106,6 +106,7 @@ if($_POST['action']=='checkout')
 	
 	$Connect->selectDB('webdb');
 	require("../misc/ra.php");
+	require('../misc/soap.php');
 	
 	if(isset($_SESSION['donateCart'])) 
 	{
@@ -131,6 +132,7 @@ if($_POST['action']=='checkout')
 		$rank_user	= $GLOBALS['realms'][$values[1]]['rank_user'];
 		$rank_pass	= $GLOBALS['realms'][$values[1]]['rank_pass'];
 		$ra_port	= $GLOBALS['realms'][$values[1]]['ra_port'];
+		$soap_port  = $GLOBALS['realms'][$values[1]]['soap_port'];
 	  	
 	  	if (is_array($_SESSION['donateCart']) || is_object($_SESSION['donateCart']))
 	  	{
@@ -147,7 +149,7 @@ if($_POST['action']=='checkout')
 						else
 						$command = "send items ".$Character->getCharname($values[0],$values[1])." \"Your requested item\" \"Thanks for supporting us!\" ".$entry.":".$num." ";
 						$Shop->logItem("donate",$entry,$values[0],$Account->getAccountID($_SESSION['cw_user']),$values[1],$num);
-						sendRA($command,$rank_user,$rank_pass,$host,$ra_port);	
+						sendSoap($command,$rank_user,$rank_pass,$host,$soap_port);	
 
 						$num = $num - 12;
 					} 
@@ -157,7 +159,7 @@ if($_POST['action']=='checkout')
 				{
 				    $command = "send items ".$Character->getCharname($values[0],$values[1])." \"Your requested item\" \"Thanks for supporting us!\" ".$entry.":".$_SESSION['donateCart'][$entry]['quantity']." ";
 					$Shop->logItem("donate",$entry,$values[0],$Account->getAccountID($_SESSION['cw_user']),$values[1],$_SESSION['donateCart'][$entry]['quantity']);
-				    sendRA($command,$rank_user,$rank_pass,$host,$ra_port);	
+				    sendSoap($command,$rank_user,$rank_pass,$host,$soap_port);	
 				}
 			}
 		}
@@ -190,6 +192,7 @@ if($_POST['action']=='checkout')
 		$rank_user	= $GLOBALS['realms'][$values[1]]['rank_user'];
 		$rank_pass	= $GLOBALS['realms'][$values[1]]['rank_pass'];
 		$ra_port	= $GLOBALS['realms'][$values[1]]['ra_port'];
+		$soap_port  = $GLOBALS['realms'][$values[1]]['soap_port'];
 
 		if (is_array($_SESSION['voteCart']) || is_object($_SESSION['voteCart']))
 		{
@@ -210,7 +213,7 @@ if($_POST['action']=='checkout')
 							$command = "send items ".$Character->getCharname($values[0],$values[1])." \"Your requested item\" \"Thanks for supporting us!\" ".$entry.":".$num." ";
 						}
 						$Shop->logItem("vote",$entry,$values[0],$Account->getAccountID($_SESSION['cw_user']),$values[1],$num);	
-				        sendRA($command,$rank_user,$rank_pass,$host,$ra_port);	
+				        sendSoap($command,$rank_user,$rank_pass,$host,$soap_port);	
 						$num = $num - 12;
 					} 
 
@@ -219,7 +222,7 @@ if($_POST['action']=='checkout')
 				{
 				    $command = "send items ".$Character->getCharname($values[0],$values[1])." \"Your requested item\" \"Thanks for supporting us!\" ".$entry.":".$_SESSION['voteCart'][$entry]['quantity']." ";
 					$Shop->logItem("vote",$entry,$values[0],$Account->getAccountID($_SESSION['cw_user']),$values[1],$_SESSION['voteCart'][$entry]['quantity']); 
-				    sendRA($command,$rank_user,$rank_pass,$host,$ra_port);	
+				    sendSoap($command,$rank_user,$rank_pass,$host,$soap_port);	
 				}
 	  		}
 	  	}

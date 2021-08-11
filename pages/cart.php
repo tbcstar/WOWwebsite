@@ -1,6 +1,6 @@
 <?php
-include "headers.php"
-include "menus.php"
+include "headers.php";
+include "menus.php";
 
 global $Account, $Connect;
 ?>
@@ -123,8 +123,9 @@ if(isset($_SESSION['donateCart']) && !empty($_SESSION['donateCart']))
 while($row = mysqli_fetch_array($query)) 
 {
 	?><tr align="center">
-        <td><a href="http://<?php echo $GLOBALS['tooltip_href']; ?>item=<?php echo $row['entry']; ?>"><?php echo $row['name']; ?></a></td> <td>
-        <input type="text" value="<?php echo $_SESSION['donateCart'][$row['entry']]['quantity']; ?>" style="width: 30px;"
+        <td><a href="http://<?php echo $GLOBALS['tooltip_href']; ?>item=<?php echo $row['entry']; ?>"><?php echo $row['name']; ?></a></td>
+        <td><input type="text" value="<?php echo $_SESSION['donateCart'][$row['entry']]['quantity']; ?>" style="width: 30px; text-align: center;"
+        
         onFocus="$(this).next('.quantitySave').fadeIn()" id="donateCartQuantity-<?php echo $row['entry']; ?>" />
         <div class="quantitySave" style="display:none;">
         <a href="#" onclick="saveItemQuantityInCart('donateCart',<?php echo $row['entry']; ?>)">保存</a>
@@ -171,8 +172,8 @@ $query = mysqli_query($conn, $sql);
 <?php
 while($row = mysqli_fetch_array($query)) {
 	?><tr align="center">
-        <td><a href="http://<?php echo $GLOBALS['tooltip_href']; ?>item=<?php echo $row['entry']; ?>"><?php echo $row['name']; ?></a></td> <td>
-        <input type="text" value="<?php echo $_SESSION['voteCart'][$row['entry']]['quantity']; ?>" style="width: 30px;"
+        <td><a href="http://<?php echo $GLOBALS['tooltip_href']; ?>item=<?php echo $row['entry']; ?>"><?php echo $row['name']; ?></a></td>
+        <td><input type="text" value="<?php echo $_SESSION['voteCart'][$row['entry']]['quantity']; ?>" style="width: 30px; text-align: center;"
         onFocus="$(this).next('.quantitySave').fadeIn()" id="voteCartQuantity-<?php echo $row['entry']; ?>" />
         <div class="quantitySave" style="display:none;">
         <a href="#" onclick="saveItemQuantityInCart('voteCart',<?php echo $row['entry']; ?>)">保存</a>

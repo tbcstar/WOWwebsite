@@ -328,7 +328,7 @@ class Account
 	{
 		global $Connect, $conn;
 		$Connect->selectDB('logondb');
-		$acct_id = self::getAccountID($user);
+		$acct_id = $this->getAccountID($user);
 		
 		$result = mysqli_query($conn, "SELECT bandate,unbandate,banreason FROM account_banned WHERE id='". $acct_id ."' AND active=1");
 		if (mysqli_num_rows($result) > 0) 
@@ -398,7 +398,7 @@ class Account
 	public static function loadVP($account_name) 
 	{
 		global $Connect, $conn;
-		$acct_id = self::getAccountID($account_name);
+		$acct_id = $this->getAccountID($account_name);
 		$Connect->selectDB('webdb');
 		$result = mysqli_query($conn, "SELECT vp FROM account_data WHERE id=".$acct_id);
 		if (mysqli_num_rows($result) == 0)
@@ -416,7 +416,7 @@ class Account
 	public static function loadDP($account_name) 
 	{
 		global $Connect, $conn;
-	    $acct_id = self::getAccountID($account_name);
+	    $acct_id = $this->getAccountID($account_name);
 		$Connect->selectDB('webdb');
 		$result = mysqli_query($conn, "SELECT dp FROM account_data WHERE id=". $acct_id);
 		if (mysqli_num_rows($result) == 0)
@@ -485,7 +485,7 @@ class Account
 	{
 		global $Connect, $conn;
 		$Connect->selectDB('logondb');
-		$acct_id = self::getAccountID($account_name);
+		$acct_id = $this->getAccountID($account_name);
 		
 		$result = mysqli_query($conn, "SELECT gmlevel FROM account_access WHERE gmlevel > 2 AND id=".$acct_id);
 		if(mysqli_num_rows($result) > 0) 
@@ -500,7 +500,7 @@ class Account
 	{
 		global $Connect, $conn;
 
-		$acct_id = self::getAccountID($account_name);
+		$acct_id = $this->getAccountID($account_name);
 
 		$Connect->selectDB('webdb');
 
@@ -622,10 +622,10 @@ class Account
 
 					$getPass 		= mysqli_query($conn, "SELECT `sha_pass_hash` FROM `account` WHERE `username`='".$username."'");
 					$row 			= mysqli_fetch_assoc($getPass);
-					$thePass 		= $row['sha_pass_hash'];
+					$thePass 		= strtoupper($row['sha_pass_hash']);
 
 					$pass 			= mysqli_real_escape_string($conn, strtoupper($_POST['cur_pass']));
-					$pass_hash 		= sha1($username.':'.$pass);
+					$pass_hash 		= strtoupper(sha1($username.':'.$pass));
 
 					$new_pass 		= mysqli_real_escape_string($conn, strtoupper($_POST['new_pass']));
 					$new_pass_hash 	= sha1($username.':'.$new_pass);
@@ -686,15 +686,15 @@ class Account
 				你好。<br/><br/>
 				要求为帐户重设密码 ". $account_name ." <br/>
 				如果要重置密码，请单击下面的链接：<br/>
-				<a href='". $GLOBALS['website_domain'] ."?p=forgotpw&code=". $code ."&account=". self::getAccountID($account_name) ."'>
-				". $GLOBALS['website_domain'] ."?p=forgotpw&code=". $code ."&account=". self::getAccountID($account_name) ."</a>
+				<a href='". $GLOBALS['website_domain'] ."?p=forgotpw&code=". $code ."&account=". $this->getAccountID($account_name) ."'>
+				". $GLOBALS['website_domain'] ."?p=forgotpw&code=". $code ."&account=". $this->getAccountID($account_name) ."</a>
 				
 				<br/><br/>
 				
 				如果您没有请求此消息，请忽略此消息。<br/><br/>
 				来自TBCstar的问候。");
 
-				$account_id = self::getAccountID($account_name);
+				$account_id = $this->getAccountID($account_name);
 				$Connect->selectDB('webdb');
 				
 				mysqli_query($conn, "DELETE FROM password_reset WHERE account_id='".$account_id."'");
@@ -709,7 +709,7 @@ class Account
 		{
 			global $Connect, $conn;
 			$points 	= (int)$points;
-			$account_id = self::getAccountID($account_name);
+			$account_id = $this->getAccountID($account_name);
 			$Connect->selectDB('webdb');
 			$result 	= mysqli_query($conn, "SELECT COUNT('id') FROM account_data WHERE vp >= '". $points ."' AND id='". $account_id ."'");
 			
@@ -727,7 +727,7 @@ class Account
 		{
 			global $Connect, $conn;
 			$points 	= (int)$points;
-			$account_id = self::getAccountID($account_name);
+			$account_id = $this->getAccountID($account_name);
 			$Connect->selectDB('webdb');
 			$result 	= mysqli_query($conn, "SELECT COUNT('id') FROM account_data WHERE dp >= '". $points ."' AND id='". $account_id ."'");
 			
@@ -799,7 +799,7 @@ class Account
 		function isGM($account_name) 
 		{
 			global $conn;
-	        $account_id = self::getAccountID($account_name);
+	        $account_id = $this->getAccountID($account_name);
 			$result = mysqli_query($conn, "SELECT COUNT(id) FROM account_access WHERE id='". $account_id ."' AND gmlevel >= 1");
 			if (mysqli_data_seek($result,0) > 0)
 			{

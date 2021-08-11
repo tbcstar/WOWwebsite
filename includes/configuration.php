@@ -28,7 +28,7 @@
 	 
 	 $default_email = 'admin@tbcstar.com'; //将发送wich电子邮件的默认电子邮件地址。
 
-	 $website_domain = 'http://www.tbcstar.com/'; //提供域名和路径到你的网站。
+	 $website_domain = 'https://tbcstar.itpel.com/'; //提供域名和路径到你的网站。
 	 //Example: http://yourserver.com/
 	 //如果你的网站在子目录下， include that aswell. Ex: http://yourserver.com/cataclysm/
 	 
@@ -51,10 +51,10 @@
 	 // 5 = Legion
 	 
 	 $adminPanel_enable = true; //启用或禁用管理员面板。
-	 $staffPanel_enable = false; //启用或禁用Staff面板。
+	 $staffPanel_enable = true; //启用或禁用Staff面板。
 	 
-	 $adminPanel_minlvl = 5; //最低的GM级别，其中帐户能够登录到管理面板。默认值:5
-	 $staffPanel_minlvl = 3; //能够登录到员工面板的最低GM级别。默认值:3
+	 $adminPanel_minlvl = 3; //最低的GM级别，其中帐户能够登录到管理面板。默认值:5
+	 $staffPanel_minlvl = 2; //能够登录到员工面板的最低GM级别。默认值:3
 	 
 	 $staffPanel_permissions['Pages'] = true;
 	 $staffPanel_permissions['News'] = true;

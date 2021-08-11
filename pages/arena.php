@@ -1,5 +1,6 @@
 ﻿<?php 
-account::isNotLoggedIn();
+    global $Account;
+    $Account->isNotLoggedIn();
 ?>
 <?php include "headers.php" ?>
 <div class="container">
@@ -9,49 +10,49 @@ account::isNotLoggedIn();
 <a href="?p=ucp">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-01.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-01.png" alt="" /> </div>
-<p>Account</p>
+<p>账户</p>
 </a>
 </li>
 <li>
 <a href="?p=shop">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-02.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-02.png" alt="" /> </div>
-<p>Shop</p>
+<p>商城</p>
 </a>
 </li>
 <li>
 <a href="?p=donate">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-03.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-03.png" alt="" /> </div>
-<p>Buy coins</p>
+<p>捐赠充值</p>
 </a>
 </li>
 <li>
 <a href="?p=characters">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-04.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-04.png" alt="" /> </div>
-<p>Characters</p>
+<p>角色</p>
 </a>
 </li>
 <li>
 <a href="#">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-05.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-05.png" alt="" /> </div>
-<p>Find character</p>
+<p>查找角色</p>
 </a>
 </li>
 <li>
 <a class="active" href="?p=stat">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-06.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-06.png" alt="" /> </div>
-<p>Statistics</p>
+<p>统计</p>
 </a>
 </li>
 <li>
 <a href="?p=vote">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-07.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-07.png" alt="" /> </div>
-<p>Vote</p>
+<p>投票</p>
 </a>
 </li>
 </ul>
@@ -65,34 +66,38 @@ account::isNotLoggedIn();
 <div class="head-content">
 <div class="breadcrumbs">
 <a href="?p=ucp">
-Control Panel </a>
+控制面板 </a>
 <span class="ico-raquo"></span>
 <a href="?p=stat">
-Statistics </a>
+统计 </a>
 <span class="ico-raquo"></span>
 <div>
-Arena Ranking </div>
+竞技场排名 </div>
 </div>
 <div class="realm_picker">
 <div class="">
-Actual realm: </div>
+服务器: </div>
 <a href="#">
-Nefelin-WoW </a>
+时光回溯 </a>
 </div>
 </div>
 <div class="content-box standart">
 <div class="content-holder">
 <div class="content-frame">
 <div class="content">
-<h2>Arena Ranking</h2>
+<h2>竞技场排名</h2>
 <br />
 
 
 
-<?php 
-$host = "87.254.177.88";
+<?php
+
+######################################################
+# SQL连接
+######################################################
+$host = "game.tbcstar.com:3310";
 $user = "root";
-$pass = "ascent"; 
+$pass = "A112233a"; 
 $mangoscharacters = "characters";
 $mangosrealm = "auth";
 ?>
@@ -119,11 +124,11 @@ echo "
 
 <table class='table'>
 <tr>
-<th>Team Name</th>
+<th>队伍名称</th>
 <th>Command Type</th>
-<th>Team Leader</th>
-<th>Faction</th>
-<th>Rating</th>
+<th>队长</th>
+<th>阵营</th>
+<th>评级</th>
 </tr>
 ";
 while ($row = mysql_fetch_array($sql)){

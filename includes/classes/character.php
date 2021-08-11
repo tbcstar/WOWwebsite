@@ -10,7 +10,7 @@ class Character
 		$rid 	= $Server->getRealmId($char_db);
 		$Connect->connectToRealmDB($rid);
 		
-        if(self::isOnline($guid) == TRUE)
+        if($this->isOnline($guid) == TRUE)
     	{
 			echo '<b class="red_text">在继续之前，请先登出你的角色。';
     	}
@@ -40,7 +40,8 @@ class Character
 				}
 			}
 
-			$getXYZ = mysqli_query($conn, "SELECT * FROM character_homebind WHERE guid='".$guid."'"); 
+		    connect::connectToRealmDB($rid);
+		    $getXYZ = mysqli_query($conn, "SELECT * FROM character_homebind WHERE guid='".$guid."'");
 			$row 	= mysqli_fetch_assoc($getXYZ);
 			
 			$new_x = $row['posX']; 
@@ -52,7 +53,7 @@ class Character
 			mysqli_query($conn, "UPDATE characters SET position_x='".$new_x."', position_y='".$new_y."', 
 			position_z='".$new_z."', zone='".$new_zone."',map='".$new_map."' WHERE guid='".$guid."'");
 
-			$Account->logThis("Performed unstuck on ".self::getCharName($guid,$rid),'Unstuck',$rid);
+			$Account->logThis("Performed unstuck on ".$this->getCharName($guid,$rid),'Unstuck',$rid);
 
 			return TRUE;
 	  	}
@@ -65,7 +66,7 @@ class Character
 		$rid 	= $Server->getRealmId($char_db);
 		$Connect->connectToRealmDB($rid);
 		
-		if(self::isOnline($guid) == TRUE)
+		if($this->isOnline($guid) == TRUE)
 		{
 			echo '<b class="red_text">请在继续之前退出游戏。';
 		}
@@ -94,10 +95,11 @@ class Character
 					$Account->deductDP($Account->getAccountID($_SESSION['cw_user']),$GLOBALS['service']['revive']['price']);	
 				}
 			}
+
+			connect::connectToRealmDB($rid);
+		    mysqli_query($conn, "DELETE FROM character_aura WHERE (guid = '".$guid."' AND spell = '55164') OR (guid = '".$guid."' AND spell = '20584') OR (guid = '".$guid."' AND spell = '8326')");
 			
-		    mysqli_query($conn, "DELETE FROM character_aura WHERE guid = '".$guid."' AND spell = '20584' OR guid = '".$guid."' AND spell = '8326'");
-			
-			$Account->logThis("使复活 ".self::getCharName($guid,$rid),'Revive',$rid);
+			$Account->logThis("使复活 ".$this->getCharName($guid,$rid),'Revive',$rid);
 			
 			return TRUE;
 	  	}
@@ -112,7 +114,7 @@ class Character
 		
 		$Connect->connectToRealmDB($values[1]);
 		
-		if(self::isOnline($values[0]) == TRUE)
+		if($this->isOnline($values[0]) == TRUE)
 		{
 			echo '<b class="red_text">请在继续之前退出游戏。';
 		}
@@ -142,7 +144,7 @@ class Character
 				$Connect->connectToRealmDB($values[1]);
 				mysqli_query($conn, "UPDATE characters SET level='58' WHERE guid = '".$values[0]."'");
 
-				$Account->logThis("立即达到58级 ".self::getCharName($values[0], NULL), 'Instant', NULL);
+				$Account->logThis("立即达到58级 ".$this->getCharName($values[0], NULL), 'Instant', NULL);
 
 				echo '<h3 class="green_text">角色级别被设置为58!</h3>';
 			}

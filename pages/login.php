@@ -53,7 +53,7 @@ global $Account;
 <a href="#why"><span class="text">为什么选择TBC版本？</span><span class="ico"><img src="/images/nav-side-05.png" alt=""></span></a>
 </li>
 <li>
-<a href="#raids"><span class="text">团队副本</span><span class="ico"><img src="/images/nav-side-06.png" alt=""></span></a>
+<a href="#raids"><span class="text">独特系统</span><span class="ico"><img src="/images/nav-side-06.png" alt=""></span></a>
 </li>
 <li>
 <a href="#betakey"><span class="text">注册账号</span><span class="ico"><img src="/images/nav-side-07.png" alt=""></span></a>
@@ -165,7 +165,8 @@ global $Account;
 <div class="text-block">
 <h3 class="section-title wow pulse">为什么使用渐进模式？</h3>
 <article class="section-text wow flipInX">
-<p>首先，我们回答这个问题:“什么是渐进模式?什么意思?”这是一个所有PvE内容逐渐可用的世界。这意味着你将不能立即进入黑暗神殿或太阳井高地。我们相信这种发布方式可以让我们更彻底地享受燃烧远征，并提供最好的资料片体验。</p>
+<p>首先，我们回答这个问题:“什么是渐进模式?”并不会马上开放TBC所有内容，这意味着你将不能立即进入黑暗神殿或太阳井高地。</p>
+<p>我们相信这种时间线的发布方式可以让我们更彻底地享受游戏乐趣，并提供最好的内容体验。</p>
 </article>
 </div>
 <div class="row">
@@ -262,7 +263,7 @@ global $Account;
 <div role="tabpanel" class="tab-pane active" id="class-warrior">
 <div class="class-item">
 <img src="/images/class/warrior-01.png" alt="">
-T <span class="numbers">4</span>
+幻 <span class="numbers">化</span>
 </div>
 <div class="class-item">
 <img src="/images/class/warrior-02.png" alt="">
@@ -402,21 +403,21 @@ T <span class="numbers">5</span>
 <img src="/images/why/why-01.png" alt="">
 <img src="/images/why/why-hov-01.png" class="hov" alt="">
 </div>
-<div class="text">九大团队副本</div>
+<div class="text">团队副本</div>
 </div>
 <div class="col wow bounceInRight">
 <div class="img">
 <img src="/images/why/why-02.png" alt="">
 <img src="/images/why/why-hov-02.png" class="hov" alt="">
 </div>
-<div class="text">等级上限70级</div>
+<div class="text">70级上限</div>
 </div>
 <div class="col wow bounceInLeft">
 <div class="img">
 <img src="/images/why/why-03.png" alt="">
 <img src="/images/why/why-hov-03.png" class="hov" alt="">
 </div>
-<div class="text">竞技场开放</div>
+<div class="text">竞技场</div>
 </div>
 <div class="col wow bounceInLeft">
 <div class="img">
@@ -430,26 +431,26 @@ T <span class="numbers">5</span>
 <img src="/images/why/why-05.png" alt="">
 <img src="/images/why/why-hov-05.png" class="hov" alt="">
 </div>
-<div class="text">新种族:血精灵/德莱尼</div>
+<div class="text">血精灵/德莱尼</div>
 </div>
 <div class="col wow bounceInUp">
 <div class="img">
-<img src="/images/why/why-05.png" alt="">
-<img src="/images/why/why-hov-05.png" class="hov" alt="">
+<img src="/images/why/why-06.png" alt="">
+<img src="/images/why/why-hov-06.png" class="hov" alt="">
 </div>
-<div class="text">新种族:狼人/地精</div>
+<div class="text">狼人/地精</div>
 </div>
 <div class="col wow bounceInDown">
 <div class="img">
-<img src="/images/why/why-06.png" alt="">
-<img src="/images/why/why-hov-06.png" class="hov" alt="">
+<img src="/images/why/why-07.png" alt="">
+<img src="/images/why/why-hov-07.png" class="hov" alt="">
 </div>
 <div class="text">新的战场</div>
 </div>
 <div class="col wow bounceInUp">
 <div class="img">
-<img src="/images/why/why-07.png" alt="">
-<img src="/images/why/why-hov-07.png" class="hov" alt="">
+<img src="/images/why/why-08.png" alt="">
+<img src="/images/why/why-hov-08.png" class="hov" alt="">
 </div>
 <div class="text">新的地图</div>
 </div>
@@ -458,7 +459,7 @@ T <span class="numbers">5</span>
 </section>
 <section class="section raids" id="raids">
 <div class="container">
-<h3 class="section-title">参加团队副本</h3>
+<h3 class="section-title">TBCstar独特系统</h3>
 <div class="row">
 <div class="raid-tabs">
 
@@ -543,112 +544,48 @@ T <span class="numbers">5</span>
 <div class="tab-content">
 <div role="tabpanel" class="tab-pane clearfix active" id="raid-karazhan">
 <div class="place wow flip">
-<h3 class="title">卡拉赞</h3>
-<img src="/images/raid/img-raid-karazhan.png" alt="">
-<div class="text">卡拉赞是魔兽世界中最受欢迎的副本之一，为燃烧的远征入门级团队副本。它属于10人副本，BOSS数目为11个，最终玛克扎尔王子掉落125等级紫装，其他BOSS掉落115等级紫装，同时馆长和玛克扎尔王子分别掉落T4手部和头部道具，可以换取120等级的T4套装部件或者123等级的S1套装部件。</div>
+<h3 class="title">无类别模式</h3>
+<img src="/images/raid/img-raid-Classless.png" alt="">
+<div class="text">您会从所有职业中获得一组随机的技能，这让您面临挑战，您将根据已有技能来搭配组合。你获得的技能是完全随机的，但你可以从任何职业中选择您想要的天赋来增强你的技能组合。</div>
 </div>
 <div class="place-raids wow rotateIn">
 <div class="col">
 <img src="/images/raid/raid-attumen-the-hunsman.png" alt="">
 <p>猎手阿图门</p>
 </div>
-<div class="col">
-<img src="/images/raid/raid-moroes.png" alt="">
-<p>莫罗斯</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-maiden-of-virtue.png" alt="">
-<p>贞节圣女</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-opera-hall.png" alt="">
-<p>歌剧院</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-the-curator.png" alt="">
-<p>馆长</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-chess-event.png" alt="">
-<p>国际象棋</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-terestian-illhoof.png" alt="">
-<p>特雷斯坦·邪蹄</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-shade-of-aran.png" alt="">
-<p>埃兰之影</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-netherspite.png" alt="">
-<p>虚空幽龙</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-prince-malchezaar.png" alt="">
-<p>玛克扎尔王子</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-nightbane.png" alt="">
-<p>夜之魇</p>
-</div>
 </div>
 </div>
 <div role="tabpanel" class="tab-pane clearfix" id="raid-zulaman">
 <div class="place">
-<h3 class="title">祖阿曼</h3>
+<h3 class="title">证券市场</h3>
 <img src="/images/raid/img-raid-zulaman.png" alt="">
-<div class="text">在与老部落并肩作战多年之后，巨魔军阀祖尔金回到了阿马尼巨魔的首府祖尔曼城。在那里，他号召神秘的黑暗势力重建他的军队。当阿泽拉斯的目光集中在对抗燃烧的军团和远征外陆的时候，寻宝者入侵了祖阿曼，重新点燃了祖尔金对外界的仇恨——尤其是奎特拉斯的高等精灵。</div>
+<div class="text">在这里很多魔兽世界里的势力/阵营完成了A股上市。除了声望以外，玩家还能在金融市场和各大势力进行互动，是韭菜还是股神，就看你的天赋啦！</div>
 </div>
 <div class="place-raids">
 <div class="col">
 <img src="/images/raid/raid-nalorakk.png" alt="">
 <p>纳洛拉克</p>
 </div>
-<div class="col">
-<img src="/images/raid/raid-akilzon.png" alt="">
-<p>埃基尔松</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-janalai.png" alt="">
-<p>加亚莱</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-halazzi.png" alt="">
-<p>哈尔拉兹</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-hex-lord-malacrass.png" alt="">
-<p>玛拉克拉斯</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-zuljin.png" alt="">
-<p>祖尔金</p>
-</div>
 </div>
 </div>
 <div role="tabpanel" class="tab-pane clearfix" id="raid-gruul">
 <div class="place">
-<h3 class="title">戈鲁尔的巢穴</h3>
+<h3 class="title">命运骰子</h3>
 <img src="/images/raid/img-raid-gruul.png" alt="">
-<div class="text">当臭名昭著的恶龙——死亡之翼——发现了黑暗之门和德拉诺之后，他确信德拉诺的居民中很少有人敢挑战黑龙军团，所以他将自己的蛋散落在世界各地。</div>
+<div class="text">当对角色随机获取的技能不满意的时候，你是时候掷出命运的骰子，来完成你的逆转。</div>
 </div>
 <div class="place-raids">
 <div class="col">
 <img src="/images/raid/raid-high-king-mauglar.png" alt="">
 <p>莫加尔大王</p>
 </div>
-<div class="col">
-<img src="/images/raid/raid-grull-the-dragonkiller.png" alt="">
-<p>屠龙者格鲁尔</p>
-</div>
 </div>
 </div>
 <div role="tabpanel" class="tab-pane clearfix" id="raid-magtheridon">
 <div class="place">
-<h3 class="title">玛瑟里顿的巢穴</h3>
+<h3 class="title">游戏商城</h3>
 <img src="/images/raid/img-raid-magtheridon.png" alt="">
-<div class="text">在军团入侵后，玛瑟里顿控制了外域的所有领地。尽管如此，当伊利丹和他的盟友征服黑神庙时，他还是大吃一惊。许多人认为玛瑟里顿在这次攻击中被杀，但当伊利丹发现玛瑟里顿的血对兽人有变身、腐蚀的作用时，被打败的深渊领主被拖到了地狱火城堡。</div>
+<div class="text">如同9.0版本里的商城一样，我们的宠物、坐骑、趣味道具...更加丰富。</div>
 </div>
 <div class="place-raids">
 <div class="col">
@@ -659,169 +596,66 @@ T <span class="numbers">5</span>
 </div>
 <div role="tabpanel" class="tab-pane clearfix" id="raid-serpentshrine">
 <div class="place">
-<h3 class="title">毒蛇神殿</h3>
+<h3 class="title">主城传送</h3>
 <img src="/images/raid/img-raid-serpentshrine-cavern.png" alt="">
-<div class="text">“谁控制了水，谁就控制了外域。这是伊利丹·怒风大人对他最信任的中尉瓦什姬夫人说的话。第三次战争后不久，当伊利丹请求娜迦的帮助时，一群由瓦什吉女士率领的娜迦人响应了他的请求。从那时起，瓦什吉就对伊利丹表现出了强烈的忠诚。</div>
+<div class="text">便捷的功能，但我们的视觉效果是更惊艳的。</div>
 </div>
 <div class="place-raids">
 <div class="col">
 <img src="/images/raid/raid-hydros-the-unstable.png" alt="">
 <p>不稳定的海度斯</p>
 </div>
-<div class="col">
-<img src="/images/raid/raid-fathom-lord-karathress.png" alt="">
-<p>深水领主卡拉瑟雷斯</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-the-lurker-below.png" alt="">
-<p>鱼斯拉</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-morogrim-tidewalker.png" alt="">
-<p>莫洛格里·踏潮者</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-leotheras-the-blind.png" alt="">
-<p>盲眼者莱欧瑟拉斯</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-lady-vashj.png" alt="">
-<p>瓦丝琪</p>
-</div>
 </div>
 </div>
 <div role="tabpanel" class="tab-pane clearfix" id="raid-tempest-keep">
 <div class="place">
-<h3 class="title">风暴要塞</h3>
+<h3 class="title">工会领地</h3>
 <img src="/images/raid/img-raid-tempest-keep.png" alt="">
-<div class="text">巨大的风暴要塞是由神秘的纳鲁创造的:纯能量众生和燃烧军团不共戴天的敌人。除了作为纳鲁的操作基地，该结构本身还拥有通过不同维度传送的技术，可以在眨眼间从一个地方移动到另一个地方。</div>
+<div class="text">作为一个庞大的势力，怎么能没有自己的领土。</div>
 </div>
 <div class="place-raids">
 <div class="col">
 <img src="/images/raid/raid-alar.png" alt="">
 <p>奥的灰烬</p>
 </div>
-<div class="col">
-<img src="/images/raid/raid-high-astromancer-solarian.png" alt="">
-<p>大星术师索兰莉安</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-void-reaver.png" alt="">
-<p>空灵机甲</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-kaelthas-sunstrider.png" alt="">
-<p>凯尔萨斯·逐日者</p>
-</div>
 </div>
 </div>
 <div role="tabpanel" class="tab-pane clearfix" id="raid-mount-hyjal">
 <div class="place">
-<h3 class="title">海加尔山</h3>
+<h3 class="title">竞技场观战</h3>
 <img src="/images/raid/img-raid-the-battle-for-mount-hyjal.png" alt="">
-<div class="text">在时间之穴的深处，沉睡的巨龙诺兹多姆苏醒了。在这个世界还很年轻的时候，青铜龙族就保护了这个蜿蜒的迷宫，监视着不断变化的时间路径，以确保时间的微妙平衡得以维持。</div>
+<div class="text">热爱竞技的你，绝不会错过每一场热血的战斗。</div>
 </div>
 <div class="place-raids">
 <div class="col">
 <img src="/images/raid/raid-rage-winterchill.png" alt="">
 <p>雷基·冬寒</p>
 </div>
-<div class="col">
-<img src="/images/raid/raid-azgalor.png" alt="">
-<p>阿兹加洛</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-anetheron.png" alt="">
-<p>安纳塞隆</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-archimonde.png" alt="">
-<p>阿克蒙德</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-kazrogal.png" alt="">
-<p>卡兹洛加</p>
-</div>
 </div>
 </div>
 <div role="tabpanel" class="tab-pane clearfix" id="raid-black-temple">
 <div class="place">
-<h3 class="title">黑暗神殿</h3>
+<h3 class="title">幻化系统</h3>
 <img src="/images/raid/img-raid-black-temple.png" alt="">
-<div class="text">黑暗神殿，是著名游戏《魔兽世界 燃烧的远征》中的副本。剧情是德莱尼在神殿的幸福生活开始，后遭兽人和深渊领主占领了神殿，而原来的德莱尼人从此流离失所。阿卡玛就是在长期的流浪和战斗中，由德莱尼的外形变成了现在失落者的外形，悄悄等待英雄的到来。主要首领有高阶督军纳因图斯、苏普雷姆斯等。</div>
+<div class="text">虽然版本只开放到了TBC，但幻化内容却是包含到了7.0的内容，怎么样，惊喜吗，开心吗？</div>
 </div>
 <div class="place-raids">
 <div class="col">
 <img src="/images/raid/raid-high-warlord-najentus.png" alt="">
 <p>高阶督军纳因图斯</p>
 </div>
-<div class="col">
-<img src="/images/raid/raid-reliquary-of-souls.png" alt="">
-<p>灵魂之匣</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-supremus.png" alt="">
-<p>苏普雷姆斯</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-mother-shahraz.png" alt="">
-<p>莎赫拉丝主母</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-shade-of-akama.png" alt="">
-<p>阿卡玛之影</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-the-illidari-council.png" alt="">
-<p>伊利达雷议会</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-teron-gorefiend.png" alt="">
-<p>塔隆·血魔</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-illidan-stormrage.png" alt="">
-<p>伊利丹·怒风</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-gurtogg-bloodboil.png" alt="">
-<p>古尔图格·血沸</p>
-</div>
 </div>
 </div>
 <div role="tabpanel" class="tab-pane clearfix" id="raid-sunwell">
 <div class="place">
-<h3 class="title">太阳之井高地</h3>
+<h3 class="title">更多趣味玩法</h3>
 <img src="/images/raid/img-raid-the-sunwell.png" alt="">
-<div class="text">几千年来，被称为太阳之井的神秘能量池为被流放的高等精灵提供了强大的魔法。现在，这个古老喷泉的残余已经成为燃烧军团的最新目标，恶魔们正准备用太阳之井的能量召唤他们的指挥官基尔加丹。</div>
+<div class="text">内容太多不想写了，让我们进游戏里去发现吧。</div>
 </div>
 <div class="place-raids">
 <div class="col">
 <img src="/images/raid/raid-kalecgos.png" alt="">
 <p>卡雷苟斯</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-eredar-twins.png" alt="">
-<p>艾瑞达双子</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-brutallus.png" alt="">
-<p>布鲁塔卢斯</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-muru.png" alt="">
-<p>穆鲁</p>
-</div>
-<div class="col">
-<img src="/images/raid/raid-felmyst.png" alt="">
-<p>菲米丝</p>
- </div>
-<div class="col">
-<img src="/images/raid/raid-kiljaeden.png" alt="">
-<p>基尔加丹</p>
-</div>
-</div>
-</div>
 </div>
 </div>
 </div>

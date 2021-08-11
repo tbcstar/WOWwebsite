@@ -1,5 +1,6 @@
 <?php 
-account::isNotLoggedIn();
+    global $Account;
+    $Account->isNotLoggedIn();
 ?>
 <?php include "headers.php" ?>
 <div class="container">
@@ -93,7 +94,7 @@ account::isNotLoggedIn();
 # SQL连接
 ######################################################
 $db_user = "root";
-$db_pass = "A112233a" ;
+$db_pass = "A112233a!" ;
 $db_host = "game.tbcstar.com:3310";
 
 ######################################################

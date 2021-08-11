@@ -17,13 +17,13 @@ class Connect
 			{
 				buildError("<b>数据库连接错误:</b> 无法建立连接。错误: ". mysqli_error($conn), NULL);
 			}
-			self::$connectedTo = 'global';
+			$this->$connectedTo = 'global';
 		}
 	}
 	 
 	public static function connectToRealmDB($realmid) 
 	{ 
-		self::selectDB('webdb');
+		$this->selectDB('webdb');
 
 		if($GLOBALS['realms'][$realmid]['mysqli_host'] != $GLOBALS['connection']['host'] 
 		|| $GLOBALS['realms'][$realmid]['mysqli_user'] != $GLOBALS['connection']['user'] 
@@ -37,11 +37,11 @@ class Connect
 		}
 		else
 		{
-			self::connectToDB();
+			$this->connectToDB();
 		}
 		mysqli_select_db($conn, $GLOBALS['realms'][$realmid]['chardb']) or 
 		buildError("<b>数据库选择错误:</b> 无法选择realm数据库。错误: ". mysqli_error($conn),NULL);
-		self::$connectedTo = 'chardb';
+		$this->$connectedTo = 'chardb';
 	}
 	 
 	 
@@ -67,6 +67,12 @@ class Connect
 				mysqli_select_db($conn, $GLOBALS['connection']['worlddb']);
 				break;
 		}
+
+		mysqli_query($conn, "SET NAMES 'utf8'");
+		mysqli_query($conn, 'SET character_set_connection=utf8');
+		mysqli_query($conn, 'SET character_set_client=utf8');
+		mysqli_query($conn, 'SET character_set_results=utf8');
+
 			return TRUE;
 	}
 }
