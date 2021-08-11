@@ -131,7 +131,7 @@ if ($_POST['action']=='teleport')
 		{
 			if($Account->hasDP($_SESSION['cw_user'], $GLOBALS['service']['teleport']['price']) == false)
 			{
-		    	die("不够 ".$GLOBALS['donation']['coins_name']."!");
+		    	die($GLOBALS['donation']['coins_name']." 钱不够！");
 			}
 		}
     	
@@ -276,8 +276,8 @@ if ($_POST['action']=='teleport')
 		{
 			echo $GLOBALS['service']['teleport']['price']." ".$GLOBALS['donation']['coins_name']." 已从您的账户中扣除。";
 		}
-		$Account->logThis("Teleported ".$Character->getCharName($character,$realm_id)." to ".$location,'Teleport',$realm_id);
-		echo true;
+		$Account->logThis("传送角色 ".$Character->getCharName($character,$realm_id)." 到 ".$location,'传送',$realm_id);
+		//echo true;
 	}
 }
 
@@ -303,7 +303,7 @@ if($_POST['action'] == 'service')
 	{
 		if($Account->hasDP($_SESSION['cw_user'],$GLOBALS['service'][$serviceX]['price']) == false)
 		{
-			die('<b class="red_text">T.C币不够！'.$GLOBALS['donation']['coins_name'].'</b>');
+			die('<b class="red_text">'.$GLOBALS['donation']['coins_name'].' 钱不够！</b>');
 		}
 	}
 	
@@ -366,8 +366,9 @@ if($_POST['action'] == 'service')
 	}
 
 	$Account->logThis("Performed a ".$info." on ".$Character->getCharName($guid,$realm_id),$serviceX,$realm_id);
+	$Account->logThis("下次登录时，您将能够".$info." 的角色".character::getCharName($guid,$realm_id),$serviceX,$realm_id);
 	
-	echo true;
+	//echo true;
 }
 
 ?>
