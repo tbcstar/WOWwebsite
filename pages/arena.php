@@ -1,6 +1,6 @@
 ﻿<?php 
-    global $Account;
-    $Account->isNotLoggedIn();
+global $Account;
+$Account->isNotLoggedIn();
 ?>
 <?php include "headers.php" ?>
 <div class="container">
@@ -112,31 +112,31 @@ $j=1;
                 '5' => '5x5'
 				);
 				
-$connect = mysql_connect($host,$user,$pass) OR DIE("'Can't connect with $host"); 
-mysql_select_db($mangoscharacters,$connect) or die(mysql_error()); 
+$connect = mysqli_connect($host,$user,$pass) OR DIE("'Can't connect with $host"); 
+mysqli_select_db($conn, $mangoscharacters,$connect) or die(mysqli_error()); 
 
 
 if(!isset($_GET['guid'])){
 
-$sql = mysql_query("SELECT * FROM `arena_team` ORDER by `name`");
+$sql = mysqli_query($conn, "SELECT * FROM `arena_team` ORDER by `name`");
 
 echo "
 
 <table class='table'>
 <tr>
 <th>队伍名称</th>
-<th>Command Type</th>
+<th>命令类型</th>
 <th>队长</th>
 <th>阵营</th>
-<th>评级</th>
+<th>评分</th>
 </tr>
 ";
-while ($row = mysql_fetch_array($sql)){
-$query_num = mysql_query("SELECT COUNT(*) FROM `arena_team_member` WHERE `arenaTeamId`='$row[arenaTeamId]'");
+while ($row = mysqli_fetch_array($sql)){
+$query_num = mysqli_query($conn, "SELECT COUNT(*) FROM `arena_team_member` WHERE `arenaTeamId`='$row[arenaTeamId]'");
 $gleader = "SELECT name,race FROM `characters` WHERE `guid`='$row[captainGuid]'";
-$myrow = mysql_fetch_array(mysql_query($gleader));
-$top = mysql_query("SELECT * FROM `arena_team_stats` WHERE `arenaTeamId`='$row[arenaTeamId]'");
-$toprow = mysql_fetch_array($top);
+$myrow = mysqli_fetch_array(mysqli_query($conn, $gleader));
+$top = mysqli_query($conn, "SELECT * FROM `arena_team_stats` WHERE `arenaTeamId`='$row[arenaTeamId]'");
+$toprow = mysqli_fetch_array($top);
 
 if($myrow['race']=="1" or $myrow['race']=="3" or $myrow['race']=="4" or $myrow['race']=="7" or  $myrow['race']=="11"){
 	
@@ -164,14 +164,14 @@ echo "</table></center><br><br>";
 if (@$_GET['guid'] ) { 
 
 $name = "SELECT * FROM `arena_team` WHERE `arenaTeamId`='$_GET[guid]'";
-$nrow = mysql_fetch_array(mysql_query($name));
+$nrow = mysqli_fetch_array(mysqli_query($conn, $name));
 $top = "SELECT * FROM `arena_team` WHERE `arenaTeamId`='$_GET[guid]'";
-$trow = mysql_fetch_array(mysql_query($top));
+$trow = mysqli_fetch_array(mysqli_query($conn, $top));
 $member = "SELECT * FROM `arena_team_member` WHERE `arenaTeamId`='$_GET[guid]'";
-$mrow = mysql_fetch_array(mysql_query($member));
+$mrow = mysqli_fetch_array(mysqli_query($conn, $member));
 
-$sql = mysql_query("SELECT * FROM `characters`, `arena_team_member` WHERE `characters`.`guid`=`arena_team_member`.`guid` and `arenaTeamId` = '".$_GET["guid"]."' ");
-$row = mysql_fetch_array($sql);
+$sql = mysqli_query($conn, "SELECT * FROM `characters`, `arena_team_member` WHERE `characters`.`guid`=`arena_team_member`.`guid` and `arenaTeamId` = '".$_GET["guid"]."' ");
+$row = mysqli_fetch_array($sql);
 $data = explode(' ',$row['data']);
 $lvl = $data[$ver];	
 $gender = dechex($data[36]);
@@ -188,12 +188,12 @@ echo "<center>
 <tr>
 <td>
 <table border=1 width=100%>
-<tr><td>Team Name</td><td  >".$nrow['name']."</td></tr>
-<tr><td>Rating</td><td  >".$trow['rating']."</td></tr>
-<tr><td>Command Type</td><td  >".$teamType[$nrow['type']]."</td></tr>
-<tr><td colspan=2 >Statistics of the Week</td></tr>
+<tr><td>队伍名称</td><td  >".$nrow['name']."</td></tr>
+<tr><td>评分</td><td  >".$trow['rating']."</td></tr>
+<tr><td>命令类型</td><td  >".$teamType[$nrow['type']]."</td></tr>
+<tr><td colspan=2 >本周统计数据</td></tr>
 <tr><td>Played: ".$trow['weekGames']."</td><td  >Won: ".$trow['weekWins']."</td></tr>
-<tr><td colspan=2 >Stats</td></tr>
+<tr><td colspan=2 >统计</td></tr>
 <tr><td>Played: ".$trow['seasonGames']."</td><td  >Won: ".$trow['seasonWins']."</td></tr>
 
 
@@ -203,15 +203,15 @@ echo "<center>
 echo "<table border=1 width=100%>
 <tr>
 <td align=center>#</td>
-<td align=center>Player Name</td>
-<td align=center>Race</td>
-<td align=center>Class</td>
-<td align=center>Game of the Week</td>
-<td align=center>Won week</td>
-<td align=center>Games for the season</td>
-<td align=center>Won season</td>
-<td align=center>Personal rating</td>
-<td align=center>Status</td>
+<td align=center>玩家名字</td>
+<td align=center>种族</td>
+<td align=center>职业</td>
+<td align=center>本周游戏</td>
+<td align=center>本周胜利</td>
+<td align=center>本赛季</td>
+<td align=center>赛季胜利</td>
+<td align=center>个人评分</td>
+<td align=center>状态</td>
 </tr>
 ";
 

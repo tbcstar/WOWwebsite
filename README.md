@@ -1,5 +1,5 @@
-# Oregoncore-Web
- Nefelin-WoW Project TBC full website
+# TBCstar.com-Web
+ 时光回溯项目完整网站
 1. Shop
 2. Buy coins
 3. Edit characters
@@ -33,4 +33,4 @@ You can change everything from admin panel to how much it costs.
 Currently only TrinityCore is supported and Oregoncore needs to be modified to support it；
 PHP version requirements: 5.6
 
-![image](https://emu-devstore.eu/files/Nefelin-WoW_Project_TBC_full_website_5da378504109f_screen.jpg)
+![image](https://github.com/tbcstar/WOWwebsite/blob/mysqli/preview.jpg)

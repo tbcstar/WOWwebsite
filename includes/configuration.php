@@ -50,10 +50,13 @@
 	 // 4 = Mists Of Pandaria
 	 // 5 = Legion
 	 
+    $config['srp6_support'] = false; //如果您的核心密码加密方式为“SRP6”，则需要启用该加密方式。
+    //参考资料https://github.com/azerothcore/azerothcore-wotlk/issues/5104 或 https://git.io/JJRH4
+	 
 	 $adminPanel_enable = true; //启用或禁用管理员面板。
 	 $staffPanel_enable = true; //启用或禁用Staff面板。
 	 
-	 $adminPanel_minlvl = 3; //最低的GM级别，其中帐户能够登录到管理面板。默认值:5
+	 $adminPanel_minlvl = 4; //最低的GM级别，其中帐户能够登录到管理面板。默认值:5
 	 $staffPanel_minlvl = 2; //能够登录到员工面板的最低GM级别。默认值:3
 	 
 	 $staffPanel_permissions['Pages'] = true;
@@ -129,7 +132,7 @@
 	$connection['host'] = 'game.tbcstar.com:3310';
 	$connection['user'] = 'root';
 	$connection['password'] = 'A112233a';
-	$connection['logondb'] = 'realmd';
+	$connection['logondb'] = 'auth';
 	$connection['webdb'] = 'tbcstar';
 	$connection['worlddb'] = 'world';
 	$connection['realmlist'] = 'game.tbcstar.com';

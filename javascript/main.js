@@ -10,11 +10,11 @@ $(document).ready(function ()
 
 $(".login_input").focus(function ()
 {
-    if (this.value == "Username...")
+    if (this.value == "用户名...")
     {
         this.value = "";
     }
-    else if (this.value = "Password...")
+    else if (this.value = "密码...")
     {
         this.value = "";
     }

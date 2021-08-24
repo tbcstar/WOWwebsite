@@ -94,14 +94,14 @@
 # SQL连接
 ######################################################
 $db_user = "root";
-$db_pass = "A112233a!" ;
+$db_pass = "A112233a" ;
 $db_host = "game.tbcstar.com:3310";
 
 ######################################################
 # 投票商店网站连接
 ######################################################
 
-mysql_connect("$db_host","$db_user", "$db_pass");
+mysqli_connect("$db_host","$db_user", "$db_pass");
 
 
 
@@ -119,11 +119,11 @@ $uptime = "auth";
 ?>
 
 <?php
-mysql_select_db("$arena_top");
+mysqli_select_db($conn, "$arena_top");
 $a=0;
-$result = mysql_query("SELECT `name`, `race`, `class`, `gender`, `level`, totalKills, totalHonorPoints, totaltime FROM `characters` ORDER BY `totalKills` DESC LIMIT 5;");
+$result = mysqli_query($conn, "SELECT `name`, `race`, `class`, `gender`, `level`, totalKills, totalHonorPoints, totaltime FROM `characters` ORDER BY `totalKills` DESC LIMIT 5;");
 
-$msg = mysql_num_rows($result);
+$msg = mysqli_num_rows($result);
  if (!$msg){ 
      echo '
 <table class="table">
@@ -146,7 +146,7 @@ echo '
 <th>总击杀数</th>
 </tr>
 ';
- while ($row = mysql_fetch_array ($result))
+ while ($row = mysqli_fetch_array ($result))
 
    {
 	   

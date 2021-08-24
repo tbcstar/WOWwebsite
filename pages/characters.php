@@ -1,5 +1,6 @@
 <?php 
-account::isNotLoggedIn();
+global $Account, $Connect;
+$Account->isNotLoggedIn();
 ?>
 <?php include "headers.php" ?>
 <div class="container">
@@ -85,19 +86,19 @@ account::isNotLoggedIn();
 <ul class="character">
 <?php 
 
-account::isNotLoggedIn();
-connect::selectDB('webdb');
+$Account->isNotLoggedIn();
+$Connect->selectDB('webdb');
 $num = 0;
-$result = mysql_query('SELECT char_db,name FROM realms ORDER BY id ASC');
-while($row = mysql_fetch_assoc($result)) 
+$result = mysqli_query($conn, 'SELECT char_db,name FROM realms ORDER BY id ASC');
+while($row = mysqli_fetch_assoc($result)) 
 {
-	$acct_id = account::getAccountID($_SESSION['cw_user']);
+	$acct_id = $Account->getAccountID($_SESSION['cw_user']);
 	$realm = $row['name'];
 	$char_db = $row['char_db'];
 		          	
-	connect::selectDB($char_db);
-	$result = mysql_query('SELECT name,guid,gender,class,race,level,online FROM characters WHERE account='.$acct_id);
-	while($row = mysql_fetch_assoc($result)) {
+	$Connect->selectDB($char_db);
+	$result = mysqli_query($conn, 'SELECT name,guid,gender,class,race,level,online FROM characters WHERE account='.$acct_id);
+	while($row = mysqli_fetch_assoc($result)) {
 	?>
 <li class="character_1">
 <div class="content">

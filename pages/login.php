@@ -263,7 +263,7 @@ global $Account;
 <div role="tabpanel" class="tab-pane active" id="class-warrior">
 <div class="class-item">
 <img src="/images/class/warrior-01.png" alt="">
-幻 <span class="numbers">化</span>
+T <span class="numbers">4</span>
 </div>
 <div class="class-item">
 <img src="/images/class/warrior-02.png" alt="">
@@ -615,7 +615,7 @@ T <span class="numbers">5</span>
 </div>
 <div class="place-raids">
 <div class="col">
-<img src="/images/raid/raid-alar.png" alt="">
+<img src="/images/raid/raid-alar.gif" alt="">
 <p>奥的灰烬</p>
 </div>
 </div>
