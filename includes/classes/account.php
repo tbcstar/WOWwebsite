@@ -590,28 +590,27 @@ class Account
 	public static function changePass($old, $new, $new_repeat) 
 	{
 		global $Connect, $conn;
-		$_POST['cur_pass'] 			= mysqli_real_escape_string(trim($old));
-		$_POST['new_pass'] 			= mysqli_real_escape_string(trim($new));
-		$_POST['new_pass_repeat']	= mysqli_real_escape_string(trim($new_repeat));
+            $_POST['current_password']    = mysqli_real_escape_string($conn, trim($old));
+            $_POST['new_password']        = mysqli_real_escape_string($conn, trim($new));
+            $_POST['new_password_repeat'] = mysqli_real_escape_string($conn, trim($new_repeat));
 		
 		//检查是否所有字段值都已输入
-		if (!isset($_POST['cur_pass']) || !isset($_POST['new_pass']) || !isset($_POST['new_pass_repeat']))
+        if (empty($_POST['current_password']) || empty($_POST['new_password']) || empty($_POST['new_password_repeat']))
 		{
 			echo '<b class="red_text">请输入所有字段!</b>';
 		}
 	    else 
 		{
 			//检查新密码是否匹配?
-			if ($_POST['new_pass'] != $_POST['new_pass_repeat'])
+            if ($_POST['new_password'] != $_POST['new_password_repeat'])
 			{
 				echo '<b class="red_text">新密码不匹配!</b>';
 			}
 			else 
 			{
-				if (strlen($_POST['new_pass']) < $GLOBALS['registration']['passMinLength'] || 
-					strlen($_POST['new_pass']) > $GLOBALS['registration']['passMaxLength'])
+                if (strlen($_POST['new_password']) < $GLOBALS['registration']['passMinLength'] || strlen($_POST['new_password']) > $GLOBALS['registration']['passMaxLength'])
 				{
-					echo '<b class="red_text">您的密码必须在6到32个数之间</b>';
+                    echo "<b class='red_text'>您的密码必须是 ". $GLOBALS['registration']['passMinLength'] ." 和 ". $GLOBALS['registration']['passMaxLength'] ." 之间</b>";
 				}
 				else 
 				{
@@ -620,15 +619,15 @@ class Account
 
 					$Connect->selectDB('logondb');
 
-					$getPass 		= mysqli_query($conn, "SELECT `sha_pass_hash` FROM `account` WHERE `username`='".$username."'");
+                    $getPass = mysqli_query($conn, "SELECT `sha_pass_hash` FROM `account` WHERE `username`='" . $username . "';");
 					$row 			= mysqli_fetch_assoc($getPass);
 					$thePass 		= strtoupper($row['sha_pass_hash']);
 
-					$pass 			= mysqli_real_escape_string($conn, strtoupper($_POST['cur_pass']));
+					$pass      = mysqli_real_escape_string($conn, strtoupper($_POST['current_password']));
 					$pass_hash 		= strtoupper(sha1($username.':'.$pass));
 
-					$new_pass 		= mysqli_real_escape_string($conn, strtoupper($_POST['new_pass']));
-					$new_pass_hash 	= sha1($username.':'.$new_pass);
+                    $new_password      = mysqli_real_escape_string($conn, strtoupper($_POST['new_password']));
+                    $new_password_hash = sha1($username . ':' . $new_password);
 
 					if ($thePass != $pass_hash)
 					{
@@ -637,9 +636,9 @@ class Account
 					else 
 					{
 						//成功,更改密码
-						echo '您的密码已更改!';
-						mysqli_query($conn, "UPDATE account SET sha_pass_hash='". $new_pass_hash ."' WHERE username='". $username ."'");
-						mysqli_query($conn, "UPDATE account SET v='0' AND s='0' WHERE username='". $username ."'");
+						echo "<b class='green_text'>您的密码已更改!</b>";
+						mysqli_query($conn, "UPDATE account SET sha_pass_hash='" . $new_password_hash . "' WHERE username='" . $username . "';");
+						mysqli_query($conn, "UPDATE account SET v='0' AND s='0' WHERE username='" . $username . "';");
 					}
 				}
 			}
@@ -648,8 +647,8 @@ class Account
 	
 	public static function changePassword($account_name,$password) 
 	{
-			$username = mysqli_real_escape_string(strtoupper($account_name));
-			$pass = mysqli_real_escape_string(strtoupper($password));
+			$username = mysqli_real_escape_string($conn, strtoupper($account_name));
+			$pass = mysqli_real_escape_string($conn, strtoupper($password));
 			$pass_hash = SHA1($username.':'.$pass);
 			
 			$Connect->selectDB('logondb');

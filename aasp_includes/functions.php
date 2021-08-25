@@ -295,12 +295,12 @@
 
         public function checkForNotifications()
         {
-            /* Not used! */
+            /* 未使用! */
             $this->selectDB('webdb');
 
 
 
-            //Check for old votelogs
+            //检查旧的votelogs
             $old    = time() - 2592000;
             $result = mysqli_query($conn, "SELECT COUNT(*) FROM votelog WHERE `timestamp` <= " . $old . "");
 
@@ -606,7 +606,7 @@
             switch ($value)
             {
                 default:
-                    return "未知";
+                    return "无类别";
                     break;
                 #######
                 case(1):

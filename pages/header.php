@@ -24,7 +24,27 @@
 <a class="logo" href="./">
 <img class="wow swing" role="banner" src="/themes/nefelin/images/logo.png" alt="logo" /> </a>
 <div class="game-versions">
-<span class="game-versions-text">倒计时代码</span>
+<span class="game-versions-text">Bata测试倒计时</span>
+<div class="uk-grid-small uk-child-width-auto uk-flex uk-flex-center uk-grid uk-countdown" uk-grid="" uk-countdown="date: 2021-10-01T00:00:32+00:00">
+    <div class="uk-first-column">
+        <div class="uk-countdown-number uk-countdown-days"><span>0</span><span>0</span></div>
+        <div class="uk-countdown-label uk-margin-small uk-text-center">天</div>
+    </div>
+    <div class="uk-countdown-separator">:</div>
+    <div>
+        <div class="uk-countdown-number uk-countdown-hours"><span>0</span><span>0</span></div>
+        <div class="uk-countdown-label uk-margin-small uk-text-center">小时</div>
+    </div>
+    <div class="uk-countdown-separator">:</div>
+    <div>
+        <div class="uk-countdown-number uk-countdown-minutes"><span>0</span><span>0</span></div>
+        <div class="uk-countdown-label uk-margin-small uk-text-center">分钟</div>
+    </div>
+    <div class="uk-countdown-separator">:</div>
+    <div>
+        <div class="uk-countdown-number uk-countdown-seconds"><span>0</span><span>0</span></div>
+        <div class="uk-countdown-label uk-margin-small uk-text-center">秒</div>
+    </div>
 </div>
 </div>
 </div>

@@ -111,7 +111,7 @@ if($_POST['action'] == 'addmulti')
 		}
 
 		mysqli_query($conn, "INSERT INTO shopitems VALUES ('','".$row['entry']."',
-		'".mysqli_real_escape_string($row['name'])."',
+		'".mysqli_real_escape_string($conn, $row['name'])."',
 		'".$shop."','".$row['displayid']."','".$row['class']."','".$row['ItemLevel']."','".$row['quality']."','".$price."','".$row['AllowableClass']."','".$faction."'
 		,'".$row['subclass']."','".$row['Flags']."')");
 		$c++;

@@ -118,7 +118,7 @@ else
 				 //发现没有图标。也许灾难项目。从wowhead获得图标。
 				 $sxml = new SimpleXmlElement(file_get_contents('http://www.wowhead.com/item='.$entry.'&xml'));
 
-				  $icon = strtolower(mysqli_real_escape_string($sxml->item->icon));
+				  $icon = strtolower(mysqli_real_escape_string($conn, $sxml->item->icon));
 				  //现在我们已经装载好了。将其添加到数据库中以备将来使用。
 				  //注意，WoWHead XML非常慢。这就是为什么我们把它加到db中的主要原因。
 				  mysqli_query($conn, "INSERT INTO item_icons VALUES('".$row['displayid']."','".$icon."')");
