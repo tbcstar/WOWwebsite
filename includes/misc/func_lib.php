@@ -33,19 +33,16 @@ function convTime($time)
 	    $time = $time / 60;
 		$string = '分';
 	}
-	if ($time > 60) 
+	elseif ($time > 60) 
 	{									 
 		$string = '小时';
 		$time = $time / 60;
 	}
-    if ($time > 24) 
+    elseif ($time > 24) 
 	{
 		$string = '天';
 		$time = $time / 24;
 	}
-	else
-	{
-		$time = ceil($time);
-	}
-	return $time." ".$string;
+
+    return ceil($time) . " " . $string;
 } 

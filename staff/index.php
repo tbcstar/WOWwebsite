@@ -212,16 +212,16 @@
                 </tr>
 			<?php
             $GameServer->selectDB($GLOBALS['forum']['forum_db'], $conn);
-            $result = mysqli_query($conn, "SELECT poster_id,post_text,post_time,topic_id FROM phpbb_posts ORDER BY post_id DESC LIMIT 10");
-            while($row = mysqli_fetch_assoc($result)) 
+            $result = mysqli_query($conn, "SELECT poster_id, post_text, post_time, topic_id FROM phpbb_posts ORDER BY post_id DESC LIMIT 10;");
+            while ($row    = mysqli_fetch_assoc($result))
 			{
                 $string = $row['post_text']; 
                 //Lets get the username			
-                $getUser = mysqli_query($conn, "SELECT username FROM phpbb_users WHERE user_id='".$row['poster_id']."'"); 
-				$user = mysqli_fetch_assoc($getUser);
+                $getUser  = mysqli_query($conn, "SELECT username FROM phpbb_users WHERE user_id='" . $row['poster_id'] . "';");
+				$user     = mysqli_fetch_assoc($getUser);
                 //Get topic
-                $getTopic = mysqli_query($conn, "SELECT topic_title FROM phpbb_topics WHERE topic_id='".$row['topic_id']."'"); 
-				$topic = mysqli_fetch_assoc($getTopic);
+                $getTopic = mysqli_query($conn, "SELECT topic_title FROM phpbb_topics WHERE topic_id='" . $row['topic_id'] . "';");
+                $topic    = mysqli_fetch_assoc($getTopic);
             ?>
                 <tr>
                     <td><a href="http://heroic-wow.net/forum/memberlist.php?mode=viewprofile&u=<?php echo $row['poster_id']; ?>" title="View profile" 
@@ -245,7 +245,7 @@
                    </td>
                    <td>
                    <b>
-                        <?php echo $GameServer->getPlayersOnline("1"); ?><br/>
+                        <?php echo $GameServer->getPlayersOnline(); ?><br/>
                         <?php echo $GameServer->getActiveConnections(); ?><br/>
                         <?php echo $GameServer->getAccountsCreatedToday(); ?><br/>
                    </b>
@@ -259,37 +259,47 @@
     <table>
            <tr valign="top">
                <td>
-                MySQL Host: <br/>
-                MySQL User: <br/>
-                MySQL Password: <br/>
-                Core Revision: 
+                <tr>
+
+                    <td>MySQL Host:</td>
+                    <td>MySQL User:</td>
+                    <td>MySQL Password:</td>
+
+                </tr>
                </td>
                <td>
-               <b>
-               <?php echo $GLOBALS['connection']['host'];?><br/>
-               <?php echo $GLOBALS['connection']['user']; ?><br/>
-               <?php echo substr($GLOBALS['connection']['password'],0,4); ?>****<br/>
-               <?php echo $GLOBALS['current_revision']; ?>
-               </b>
+                <tr style='font-weight: bold;'>
+
+                    <td><?php echo $GLOBALS['connection']['host']; ?></td>
+                    <td><?php echo $GLOBALS['connection']['user']; ?></td>
+                    <td><?php echo substr($GLOBALS['connection']['password'], 0, 4); ?>****<br/></td>
+
+                </tr>
                </td>
                <td>
-               Logon Database: <br/>
-               Website Database: <br />
-               World Database: <br/>
-               Database Revision: 
+                <tr>
+
+                    <td>Logon Database:</td>
+                    <td>Website Database:</td>
+                    <td>World Database:</td>
+                    <td>Database Revision:</td>
+
+                </tr> 
                </td>
                <td>
-               <b>
-               <?php echo $GLOBALS['connection']['logondb']; ?><br/>
-               <?php echo $GLOBALS['connection']['webdb']; ?><br/>
-               <?php echo $GLOBALS['connection']['worlddb']; ?><br/>
-               <?php 
-                    $GameServer->selectDB('webdb', $conn);
-                    $get = mysqli_query($conn, "SELECT version FROM db_version");
-                    $row = mysqli_fetch_assoc($get);
-                    if ($row['version'] == null || empty($row['version'])) $row['version'] = '1.0';
-                    echo $row['version']; ?>
-               </b>
+                <tr style="font-weight: bold;">
+
+                    <td><?php echo $GLOBALS['connection']['logondb']; ?></td>
+                    <td><?php echo $GLOBALS['connection']['webdb']; ?></td>
+                    <td><?php echo $GLOBALS['connection']['worlddb']; ?></td>
+                    <td><?php
+                        $GameServer->selectDB('webdb', $conn);
+                        $get = mysqli_query($conn, "SELECT version FROM db_version;");
+                        $row = mysqli_fetch_assoc($get);
+                        if ($row['version'] == null || empty($row['version'])) $row['version'] = '1.0';
+                        echo $row['version']; ?></td>
+
+                </tr>
                </td>
            </tr>
     </table>

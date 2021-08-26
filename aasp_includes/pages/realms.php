@@ -17,7 +17,8 @@
 <?php 
 if(isset($_POST['add_realm'])) 
 {
-     $GameServer->addRealm($_POST['realm_id'],
+    $GameServer->addRealm(
+        $_POST['realm_id'],
         $_POST['realm_name'],
         $_POST['realm_desc'],
         $_POST['realm_host'],

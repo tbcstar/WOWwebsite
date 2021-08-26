@@ -20,12 +20,12 @@ else {
 </tr>
 <?php
 while($row = mysqli_fetch_assoc($result)) {
-	$comments = mysqli_query($conn, "SELECT COUNT(id) FROM news_comments WHERE newsid='". $row['id'] ."'");
+    $comments = mysqli_query($conn, "SELECT COUNT(id) AS comments FROM news_comments WHERE newsid='" . $row['id'] . "'");
 	echo '<tr class="center">
 		    <td>'.$row['id'].'</td>
 		    <td>'.$row['title'].'</td>
 			<td>'.substr($row['body'],0,25).'...</td>
-			<td>'.mysqli_data_seek($comments,0).'</td>
+            <td>'.mysqli_fetch_assoc($comments)['comments'] . '</td>
 			<td> <a onclick="editNews('.$row['id'].')" href="#">编辑</a> &nbsp;  
 			<a onclick="deleteNews('.$row['id'].')" href="#">删除</a></td>
 	 </tr>';

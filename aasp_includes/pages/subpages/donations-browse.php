@@ -8,8 +8,8 @@
 
 $per_page = 20;
 
-$pages_query = mysqli_query($conn, "SELECT COUNT(*) FROM payments_log;");
-$pages = ceil(mysqli_data_seek($pages_query, 0) / $per_page );
+$pages_query = mysqli_query($conn, "SELECT COUNT(*) AS payments FROM payments_log;");
+$pages       = ceil(mysqli_fetch_assoc($pages_query)['payments'] / $per_page);
 
 if(mysqli_data_seek($pages_query,0) == 0) 
 {

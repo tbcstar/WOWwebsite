@@ -77,7 +77,7 @@ class Shop
 				$advanced .= " AND itemlevel<='".$ilevelto."'";
 			}
 
-			$count = mysqli_query($conn, "SELECT COUNT(id) FROM shopitems WHERE name LIKE '%".$value."%' AND in_shop = '".$shop."' ".$advanced);
+			$count = mysqli_query($conn, "SELECT COUNT(id) AS item FROM shopitems WHERE name LIKE '%" . $value . "%' AND in_shop = '" . $shop . "' " . $advanced);
 		
 			if(mysqli_data_seek($count, 0) == 0)
 			{
@@ -85,7 +85,7 @@ class Shop
 			}
 			else
 			{
-				$count = mysqli_data_seek($count,0);
+				$count = mysqli_fetch_assoc($count)['item'];
 			}
 			
 			if($results!="--结果--")

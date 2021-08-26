@@ -22,11 +22,11 @@ function login(panel)
 
 function save_account_data() 
 {
-	var email = document.getElementById("edit_email").value;
-	var password = document.getElementById("edit_password").value;
-	var vp = document.getElementById("edit_vp").value;
-	var dp = document.getElementById("edit_dp").value;
-	var id = document.getElementById("account_id").value;
+    var email       = document.getElementById("edit_email").value;
+    var password    = document.getElementById("edit_password").value;
+    var vp          = document.getElementById("edit_vp").value;
+    var dp          = document.getElementById("edit_dp").value;
+    var id          = document.getElementById("account_id").value;
 	
 	showLoader();
 	

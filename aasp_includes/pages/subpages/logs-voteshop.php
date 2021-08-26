@@ -6,8 +6,8 @@
 
 $per_page = 40;
 
-$pages_query 	= mysqli_query($conn, "SELECT COUNT(*) FROM shoplog WHERE shop='vote'");
-$pages 			= ceil(mysqli_data_seek($pages_query,0) / $per_page );
+$pages_query = mysqli_query($conn, "SELECT COUNT(*) AS voteLogs FROM shoplog WHERE shop='vote'");
+$pages       = ceil(mysqli_fetch_assoc($pages_query)['voteLogs'] / $per_page);
 
 $page 	= ( isset($_GET['page']) ) ? (int)$_GET['page'] : 1;
 $start 	= ($page - 1) * $per_page;

@@ -15,9 +15,9 @@ else
 }
 
 $GameServer->selectDB('webdb', $conn);
-$count = mysqli_query($conn, "SELECT COUNT(*) FROM slider_images");
+$count = mysqli_query($conn, "SELECT COUNT(*) AS sliderImages FROM slider_images;");
 ?>
-幻灯片是 <b><?php echo $status; ?></b>。 你有<b><?php echo round(mysqli_data_seek($count,0)); ?></b>幻灯片中的图像。
+幻灯片是 <b><?php echo $status; ?></b>。 你有<b><?php echo round(mysqli_fetch_assoc($count)['sliderImages']); ?></b>幻灯片中的图像。
 <hr/>
 <?php 
 if(isset($_POST['addSlideImage']))

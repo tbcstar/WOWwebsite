@@ -249,6 +249,7 @@
                                                 $GameServer->selectDB('webdb', $conn);
                                                 $get = mysqli_query($conn, "SELECT version FROM db_version;");
                                                 $row = mysqli_fetch_assoc($get);
+                                                if ($row['version'] == null || empty($row['version'])) $row['version'] = '1.0';
                                                 echo $row['version'];
                                             ?>
                                         </td>

@@ -5,8 +5,8 @@
 
 $per_page = 20;
 
-$pages_query = mysqli_query($conn, "SELECT COUNT(*) FROM admin_log;");
-$pages = ceil(mysqli_data_seek($pages_query, 0) / $per_page );
+$pages_query = mysqli_query($conn, "SELECT COUNT(*) AS logs FROM admin_log;");
+$pages       = ceil(mysqli_fetch_assoc($pages_query)['logs'] / $per_page);
 
 $page = ( isset($_GET['page']) ) ? (int)$_GET['page'] : 1;
 $start = ($page - 1) * $per_page;

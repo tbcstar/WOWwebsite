@@ -147,35 +147,34 @@ else
 			}
 			
 			$text = preg_replace("
-			  #((http|https|ftp)://(\S*?\.\S*?))(\s|\;|\)|\]|\[|\{|\}|,|\"|'|:|\<|$|\.\s)#ie",
-			 "'<a href=\"$1\" target=\"_blank\">http://$3</a>$4'",
-			 $row['body']
+			#((http|https|ftp)://(\S*?\.\S*?))(\s|\;|\)|\]|\[|\{|\}|,|\"|'|:|\<|$|\.\s)#ie",
+			"'<a href=\"$1\" target=\"_blank\">http://$3</a>$4'",
+			$row['body']
 			);
 			
 			if ($GLOBALS['news']['limitHomeCharacters']==true) 
 			{ 		
-					echo $Website->limit_characters(htmlentities($text,200));
-					$output.= $Website->limit_characters($row['body'],200);
-				 } 
-				 else 
-				 {
-					 echo nl2br(htmlentities($text)); 
-					 $output .= nl2br($row['body']); 
+				    echo $Website->limit_characters(htmlentities($text,200));
+				    $output.= $Website->limit_characters($row['body'],200);
+				} 
+				else 
+				{
+					echo nl2br(htmlentities($text)); 
+					$output .= nl2br($row['body']); 
 				}
-			 $commentsNum = mysqli_query($conn, "SELECT COUNT(id) FROM news_comments WHERE newsid='".$row['id']."'");
+			$commentsNum = mysqli_query($conn, "SELECT COUNT(id) AS comments FROM news_comments WHERE newsid='" . $row['id'] . "'");
 							 
-			 if($GLOBALS['news']['enableComments']==TRUE) 
-				 $comments = '| <a href="?p=news&amp;newsid='.$row['id'].'">评论 ('.mysqli_data_seek($commentsNum,0).')</a>';
-			 else
-				 $comments = '';
+			if($GLOBALS['news']['enableComments']==TRUE) 
+			   $comments = '| <a href="?p=news&amp;newsid=' . $row['id'] . '">Comments (' . mysqli_fetch_assoc($commentsNum)['comments'] . ')</a>';
+			else
+			    $comments = '';
 			 
-			 echo '
-			 <br/><br/><br/>
-			 <i class="gray_text"> 作者 '.$row['author'].' | '.$row['date'].' '.$comments.'</i>
-			 </td> 
-			 </tr>
-			 </table>';
-					
+			echo '
+			<br/><br/><br/>
+			<i class="gray_text"> 作者 '.$row['author'].' | '.$row['date'].' '.$comments.'</i>
+			</td> 
+			</tr>
+			</table>';
 	 }
 }
 ?>

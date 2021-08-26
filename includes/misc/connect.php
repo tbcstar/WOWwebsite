@@ -26,13 +26,13 @@ class Connect
         $conn = self::connectToDB();
         self::selectDB('webdb', $conn);
 
-		if($GLOBALS['realms'][$realmid]['mysqli_host'] != $GLOBALS['connection']['host'] 
-		|| $GLOBALS['realms'][$realmid]['mysqli_user'] != $GLOBALS['connection']['user'] 
-		|| $GLOBALS['realms'][$realmid]['mysqli_pass'] != $GLOBALS['connection']['password'])
+        if ($GLOBALS['realms'][$realmid]['mysqli_host'] != $GLOBALS['connection']['host'] || 
+            $GLOBALS['realms'][$realmid]['mysqli_user'] != $GLOBALS['connection']['user'] || 
+            $GLOBALS['realms'][$realmid]['mysqli_pass'] != $GLOBALS['connection']['password'])
 		{
-			$conn = mysqli_connect($GLOBALS['realms'][$realmid]['mysqli_host'],
-						$GLOBALS['realms'][$realmid]['mysqli_user'],
-						$GLOBALS['realms'][$realmid]['mysqli_pass'])
+            return mysqli_connect($GLOBALS['realms'][$realmid]['mysqli_host'], 
+                                $GLOBALS['realms'][$realmid]['mysqli_user'], 
+                                    $GLOBALS['realms'][$realmid]['mysqli_pass'])
 						or 
 						buildError("<b>数据库连接错误:</b> 无法建立到Realm的连接。错误: ". mysqli_error($conn),NULL);
 		}
@@ -46,7 +46,7 @@ class Connect
 	}
 	 
 	 
-	public static function selectDB($db) 
+    public static function selectDB($db, $conn, $realmid = 1)
 	{
 		global $conn;
 		 
@@ -67,6 +67,10 @@ class Connect
 			case('worlddb'):
 				mysqli_select_db($conn, $GLOBALS['connection']['worlddb']);
 				break;
+
+            case('chardb'):
+                mysqli_select_db($conn, $GLOBALS['realms'][$realmid]['chardb']);
+                break;
 		}
 
 		mysqli_query($conn, "SET NAMES 'utf8'");
