@@ -1,5 +1,9 @@
-<?php global $Page, $conn, $Server, $Account; ?>
-<div class="box_right_title"><?php echo $Page->titleLink(); ?> &raquo; 浏览</div>
+<?php 
+  global $GamePage, $GameServer, $GameAccount; 
+  $conn = $GameServer->connect();
+  $GameServer->selectDB('webdb', $conn);
+?>
+<div class="box_right_title"><?php echo $GamePage->titleLink(); ?> &raquo; 浏览</div>
 <?php 
 
 $per_page = 20;
@@ -26,12 +30,12 @@ $start = ($page - 1) * $per_page;
    		<th>状态</th>
    	</tr>
    <?php
-	$Server->selectDB('webdb');
+    $GameServer->selectDB('webdb', $conn);
 	$result = mysqli_query($conn, "SELECT * FROM payments_log ORDER BY id DESC LIMIT ".$start.",".$per_page.";");
 	while($row = mysqli_fetch_assoc($result)) { ?>
 		<tr>
 	        <td><?php echo $row['datecreation']; ?></td>
-	        <td><?php echo $Account->getAccName($row['userid']); ?></td>
+	        <td><?php echo $GameAccount->getAccName($row['userid']); ?></td>
 	        <td><?php echo $row['buyer_email']; ?></td>
 	        <td><?php echo $row['mc_gross']; ?></td>
 	        <td><?php echo $row['paymentstatus']; ?></td>

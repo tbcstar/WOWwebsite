@@ -1,11 +1,12 @@
 <?php
-define('INIT_SITE', TRUE);
-include('../../includes/misc/headers.php');
-include('../../includes/configuration.php');
-include('../functions.php');
-global $Server, $Account, $conn;
+    define('INIT_SITE', TRUE);
+    include('../../includes/misc/headers.php');
+    include('../../includes/configuration.php');
+    include('../functions.php');
+    global $GameServer, $GameAccount;
 
-$Server->selectDB('webdb');
+    $conn = $GameServer->connect();
+    $GameServer->selectDB('webdb', $conn);
 
 ###############################
 if($_POST['action'] == "setTemplate") 
@@ -17,7 +18,7 @@ if($_POST['action'] == "setTemplate")
 if($_POST['action'] == "installTemplate") 
 {
 	mysqli_query($conn, "INSERT INTO template VALUES('','".mysqli_real_escape_string($conn, trim($_POST['name']))."','".mysqli_real_escape_string($conn, trim($_POST['path']))."','0')");
-	$Server->logThis("安装模板 ".$_POST['name']);
+	$GameServer->logThis("安装模板 ".$_POST['name']);
 }
 ###############################
 if($_POST['action'] == "uninstallTemplate") 
@@ -25,7 +26,7 @@ if($_POST['action'] == "uninstallTemplate")
 	mysqli_query($conn, "DELETE FROM template WHERE id='".(int)$_POST['id']."';");
 	mysqli_query($conn, "UPDATE template SET applied='1' ORDER BY id ASC LIMIT 1;");
 	
-	$Server->logThis("卸载模板");
+	$GameServer->logThis("卸载模板");
 }
 ###############################
 if($_POST['action'] == "getMenuEditForm") 
@@ -61,7 +62,7 @@ if($_POST['action'] == "saveMenu")
 
 	mysqli_query($conn, "UPDATE site_links SET title='".$title."',url='".$url."',shownWhen='".$shownWhen."' WHERE position='".$id."';");
 	
-	$Server->logThis("修改菜单");
+	$GameServer->logThis("修改菜单");
 	
 	echo TRUE;
 }
@@ -70,7 +71,7 @@ if($_POST['action'] == "deleteLink")
 {
 	mysqli_query($conn, "DELETE FROM site_links WHERE position='".(int)$_POST['id']."';");
 	
-	$Server->logThis("删除一个菜单链接");
+	$GameServer->logThis("删除一个菜单链接");
 	
 	echo TRUE;
 }
@@ -86,9 +87,9 @@ if($_POST['action'] == "addLink")
 		die("请输入所有字段。");
 	}
 
-	mysqli_query($conn, "INSERT INTO site_links VALUES('','".$title."','".$url."','".$shownWhen."');");
+	mysqli_query($conn, "INSERT INTO site_links (title, url, shownWhen) VALUES('" . $title . "','" . $url . "','" . $shownWhen . "');");
 
-	$Server->logThis("添加".$title."到菜单上");
+	$GameServer->logThis("添加".$title."到菜单上");
 
 	echo TRUE;
 }
@@ -98,7 +99,7 @@ if($_POST['action'] == "deleteImage")
 	$id = (int)$_POST['id'];
 	mysqli_query($conn, "DELETE FROM slider_images WHERE position='".$id."';");
 	
-	$Server->logThis("图像已从幻灯片中删除");
+	$GameServer->logThis("图像已从幻灯片中删除");
 	
 	return;
 }
@@ -110,7 +111,7 @@ if($_POST['action'] == "disablePlugin")
 	mysqli_query($conn, "INSERT INTO disabled_plugins VALUES('".$foldername."');");
 	
 	include('../../plugins/'.$foldername.'/info.php');
-	$Server->logThis("禁用插件".$title);
+	$GameServer->logThis("禁用插件".$title);
 }
 ###############################
 if($_POST['action'] == "enablePlugin") 
@@ -120,7 +121,7 @@ if($_POST['action'] == "enablePlugin")
 	mysqli_query($conn, "DELETE FROM disabled_plugins WHERE foldername='".$foldername."';");
 
 	include('../../plugins/'.$foldername.'/info.php');
-	$Server->logThis("启用插件".$title);
+	$GameServer->logThis("启用插件".$title);
 }
 ###############################
 ?>

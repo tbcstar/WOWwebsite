@@ -1,11 +1,12 @@
 <?php
-define('INIT_SITE', TRUE);
-include('../../includes/misc/headers.php');
-include('../../includes/configuration.php');
-include('../functions.php');
-global $Server, $Account, $conn;
+    define('INIT_SITE', TRUE);
+    include('../../includes/misc/headers.php');
+    include('../../includes/configuration.php');
+    include('../functions.php');
+    global $GameServer, $GameAccount;
+    $conn = $GameServer->connect();
 
-$Server->selectDB('webdb');
+    $GameServer->selectDB('webdb', $conn);
 
 ##############################
 if($GLOBALS['core_expansion'] == 3)
@@ -48,7 +49,7 @@ if($_POST['action']=='edit')
 	if(empty($name) || empty($host) || empty($port) || empty($chardb))
 		die("<span class='red_text'>请输入所有字段。</span><br/>");
 	
-	$Server->logThis("更新了以下服务器信息".$name);
+	$GameServer->logThis("更新了以下服务器信息".$name);
 	
 	mysqli_query($conn, "UPDATE realms SET id='".$new_id."',name='".$name."',host='".$host."',port='".$port."',char_db='".$chardb."' WHERE id='".$id."';");
 	return TRUE;
@@ -60,7 +61,7 @@ if($_POST['action'] == 'delete')
 	
 	mysqli_query($conn, "DELETE FROM realms WHERE id='".$id."';");
 	
-	$Server->logThis("删除一个服务器");
+	$GameServer->logThis("删除一个服务器");
 }
 ###############################
 if($_POST['action'] == 'edit_console') 
@@ -75,7 +76,7 @@ if($_POST['action'] == 'edit_console')
 		die();
 	}
 
-	$Server->logThis("更新了带有ID的服务器的控制台信息：".$id);
+	$GameServer->logThis("更新了带有ID的服务器的控制台信息：".$id);
 	
 	mysqli_query($conn, "UPDATE realms SET sendType='".$type."',rank_user='".$user."',rank_pass='".$pass."' WHERE id='".$id."';");
 	return TRUE;
@@ -92,7 +93,7 @@ if($_POST['action'] == 'loadTickets')
 	if($realm == "NULL")
 	   die("<pre>请选择一个服务器。</pre>");
 	
-	$Server->selectDB($realm);
+	$GameServer->selectDB($realm);
 	
 	$result = mysqli_query($conn, "SELECT ".$ticketString.",name,message,createtime,".$guidString.",".$closedString." FROM gm_tickets ORDER BY ticketId DESC;");
 	if(mysqli_num_rows($result) == 0)
@@ -192,7 +193,7 @@ if($_POST['action'] == 'openTicket')
 if($_POST['action'] == 'getPresetRealms')
 {
 	echo '<h3>请选择一个服务器</h3><hr/>';
-	$Server->selectDB('webdb');
+	$GameServer->selectDB('webdb', $conn);
 	
 	$result = mysqli_query($conn, 'SELECT id,name,description FROM realms ORDER BY id ASC;');
 	while($row = mysqli_fetch_assoc($result))

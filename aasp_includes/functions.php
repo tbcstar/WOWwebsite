@@ -26,20 +26,20 @@
             return mysqli_data_seek($result, 0);
         }
 
-        public function getPlayersOnline($rid)
+        public function getPlayersOnline($realmId)
         {
             global $conn;
-            $this->connectToRealmDB($rid);
+            $this->connectToRealmDB($realmId);
             $result = mysqli_query($conn, "SELECT COUNT(guid) FROM characters WHERE online='1';");
             return round(mysqli_data_seek($result, 0));
         }
 
-        public function getUptime($rid)
+        public function getUptime($realmId)
         {
             global $conn;
             $this->selectDB('logondb');
 
-            $getUp = mysqli_query($conn, "SELECT starttime FROM uptime WHERE realmid='" . (int) $rid . "' ORDER BY starttime DESC LIMIT 1;");
+            $getUp = mysqli_query($conn, "SELECT starttime FROM uptime WHERE realmid='" . (int) $realmId . "' ORDER BY starttime DESC LIMIT 1;");
             $row   = mysqli_fetch_assoc($getUp);
 
             $time   = time();
@@ -66,12 +66,12 @@
             return $uptime . ' ' . $string;
         }
 
-        public function getServerStatus($rid)
+        public function getServerStatus($realmId)
         {
             global $conn;
             $this->selectDB('webdb');
 
-            $result = mysqli_query($conn, "SELECT host,port FROM realms WHERE id='" . (int) $rid . "'");
+            $$result = mysqli_query($conn, "SELECT host,port FROM realms WHERE id='" . (int) $realmId . "'");
             $row    = mysqli_fetch_assoc($result);
 
             $fp = fsockopen($row['host'], $row['port'], $errno, $errstr, 1);
@@ -94,24 +94,30 @@
         {
             global $conn;
             $this->selectDB('logondb');
-            $result = mysqli_query($conn, "SELECT COUNT(id) FROM account WHERE joindate LIKE '%" . date("Y-m-d") . "%';");
-            return mysqli_data_seek($result, 0);
+            $result = mysqli_query($conn, "SELECT COUNT(id) AS accountsCreated FROM account WHERE joindate LIKE '%" . date("Y-m-d") . "%';");
+            $row = mysqli_fetch_assoc($result);
+            if ($row['accountsCreated'] == null || empty($row['accountsCreated'])) $row['accountsCreated'] = 0;
+            return $row['accountsCreated'];
         }
 
         public function getActiveAccounts()
         {
             global $conn;
             $this->selectDB('logondb');
-            $result = mysqli_query($conn, "SELECT COUNT(id) FROM account WHERE last_login LIKE '%" . date("Y-m") . "%';");
-            return mysqli_data_seek($result, 0);
+            $result = mysqli_query($conn, "SELECT COUNT(id) AS activeMonth FROM account WHERE last_login LIKE '%" . date("Y-m") . "%';");
+            $row = mysqli_fetch_assoc($result);
+            if ($row['activeMonth'] == null || empty($row['activeMonth'])) $row['activeMonth'] = 0;
+            return $row['activeMonth'];
         }
 
         public function getActiveConnections()
         {
             global $conn;
             $this->selectDB('logondb');
-            $result = mysqli_query($conn, "SELECT COUNT(id) FROM account WHERE online=1;");
-            return mysqli_data_seek($result, 0);
+            $result = mysqli_query($conn, "SELECT COUNT(id) AS activeConnections FROM account WHERE online=1;");
+            $row = mysqli_fetch_assoc($result);
+            if ($row['activeConnections'] == null || empty($row['activeConnections'])) $row['activeConnections'] = 0;
+            return $row['activeConnections'];
         }
 
         public function getFactionRatio($rid)
@@ -151,8 +157,10 @@
             global $conn;
             $this->selectDB('logondb');
 
-            $result = mysqli_query($conn, "SELECT COUNT(*) FROM account WHERE last_login LIKE '%" . date('Y-m-d') . "%'");
-            return mysqli_data_seek($result, 0);
+            $result = mysqli_query($conn, "SELECT COUNT(*) AS accountsToday FROM account WHERE last_login LIKE '%" . date('Y-m-d') . "%'");
+            $row = mysqli_fetch_assoc($result);
+            if ($row['accountsToday'] == null || empty($row['accountsToday'])) $row['accountsToday'] = 0;
+            return $row['accountsToday'];
         }
 
         public function connect()
@@ -184,23 +192,24 @@
             }
         }
 
-        public function selectDB($db)
+        public function selectDB($database, $connection)
         {
-            $this->connect();
-
-            switch ($db)
+            switch ($database)
             {
                 default:
-                    mysqli_select_db($conn, $db);
+                    mysqli_select_db($connection, $database);
                     break;
+
                 case('logondb'):
-                    mysqli_select_db($conn, $GLOBALS['connection']['logondb']);
+                    mysqli_select_db($connection, $GLOBALS['connection']['logondb']);
                     break;
+
                 case('webdb'):
-                    mysqli_select_db($conn, $GLOBALS['connection']['webdb']);
+                    mysqli_select_db($connection, $GLOBALS['connection']['webdb']);
                     break;
+
                 case('worlddb'):
-                    mysqli_select_db($conn, $GLOBALS['connection']['worlddb']);
+                    mysqli_select_db($connection, $GLOBALS['connection']['worlddb']);
                     break;
             }
         }
@@ -230,8 +239,7 @@
             elseif (isset($_SESSION['cw_staff']))
                 $aid = (int) $_SESSION['cw_staff_id'];
 
-            mysqli_query($conn, "INSERT INTO admin_log VALUES ('','" . mysqli_real_escape_string($conn, $url) . "','" . $_SERVER['REMOTE_ADDR'] . "',
-        '" . time() . "','" . mysqli_real_escape_string($conn, $action) . "','" . $aid . "','" . mysqli_real_escape_string($conn, $extended) . "')");
+            mysqli_query($conn, "INSERT INTO admin_log VALUES ('','" . mysqli_real_escape_string($conn, $url) . "','" . $_SERVER['REMOTE_ADDR'] . "', '" . time() . "','" . mysqli_real_escape_string($conn, $action) . "','" . $aid . "','" . mysqli_real_escape_string($conn, $extended) . "')");
         }
 
         public function addRealm($id, $name, $desc, $host, $port, $chardb, $sendtype, $rank_user, $rank_pass, $ra_port, $soap_port, $m_host, $m_user, $m_pass)
@@ -367,16 +375,17 @@
         }
 
     }
+    $GameServer    = new GameServer();
 
     class GameAccount
     {
 
         public function getAccID($user)
         {
-            $server = new server;
-            $server->selectDB('logondb');
 
             global $conn;
+
+            self::selectDB('logondb', $conn);
 
             $user   = mysqli_real_escape_string($conn, $user);
             $result = mysqli_query($conn, "SELECT id FROM account WHERE username='" . mysqli_real_escape_string($conn, $user) . "'");
@@ -387,9 +396,9 @@
 
         public function getAccName($id)
         {
-            global $conn;
-            $server = new server;
-            $server->selectDB('logondb');
+            global $GameServer, $conn;
+
+            $GameServer->selectDB('logondb', $conn);
 
             $result = mysqli_query($conn, "SELECT username FROM account WHERE id='" . (int) $id . "'");
             $row    = mysqli_fetch_assoc($result);
@@ -402,10 +411,9 @@
 
         public function getCharName($id, $realm_id)
         {
-            global $conn;
-            $server = new server;
+            global $GameServer, $conn;
 
-            $server->connectToRealmDB($realm_id);
+            $GameServer->connectToRealmDB($realm_id);
 
             $result = mysqli_query($conn, "SELECT name FROM characters WHERE guid='" . (int) $id . "'");
             if (mysqli_num_rows($result) == 0)
@@ -422,9 +430,8 @@
 
         public function getEmail($id)
         {
-            global $conn;
-            $server = new server;
-            $server->selectDB('logondb');
+            global $GameServer, $conn;
+            $GameServer->selectDB('logondb', $conn);
 
             $result = mysqli_query($conn, "SELECT email FROM account WHERE id='" . (int) $id . "'");
             $row    = mysqli_fetch_assoc($result);
@@ -433,9 +440,8 @@
 
         public function getVP($id)
         {
-            global $conn;
-            $server = new server;
-            $server->selectDB('webdb');
+            global $GameServer, $conn;
+            $GameServer->selectDB('webdb', $conn);
 
             $result = mysqli_query($conn, "SELECT vp FROM account_data WHERE id='" . (int) $id . "'");
             if (mysqli_num_rows($result) == 0)
@@ -447,8 +453,8 @@
 
         public function getDP($id)
         {
-            $server = new server;
-            $server->selectDB('webdb');
+            global $GameServer, $conn;
+            $GameServer->selectDB('webdb', $conn);
 
             $result = mysqli_query($conn, "SELECT dp FROM account_data WHERE id='" . (int) $id . "'");
             if (mysqli_num_rows($result) == 0)
@@ -460,8 +466,8 @@
 
         public function getBan($id)
         {
-            $server = new server;
-            $server->selectDB('logondb');
+            global $GameServer, $conn;
+            $GameServer->selectDB('logondb', $conn);
 
             $result = mysqli_query($conn, "SELECT * FROM account_banned WHERE id='" . (int) $id . "' AND active = 1 ORDER by bandate DESC LIMIT 1");
             if (mysqli_num_rows($result) == 0)
@@ -507,6 +513,7 @@
         }
 
     }
+    $GameAccount   = new GameAccount();
 
     class GamePage
     {
@@ -539,11 +546,17 @@
             unset($pages[0], $pages[1]);
 
             if (!file_exists('../aasp_includes/pages/subpages/' . $page . '-' . $subpage . '.php'))
+            {
                 include('../aasp_includes/pages/404.php');
+            }
             elseif (in_array($page . '-' . $subpage . '.php', $pages))
+            {
                 include('../aasp_includes/pages/subpages/' . $page . '-' . $subpage . '.php');
+            }
             else
+            {
                 include('../aasp_includes/pages/404.php');
+            }
         }
 
         public function titleLink()
@@ -553,7 +566,7 @@
 
         public function addSlideImage($upload, $path, $url)
         {
-            global $conn;
+            global $GameServer, $conn;
             $path = mysqli_real_escape_string($conn, $path);
             $url  = mysqli_real_escape_string($conn, $url);
 
@@ -590,13 +603,14 @@
 
             if (!isset($abort))
             {
-                $server = new server;
-                $server->selectDB('webdb');
+
+                $GameServer->selectDB('webdb', $conn);
                 mysqli_query($conn, "INSERT INTO slider_images VALUES('','" . $path . "','" . $url . "')");
             }
         }
 
     }
+    $GamePage      = new GamePage();
 
     class GameCharacter
     {
@@ -727,11 +741,7 @@
         }
 
     }
-
-    $GameServer		= new GameServer();
-    $GameAccount	= new GameAccount();
-    $GamePage		= new GamePage();
-    $GameCharacter	= new GameCharacter();
+    $GameCharacter = new GameCharacter();
 
     function activeMenu($p)
     {

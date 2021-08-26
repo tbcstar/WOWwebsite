@@ -1,16 +1,18 @@
 <?php
-	global $Server, $Page, $conn;
- 	$Server->selectDB('webdb');
+    global $GameServer, $GamePage;
+    $conn = $GameServer->connect();
 
-	$Page->validatePageAccess('Users');
+    $GameServer->selectDB('webdb', $conn);
 
-    if($Page->validateSubPage() == TRUE) 
+    $GamePage->validatePageAccess('Users');
+
+    if ($GamePage->validateSubPage() == TRUE)
     {
 		$Page->outputSubPage();
 	} 
 	else 
 	{
-		$Server->selectDB('logondb');
+        $GameServer->selectDB('logondb', $conn);
 		$usersTotal 	= mysqli_query($conn, "SELECT COUNT(*) FROM account;");
 		$usersToday 	= mysqli_query($conn, "SELECT COUNT(*) FROM account WHERE joindate LIKE '%".date("Y-m-d")."%';");
 		$usersMonth 	= mysqli_query($conn, "SELECT COUNT(*) FROM account WHERE joindate LIKE '%".date("Y-m")."%';");

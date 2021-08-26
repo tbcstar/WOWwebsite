@@ -49,8 +49,8 @@ function editAccA(id,rank,realm)
 
 function editAccANow(id) 
 {
-	var rank = document.getElementById("editAccARank").value;
-	var realm = document.getElementById("editAccARealm").value;
+	var rank    = document.getElementById("editAccARank").value;
+	var realm   = document.getElementById("editAccARealm").value;
 	
 	$("#loading").html("Saving...");
 

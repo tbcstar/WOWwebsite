@@ -1,15 +1,16 @@
 <?php 
-	global $Page, $Server;
+    global $GamePage, $GameServer;
 
-	$Page->validatePageAccess('Shop');
+	$GamePage->validatePageAccess('Shop');
 
-    if($Page->validateSubPage() == TRUE) 
+    if($GamePage->validateSubPage() == TRUE) 
     {
-		$Page->outputSubPage();
+		$GamePage->outputSubPage();
 	} 
 	else 
-	{
-		$Server->selectDB('webdb');
+    {   
+        $conn = $GameServer->connect();
+        $GameServer->selectDB('webdb', $conn);
 		$inShop 	= mysqli_query($conn, "SELECT COUNT(*) FROM shopitems;");
 		$purchToday = mysqli_query($conn, "SELECT COUNT(*) FROM shoplog WHERE date LIKE '%".date('Y-m-d')."%';");
 		$getAvg 	= mysqli_query($conn, "SELECT AVG(*) AS priceAvg FROM shopitems;");

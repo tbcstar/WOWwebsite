@@ -1,5 +1,7 @@
 <?php 
-	global $Server;
+    global $GameServer;
+    $conn = $GameServer->connect();
+    $GameServer->selectDB('webdb', $conn);
 
 	$filename = $_GET['plugin']; 
 	include('../plugins/'.$filename.'/info.php');			
@@ -77,7 +79,6 @@ if (is_array($folder) || is_object($folder))
 	}
 }
 
-$Server->selectDB('webdb');
 $chk = mysqli_query($conn, "SELECT COUNT(*) FROM disabled_plugins WHERE foldername='".mysqli_real_escape_string($conn, $filename)."'");
 if(mysqli_data_seek($chk,0) > 0)
 {

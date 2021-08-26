@@ -1,11 +1,10 @@
 function postNews() {
 	var title = document.getElementById("news_title").value;
-	var author = document.getElementById("news_author").value;
 	var content = document.getElementById("news_content").value;
 	var image = document.getElementById("news_image").value;
 	content = content.replace(/&nbsp;/, '').replace(/<br>/, '\n');
 	showLoader();
-	$.post("../aasp_includes/scripts/news.php", { function: "post", title: title, author: author, content: content,image: image },
+    $.post("../aasp_includes/scripts/news.php", {function: "post", title: title, content: content, image: image},
        function(data) {
 			 $("#loading").html(data + "<br/><br/><a href='#' onclick='hideLoader()'>Close</a>"); 
 		 
@@ -36,11 +35,10 @@ function editNews(id) {
 }
 function editNewsNow(id) {
 	var title = document.getElementById("editnews_title").value;
-	var author = document.getElementById("editnews_author").value;
 	var content = document.getElementById('editnews_content').value;
 	content = content.replace(/&nbsp;/, '').replace(/<br>/, '\n');
 	$("#loading").html("Loading...");
-	$.post("../aasp_includes/scripts/news.php", { function: "edit", id: id, title: title, content: content, author: author },
+    $.post("../aasp_includes/scripts/news.php", {function: "edit", id: id, title: title, content: content},
        function(data) {
 			 window.location=data;
    });

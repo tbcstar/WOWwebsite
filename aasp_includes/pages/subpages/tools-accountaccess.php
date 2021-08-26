@@ -1,6 +1,10 @@
-<?php global $Page, $Server, $Account, $conn;
+<?php
+    global $GamePage, $GameServer, $GameAccount;
 
-$Page->validatePageAccess('Tools->Account Access');
+    $conn = $GameServer->connect();
+    $GameServer->selectDB('logondb', $conn);
+
+    $GamePage->validatePageAccess('Tools->Account Access');
 
 ?>
 <div class="box_right_title">账号访问</div>
@@ -17,8 +21,7 @@ $Page->validatePageAccess('Tools->Account Access');
         <th>动作</th>
     </tr>
     <?php
-	$Server->selectDB('logondb');
-	$result = mysqli_query($conn, "SELECT * FROM account_access");
+    $result = mysqli_query($conn, "SELECT * FROM account_access;");
 	if(mysqli_num_rows($result)==0) 
 	 	echo "<b>没有发现GM账户!</b>";	
 	else
@@ -28,7 +31,7 @@ $Page->validatePageAccess('Tools->Account Access');
 			?>
             <tr style="text-align:center;">
             	<td><?php echo $row['id']; ?></td>
-                <td><?php echo $Account->getAccName($row['id']); ?></td>
+                <td><?php echo $GameAccount->getAccName($row['id']); ?></td>
                 <td><?php echo $row['gmlevel']; ?></td>
                 <td>
                 <?php 
@@ -36,7 +39,7 @@ $Page->validatePageAccess('Tools->Account Access');
 						echo '所有';
 					else
 					{
-						$getRealm = mysqli_query($conn, "SELECT name FROM realmlist WHERE id='".$row['RealmID']."'");
+                        $getRealm = mysqli_query($conn, "SELECT name FROM realmlist WHERE id='" . $row['RealmID'] . "';");
 						if(mysqli_num_rows($getRealm)==0)
 							echo '未知';
 						$rows = mysqli_fetch_assoc($getRealm);
@@ -46,7 +49,7 @@ $Page->validatePageAccess('Tools->Account Access');
                 </td>
                 <td>
                 <?php
-					$getData = mysqli_query($conn, "SELECT last_login,online FROM account WHERE id='".$row['id']."'");
+					$getData = mysqli_query($conn, "SELECT last_login,online FROM account WHERE id='" . $row['id'] . "';");
 					$rows = mysqli_fetch_assoc($getData);
 					if($rows['online']==0)
 					 	echo '<font color="red">离线</font>';

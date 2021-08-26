@@ -100,12 +100,12 @@
                     { ?> 欢迎  
                         <b><?php echo $_SESSION['cw_admin']; ?> </b> 
                         <a href="?p=logout"><i>(Log out)</i></a> &nbsp; | &nbsp;
-                        <a href="<?php echo $GLOBALS['website_domain']; ?>" title="View your site">浏览您的网站</a>
+                        <a href="../">返回网站</a>
                         <?php
                     }
                     else
                     {
-                        echo "请登录。";
+                        echo "<a href='../'>返回网站</a> | 请登录。";
                     }
                 ?>
             </div>
@@ -231,7 +231,7 @@
         <?php echo $GLOBALS['connection']['webdb']; ?><br/>
         <?php echo $GLOBALS['connection']['worlddb']; ?><br/>
         <?php
-        $GameServer->selectDB('webdb');
+        $GameServer->selectDB('webdb', $conn);
         $get = mysqli_query($conn, "SELECT version FROM db_version");
         $row = mysqli_fetch_assoc($get);
         echo $row['版本'];

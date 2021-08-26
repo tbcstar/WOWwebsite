@@ -3,13 +3,16 @@
     define('INIT_SITE', TRUE);
     include('../../includes/misc/headers.php');
     include('../../includes/configuration.php');
+    include('../functions.php');
 
-    global $conn;
+    global $GameServer;
+
+    $conn = $GameServer->connect();
 
 ###############################
     if (isset($_POST['login']))
     {
-        if (empty($_POST['username']) || empty($_POST['password']))
+        if (empty($_POST['username']) || empty($_POST['password']) && !isset($_POST['username']) || !isset($_POST['password']))
         {
             die("请输入账号和密码。");
         }
@@ -18,26 +21,23 @@
         $password     = mysqli_real_escape_string($conn, strtoupper(trim($_POST['password'])));
         $passwordHash = sha1("" . $username . ":" . $password . "");
 
-        mysqli_select_db($conn, $GLOBALS['connection']['logondb']);
-
-        $result = mysqli_query($conn, "SELECT COUNT(id) FROM account WHERE username='" . $username . "' AND sha_pass_hash = '" . $passwordHash . "';");
-
-        if (mysqli_data_seek($result, 0) == 1)
+        if(mysqli_select_db($conn, $GLOBALS['connection']['logondb']) == false)
         {
-            die("无效的用户名/密码组合。");
+            die("数据库错误。");
         }
+        $result = mysqli_query($conn, "SELECT COUNT(id) FROM account WHERE username='" . $username . "' AND sha_pass_hash = '" . $passwordHash . "';");
 
         $getId  = mysqli_query($conn, "SELECT id FROM account WHERE username='" . $username . "';");
         $row    = mysqli_fetch_assoc($getId);
         $uid    = $row['id'];
-        $getGmLvl = mysqli_query($conn, "SELECT gmlevel FROM account_access WHERE id='" . $uid . "' AND gmlevel >= '" . $GLOBALS[$_POST['panel'] . 'Panel_minlvl'] . "';");
+        $result   = mysqli_query($conn, "SELECT gmlevel FROM account_access WHERE id='$uid' AND gmlevel>='" . $GLOBALS[$_POST['panel'] . 'Panel_minlvl'] . "';");
 
-        if (mysqli_num_rows($getGmLvl) == 1)
+        if (mysqli_num_rows($result) == 0)
         {
-            die("指定的帐号无法登录! " );
+            die("指定的帐号无法登录!" );
         }
 
-        $rank = mysqli_fetch_assoc($getGmLvl);
+        $rank = mysqli_fetch_assoc($result);
 
         $_SESSION['cw_' . $_POST['panel']]            = ucfirst(strtolower($username));
         $_SESSION['cw_' . $_POST['panel'] . '_id']    = $uid;

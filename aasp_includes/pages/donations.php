@@ -1,13 +1,14 @@
 <?php
 
-    global $Server, $Page, $Account, $conn;
-	$Server->selectDB('webdb'); 
+    global $GameServer, $GamePage, $GameAccount;
+    $conn = $GameServer->connect();
+    $GameServer->selectDB('webdb', $conn);
 
-	$Page->validatePageAccess('Donations');
+    $GamePage->validatePageAccess('Donations');
 
-	if($Page->validateSubPage() == TRUE) 
+	if($GamePage->validateSubPage() == TRUE) 
 	{
-		$Page->outputSubPage();
+		$GamePage->outputSubPage();
 	} 
 	else 
 	{
@@ -29,7 +30,7 @@
 		$row = mysqli_fetch_assoc($q);
 		$donationLatestAmount = $row['mc_gross'];
 
-		$donationLatest = $Account->getAccName($row['userid']);
+		$donationLatest = $GameAccount->getAccName($row['userid']);
 ?>
 <div class="box_right_title">捐赠概览</div>
 <table style="width: 100%;">

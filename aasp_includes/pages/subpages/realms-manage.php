@@ -1,9 +1,12 @@
-<?php global $Page, $Server;?>
+<?php 
+  global $GamePage, $GameServer;
+  $conn = $GameServer->connect();
+  $GameServer->selectDB('webdb', $conn);
+?>
 <div class="box_right_title">服务器管理</div>
 <table class="center">
 <tr><th>ID</th><th>名称</th><th>主机</th><th>端口</th><th>角色数据库</th><th>动作</th></tr>
 <?php
-    $Server->selectDB('webdb');
 	$result = mysqli_query($conn, "SELECT * FROM realms ORDER BY id DESC");
 	while($row = mysqli_fetch_assoc($result)) { ?>
 		  <tr>

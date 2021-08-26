@@ -4,9 +4,10 @@
     include('../../includes/configuration.php');
     include('../functions.php');
 
-    global $GameServer, $GameAccount, $conn;
+    global $GameServer, $GameAccount;
 
-    $GameServer->selectDB('logondb');
+    $conn = $GameServer->connect();
+    $GameServer->selectDB('logondb', $conn);
 
 ###############################
     if ($_POST['action'] == 'edit')
@@ -25,7 +26,7 @@
         }
 
         mysqli_query($conn, "UPDATE account SET email='" . $email . "' WHERE id='" . $id . "';");
-        $GameServer->selectDB('webdb');
+        $GameServer->selectDB('webdb', $conn);
 
         mysqli_query($conn, "INSERT IGNORE INTO account_data VALUES('" . $id . "','','','');");
 
@@ -38,7 +39,7 @@
         $chk3 = mysqli_query($conn, "SELECT COUNT FROM account_data WHERE dp='" . $dp . "' AND id='" . $od . "';");
         if (mysqli_query($conn, $chk3, 0) > 0)
         {
-            $extended .= "T.C币已更新为 " . $dp . "<br/>";
+            $extended .= "捐赠积分已更新为 " . $dp . "<br/>";
         }
 
 
@@ -49,7 +50,7 @@
             $username = strtoupper(trim($GameAccount->getAccName($id)));
 
             $password = sha1("" . $username . ":" . $password . "");
-            $GameServer->selectDB('logondb');
+            $GameServer->selectDB('logondb', $conn);
             mysqli_query($conn, "UPDATE account SET sha_pass_hash='" . $password . "' WHERE id='" . $id . "';");
             mysqli_query($conn, "UPDATE account SET v='0',s='0' WHERE id='" . $id . "';");
             $extended .= "修改密码<br/>";

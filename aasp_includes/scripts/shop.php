@@ -1,11 +1,12 @@
 <?php
-define('INIT_SITE', TRUE);
-include('../../includes/misc/headers.php');
-include('../../includes/configuration.php');
-include('../functions.php');
-global $Server, $Account, $conn;
+    define('INIT_SITE', TRUE);
+    include('../../includes/misc/headers.php');
+    include('../../includes/configuration.php');
+    include('../functions.php');
+    global $GameServer, $GameAccount;
+    $conn = $GameServer->connect();;
 
-$Server->selectDB('webdb');
+    $GameServer->selectDB('webdb', $conn);
 
 ###############################
 if($_POST['action'] == 'addsingle') 
@@ -19,11 +20,11 @@ if($_POST['action'] == 'addsingle')
 		die("请输入所有字段。");
 	}
 
-	$Server->selectDB('worlddb');
+	$GameServer->selectDB('worlddb');
 	$get = mysqli_query($conn, "SELECT name,displayid,ItemLevel,quality,AllowableRace,AllowableClass,class,subclass,Flags
 	FROM item_template WHERE entry='".$entry."'")or die('Error whilst getting item data from the database. Error message: '.mysqli_error($conn));
 	$row = mysqli_fetch_assoc($get);
-	$Server->selectDB('webdb');
+	$GameServer->selectDB('webdb', $conn);
 	
 	if($row['AllowableRace'] == "-1")
 	{
@@ -45,7 +46,7 @@ if($_POST['action'] == 'addsingle')
 	mysqli_query($conn, "INSERT INTO shopitems VALUES ('','".$entry."','".mysqli_real_escape_string($conn, $row['name'])."','".$shop."','".$row['displayid']."','".$row['class']."','".$row['ItemLevel']."','".$row['quality']."','".$price."',
 	'".$row['AllowableClass']."','".$faction."','".$row['subclass']."','".$row['Flags']."')");
 
-	$Server->logThis("添加 ".$row['name']." 到 ".$shop." shop");
+	$GameServer->logThis("添加 ".$row['name']." 到 ".$shop." shop");
 	
 	echo '物品添加成功。';
 }
@@ -85,12 +86,12 @@ if($_POST['action'] == 'addmulti')
 		$advanced .= " AND quality='".$quality."'";
 	}
 
-	$Server->selectDB('worlddb');
+	$GameServer->selectDB('worlddb');
 	$get = mysqli_query($conn, "SELECT entry,name,displayid,ItemLevel,quality,class,AllowableRace,AllowableClass,subclass,Flags
 	 FROM item_template WHERE itemlevel>='".$il_from."'
 	AND itemlevel<='".$il_to."' ".$advanced);
 	
-	$Server->selectDB('webdb');
+	$GameServer->selectDB('webdb', $conn);
 	
 	$c = 0;
 	while($row = mysqli_fetch_assoc($get)) 
@@ -117,7 +118,7 @@ if($_POST['action'] == 'addmulti')
 		$c++;
 	}
 	
-	$Server->logThis("添加多个物品到 ".$shop." 商城");
+	$GameServer->logThis("添加多个物品到 ".$shop." 商城");
 	echo '添加成功'.$c.' 物品';
 }
 ###############################

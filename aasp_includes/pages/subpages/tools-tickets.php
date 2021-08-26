@@ -1,7 +1,8 @@
 <?php 
-global $Server, $Account, $Page, $conn;
+    global $GameServer, $GameAccount, $GamePage;
+    $conn = $GameServer->connect();
 
-$Page->validatePageAccess('Tools->Tickets');
+    $GamePage->validatePageAccess('Tools->Tickets');
 
 ?>
 <div class="box_right_title">Tickets</div>
@@ -12,7 +13,7 @@ $Page->validatePageAccess('Tools->Tickets');
             <td>
             <select id="tickets_realm">
            		 <?php
-				 $server->selectDB('webdb');
+				 $GameServer->selectDB('webdb', $conn);
 
 				$result = mysqli_query($conn, "SELECT char_db,name,description FROM realms");
 				if(mysqli_num_rows($result) == 0) 

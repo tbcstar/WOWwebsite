@@ -30,7 +30,9 @@ if (isset($_GET['newsid']))
 		$result = mysqli_query($conn, "SELECT poster FROM news_comments WHERE newsid='".$id."' ORDER BY id DESC LIMIT 1");
 		$rows = mysqli_fetch_assoc($result);
 	if($rows['poster'] == $_SESSION['cw_user_id'] && isset($_SESSION['cw_user'])) 
+	{
 		echo "<p>您不能连续发表2条评论！</p>"; 
+	}
 	else 
 	{
 	?>
@@ -39,7 +41,7 @@ if (isset($_GET['newsid']))
     <?php if ($_SESSION['cw_user']) {?>
     <table width="100%"> <tr> <td>
     <form action="?p=news&id=<?php echo $id; ?>" method="post">
-    <textarea id="newscomment_textarea" name="text">评论这篇文章……</textarea> </td>
+    <textarea id="newscomment_textarea" name="text" placeholder="评论这篇文章..."></textarea>
     <td><input type="submit" value="Post" name="comment"></td>
     </form> 
     </tr></table>
@@ -47,7 +49,9 @@ if (isset($_GET['newsid']))
     <?php
 	} 
 	else
+	{
 		echo "<span class='note'>请登录才能发表评论！</span>";
+	{
 	}
 	if (isset($_POST['comment'])) 
 	{
@@ -58,9 +62,9 @@ if (isset($_GET['newsid']))
 			$Connect->selectDB('logondb');
 			
 			$getAcct = mysqli_query($conn, "SELECT `id` FROM `account` WHERE `username` = '{$_SESSION['cw_user']}'"); $row = mysqli_fetch_assoc($getAcct);
-			$acct = $row['id'];
+			$account = $row['id'];
 			$Connect->selectDB('webdb'); 
-			mysqli_query($conn, "INSERT INTO news_comments VALUE ('','".$id."','".$text."','".$acct."','".$ip."')");
+			mysqli_query($conn, "INSERT INTO news_comments VALUE ('','".$id."','".$text."','".$account."','".$ip."')");
 			
 			header("Location: ?p=news&id=".$_GET['id']."");
 		}
@@ -109,6 +113,7 @@ if (isset($_GET['newsid']))
 		}
 	}
 }  
+}
 }
 else
 {

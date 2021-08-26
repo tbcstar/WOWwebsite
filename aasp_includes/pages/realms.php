@@ -1,13 +1,14 @@
 <?php
 
-    global $Server, $Page;
- 	$Server->selectDB('webdb');
+    global $GameServer, $GamePage;
+    $conn = $GameServer->connect();
+    $GameServer->selectDB('webdb', $conn);
 	
-	$Page->validatePageAccess('Realms');
+	$GamePage->validatePageAccess('Realms');
 	
-    if($Page->validateSubPage() == TRUE) 
+    if($GamePage->validateSubPage() == TRUE) 
       {
-	     $Page->outputSubPage();
+	     $GamePage->outputSubPage();
 	} 
       else 
       {
@@ -16,20 +17,20 @@
 <?php 
 if(isset($_POST['add_realm'])) 
 {
-     $Server->addRealm($_POST['realm_id'],
-            $_POST['realm_name'],
-            $_POST['realm_desc'],
-            $_POST['realm_host'],
-            $_POST['realm_port'],
-            $_POST['realm_chardb'],
-            $_POST['realm_sendtype'],
-            $_POST['realm_rank_username'],
-            $_POST['realm_rank_password'],
-            $_POST['realm_ra_port'],
-            $_POST['realm_soap_port'],
-            $_POST['realm_a_host'],
-            $_POST['realm_a_user'],
-            $_POST['realm_a_pass']);	
+     $GameServer->addRealm($_POST['realm_id'],
+        $_POST['realm_name'],
+        $_POST['realm_desc'],
+        $_POST['realm_host'],
+        $_POST['realm_port'],
+        $_POST['realm_chardb'],
+        $_POST['realm_sendtype'],
+        $_POST['realm_rank_username'],
+        $_POST['realm_rank_password'],
+        $_POST['realm_ra_port'],
+        $_POST['realm_soap_port'],
+        $_POST['realm_a_host'],
+        $_POST['realm_a_user'],
+        $_POST['realm_a_pass']);	
 }?>
 
     <form action="?p=realms" method="post" style="line-height: 15px;">

@@ -1,31 +1,77 @@
 <?php
 
-	global $Server, $Page, $conn;
-	$Server->selectDB('webdb');
+    global $GameServer, $GamePage;
+    $conn = $GameServer->connect();
 
-	$Page->validatePageAccess('Pages');
+    $GameServer->selectDB('webdb', $conn);
 
-    if($Page->validateSubPage() == TRUE) 
+	$GamePage->validatePageAccess('Pages');
+
+    if($GamePage->validateSubPage() == TRUE) 
     {
-		$Page->outputSubPage();
+		$GamePage->outputSubPage();
 	} 
 	else 
 	{
- ?>
 
-<div class="box_right_title">页面</div>
+    echo "<div class='box_right_title'>页面</div>";
 
-<?php if(!isset($_GET['action'])) { ?>
+    if(!isset($_GET['action']))
+    {
 
-<table class="center">
-<tr>
-		<th>名称</th><th>文件名</th><th>动作</th>
-</tr>
+    ?><table class='center'>
+    <tr>
+        <th>名称</th><th>文件名</th><th>动作</th>
+    </tr>
+<?php 
+    $result = mysqli_query($conn, "SELECT * FROM custom_pages ORDER BY id ASC;");
+    while ($row    = mysqli_fetch_assoc($result))
+    {
+        $check = mysqli_query($conn, "SELECT COUNT(filename) FROM disabled_pages WHERE filename='" . $row['filename'] . "';");
+        if (mysqli_data_seek($check, 0) == 0)
+            {
+                $disabled = false;
+            }
+            else
+            {
+                $disabled = true;
+            }
+            ?>
+        <tr <?php
+            if ($disabled == true)
+            {
+                echo "style='color: #999;'";
+            }
+            ?>>
+        <td width="50"><?php echo $row['name']; ?></td>
+        <td width="100"><?php echo $row['filename']; ?>(Database)</td>
+        <td><select id="action-<?php echo $row['filename']; ?>"><?php
+            if ($disabled == true)
+            {
+            ?>
+            <option value="1">Enable</option>
+            <?php
+            }
+            else
+            {
+            ?>
+            <option value="2">Disable</option>
+    <?php   }
+            ?>
+            <option value="3">Edit</option>
+            <option value="4">Remove</option>
+        </select> &nbsp;<input type="submit" value="Save" onclick="savePage('<?php echo $row['filename']; ?>')"></td>
+    </tr>
 <?php
-	$result = mysqli_query($conn, "SELECT * FROM custom_pages ORDER BY id ASC;");
-	while($row = mysqli_fetch_assoc($result)) 
+    }
+
+        if (is_array($GLOBALS['core_pages']) || is_object($GLOBALS['core_pages']))
+    {
+        foreach ($GLOBALS['core_pages'] as $k => $v)
 	{ 
-     	$check = mysqli_query($conn, "SELECT COUNT(filename) FROM disabled_pages WHERE filename='".$row['filename']."';");
+            $filename = substr($v, 0, -4);
+            unset($check);
+            $check    = mysqli_query($conn, "SELECT COUNT(filename) FROM disabled_pages WHERE filename='" . $filename . "';");
 	 	if(mysqli_data_seek($check,0) == 0) 
 	 	{
 			$disabled = false;
@@ -36,16 +82,16 @@
 	 	}
     ?>
 	<tr <?php if($disabled == true) { echo "style='color: #999;'"; }?>>
-         <td width="50"><?php echo $row['name']; ?></td>
-         <td width="100"><?php echo $row['filename']; ?>(Database)</td>
-         <td><select id="action-<?php echo $row['filename']; ?>"><?php if($disabled == true) {  ?>
-             <option value="1">启用</option>
-		 <?php } else { ?>
-			 <option value="2">禁用</option>
-		 <?php } ?>
-         <option value="3">编辑</option>
-         <option value="4">移除</option>
-         </select> &nbsp;<input type="submit" value="保存" onclick="savePage('<?php echo $row['filename']; ?>')"></td>
+        <td width="50"><?php echo $row['name']; ?></td>
+        <td width="100"><?php echo $row['filename']; ?>(Database)</td>
+        <td><select id="action-<?php echo $row['filename']; ?>"><?php if($disabled == true) {  ?>
+            <option value="1">启用</option>
+		<?php } else { ?>
+			<option value="2">禁用</option>
+		<?php } ?>
+        <option value="3">编辑</option>
+        <option value="4">移除</option>
+        </select> &nbsp;<input type="submit" value="保存" onclick="savePage('<?php echo $row['filename']; ?>')"></td>
     </tr>
 <?php }
 
@@ -66,16 +112,24 @@ if (is_array($GLOBALS['core_pages']) || is_object($GLOBALS['core_pages']))
 		}
 	?>
 
-	    <tr <?php if($disabled == true) { echo "style='color: #999;'"; }?>>
-	        <td><?php echo $k; ?></td>
-	        <td><?php echo $v; ?></td>
-	        <td><select id="action-<?php echo $filename; ?>">
-	             <?php if($disabled == true) { ?>
-	             <option value="1">启用</option>
-			 <?php } else { ?>
-				 <option value="2">禁用</option>
-			 <?php } ?>
-	        </select> &nbsp;<input type="submit" value="Save" onclick="savePage('<?php echo $filename; ?>')"></td>
+	<tr <?php if($disabled == true) { echo "style='color: #999;'";
+	}?>>
+	    <td><?php echo $k; ?></td>
+	    <td><?php echo $v; ?></td>
+        <td><select id="action-<?php echo $filename; ?>">
+    <?php
+	    if($disabled == true)
+	    {
+	    ?>
+	    <option value="1">启用</option>
+		<?php
+		}
+		else
+		{
+		?>
+		<option value="2">禁用</option>
+    <?php } ?>
+        </select> &nbsp;<input type="submit" value="Save" onclick="savePage('<?php echo $filename; ?>')"></td>
 	    </tr>
 	<?php } ?>
 }
@@ -103,11 +157,9 @@ if (is_array($GLOBALS['core_pages']) || is_object($GLOBALS['core_pages']))
 		} 
 		else 
 		{
-			mysqli_query($conn, "UPDATE custom_pages SET name='".$name."',filename='".$filename."',
-			content='".$content."' WHERE filename='".mysqli_real_escape_string($conn, $_GET['filename'])."';");
+            mysqli_query($conn, "UPDATE custom_pages SET name='" . $name . "',filename='" . $filename . "', content='" . $content . "' WHERE filename='" . mysqli_real_escape_string($conn, $_GET['filename']) . "';");
 
-			echo "<h3>页面已成功更新。</h3> 
-			<a href='".$GLOBALS['website_domain']."?p=".$filename."' target='_blank'>查看页面</a>";
+            echo "<h3>页面已成功更新。</h3> <a href='" . $GLOBALS['website_domain'] . "?p=" . $filename . "' target='_blank'>查看页面</a>";
 		}
 	}
 
@@ -126,4 +178,8 @@ if (is_array($GLOBALS['core_pages']) || is_object($GLOBALS['core_pages']))
     <br/>
     <input type="submit" value="保存" name="editpage">
     
-<?php } } ?>
+<?php
+            }
+        }
+    }
+}

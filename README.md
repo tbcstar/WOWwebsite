@@ -7,7 +7,7 @@
 5. Statistics
 6. Vote
 7. Game statistics
-8. Arena Ranking (1v1 + module TrinityCore 2.4.3 tbc) ,2v2,3v3,5v5
+8. Arena Ranking 2v2,3v3,5v5
 9. Top Kills
 10. Time played
 11. Purchase items
@@ -28,9 +28,10 @@
 26. Add news
 27. Server Statistics
 28. Instance reset
-You can change everything from admin panel to how much it costs.
 
-Currently only TrinityCore is supported and Oregoncore needs to be modified to support it；
-PHP version requirements: 5.6
+
+PHP version requirements: 7.2	Enable：gmp、gd、soap、mbstring、pdo、pdo-mysql
+CHMOD 777 'error.log'、'/includes/configuration.php'、styles/global/slideshow/
+
 
 ![image](https://github.com/tbcstar/WOWwebsite/blob/mysqli/preview.jpg)

@@ -1,27 +1,27 @@
 <?php
-	global $Server, $Account, $conn;
+    global $GameServer, $GameAccount, $conn;
 ?>
 <div class="box_right_title">控制面板</div>
 <table style="width: 605px;">
 <tr>
-<td><span class='blue_text'>在线账号</span></td><td><?php echo $Server->getActiveConnections(); ?></td>
-<td><span class='blue_text'>活跃账户(本月)</span></td><td><?php echo $Server->getActiveAccounts(); ?></td>
+<td><span class='blue_text'>在线账号</span></td><td><?php echo $GameServer->getActiveConnections(); ?></td>
+<td><span class='blue_text'>活跃账户(本月)</span></td><td><?php echo $GameServer->getActiveAccounts(); ?></td>
 </tr>
 <tr>
-    <td><span class='blue_text'>今天登录的账户</span></td><td><?php echo $Server->getAccountsLoggedToday(); ?></td> 
-    <td><span class='blue_text'>今天创建的账户</span></td><td><?php echo $Server->getAccountsCreatedToday(); ?></td>
+    <td><span class='blue_text'>今天登录的账户</span></td><td><?php echo $GameServer->getAccountsLoggedToday(); ?></td> 
+    <td><span class='blue_text'>今天创建的账户</span></td><td><?php echo $GameServer->getAccountsCreatedToday(); ?></td>
 </tr>
 </table>
 </div>
 
 <?php
-	$Server->checkForNotifications();
+	$GameServer->checkForNotifications();
 ?>
 
 <div class="box_right">
   <div class="box_right_title">管理面板日志</div>
   <?php
-  $Server->selectDB('webdb');
+    $GameServer->selectDB('webdb', $conn);
   $result = mysqli_query($conn, "SELECT * FROM admin_log ORDER BY id DESC LIMIT 10;");
   if(mysqli_num_rows($result) == 0) 
   {
@@ -39,7 +39,7 @@
     while($row = mysqli_fetch_assoc($result)) { ?>
       <tr>
         <td><?php echo date("Y-m-d H:i:s",$row['timestamp']); ?></td>
-        <td><?php echo $Account->getAccName($row['account']); ?></td>
+        <td><?php echo $GameAccount->getAccName($row['account']); ?></td>
         <td><?php echo $row['action']; ?></td>
       </tr>
     <?php } ?>

@@ -1,11 +1,12 @@
 <?php 
-global $Page, $Server, $Account, $conn;
+    global $GamePage, $GameServer, $GameAccount;
+    $conn = $GameServer->connect();
+    $GameServer->selectDB('webdb', $conn);
 ?> 
 <div class="box_right_title">投票链接</div>
 <table class="center">
 <tr><th>标题</th><th>积分</th><th>图片</th><th>Url</th><th>动作</th></tr>
 <?php
-$server->selectDB('webdb');
 $result = mysqli_query($conn, "SELECT * FROM votingsites ORDER BY id ASC");
 while($row = mysqli_fetch_assoc($result)) { ?>
 	     <tr>

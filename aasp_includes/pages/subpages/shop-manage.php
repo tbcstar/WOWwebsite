@@ -1,5 +1,5 @@
-<?php $page = new page; ?>
-<div class="box_right_title"><?php echo $page->titleLink(); ?> &raquo; 物品管理</div>
+<?php global $GamePage; ?>
+<div class="box_right_title"><?php echo $GamePage->titleLink(); ?> &raquo; 商品管理</div>
 <table width="100%">
         <tr valign="top">
              <td style="text-align: left; width: 300px;"><h3>修改唯一性物品</h3>

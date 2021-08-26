@@ -1,13 +1,13 @@
 <?php 
 
-	global $Server, $Page;
-	$Server->selectDB('webdb'); 
+    global $GameServer, $GamePage;
+    $GameServer->selectDB('webdb', $conn);
 
-	$Page->validatePageAccess('Logs');
+	$GamePage->validatePageAccess('Logs');
 
-	if($page->validateSubPage() == TRUE) 
+	if($GamePage->validateSubPage() == TRUE) 
 	{
-		$Page->outputSubPage();
+		$GamePage->outputSubPage();
 	} 
 	else 
 	{
