@@ -17,13 +17,14 @@ class Connect
 			{
 				buildError("<b>数据库连接错误:</b> 无法建立连接。错误: ". mysqli_error($conn), NULL);
 			}
-			$this->$connectedTo = 'global';
+			self::$connectedTo = 'global';
 		}
 	}
 	 
 	public static function connectToRealmDB($realmid) 
 	{ 
-		$this->selectDB('webdb');
+        $conn = self::connectToDB();
+        self::selectDB('webdb', $conn);
 
 		if($GLOBALS['realms'][$realmid]['mysqli_host'] != $GLOBALS['connection']['host'] 
 		|| $GLOBALS['realms'][$realmid]['mysqli_user'] != $GLOBALS['connection']['user'] 
@@ -37,11 +38,11 @@ class Connect
 		}
 		else
 		{
-			$this->connectToDB();
+			self::connectToDB();
 		}
 		mysqli_select_db($conn, $GLOBALS['realms'][$realmid]['chardb']) or 
 		buildError("<b>数据库选择错误:</b> 无法选择realm数据库。错误: ". mysqli_error($conn),NULL);
-		$this->$connectedTo = 'chardb';
+		self::$connectedTo = 'chardb';
 	}
 	 
 	 
@@ -89,8 +90,8 @@ class Connect
 	mysqli_select_db($conn, $connection['webdb']);
 
 	//Realms
-	$getRealms = mysqli_query($conn, "SELECT * FROM realms ORDER BY id ASC");
-	while($row = mysqli_fetch_assoc($getRealms)) 
+    $getRealms = mysqli_query($conn, "SELECT * FROM realms ORDER BY id ASC;");
+    while ($row = mysqli_fetch_assoc($getRealms))
 	{
 		$realms[$row['id']]['id']			= $row['id'];
 		$realms[$row['id']]['name']			= $row['name'];
@@ -112,9 +113,9 @@ class Connect
 		$realms[$row['id']]['mysqli_pass']	= $row['mysqli_pass'];
 	}
 
-		 //Service prices
-	$getServices = mysqli_query($conn, "SELECT enabled,price,currency,service FROM service_prices");
-	while($row = mysqli_fetch_assoc($getServices))
+	//Service prices
+    $getServices = mysqli_query($conn, "SELECT enabled, price, currency, service FROM service_prices;");
+    while($row = mysqli_fetch_assoc($getServices))
 	{
 		$service[$row['service']]['status']=$row['enabled'];
 		$service[$row['service']]['price']=$row['price'];
