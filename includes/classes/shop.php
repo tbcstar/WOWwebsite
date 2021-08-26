@@ -6,7 +6,7 @@ class Shop
 	public function search($value, $shop, $quality, $type, $ilevelfrom, $ilevelto, $results, $faction, $class, $subtype) 
 	{
 		global $Connect, $conn;
-		$Connect->selectDB('webdb');
+		$Connect->selectDB('webdb', $conn);
 
 		if ($shop == 'vote')
 		{
@@ -216,7 +216,7 @@ class Shop
 	public function listAll($shop)
 	{
 		global $Connect, $conn;
-		$Connect->selectDB('webdb');
+		$Connect->selectDB('webdb', $conn);
 		$shop = mysqli_real_escape_string($conn, $shop);
 		
 		$result = mysqli_query($conn, "SELECT entry,displayid,name,quality,price,faction,class
@@ -332,16 +332,24 @@ class Shop
 	public function logItem($shop, $entry, $char_id, $account, $realm_id, $amount) 
 	{
 		global $Connect, $conn;
-		$Connect->selectDB('webdb');
+		$Connect->selectDB('webdb', $conn);
 		date_default_timezone_set($GLOBALS['timezone']);
-		mysqli_query($conn, "INSERT INTO shoplog VALUES ('','".(int)$entry."','".(int)$char_id."','".date("Y-m-d H:i:s")."',
-		'".$_SERVER['REMOTE_ADDR']."','".mysqli_real_escape_string($conn, $shop)."','".(int)$account."','".(int)$realm_id."','".(int)$amount."')");
-	}
+
+        $entry      = mysqli_real_escape_string($conn, $entry);
+        $char_id    = mysqli_real_escape_string($conn, $char_id);
+        $shop       = mysqli_real_escape_string($conn, $shop);
+        $account    = mysqli_real_escape_string($conn, $account);
+        $realm_id   = mysqli_real_escape_string($conn, $realm_id);
+        $amount     = mysqli_real_escape_string($conn, $amount);
+
+        mysqli_query($conn, "INSERT INTO shoplog (`entry`, `char_id`, `date`, `ip`, `shop`, `account`, `realm_id`, `amount`) VALUES 
+            ('". $entry ."', '". $char_id ."', '". date("Y-m-d H:i:s") ."', '". $_SERVER['REMOTE_ADDR'] ."', '". $shop ."', '". $account ."', '". $realm_id ."', '". $amount ."')");
+    }
 	
 	public static function getClassMask($classID) 
 	{
 
-		switch((int)$classID) 
+        switch ($classID)
 		{
 
 			case(1):

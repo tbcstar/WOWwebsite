@@ -56,7 +56,7 @@ class Account
 					$_SESSION['cw_user'] = ucfirst(strtolower($username));
 					$_SESSION['cw_user_id'] = $id;
 					
-					$Connect->selectDB('webdb');
+					$Connect->selectDB('webdb', $conn);
 					$count = mysqli_query($conn, "SELECT COUNT(*) FROM account_data WHERE id='". $id ."'");
 					if(mysqli_data_seek($count,0)==0)
 						mysqli_query($conn, "INSERT INTO account_data VALUES('".$id."','0','0')");
@@ -216,16 +216,16 @@ class Account
 		{
 			$password = sha1("".$username.":".$password."");
 		
-			mysqli_query($conn, "INSERT INTO account (username,email,sha_pass_hash,joindate,expansion,recruiter) 
-			VALUES('". $username ."','". $email ."','". $password ."','". date("Y-m-d H:i:s") ."','". $GLOBALS['core_expansion'] ."','". $raf ."') "); 
+            mysqli_query($conn, "INSERT INTO account (username, email, sha_pass_hash, joindate, expansion, recruiter) 
+                VALUES('" . $username . "','" . $email . "','" . $password . "','" . date("Y-m-d H:i:s") . "','" . $GLOBALS['core_expansion'] . "','" . $raf . "');");
 			
-			$getID 	= mysqli_query($conn, "SELECT id FROM account WHERE username='". $username ."'");
-			$row 	= mysqli_fetch_assoc($getID);
+			$getID  = mysqli_query($conn, "SELECT id FROM account WHERE username='" . $username . "';");
+			$row    = mysqli_fetch_assoc($getID);
 
-			$Connect->selectDB('webdb');
-			mysqli_query($conn, "INSERT INTO account_data VALUES('".$row['id']."','','','')"); 
+			$Connect->selectDB('webdb', $conn);
+            mysqli_query($conn, "INSERT INTO account_data (id) VALUES('" . $row['id'] . "');");
 
-			$result = mysqli_query($conn, "SELECT id FROM account WHERE username='". $username_clean ."'");	 
+            $result = mysqli_query($conn, "SELECT id FROM account WHERE username='" . $username_clean . "';");
 			$id 	= mysqli_fetch_assoc($result); 
 			$id 	= $id['id'];
 
@@ -326,11 +326,11 @@ class Account
 	###############################
 	public static function checkBanStatus($user) 
 	{
-		global $Connect, $conn;
-		$Connect->selectDB('logondb');
-		$acct_id = $this->getAccountID($user);
+        global $Connect, $conn;
+        $Connect->selectDB('logondb', $conn);
+		$acct_id = self::getAccountID($user);
 		
-		$result = mysqli_query($conn, "SELECT bandate,unbandate,banreason FROM account_banned WHERE id='". $acct_id ."' AND active=1");
+        $result = mysqli_query($conn, "SELECT bandate, unbandate, banreason FROM account_banned WHERE id='" . $acct_id . "' AND active=1;");
 		if (mysqli_num_rows($result) > 0) 
 		{
 			$row = mysqli_fetch_assoc($result);
@@ -363,7 +363,7 @@ class Account
 		global $Connect, $conn;
 		$user = mysqli_real_escape_string($conn, $user);
 		$Connect->selectDB('logondb');
-		$result = mysqli_query($conn, "SELECT id FROM account WHERE username='".$user."'");
+		$result = mysqli_query($conn, "SELECT id FROM account WHERE username='" . $user . "';");
 		$row 	= mysqli_fetch_assoc($result);
 		return $row['id'];
 	}
@@ -373,7 +373,7 @@ class Account
 		global $Connect, $conn;
 		$id = (int)$id;
 		$Connect->selectDB('logondb');
-		$result = mysqli_query($conn, "SELECT username FROM account WHERE id='".$id."'");
+		$result = mysqli_query($conn, "SELECT username FROM account WHERE id='" . $id . "';");
 		$row 	= mysqli_fetch_assoc($result);
 		return $row['username'];
 	}
@@ -398,8 +398,8 @@ class Account
 	public static function loadVP($account_name) 
 	{
 		global $Connect, $conn;
-		$acct_id = $this->getAccountID($account_name);
-		$Connect->selectDB('webdb');
+		$acct_id = self::getAccountID($account_name);
+		$Connect->selectDB('webdb', $conn);
 		$result = mysqli_query($conn, "SELECT vp FROM account_data WHERE id=".$acct_id);
 		if (mysqli_num_rows($result) == 0)
 		{
@@ -416,8 +416,8 @@ class Account
 	public static function loadDP($account_name) 
 	{
 		global $Connect, $conn;
-	    $acct_id = $this->getAccountID($account_name);
-		$Connect->selectDB('webdb');
+	    $acct_id = self::getAccountID($account_name);
+		$Connect->selectDB('webdb', $conn);
 		$result = mysqli_query($conn, "SELECT dp FROM account_data WHERE id=". $acct_id);
 		if (mysqli_num_rows($result) == 0)
 		{
@@ -485,7 +485,7 @@ class Account
 	{
 		global $Connect, $conn;
 		$Connect->selectDB('logondb');
-		$acct_id = $this->getAccountID($account_name);
+		$acct_id = self::getAccountID($account_name);
 		
 		$result = mysqli_query($conn, "SELECT gmlevel FROM account_access WHERE gmlevel > 2 AND id=".$acct_id);
 		if(mysqli_num_rows($result) > 0) 
@@ -500,9 +500,9 @@ class Account
 	{
 		global $Connect, $conn;
 
-		$acct_id = $this->getAccountID($account_name);
+		$acct_id = self::getAccountID($account_name);
 
-		$Connect->selectDB('webdb');
+		$Connect->selectDB('webdb', $conn);
 
 		$getRealms = mysqli_query($conn, "SELECT id,name FROM realms");
 		while($row = mysqli_fetch_assoc($getRealms)) 
@@ -685,19 +685,20 @@ class Account
 				你好。<br/><br/>
 				要求为帐户重设密码 ". $account_name ." <br/>
 				如果要重置密码，请单击下面的链接：<br/>
-				<a href='". $GLOBALS['website_domain'] ."?p=forgotpw&code=". $code ."&account=". $this->getAccountID($account_name) ."'>
-				". $GLOBALS['website_domain'] ."?p=forgotpw&code=". $code ."&account=". $this->getAccountID($account_name) ."</a>
+				<a href='". $GLOBALS['website_domain'] ."?p=forgotpw&code=". $code ."&account=". self::getAccountID($account_name) ."'>
+				". $GLOBALS['website_domain'] ."?p=forgotpw&code=". $code ."&account=". self::getAccountID($account_name) ."</a>
 				
 				<br/><br/>
 				
 				如果您没有请求此消息，请忽略此消息。<br/><br/>
 				来自TBCstar的问候。");
 
-				$account_id = $this->getAccountID($account_name);
-				$Connect->selectDB('webdb');
+				$account_id = self::getAccountID($account_name);
+				$Connect->selectDB('webdb', $conn);
 				
 				mysqli_query($conn, "DELETE FROM password_reset WHERE account_id='".$account_id."'");
-				mysqli_query($conn, "INSERT INTO password_reset VALUES ('','". $code ."','". $account_id ."')");
+                mysqli_query($conn, "INSERT INTO password_reset (code, account_id)
+                    VALUES ('" . $code . "','" . $account_id . "');");
 				echo "
 				包含重置密码链接的电子邮件已发送到您指定的电子邮件地址。
 				如果您在此之前已经提交了其他密码重置请求，则这些请求将不起作用。<br/>";
@@ -708,8 +709,8 @@ class Account
 		{
 			global $Connect, $conn;
 			$points 	= (int)$points;
-			$account_id = $this->getAccountID($account_name);
-			$Connect->selectDB('webdb');
+			$account_id = self::getAccountID($account_name);
+			$Connect->selectDB('webdb', $conn);
 			$result 	= mysqli_query($conn, "SELECT COUNT('id') FROM account_data WHERE vp >= '". $points ."' AND id='". $account_id ."'");
 			
 			if (mysqli_data_seek($result, 0) == 0)
@@ -726,8 +727,8 @@ class Account
 		{
 			global $Connect, $conn;
 			$points 	= (int)$points;
-			$account_id = $this->getAccountID($account_name);
-			$Connect->selectDB('webdb');
+			$account_id = self::getAccountID($account_name);
+			$Connect->selectDB('webdb', $conn);
 			$result 	= mysqli_query($conn, "SELECT COUNT('id') FROM account_data WHERE dp >= '". $points ."' AND id='". $account_id ."'");
 			
 			if (mysqli_data_seek($result, 0) == 0)
@@ -746,7 +747,7 @@ class Account
 
 			$points 	= (int)$points;
 			$account_id = (int)$account_id;
-			$Connect->selectDB('webdb');
+			$Connect->selectDB('webdb', $conn);
             
 			mysqli_query($conn, "UPDATE account_data SET vp=vp - ".$points." WHERE id='".$account_id."'");
 		}
@@ -756,7 +757,7 @@ class Account
 			global $Connect, $conn;
 			$points 	= (int)$points;
 			$account_id = (int)$account_id;
-			$Connect->selectDB('webdb');
+			$Connect->selectDB('webdb', $conn);
             
 			mysqli_query($conn, "UPDATE account_data SET dp=dp - ".$points." WHERE id='".$account_id."'");
 		}
@@ -767,7 +768,7 @@ class Account
 
 			$account_id = (int)$account_id;
 			$points 	= (int)$points;
-			$Connect->selectDB('webdb');
+			$Connect->selectDB('webdb', $conn);
 			
 			mysqli_query($conn, "UPDATE account_data SET dp=dp + ".$points." WHERE id='".$account_id."'");
 		}
@@ -777,7 +778,7 @@ class Account
 			global $Connect, $conn;
 			$account_id = (int)$account_id;
 			$points 	= (int)$points;
-			$Connect->selectDB('webdb');
+			$Connect->selectDB('webdb', $conn);
 			
 			mysqli_query($conn, "UPDATE account_data SET dp=dp + ".$points." WHERE id='". $account_id ."'");
 		}
@@ -787,7 +788,7 @@ class Account
 			global $Connect, $conn;
 			$char_id = (int)$char_id;
 			$realm_id = (int)$realm_id;
-			$Connect->selectDB('webdb');
+			$Connect->selectDB('webdb', $conn);
 			$Connect->connectToRealmDB($realm_id);
 			
 			$result = mysqli_query($conn, "SELECT account FROM characters WHERE guid='". $char_id ."'");
@@ -798,7 +799,7 @@ class Account
 		function isGM($account_name) 
 		{
 			global $conn;
-	        $account_id = $this->getAccountID($account_name);
+	        $account_id = self::getAccountID($account_name);
 			$result = mysqli_query($conn, "SELECT COUNT(id) FROM account_access WHERE id='". $account_id ."' AND gmlevel >= 1");
 			if (mysqli_data_seek($result,0) > 0)
 			{
@@ -818,8 +819,9 @@ class Account
 			$service 	= mysqli_real_escape_string($conn, $service);
 			$account 	= (int)$_SESSION['cw_user_id'];
 			
-			$Connect->selectDB('webdb');
-			mysqli_query($conn, "INSERT INTO user_log VALUES('','". $account ."','". $service ."','". time() ."','". $_SERVER['REMOTE_ADDR'] ."','". $realmid ."','". $desc ."')");
+			$Connect->selectDB('webdb', $conn);
+            mysqli_query($conn, "INSERT INTO user_log (`account`, `service`, `timestamp`, `ip`, `realmid`, `desc`) 
+                VALUES('','" . $account . "','" . $service . "','" . time() . "','" . $_SERVER['REMOTE_ADDR'] . "','" . $realmid . "','" . $desc . "')");
 		}
 	}
 }
