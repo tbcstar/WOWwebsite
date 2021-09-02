@@ -7,7 +7,8 @@
 <div class="box_two">
 
 <?php
-global $Account, $Website, $Server, $Character, $Connect, $conn;
+global $Account, $Website, $Server, $Character, $Connect;
+$conn = $Connect->connectToDB();
 ?>
 
 <div class='box_two_title'>副本重置</div>
@@ -44,7 +45,7 @@ else
 <td>
 <select name="ir_realm">
 	 <?php
-	 $result = mysqli_query($conn, "SELECT name,char_db FROM realms");
+	 $result = mysqli_query($conn, "SELECT name,char_db FROM realms;");
 	 while($row = mysqli_fetch_assoc($result))
 	 {
 		 if(isset($_POST['ir_realm']) && $_POST['ir_realm'] == $row['char_db'])
@@ -86,7 +87,7 @@ else
 	 <?php
 	 $acc_id = $Account->getAccountID($_SESSION['username']);
 	 $Connect->selectDB($_POST['ir_realm']);
-	 $result = mysqli_query($conn, "SELECT name,guid FROM characters WHERE account='".$acc_id."'");
+	 $result = mysqli_query($conn, "SELECT name, guid FROM characters WHERE account=". $acc_id .";");
 
 	 while($row = mysqli_fetch_assoc($result))
 	 {
@@ -125,10 +126,10 @@ if(isset($_POST['ir_step2']) || isset($_POST['ir_step3']))
 <input type="hidden" name="ir_char" value="<?php echo $_POST['ir_char']; ?>">
 <select name="ir_instance">
 	 <?php
-	 $guid = (int)$_POST['ir_char'];
+	 $guid = mysqli_real_escape_string($conn, $_POST['ir_char']);
 	 $Connect->selectDB($_POST['ir_realm']);
 
-	 $result = mysqli_query($conn, "SELECT instance FROM character_instance WHERE guid='".$guid."' AND permanent=1");
+	 $result = mysqli_query($conn, "SELECT instance FROM character_instance WHERE guid=". $guid ." AND permanent=1;");
 	 if (mysqli_num_rows($result)==0) 
 	 {
 		 echo "<option value='#'>没有副本需要重置！</option>";
@@ -138,11 +139,11 @@ if(isset($_POST['ir_step2']) || isset($_POST['ir_step3']))
 	 {
 		 while($row = mysqli_fetch_assoc($result)) 
 		 {
-			 $getI = mysqli_query($conn, "SELECT id, map, difficulty FROM instance WHERE id='".$row['instance']."'");
+			 $getI     = mysqli_query($conn, "SELECT id, map, difficulty FROM instance WHERE id=". $row['instance'] .";");
 			 $instance = mysqli_fetch_assoc($getI); 
 			 
-			 $Connect->selectDB('webdb');
-			 $getName = mysqli_query($conn, "SELECT name FROM instance_data WHERE map='".$instance['map']."'");
+			 $Connect->selectDB('webdb', $conn);
+			 $getName = mysqli_query($conn, "SELECT name FROM instance_data WHERE map='" . $instance['map'] . "';");
 			 $name = mysqli_fetch_assoc($getName);
 			 
 			 if(empty($name['name']))
@@ -150,14 +151,22 @@ if(isset($_POST['ir_step2']) || isset($_POST['ir_step3']))
 			 else
 			 	$name = $name['name'];	
 				
-			 if ($instance['difficulty']==0)
-				 $difficulty = "10-man Normal";
-			 elseif($instance['difficulty']==1)
-				 $difficulty = "25-man Normal";
-			 elseif($instance['difficulty']==2)
-				 $difficulty = "10-man Heroic";
-			 elseif($instance['difficulty']==3)
-				 $difficulty = "25-man Heroic";
+			if ($instance['difficulty'] == 0)
+            {
+                $difficulty = "10-man Normal";
+            }
+            elseif ($instance['difficulty'] == 1)
+            {
+                $difficulty = "25-man Normal";
+            }
+            elseif ($instance['difficulty'] == 2)
+            {
+                $difficulty = "10-man Heroic";
+            }
+            elseif ($instance['difficulty'] == 3)
+            {
+                $difficulty = "25-man Heroic";
+            }
 			 
 			 echo '<option value="'.$instance['id'].'">'.$name.' <i>('.$difficulty.')</i></option>';
 	 }
@@ -179,8 +188,8 @@ if(!isset($_POST['ir_step1']) && !isset($nope))
 
 if(isset($_POST['ir_step3']))
 {
-	$guid = (int)$_POST['ir_char'];
-	$instance = (int)$_POST['ir_instance'];
+	$guid     = mysqli_real_escape_string($conn, $_POST['ir_char']);
+    $instance = mysqli_real_escape_string($conn, $_POST['ir_instance']);
 	
 	if($GLOBALS['service'][$service]['currency']=="vp")
 		if($Account->hasVP($_SESSION['cw_user'],$GLOBALS['service'][$service]['price'])==FALSE)

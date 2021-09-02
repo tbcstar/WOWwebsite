@@ -23,20 +23,23 @@
 <div class="box_right_title">用户概述</div>
 <table style="width: 100%;">
 <tr>
-<td><span class='blue_text'>总用户数</span></td>
-<td><?php echo round(mysqli_fetch_assoc($usersTotal)['totalUsers']); ?></td>
-<td><span class='blue_text'>今日新增用户</span></td>
-<td><?php echo round(mysqli_fetch_assoc($usersToday)['dailyUsers']); ?></td>
+    <td><span class='blue_text'>总用户数</span></td>
+    <td><?php echo round(mysqli_fetch_assoc($usersTotal)['totalUsers']); ?></td>
+    
+    <td><span class='blue_text'>今日新增用户</span></td>
+    <td><?php echo round(mysqli_fetch_assoc($usersToday)['dailyUsers']); ?></td>
 </tr>
 <tr>
     <td><span class='blue_text'>本月新用户</span></td>
     <td><?php echo round(mysqli_fetch_assoc($usersMonth)['monthlyUsers']); ?></td>
+
     <td><span class='blue_text'>在线用户</span></td>
     <td><?php echo round(mysqli_fetch_assoc($usersOnline)['onlineUsers']); ?></td>
 </tr>
 <tr>
     <td><span class='blue_text'>活跃用户(本月)</span></td>
     <td><?php echo round(mysqli_fetch_assoc($usersActive)['activeUsers']); ?></td>
+
     <td><span class='blue_text'>今日登陆用户</span></td>
     <td><?php echo round(mysqli_fetch_assoc($usersActiveToday)['activeUsersToday']); ?></td>
 </tr>

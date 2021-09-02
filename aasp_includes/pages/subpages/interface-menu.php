@@ -14,8 +14,10 @@
     </tr>
     <?php 
     $x = 1;
-    $result = mysqli_query($conn, "SELECT * FROM site_links ORDER BY position ASC");
-    while($row = mysqli_fetch_assoc($result)) { ?>
+    $result = mysqli_query($conn, "SELECT * FROM site_links ORDER BY position ASC;");
+    while ($row = mysqli_fetch_assoc($result))
+    {
+      ?>
       <tr>
         <td><?php echo $x; ?></td>
         <td><?php echo $row['title']; ?></td>

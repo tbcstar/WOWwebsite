@@ -19,7 +19,7 @@
 			$donationsTotalAmount = $donationsTotalAmount + $row['mc_gross'];
 		}
 
-		$donationsThisMonth = mysqli_query($conn, "SELECT mc_gross FROM payments_log WHERE paymentdate LIKE '%".date('Y-md')."%';");
+		$donationsThisMonth       = mysqli_query($conn, "SELECT mc_gross FROM payments_log WHERE paymentdate LIKE '%". date('Y-md') ."%';");
 		$donationsThisMonthAmount = 0;
 		while($row = mysqli_fetch_assoc($donationsThisMonth)) 
 		{
@@ -37,18 +37,21 @@
 	<tr>
 		<td><span class='blue_text'>总捐款</span></td>
 		<td><?php echo mysqli_num_rows($donationsTotal); ?></td>
+
 		<td><span class='blue_text'>捐款总额</span></td>
 		<td><?php echo round($donationsTotalAmount,0); ?>元</td>
 	</tr>
 	<tr>
 	    <td><span class='blue_text'>本月捐款</span></td>
 	    <td><?php echo mysqli_num_rows($donationsThisMonth); ?></td>
+
 	    <td><span class='blue_text'>本月捐款金额</span></td>
 	    <td><?php echo round($donationsThisMonthAmount,0); ?>元</td>
 	</tr>
 	<tr>
 	    <td><span class='blue_text'>最新的捐赠金额</span></td>
 	    <td><?php echo round($donationLatestAmount); ?>元</td>
+
 	    <td><span class='blue_text'>最新的捐赠者</span></td>
 	    <td><?php echo $donationLatest; ?></td>
 	</tr>

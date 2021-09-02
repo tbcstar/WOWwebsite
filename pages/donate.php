@@ -7,7 +7,8 @@
 <div class="box_two">
 
 <?php
-global $Account;
+global $Account, $Connect;
+$conn = $Connect->connectToDB();
 $Account->isNotLoggedIn(); ?>
 
 <div class='box_two_title'>捐赠</div>

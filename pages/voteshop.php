@@ -104,7 +104,8 @@
 
 
 <?php 
- global $Account, $Shop, $conn;
+ global $Account, $Shop, $Connect;
+ $conn = $Connect->connectToDB();
  $Account->isNotLoggedIn();
 
  /* 声明一些通用变量 */ 

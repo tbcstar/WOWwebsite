@@ -1,5 +1,6 @@
 <?php
-global $Account;
+global $Account, $Connect;
+$conn = $Connect->connectToDB();
 ?>
 
 <?php if (!isset($_SESSION['cw_user'])) { 

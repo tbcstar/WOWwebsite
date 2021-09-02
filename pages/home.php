@@ -1,4 +1,7 @@
-<?php account::isNotLoggedIn(); ?>
+<?php
+    global $Account;
+    $Account->isNotLoggedIn();
+?>
 <div id="overlay"></div>
 <div id="wrapper">
 

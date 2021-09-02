@@ -1,14 +1,20 @@
 <?php 
-
-global $Page, $Server, $Account, $conn;
+    global $GameServer;
+    $conn = $GameServer->connect();
 ?>
 
 <div class="box_right_title">角色服务</div>
 <table class="center">
-<tr><th>服务</th><th>价格</th><th>货币</th><th>状态</th></tr>
+<tr>
+    <th>服务</th>
+    <th>价格</th>
+    <th>货币</th>
+    <th>状态</th>
+</tr>
 <?php
-$result = mysqli_query($conn, "SELECT * FROM service_prices");
-while($row = mysqli_fetch_assoc($result)) { ?>
+$result = mysqli_query($conn, "SELECT * FROM service_prices;");
+while ($row = mysqli_fetch_assoc($result))
+{ ?>
 	<tr>
         <td><?php echo $row['service']; ?></td>
         <td><input type="text" value="<?php echo $row['price']; ?>" style="width: 50px; text-align: center;" id="<?php echo $row['service']; ?>_price" class="noremove"/></td>

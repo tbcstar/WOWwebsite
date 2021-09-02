@@ -79,8 +79,10 @@ if (is_array($folder) || is_object($folder))
 	}
 }
 
-$chk = mysqli_query($conn, "SELECT COUNT(*) FROM disabled_plugins WHERE foldername='".mysqli_real_escape_string($conn, $filename)."'");
-if(mysqli_data_seek($chk,0) > 0)
+//Plugins
+
+$chk = mysqli_query($conn, "SELECT COUNT(*) FROM disabled_plugins WHERE foldername='". mysqli_real_escape_string($conn, $filename) ."';");
+if (mysqli_data_seek($chk, 1) > 0)
 {
 	echo '<input type="submit" value="启用插件" onclick="enablePlugin(\''.$filename.'\')">';
 }

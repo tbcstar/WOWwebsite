@@ -2,10 +2,10 @@
 
 class Shop 
 {
-	
 	public function search($value, $shop, $quality, $type, $ilevelfrom, $ilevelto, $results, $faction, $class, $subtype) 
 	{
-		global $Connect, $conn;
+		global $Connect;
+        $conn = $Connect->connectDB();
 		$Connect->selectDB('webdb', $conn);
 
 		if ($shop == 'vote')
@@ -19,12 +19,12 @@ class Shop
 
 		$value 		= mysqli_real_escape_string($conn, $value);
 		$shop 		= mysqli_real_escape_string($conn, $shop);
-		$quality 	= (int)$quality;
-		$ilevelfrom = (int)$ilevelfrom;
-		$ilevelto 	= (int)$ilevelto;
-		$results 	= (int)$results;
-		$faction 	= (int)$faction;
-		$class 		= (int)$class;
+		$quality    = mysqli_real_escape_string($conn, $quality);
+        $ilevelfrom = mysqli_real_escape_string($conn, $ilevelfrom);
+        $ilevelto   = mysqli_real_escape_string($conn, $ilevelto);
+        $results    = mysqli_real_escape_string($conn, $results);
+        $faction    = mysqli_real_escape_string($conn, $faction);
+        $class      = mysqli_real_escape_string($conn, $class);
 		$type		= mysqli_real_escape_string($conn, $type);
 		$subtype 	= mysqli_real_escape_string($conn, $subtype);
 		
@@ -77,7 +77,8 @@ class Shop
 				$advanced .= " AND itemlevel<='".$ilevelto."'";
 			}
 
-			$count = mysqli_query($conn, "SELECT COUNT(id) AS item FROM shopitems WHERE name LIKE '%" . $value . "%' AND in_shop = '" . $shop . "' " . $advanced);
+			$count = mysqli_query($conn, "SELECT COUNT(id) AS item FROM shopitems 
+                WHERE name LIKE '%". $value ."%' AND in_shop = '". $shop ."' ". $advanced .";");
 		
 			if(mysqli_data_seek($count, 0) == 0)
 			{
@@ -98,9 +99,8 @@ class Shop
 			}
 		}
 
-		$result = mysqli_query($conn, "SELECT entry,displayid,name,quality,price,faction,class 
-									FROM shopitems WHERE name LIKE '%".$value."%' 
-									AND in_shop = '".mysqli_real_escape_string($conn, $shop)."' ".$advanced);
+		$result = mysqli_query($conn, "SELECT entry, displayid, name, quality, price, faction, class FROM shopitems 
+            WHERE name LIKE '%". $value ."%' AND in_shop = '". mysqli_real_escape_string($conn, $shop) ."' ". $advanced .";");
 
 		if($results != "--结果--")
 		{
@@ -157,17 +157,17 @@ class Shop
 					    $class="金色";
 						break;
 				}
-				
-				$getIcon = mysqli_query($conn, "SELECT icon FROM item_icons WHERE displayid='".$row['displayid']."'");
+
+				$getIcon = mysqli_query($conn, "SELECT icon FROM item_icons WHERE displayid=". $row['displayid'] .";");
 				if(mysqli_num_rows($getIcon)==0) 
 				{
 					//发现没有图标。也许灾难项目。从wowhead获取图标。
-					$sxml = new SimpleXmlElement(file_get_contents('http://www.wowhead.com/item='.$entry.'&xml'));
+					$sxml = new SimpleXmlElement(file_get_contents('http://www.wowhead.com/item='. $entry .'&xml'));
 
 					$icon = mysqli_real_escape_string($conn, strtolower($sxml->item->icon));
 					//现在我们已经加载了它。将其添加到数据库中供以后使用。
 					//注意，WoWHead XML非常慢。这就是我们将其添加到数据库中的主要原因。
-					mysqli_query($conn, "INSERT INTO item_icons VALUES('".$row['displayid']."','".$icon."')");
+					mysqli_query($conn, "INSERT INTO item_icons VALUES(". $row['displayid'] .", '". $icon ."');");
 				}
 				else 
 				{
@@ -215,12 +215,13 @@ class Shop
 	
 	public function listAll($shop)
 	{
-		global $Connect, $conn;
+		global $Connect;
+        $conn = $Connect->connectToDB();
 		$Connect->selectDB('webdb', $conn);
+
 		$shop = mysqli_real_escape_string($conn, $shop);
 		
-		$result = mysqli_query($conn, "SELECT entry,displayid,name,quality,price,faction,class
-		FROM shopitems WHERE in_shop = '".$shop."'");
+		$result = mysqli_query($conn, "SELECT entry, displayid, name, quality, price, faction, class FROM shopitems WHERE in_shop='". $shop ."';");
 		
 		if(mysqli_num_rows($result) == 0)
 		{
@@ -231,7 +232,7 @@ class Shop
 			while($row = mysqli_fetch_assoc($result))
 			{
 				$entry 		= $row['entry'];
-				$getIcon 	= mysqli_query($conn, "SELECT icon FROM item_icons WHERE displayid='".$row['displayid']."'");
+				$getIcon    = mysqli_query($conn, "SELECT icon FROM item_icons WHERE displayid=". $row['displayid'] .";");
 				if(mysqli_num_rows($getIcon) == 0) 
 				{
 					//发现没有图标。也许灾难项目。从wowhead获得图标。
@@ -240,7 +241,7 @@ class Shop
 					$icon = mysqli_real_escape_string($conn, strtolower($sxml->item->icon));
 					//现在我们已经装载好了。将其添加到数据库中以备将来使用。
 					//注意，WoWHead XML非常慢。这就是为什么我们把它加到db中的主要原因。
-					mysqli_query($conn, "INSERT INTO item_icons VALUES('".$row['displayid']."','".$icon."')");
+					mysqli_query($conn, "INSERT INTO item_icons VALUES(". $row['displayid'] .", '". $icon ."');");
 				}
 				else 
 				{
@@ -331,8 +332,10 @@ class Shop
 
 	public function logItem($shop, $entry, $char_id, $account, $realm_id, $amount) 
 	{
-		global $Connect, $conn;
+		global $Connect;
+        $conn = $Connect->connectToDB();;
 		$Connect->selectDB('webdb', $conn);
+
 		date_default_timezone_set($GLOBALS['timezone']);
 
         $entry      = mysqli_real_escape_string($conn, $entry);
@@ -343,10 +346,10 @@ class Shop
         $amount     = mysqli_real_escape_string($conn, $amount);
 
         mysqli_query($conn, "INSERT INTO shoplog (`entry`, `char_id`, `date`, `ip`, `shop`, `account`, `realm_id`, `amount`) VALUES 
-            ('". $entry ."', '". $char_id ."', '". date("Y-m-d H:i:s") ."', '". $_SERVER['REMOTE_ADDR'] ."', '". $shop ."', '". $account ."', '". $realm_id ."', '". $amount ."')");
+            (". $entry .", '". $char_id ."', '". date("Y-m-d H:i:s") ."', '". $_SERVER['REMOTE_ADDR'] ."', '". $shop ."', '". $account ."', ". $realm_id .", '". $amount ."')");
     }
 	
-	public static function getClassMask($classID) 
+	public function getClassMask($classID) 
 	{
 
         switch ($classID)

@@ -1,5 +1,7 @@
-<?php 
-account::isNotLoggedIn();
+<?php
+global $Account, $Connect;
+$conn = $Connect->connectToDB();
+$Account->isNotLoggedIn();
 ?>
 
 <?php include "headers.php" ?>

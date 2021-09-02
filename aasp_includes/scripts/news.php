@@ -3,8 +3,10 @@
     include('../../includes/misc/headers.php');
     include('../../includes/configuration.php');
     include('../functions.php');
+
     global $GameServer, $GameAccount;
     $conn = $GameServer->connect();
+
     $GameServer->selectDB('webdb', $conn);
 
 ###############################
@@ -41,14 +43,14 @@ elseif($_POST['function'] == 'delete')
           die('未指定 ID。 正在中止...');
         }
 
-	mysqli_query($conn, "DELETE FROM news WHERE id='".mysqli_real_escape_string($conn, $_POST['id'])."';");
-	mysqli_query($conn, "DELETE FROM news_comments WHERE id='".mysqli_real_escape_string($conn, $_POST['id'])."';");
+    mysqli_query($conn, "DELETE FROM news WHERE id=". mysqli_real_escape_string($conn, $_POST['id']) .";");
+    mysqli_query($conn, "DELETE FROM news_comments WHERE id=". mysqli_real_escape_string($conn, $_POST['id']) .";");
 	$GameServer->logThis("删除了一条新闻");
 }
 ##############################
 elseif($_POST['function'] == 'edit') 
 {
-	$id = (int)$_POST['id'];
+	$id         = mysqli_real_escape_string($conn, $_POST['id']);
 	$title 		= mysqli_real_escape_string($conn, ucfirst($_POST['title']));
 	$author 	= mysqli_real_escape_string($conn, ucfirst($_POST['author']));
 	$content 	= mysqli_real_escape_string($conn, $_POST['content']);
@@ -59,17 +61,17 @@ elseif($_POST['function'] == 'edit')
 	}
     else 
 	{
-		mysqli_query($conn, "UPDATE news SET title='".$title."', author='".$author."', body='".$content."' WHERE id='".$id."';");
-		$GameServer->logThis("更新新闻内容，ID： <b>".$id."</b>");
-		return;
+        mysqli_query($conn, "UPDATE news SET title='". $title ."', author='". $author ."', body='". $content ."' WHERE id=". $id .";");
+        $GameServer->logThis("更新的新闻帖子ID: <b>". $id ."</b>");
+        return TRUE;
 	}
 }
 #############################
 elseif($_POST['function'] == 'getNewsContent') 
 {
-	$result = mysqli_query($conn, "SELECT * FROM news WHERE id='".(int)$_POST['id']."'");
-	$row 	= mysqli_fetch_assoc($result);
-	$content = str_replace('<br />', "\n", $row['body']);
+	$result     = mysqli_query($conn, "SELECT * FROM news WHERE id=". mysqli_real_escape_string($conn, $_POST['id']) .";");
+	$row        = mysqli_fetch_assoc($result);
+	$content    = str_replace('<br />', "\n", $row['body']);
 	
     echo "<h3>编辑新闻</h3><br/>标题: <br/><input type='text' id='editnews_title' value='" . $row['title'] . "'><br/><br/>
         Content:<br/><textarea cols='55' rows='8' id='editnews_content'>". $content ."</textarea><br/>

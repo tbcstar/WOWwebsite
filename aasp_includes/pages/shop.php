@@ -12,7 +12,7 @@
         $conn = $GameServer->connect();
         $GameServer->selectDB('webdb', $conn);
         $inShop     = mysqli_query($conn, "SELECT COUNT(*) AS items FROM shopitems;");
-        $purchToday = mysqli_query($conn, "SELECT COUNT(*) AS purchases FROM shoplog WHERE date LIKE '%" . date('Y-m-d') . "%';");
+        $purchToday = mysqli_query($conn, "SELECT COUNT(*) AS purchases FROM shoplog WHERE date LIKE '%". date('Y-m-d') ."%';");
 		$getAvg 	= mysqli_query($conn, "SELECT AVG(*) AS priceAvg FROM shopitems;");
         $totalPurch = mysqli_query($conn, "SELECT COUNT(*) AS purchasesTotal FROM shoplog;");
 

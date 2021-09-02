@@ -1,7 +1,7 @@
 <?php 
     global $GamePage, $GameServer, $GameAccount; 
     $conn = $GameServer->connect();
-    ?>
+?>
 <div class="box_right_title"><?php echo $GamePage->titleLink(); ?> &raquo; 管理账号</div>
 
 <?php
@@ -12,7 +12,9 @@ if(isset($_GET['char']))
         while ($row = mysqli_fetch_assoc($result))
 	{
 		$GameServer->connectToRealmDB($row['id']);
-        $get = mysqli_query($conn, "SELECT account, name FROM characters WHERE name='". mysqli_real_escape_string($conn, $_GET['char']) ."' OR guid=". mysqli_real_escape_string($conn, $_GET['char']) .";");
+        $get = mysqli_query($conn, "SELECT account, name FROM characters WHERE name='". mysqli_real_escape_string($conn, $_GET['char']) ."' 
+            OR guid=". mysqli_real_escape_string($conn, $_GET['char']) .";");
+
         $rows = mysqli_fetch_assoc($get);
 		echo '<a href="?p=users&s=manage&user='.$rows['account'].'">'.$rows['name'].' - '.$row['name'].'</a><br/>';
 	}
@@ -33,16 +35,25 @@ if(isset($_GET['user']))  {
 		$row = mysqli_fetch_assoc($result);?>
 		<table width="100%">
 			<tr>
-			<td><span class='blue_text'>账号名称</span></td><td> <?php echo ucfirst(strtolower($row['username']));?> (<?php echo $row['last_ip']; ?>)</td>
-			<td><span class='blue_text'>注册时间</span></td><td><?php echo $row['joindate']; ?></td>
+            <td><span class='blue_text'>账号名称</span></td>
+            <td><?php echo ucfirst(strtolower($row['username'])); ?> (<?php echo $row['last_ip']; ?>)</td>
+
+            <td><span class='blue_text'>加入</span></td>
+            <td><?php echo $row['joindate']; ?></td>
 			</tr>
 			<tr>
-				<td><span class='blue_text'>Email地址</span></td><td><?php echo $row['email'];?></td>
-				<td><span class='blue_text'>投票积分</span></td><td><?php  echo $GameAccount->getVP($row['id']); ?></td>
+                <td><span class='blue_text'>Email地址</span></td>
+                <td><?php echo $row['email']; ?></td>
+
+                <td><span class='blue_text'>投票积分</span></td>
+                <td><?php echo $GameAccount->getVP($row['id']); ?></td>
 			</tr>
 			<tr>
-				<td><span class='blue_text'>账号状态</span></td><td><?php echo $GameAccount->getBan($row['id']); ?></td>
-				<td><span class='blue_text'><?php echo $GLOBALS['donation']['coins_name']; ?></span></td><td><?php echo $GameAccount->getDP($row['id']); ?></td>
+                <td><span class='blue_text'>账号状态</span></td>
+                <td><?php echo $GameAccount->getBan($row['id']); ?></td>
+
+                <td><span class='blue_text'><?php echo $GLOBALS['donation']['coins_name']; ?></span></td>
+                <td><?php echo $GameAccount->getDP($row['id']); ?></td>
 			</tr>
 			<tr><td><a href='?p=users&s=manage&getlogs=<?php echo $row['id']; ?>'>帐户付款&购买记录</a><br />
             <a href='?p=users&s=manage&getslogs=<?php echo $row['id']; ?>'>服务记录</a></td>
@@ -105,13 +116,13 @@ elseif (isset($_GET['getlogs'])) {
 	?>
 	选择账号： <a href='?p=users&s=manage&user=<?php echo $_GET['getlogs']; ?>'><?php echo $GameAccount->getAccName($_GET['getlogs']); ?></a><p />
 	
-	<h4 class='payments' onclick='loadPaymentsLog(<?php echo (int)$_GET['getlogs']; ?>)'>付款记录</h4>
+	<h4 class='payments' onclick='loadPaymentsLog(<?php echo mysqli_real_escape_string($conn,$_GET['getlogs']); ?>)'>付款记录</h4>
 	<div class='hidden_content' id='payments'></div>
 	<hr/>
-	<h4 class='payments' onclick='loadDshopLog(<?php echo (int)$_GET['getlogs']; ?>)'>公益商城记录</h4>
+	<h4 class='payments' onclick='loadDshopLog(<?php echo mysqli_real_escape_string($conn,$_GET['getlogs']); ?>)'>公益商城记录</h4>
 	<div class='hidden_content' id='dshop'></div>
 	<hr/>
-	<h4 class='payments' onclick='loadVshopLog(<?php echo (int)$_GET['getlogs']; ?>)'>投票商店记录</h4>
+	<h4 class='payments' onclick='loadVshopLog(<?php echo mysqli_real_escape_string($conn,$_GET['getlogs']); ?>)'>投票商店记录</h4>
 	<div class='hidden_content' id='vshop'></div>
 	<?php
 }

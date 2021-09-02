@@ -1,4 +1,6 @@
-<?php global $Page, $Server, $Account, $conn;
+<?php
+    global $GamePage, $GameServer, $GameAccount;
+    $conn = $GameServer->connect();
 ?>
 	 
 <div class="box_right_title">投票商店日志</div>
@@ -6,13 +8,13 @@
 
 $per_page = 40;
 
-$pages_query = mysqli_query($conn, "SELECT COUNT(*) AS voteLogs FROM shoplog WHERE shop='vote'");
+$pages_query = mysqli_query($conn, "SELECT COUNT(*) AS voteLogs FROM shoplog WHERE shop='vote';");
 $pages       = ceil(mysqli_fetch_assoc($pages_query)['voteLogs'] / $per_page);
 
-$page 	= ( isset($_GET['page']) ) ? (int)$_GET['page'] : 1;
+$page  = ( isset($_GET['page']) ) ? mysqli_real_escape_string($conn, $_GET['page']) : 1;
 $start 	= ($page - 1) * $per_page;
 
-$result = mysqli_query($conn, "SELECT * FROM shoplog WHERE shop='vote' ORDER BY id DESC LIMIT ".$start.",".$per_page.";"); 
+$result = mysqli_query($conn, "SELECT * FROM shoplog WHERE shop='vote' ORDER BY id DESC LIMIT ". $start .", ". $per_page .";");
 if(mysqli_num_rows($result) == 0) 
 {
 	echo "看来投票商店的日志是空的!";
@@ -36,11 +38,11 @@ else
         while($row = mysqli_fetch_assoc($result)) 
     	{ ?>
 			<tr class="center">
-	            <td><?php echo $Account->getAccName($row['account']); ?></td>
-	            <td><?php echo $Account->getCharName($row['char_id'], $row['realm_id']); ?></td>
-	            <td><?php echo $Server->getRealmName($row['realm_id']); ?></td>
+	            <td><?php echo $GameAccount->getAccName($row['account']); ?></td>
+	            <td><?php echo $GameAccount->getCharName($row['char_id'], $row['realm_id']); ?></td>
+	            <td><?php echo $GameServer->getRealmName($row['realm_id']); ?></td>
 	            <td><a href="http://<?php echo $GLOBALS['tooltip_href']; ?>item=<?php echo $row['entry']; ?>" title="" target="_blank">
-				<?php echo $Server->getItemName($row['entry']); ?></a></td>
+				<?php echo $GameServer->getItemName($row['entry']); ?></a></td>
 	            <td><?php echo $row['date']; ?></td>
 	        </tr>
 		<?php } ?>

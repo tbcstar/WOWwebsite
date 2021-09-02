@@ -57,7 +57,7 @@
 	 $staffPanel_enable = true; //启用或禁用Staff面板。
 	 
 	 $adminPanel_minlvl = 4; //最低的GM级别，其中帐户能够登录到管理面板。默认值:5
-	 $staffPanel_minlvl = 2; //能够登录到员工面板的最低GM级别。默认值:3
+	 $staffPanel_minlvl = 3; //能够登录到员工面板的最低GM级别。默认值:3
 	 
 	 $staffPanel_permissions['Pages'] = true;
 	 $staffPanel_permissions['News'] = true;

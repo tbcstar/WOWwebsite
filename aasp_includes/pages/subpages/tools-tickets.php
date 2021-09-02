@@ -15,7 +15,7 @@
            		 <?php
 				 $GameServer->selectDB('webdb', $conn);
 
-				$result = mysqli_query($conn, "SELECT char_db,name,description FROM realms");
+				$result = mysqli_query($conn, "SELECT char_db, name, description FROM realms;");
 				if(mysqli_num_rows($result) == 0) 
 				{
 					echo '<option value="NULL">找不到服务器。</option>';
@@ -68,7 +68,8 @@
 
 				mysqli_select_db($conn, $realm);
 
-				$result = mysqli_query($conn, "SELECT ".$ticketString.",name,message,createtime,".$guidString.",".$closedString." FROM gm_tickets ORDER BY ticketId DESC");
+                $result = mysqli_query($conn, "SELECT ". $ticketString .", name, message, createtime, ". $guidString .", ". $closedString ." 
+                    FROM gm_tickets ORDER BY ticketId DESC;");
 				if(mysqli_num_rows($result)==0)
 				   die("<pre>没有发现tickets！</pre>");
 
@@ -95,12 +96,16 @@
 						echo '<td><a href="?p=tools&s=tickets&guid='.$row[$ticketString].'&db='.$realm.'">'.substr($row['message'],0,15).'...</td>';
 						echo '<td><a href="?p=tools&s=tickets&guid='.$row[$ticketString].'&db='.$realm.'">'.date('Y-m-d H:i:s',$row['createtime']).'</a></td>';
 						
-						if($row[$closedString]==1) 
-							echo '<td><font color="red">关闭</font></td>';
-						else
-							echo '<td><font color="green">打开</font></td>';		
-						
-						$get = mysqli_query($conn, "SELECT COUNT(online) FROM characters WHERE guid='".$row[$guidString]."' AND online='1'");
+                        if ($row[$closedString] == 1)
+                        {
+                            echo '<td><font color="red">关闭</font></td>';
+                        }
+                        else
+                        {
+                            echo '<td><font color="green">打开</font></td>';
+                        }		
+
+						$get = mysqli_query($conn, "SELECT COUNT(online) FROM characters WHERE guid=". $row[$guidString] ." AND online=1;");
 						if(mysqli_data_seek($get,0)>0)
 						   echo '<td><font color="green">在线</font></td>';
 						else
@@ -148,8 +153,9 @@ elseif(isset($_GET['guid']))
 		$ticketString = 'ticketId';		
 	
 	mysqli_select_db($conn, $_GET['db']);
-	$result = mysqli_query($conn, "SELECT name,message,createtime,".$guidString.",".$closedString." FROM gm_tickets WHERE ".$ticketString."='".(int)$_GET['guid']."'");
-	$row = mysqli_fetch_assoc($result);
+	$result = mysqli_query($conn, "SELECT name, message, createtime, ". $guidString .", ". $closedString ." 
+        FROM gm_tickets WHERE ". $ticketString ."='" . mysqli_real_escape_string($conn, $_GET['guid']) ."';");
+    $row = mysqli_fetch_assoc($result);
 	?>
     <table style="width: 100%;" class="center">
         <tr>
@@ -184,7 +190,7 @@ elseif(isset($_GET['guid']))
             </td>
             <td>
             	<?php
-				$get = mysqli_query($conn, "SELECT COUNT(online) FROM characters WHERE guid='".$row[$guidString]."' AND online='1'");
+				$get = mysqli_query($conn, "SELECT COUNT(online) FROM characters WHERE guid=". $row[$guidString] ." AND online=1;");
 				if(mysqli_data_seek($get,0)>0)
 				   	echo '<font color="green">在线</font>';
 				else

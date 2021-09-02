@@ -1,5 +1,6 @@
 <?php 
 global $Account, $Website, $Connect;
+$conn = $Connect->connectToDB();
 $Account->isNotLoggedIn(); ?>
 <?php include "headers.php" ?>
 <?php include "menus.php" ?>
@@ -68,17 +69,18 @@ elseif($GLOBALS['service'][$service]['currency']=="dp")
 <hr/>
 <h3 id="choosechar">选择角色</h3> 
 <?php
-$Connect->selectDB('webdb');
-$result = mysqli_query($conn, 'SELECT char_db,name FROM realms ORDER BY id ASC');
-while($row = mysqli_fetch_assoc($result)) 
+$Connect->selectDB('webdb', $conn);
+$result = mysqli_query($conn, "SELECT char_db, name FROM realms ORDER BY id ASC;");
+while ($row = mysqli_fetch_assoc($result))
 {
-         $acct_id = $Account->getAccountID($_SESSION['cw_user']);
-		 $realm = $row['name'];
-		 $char_db = $row['char_db'];
+        $acct_id = $Account->getAccountID($_SESSION['cw_user']);
+		$realm   = $row['name'];
+		$char_db = $row['char_db'];
 		          	
-		$Connect->selectDB($char_db);
-		$result = mysqli_query($conn, 'SELECT name,guid,gender,class,race,level,online FROM characters WHERE account='.$acct_id);
-		while($row = mysqli_fetch_assoc($result)) {
+		$Connect->selectDB($char_db, $conn);
+        $result = mysqli_query($conn, "SELECT name, guid, gender, class, race, level, online FROM characters WHERE account=". $acct_id .";");
+        while ($row = mysqli_fetch_assoc($result))
+		{
 	?>
    
 

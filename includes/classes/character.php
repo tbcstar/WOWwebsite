@@ -3,14 +3,18 @@
 class Character 
 {
 	
-	public static function unstuck($guid, $char_db) 
+	public function unstuck($guid, $char_db) 
 	{
-		global $Connect, $conn, $Account;
-		$guid 	= (int)$guid;
-		$rid 	= $Server->getRealmId($char_db);
+        global $Connect, $Account, $Server;
+        $conn = $Connect->connectToDB();
+
+        $guId   = mysqli_real_escape_string($conn, $guid);
+        $charDb = mysqli_real_escape_string($conn, $char_db);
+
+        $rid  = $Server->getRealmId($charDb);
 		$Connect->connectToRealmDB($rid);
 		
-        if($this->isOnline($guid) == TRUE)
+        if ($this->isOnline($guId) == TRUE)
     	{
 			echo '<b class="red_text">在继续之前，请先登出你的角色。';
     	}
@@ -40,8 +44,8 @@ class Character
 				}
 			}
 
-		    connect::connectToRealmDB($rid);
-		    $getXYZ = mysqli_query($conn, "SELECT * FROM character_homebind WHERE guid='".$guid."'");
+		    $Account->connectToRealmDB($rid);
+		    $getXYZ = mysqli_query($conn, "SELECT * FROM character_homebind WHERE guid=". $guId .";");
 			$row 	= mysqli_fetch_assoc($getXYZ);
 			
 			$new_x = $row['posX']; 
@@ -50,23 +54,32 @@ class Character
 			$new_zone = $row['zoneId']; 
 			$new_map = $row['mapId'];
 
-			mysqli_query($conn, "UPDATE characters SET position_x='".$new_x."', position_y='".$new_y."', 
-			position_z='".$new_z."', zone='".$new_zone."',map='".$new_map."' WHERE guid='".$guid."'");
+            mysqli_query($conn, "UPDATE characters 
+                SET position_x='". $new_x ."', 
+                position_y='". $new_y ."', 
+                position_z='". $new_z ."', 
+                zone='". $new_zone ."',
+                map='". $new_map ."' 
+                WHERE guid=". $guId .";");
 
-			$Account->logThis("Performed unstuck on ".$this->getCharName($guid,$rid),'Unstuck',$rid);
+			$Account->logThis("Performed unstuck on " . $this->getCharName($guId, $rid), 'Unstuck', $rid);
 
 			return TRUE;
 	  	}
 	}
 	
-	public static function revive($guid,$char_db) 
+	public function revive($guid,$char_db) 
 	{
-		global $Connect, $conn, $Server, $Account;
-		$guid 	= (int)$guid;
-		$rid 	= $Server->getRealmId($char_db);
+        global $Connect, $Server, $Account;
+        $conn = $Connect->connectToDB();
+
+        $guId = mysqli_real_escape_string($conn, $guid);
+        $charDb = mysqli_real_escape_string($conn, $char_db);
+
+        $rid  = $Server->getRealmId($charDb);
 		$Connect->connectToRealmDB($rid);
 		
-		if($this->isOnline($guid) == TRUE)
+		if ($this->isOnline($guId) == TRUE)
 		{
 			echo '<b class="red_text">请在继续之前退出游戏。';
 		}
@@ -96,18 +109,20 @@ class Character
 				}
 			}
 
-			connect::connectToRealmDB($rid);
-		    mysqli_query($conn, "DELETE FROM character_aura WHERE (guid = '".$guid."' AND spell = '55164') OR (guid = '".$guid."' AND spell = '20584') OR (guid = '".$guid."' AND spell = '8326')");
+			$Account->connectToRealmDB($rid);
+			mysqli_query($conn, "DELETE FROM character_aura WHERE guid=". $guId ." AND spell=20584 OR guid=". $guId ." AND spell=8326;");
 			
-			$Account->logThis("使复活 ".$this->getCharName($guid,$rid),'Revive',$rid);
+			$Account->logThis("进行了复活 " . $this->getCharName($guId, $rid), 'Revive', $rid);
 			
 			return TRUE;
 	  	}
 	}
 	
-	public static function instant80($values) 
+	public function instant80($values) 
 	{
-		global $Connect, $Account, $conn;
+        global $Connect, $Account;
+        $conn = $Connect->connectToDB();
+
 		die("此功能被禁用。 <br/><i>还有，你不应该在这里…</i>");
 		$values = mysqli_real_escape_string($conn, $values);
 		$values = explode("*", $values);
@@ -142,7 +157,7 @@ class Character
 			{
 				//User got coins. Boost them up to 58 :D
 				$Connect->connectToRealmDB($values[1]);
-				mysqli_query($conn, "UPDATE characters SET level='58' WHERE guid = '".$values[0]."'");
+				mysqli_query($conn, "UPDATE characters SET level=58 WHERE guid=". $values[0] .";");
 
 				$Account->logThis("立即达到58级 ".$this->getCharName($values[0], NULL), 'Instant', NULL);
 
@@ -151,11 +166,13 @@ class Character
 		}
  	}
 
-	public static function isOnline($char_guid) 
+	public function isOnline($char_guid) 
 	{
-		global $conn;
-		$char_guid 	= (int)$char_guid;
-		$result 	= mysqli_query($conn, "SELECT COUNT('guid') FROM characters WHERE guid='".$char_guid."' AND online=1");
+        global $Connect;
+        $conn = $Connect->connectToDB();
+
+        $charGuid = mysqli_real_escape_string($conn, $char_guid);
+        $result    = mysqli_query($conn, "SELECT COUNT('guid') FROM characters WHERE guid=". $charGuid ." AND online=1;");
 		if (mysqli_data_seek($result,0) == 0)
 		{
 			return FALSE;
@@ -166,7 +183,7 @@ class Character
 		}
 	}
   
-	public static function getRace($value) 
+	public function getRace($value) 
 	{
 		switch($value) 
 		{
@@ -225,7 +242,7 @@ class Character
 		}
 	}
   
-	public static function getGender($value) 
+	public function getGender($value) 
 	{
 		if($value == 1)
 		{
@@ -241,7 +258,7 @@ class Character
 		}
 	}
   
-	public static function getClass($value) 
+	public function getClass($value) 
 	{
 		switch($value) 
 		{
@@ -296,12 +313,12 @@ class Character
 		}
   	}
   
-	public static function getClassIcon($value) 
+	public function getClassIcon($value) 
 	{   
 		return '<img src="styles/global/images/icons/class/'.$value.'.gif" />';
 	}
   
-	public static function getFactionIcon($value) 
+	public function getFactionIcon($value) 
 	{
 		$a = array(1,3,4,7,11,22);
 		$h = array(2,5,6,8,9,10);
@@ -317,13 +334,17 @@ class Character
 	}
   
   
-   public static function getCharName($id,$realm_id) 
+   public function getCharName($id,$realm_id) 
    	{
-   		global $Connect, $conn;
-		$id = (int)$id;
-		$Connect->connectToRealmDB($realm_id);
+        global $Connect;
+        $conn = $Connect->connectToDB();
+
+        $ID      = mysqli_real_escape_string($conn, $id);
+        $realmID = mysqli_real_escape_string($conn, $realm_id);
 		
-		$result = mysqli_query($conn, "SELECT name FROM characters WHERE guid='".$id."'");
+        $Connect->connectToRealmDB($realmID);
+
+        $result = mysqli_query($conn, "SELECT name FROM characters WHERE guid=". $ID .";");
 		$row = mysqli_fetch_assoc($result);
 		return $row['name'];	
 	}

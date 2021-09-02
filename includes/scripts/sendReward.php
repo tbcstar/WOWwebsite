@@ -2,7 +2,8 @@
 
 require('../ext_scripts_class_loader.php');
 
-global $conn, $Connect, $Account, $Shop, $Character;
+global $Connect, $Account, $Shop, $Character;
+$conn = $Connect->connectToDB();
 
 if (isset($_POST['item_entry'])) 
 {
@@ -19,8 +20,8 @@ if (isset($_POST['item_entry']))
 		$Connect->selectDB('webdb');
 		
 		$realm = explode("*", $character_realm);
-		
-		$result 		= mysqli_query($conn, "SELECT price FROM shopitems WHERE entry='".$entry."'");
+
+		$result         = mysqli_query($conn, "SELECT price FROM shopitems WHERE entry=". $entry .";");
 		$row 			= mysqli_fetch_assoc($result);
 		$account_id 	= $Account->getAccountIDFromCharId($realm[0], $realm[1]);
 		$account_name 	= $Account->getAccountName($account_id);
@@ -46,7 +47,7 @@ if (isset($_POST['item_entry']))
 		}
 		
 	   $Shop->logItem($type,$entry, $realm[0], $account_id, $realm[1],1);
-       $result 	= mysqli_query($conn, "SELECT * FROM realms WHERE id='".$realm[1]."'");
+       $result  = mysqli_query($conn, "SELECT * FROM realms WHERE id=". $realm[1] .";");
 	   $row 	= mysqli_fetch_assoc($result);
 	   
 	  	if($row['sendType'] == 'ra') 

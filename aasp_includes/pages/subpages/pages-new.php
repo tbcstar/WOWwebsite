@@ -12,7 +12,8 @@
 	}
 	else
 	{
-        mysqli_query($conn, "INSERT INTO custom_pages VALUES ('','" . $name . "','" . $filename . "','" . $content . "', '" . date("Y-m-d H:i:s") . "')");
+        mysqli_query($conn, "INSERT INTO custom_pages (name, filename, content, date) VALUES 
+            ('". $name ."', '". $filename ."', '". $content ."', '". date("Y-m-d H:i:s") ."');");
 
         echo "<h3>页面创建成功。</h3><a href='" . $GLOBALS['website_domain'] . "?p=" . $filename . "' target='_blank'>查看页面</a><br/><br/>";
     }

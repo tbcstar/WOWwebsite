@@ -1,5 +1,8 @@
-<?php 
-account::isNotLoggedIn();
+<?php
+global $Account, $Website, $Connect;
+$conn = $Connect->connectToDB();
+
+$Account->isNotLoggedIn();
 ?>
 <?php include "headers.php" ?>
 <?php include "menus.php" ?>
@@ -26,27 +29,27 @@ account::isNotLoggedIn();
 <div class="item item-1">
 <div class="item__info">
 <p>E-mail地址</p>
-<div><?php echo account::getEmail($_SESSION['cw_user']);?></div>
+<div><?php echo $Account->getEmail($_SESSION['cw_user']);?></div>
 </div>
 <a href="?p=settings" class="btn btn-low-yellow">更换</a>
 </div>
 <div class="item item-2 tfa">
 <div class="item__info">
 <p>帐户状态</p>
-<div><span><?php echo account::checkBanStatus($_SESSION['cw_user']);?></span></div>
+<div><span><?php echo $Account->checkBanStatus($_SESSION['cw_user']);?></span></div>
 </div>
 <a class="btn btn-low-yellow" href="#">启用</a> </div>
 <div class="item item-3">
 <div class="item__info">
 <p>帐户余额</p>
-<div><span class="coin-gold"></span> <span class="count-gold"><?php echo account::loadVP($_SESSION['cw_user']); ?></span></div>
+<div><span class="coin-gold"></span> <span class="count-gold"><?php echo $Account->loadVP($_SESSION['cw_user']); ?></span></div>
 </div>
 <a href="?p=donate" class="btn btn-low-yellow">添加</a>
 </div>
 <div class="item item-4">
 <div class="item__info">
 <p>上次登录</p>
-<div><span class="numbers"><?php echo account::getJoindate($_SESSION['cw_user']); ?></span></div>
+<div><span class="numbers"><?php echo $Account->getJoindate($_SESSION['cw_user']); ?></span></div>
 <p>最后IP</p>
 <div><span class="numbers">*********</span></div>
 </div>
@@ -61,17 +64,17 @@ account::isNotLoggedIn();
 <ul class="character">
 <?php 
 
-account::isNotLoggedIn();
-connect::selectDB('webdb');
+$Account->isNotLoggedIn();
+$Connect->selectDB('webdb', $conn);
 $num = 0;
 $result = mysql_query('SELECT char_db,name FROM realms ORDER BY id ASC');
 while($row = mysql_fetch_assoc($result)) 
 {
-	$acct_id = account::getAccountID($_SESSION['cw_user']);
+	$acct_id = $Account->getAccountID($_SESSION['cw_user']);
 	$realm = $row['name'];
 	$char_db = $row['char_db'];
 		          	
-	connect::selectDB($char_db);
+	$Connect->selectDB($char_db, $conn);
 	$result = mysql_query('SELECT name,guid,gender,class,race,level,online FROM characters WHERE account='.$acct_id);
 	while($row = mysql_fetch_assoc($result)) {
 	?>

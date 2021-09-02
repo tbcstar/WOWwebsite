@@ -5,7 +5,7 @@
 class Support 
 {
 	
-	public static function loadEmailForm() 
+	public function loadEmailForm() 
 	{
 		?><br/>
 		<form action="?p=support&do=email" method="post">

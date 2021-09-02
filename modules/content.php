@@ -1,7 +1,8 @@
 <?php
 
-    global $Connect, $Plugins, $conn;
-    $Connect->selectDB('webdb');
+    global $Connect, $Plugins;
+    $conn = $Connect->connectToDB();
+    $Connect->selectDB('webdb', $conn);
     $pages = scandir('pages');
     unset($pages[0], $pages[1]);
     $page  = mysqli_real_escape_string($conn, $_GET['p']);
@@ -28,10 +29,10 @@
     }
     else
     {
-        $result = mysqli_query($conn, "SELECT * FROM custom_pages WHERE filename='" . $page . "'");
+        $result = mysqli_query($conn, "SELECT * FROM custom_pages WHERE filename='". $page ."';");
         if (mysqli_num_rows($result) > 0)
         {
-            $check = mysqli_query($conn, "SELECT COUNT(filename) FROM disabled_pages WHERE filename='" . $page . "'");
+            $check = mysqli_query($conn, "SELECT COUNT(filename) FROM disabled_pages WHERE filename='" . $page . "';");
             if (mysqli_data_seek($check, 0) == 0)
             {
                 $row = mysqli_fetch_assoc($result);

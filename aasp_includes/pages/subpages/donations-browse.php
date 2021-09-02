@@ -18,8 +18,8 @@ if(mysqli_data_seek($pages_query,0) == 0)
 else 
 {
 
-$page = (isset($_GET['page'])) ? (int)$_GET['page'] : 1;
-$start = ($page - 1) * $per_page;
+$page   = (isset($_GET['page'])) ? mysqli_real_escape_string($conn, $_GET['page']) : 1;
+$start  = ($page - 1) * $per_page;
 ?>
 <table class="center">
    <tr>
@@ -31,7 +31,7 @@ $start = ($page - 1) * $per_page;
    	</tr>
    <?php
     $GameServer->selectDB('webdb', $conn);
-	$result = mysqli_query($conn, "SELECT * FROM payments_log ORDER BY id DESC LIMIT ".$start.",".$per_page.";");
+	$result = mysqli_query($conn, "SELECT * FROM payments_log ORDER BY id DESC LIMIT ". $start .", ". $per_page .";");
 	while($row = mysqli_fetch_assoc($result)) { ?>
 		<tr>
 	        <td><?php echo $row['datecreation']; ?></td>

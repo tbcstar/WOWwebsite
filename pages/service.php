@@ -139,6 +139,7 @@ span.attention, span.notice, span.alert, span.download, span.approved, span.medi
 </br>
 <?php
 global $Account, $Connect, $Character, $Website;
+$conn = $Connect->connectToDB();
 $service = $_GET['s'];
 
 $service_title = ucfirst($service." Change");
@@ -175,9 +176,9 @@ elseif($GLOBALS['service'][$service]['currency']=="dp")
 } 
 
 $Account->isNotLoggedIn();
-$Connect->selectDB('webdb');
+$Connect->selectDB('webdb', $conn);
 $num = 0;
-$result = mysqli_query($conn, 'SELECT char_db,name,id FROM realms ORDER BY id ASC');
+$result = mysqli_query($conn, "SELECT char_db, name, id FROM realms ORDER BY id ASC;");
 while($row = mysqli_fetch_assoc($result)) 
 {
          $acct_id = $Account->getAccountID($_SESSION['cw_user']);
@@ -185,8 +186,8 @@ while($row = mysqli_fetch_assoc($result))
 		 $char_db = $row['char_db'];
 		 $realm_id = $row['id'];
 		          	
-		$Connect->selectDB($char_db);
-		$result = mysqli_query($conn, 'SELECT name,guid,gender,class,race,level,online FROM characters WHERE account='.$acct_id);
+		$Connect->selectDB($char_db, $conn);
+		$result = mysqli_query($conn, "SELECT name, guid, gender, class, race, level, online FROM characters WHERE account=". $acct_id .";");
 		while($row = mysqli_fetch_assoc($result)) {
 	?>
 	

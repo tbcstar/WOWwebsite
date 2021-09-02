@@ -1,4 +1,6 @@
-<?php global $GamePage; ?>
+<?php
+    global $GamePage;
+?>
 <div class="box_right_title"><?php echo $GamePage->titleLink(); ?> &raquo; 添加商品</div>
 <table width="100%">
         <tr valign="top">

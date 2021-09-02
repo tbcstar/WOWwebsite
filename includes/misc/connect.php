@@ -3,21 +3,19 @@
 class Connect 
 {
 	
-	public static $connectedTo = NULL;
+	public static $connectedTo = "global";
 
     public static function connectToDB() 
 	{
-		if(self::$connectedTo != 'global')
+		if ($conn = mysqli_connect($GLOBALS['connection']['host'], $GLOBALS['connection']['user'], $GLOBALS['connection']['password']))
 		{
-			if ($conn = mysqli_connect($GLOBALS['connection']['host'], $GLOBALS['connection']['user'], $GLOBALS['connection']['password']))
-			{
-				return $conn; 
-			}
-			else
-			{
-				buildError("<b>数据库连接错误:</b> 无法建立连接。错误: ". mysqli_error($conn), NULL);
-			}
-			self::$connectedTo = 'global';
+            mysqli_set_charset($conn, "utf8");
+            return $conn;
+        }
+        else
+        {
+            buildError("<b>Database Connection error:</b> A connection could not be established. Error: " . mysqli_error($conn), NULL);
+            self::$connectedTo = null;
 		}
 	}
 	 
@@ -30,11 +28,11 @@ class Connect
             $GLOBALS['realms'][$realmid]['mysqli_user'] != $GLOBALS['connection']['user'] || 
             $GLOBALS['realms'][$realmid]['mysqli_pass'] != $GLOBALS['connection']['password'])
 		{
+		    mysqli_set_charset($conn, "utf8");
             return mysqli_connect($GLOBALS['realms'][$realmid]['mysqli_host'], 
-                                $GLOBALS['realms'][$realmid]['mysqli_user'], 
-                                    $GLOBALS['realms'][$realmid]['mysqli_pass'])
-						or 
-						buildError("<b>数据库连接错误:</b> 无法建立到Realm的连接。错误: ". mysqli_error($conn),NULL);
+                $GLOBALS['realms'][$realmid]['mysqli_user'], 
+                $GLOBALS['realms'][$realmid]['mysqli_pass'])
+                or buildError("<b>数据库连接错误:</b> 无法与 Realm 建立连接。 错误： " . mysqli_error($conn), NULL);
 		}
 		else
 		{
@@ -53,23 +51,23 @@ class Connect
 		switch($db) 
 		{
 			default: 
-				mysqli_select_db($conn, $db);
+				if(mysqli_set_charset($conn, "utf8")) mysqli_select_db($conn, $db);
 				break;
 
 			case('logondb'):
-				mysqli_select_db($conn, $GLOBALS['connection']['logondb']);
+				if(mysqli_set_charset($conn, "utf8")) mysqli_select_db($conn, $GLOBALS['connection']['logondb']);
 				break;
 
 			case('webdb'):
-				mysqli_select_db($conn, $GLOBALS['connection']['webdb']);
+				if(mysqli_set_charset($conn, "utf8")) mysqli_select_db($conn, $GLOBALS['connection']['webdb']);
 				break;
 
 			case('worlddb'):
-				mysqli_select_db($conn, $GLOBALS['connection']['worlddb']);
+				if(mysqli_set_charset($conn, "utf8")) mysqli_select_db($conn, $GLOBALS['connection']['worlddb']);
 				break;
 
             case('chardb'):
-                mysqli_select_db($conn, $GLOBALS['realms'][$realmid]['chardb']);
+                if(mysqli_set_charset($conn, "utf8")) mysqli_select_db($conn, $GLOBALS['realms'][$realmid]['chardb']);
                 break;
 		}
 

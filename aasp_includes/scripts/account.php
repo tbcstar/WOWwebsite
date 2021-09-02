@@ -5,8 +5,8 @@
     include('../functions.php');
 
     global $GameServer, $GameAccount;
-
     $conn = $GameServer->connect();
+
     $GameServer->selectDB('logondb', $conn);
 
 ###############################
@@ -87,7 +87,7 @@
 
         $guid = $GameAccount->getAccID($user);
 
-        mysqli_query($conn, "INSERT INTO account_access VALUES(". $guid .",". $rank .",". $realm .");");
+        mysqli_query($conn, "INSERT INTO account_access VALUES(". $guid .", ". $rank .", ". $realm .");");
         $GameServer->logThis("添加了GM帐户访问权限 " . ucfirst(strtolower($GameAccount->getAccName($guid))));
     }
 ###############################
@@ -110,7 +110,7 @@
 
         $GameServer->connectToRealmDB($rid);
 
-        $online = mysqli_query($conn, "SELECT COUNT(*) FROM characters WHERE guid=" . $guid . " AND online=1;");
+        $online = mysqli_query($conn, "SELECT COUNT(*) FROM characters WHERE guid=". $guid ." AND online=1;");
         if (mysqli_data_seek($online, 0) > 0)
         {
             exit('角色必须在线才能生效!');
@@ -120,7 +120,7 @@
 
         echo '角色得救了!';
 
-        $chk = mysqli_query($conn, "SELECT COUNT(*) FROM characters WHERE name='" . $name . "';");
+        $chk = mysqli_query($conn, "SELECT COUNT(*) FROM characters WHERE name='". $name ."';");
 
         if (mysqli_data_seek($chk, 0) > 1)
         {

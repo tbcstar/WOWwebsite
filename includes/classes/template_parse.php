@@ -2,14 +2,14 @@
 
 class Page
 {
-	var $page = null;
-	var $values = array();
+	public static $page   = null;
+    public static $values = array();
 
 	function __construct($template) 
 	{
 		if (file_exists($template))
 		{
-			$this->page = join("", file($template));
+			self::$page = join("", file($template));
 		}
 	}
 
@@ -30,8 +30,8 @@ class Page
 			{
 			  	foreach ($tags as $tag => $data) 
 			  	{
-					$data = (file_exists($data)) ? $this->parse($data) : $data;
-					$this->page = preg_replace("({" . $tag . "})", $data, $this->page);
+					$data = (file_exists($data)) ? self::$parse($data) : $data;
+					self::$page = preg_replace("({" . $tag . "})", $data, self::$page);
 		  		}
 			}
 		}
@@ -39,12 +39,12 @@ class Page
 
 	function setVar($key,$array) 
 	{
-	  	$this->values[$key] = $array;
+	  	self::$values[$key] = $array;
 	}
 
 	function output() 
 	{
-	    echo $this->page;
+	    echo self::$page;
 	}
 
 	function loadCustoms() 
@@ -59,7 +59,7 @@ class Page
 					{
 						$name = basename(substr($filename, 0, -4));
 
-						$this->replace_tags(array($name => $filename));
+						self::$replace_tags(array($name => $filename));
 					}
 				}
 			}

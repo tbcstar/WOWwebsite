@@ -2,11 +2,12 @@
 
 require('../ext_scripts_class_loader.php');
 
-global $Connect, $Server, $Character, $Account, $conn;
+global $Connect, $Server, $Character, $Account;
+$conn = $Connect->connectToDB();
 
 if($_POST['action'] == 'unstuck') 
 {
-	$guid 		= (int)$_POST['guid'];
+	$guid       = mysqli_real_escape_string($conn, $_POST['guid']);
 	$realm_id 	= $Server->getRealmId($_POST['char_db']);
 	$Connect->connectToRealmDB($realm_id);
 	
@@ -15,7 +16,7 @@ if($_POST['action'] == 'unstuck')
 
 if($_POST['action'] == 'revive') 
 {
-	$guid = (int)$_POST['guid'];
+	$guid     = mysqli_real_escape_string($conn, $_POST['guid']);
 	$realm_id = $Server->getRealmId($_POST['char_db']);
 	$Connect->connectToRealmDB($realm_id);
 
@@ -29,8 +30,8 @@ if ($_POST['action'] == 'getLocations')
 	$char 		= mysqli_real_escape_string($conn, $values[0]);
 	$realm_id 	= $Server->getRealmId($values[1]);
 	$Connect->connectToRealmDB($realm_id);
-	
-	$result = mysqli_query($conn, "SELECT race FROM characters WHERE guid='".$char."'");
+
+	$result = mysqli_query($conn, "SELECT race FROM characters WHERE guid=". $char .";");
 	$row 	= mysqli_fetch_assoc($result);
 	$alliance = array(1,3,4,7,11);
 	if (in_array($row['race'],$alliance)) 
@@ -101,7 +102,7 @@ if ($_POST['action']=='teleport')
 	
     $realm_id = $Server->getRealmId($_POST['char_db']);
 	$Connect->connectToRealmDB($realm_id);
-	$result = mysqli_query($conn, "SELECT race,account,level,online FROM characters WHERE guid='".$character."'");
+	$result   = mysqli_query($conn, "SELECT race, account, level, online FROM characters WHERE guid=". $character .";");
     
 	if (mysqli_num_rows($result) == 0)
 	{
@@ -256,7 +257,7 @@ if ($_POST['action']=='teleport')
 		$Connect->connectToRealmDB($realm_id);
 
 		//get pos x, y etc for the logs.
-		$result = mysqli_query($conn, "SELECT position_x, position_y, position_z, map FROM characters WHERE guid='".$character."'"); 
+		$result = mysqli_query($conn, "SELECT position_x, position_y, position_z, map FROM characters WHERE guid=". $character .";");
 		$pos = mysqli_fetch_assoc($result);
 
 		$char_x = $pos['position_x'];
@@ -283,9 +284,9 @@ if ($_POST['action']=='teleport')
 
 if($_POST['action'] == 'service') 
 {
-	$guid 		= (int)$_POST['guid'];
-	$realm_id 	= (int)$_POST['realm_id'];
-	$serviceX 	= mysqli_real_escape_string($conn, $_POST['service']);
+	$guid     = mysqli_real_escape_string($conn, $_POST['guid']);
+    $realm_id = mysqli_real_escape_string($conn, $_POST['realm_id']);
+	$serviceX = mysqli_real_escape_string($conn, $_POST['service']);
 	
 	
 	if($Character->isOnline($guid) == true)
@@ -336,7 +337,7 @@ if($_POST['action'] == 'service')
 	}
 	
 	$Connect->selectDB('webdb');
-	$getRA 	= mysqli_query($conn, "SELECT sendType,host,ra_port,soap_port,rank_user,rank_pass FROM realms WHERE id='".$realm_id."'");
+	$getRA  = mysqli_query($conn, "SELECT sendType, host, ra_port, soap_port, rank_user, rank_pass FROM realms WHERE id=". $realm_id .";");
 	$row 	= mysqli_fetch_assoc($getRA);
 	
 	if($row['sendType'] == 'ra') 

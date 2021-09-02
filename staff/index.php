@@ -3,8 +3,8 @@
     global $GameServer, $GameAccount;
     $conn = $GameServer->connect();
 ?>
-<!DOCTYPE">
-<html">
+<!DOCTYPE>
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><?php echo $GLOBALS['website_title']; ?> 员工面板</title>
@@ -217,10 +217,10 @@
 			{
                 $string = $row['post_text']; 
                 //Lets get the username			
-                $getUser  = mysqli_query($conn, "SELECT username FROM phpbb_users WHERE user_id='" . $row['poster_id'] . "';");
+                $getUser  = mysqli_query($conn, "SELECT username FROM phpbb_users WHERE user_id=". $row['poster_id'] .";");
 				$user     = mysqli_fetch_assoc($getUser);
                 //Get topic
-                $getTopic = mysqli_query($conn, "SELECT topic_title FROM phpbb_topics WHERE topic_id='" . $row['topic_id'] . "';");
+                $getTopic = mysqli_query($conn, "SELECT topic_title FROM phpbb_topics WHERE topic_id=". $row['topic_id'] .";");
                 $topic    = mysqli_fetch_assoc($getTopic);
             ?>
                 <tr>

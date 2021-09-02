@@ -1,5 +1,6 @@
 <?php
 global $Account, $Website, $Connect;
+$conn = $Connect->connectToDB();
 ?>
 <?php include "headers.php" ?>
 <?php include "menus.php" ?>
@@ -68,18 +69,19 @@ elseif($GLOBALS['service'][$service]['currency']=="dp")
 } 
 
 $Account->isNotLoggedIn();
-$Connect->selectDB('webdb');
+$Connect->selectDB('webdb', $conn);
 $num = 0;
-$result = mysqli_query($conn, 'SELECT char_db,name FROM realms ORDER BY id ASC');
-while($row = mysqli_fetch_assoc($result)) 
+$result = mysqli_query($conn, "SELECT char_db, name FROM realms ORDER BY id ASC;");
+while ($row = mysqli_fetch_assoc($result))
 {
 	$acct_id = $Account->getAccountID($_SESSION['cw_user']);
 	$realm = $row['name'];
 	$char_db = $row['char_db'];
 		          	
-	$Connect->selectDB($char_db);
-	$result = mysqli_query($conn, 'SELECT name,guid,gender,class,race,level,online FROM characters WHERE account='.$acct_id);
-	while($row = mysqli_fetch_assoc($result)) {
+	$Connect->selectDB($char_db, $conn);
+	$result = mysqli_query($conn, "SELECT name, guid, gender, class, race, level, online FROM characters WHERE account=". $acct_id .";");
+    while ($row = mysqli_fetch_assoc($result))
+	{
 	?>
 
 <tr>

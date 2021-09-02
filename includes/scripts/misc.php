@@ -2,7 +2,8 @@
 
 require('../ext_scripts_class_loader.php');
 
-global $Account, $Connect, $Server, $conn;
+global $Account, $Connect, $Server;
+$conn = $Connect->connectToDB();
 
 if(isset($_POST['element']) &&$_POST['element'] == 'vote') 
 {
@@ -18,7 +19,7 @@ elseif(isset($_POST['element']) && $_POST['element'] == 'donate')
 if(isset($_POST['action']) && $_POST['action'] == 'removeComment') 
 {
    $Connect->selectDB('webdb');
-   mysqli_query($conn, "DELETE FROM news_comments WHERE id='".(int)$_POST['id']."'");
+   mysqli_query($conn, "DELETE FROM news_comments WHERE id=". mysqli_real_escape_string($conn, $_POST['id']) .";");
 }
 ##
 #
@@ -26,7 +27,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'removeComment')
 if(isset($_POST['action']) && $_POST['action']=='getComment') 
 {
    $Connect->selectDB('webdb');
-   $result = mysqli_query($conn, "SELECT `text` FROM news_comments WHERE id='".(int)$_POST['id']."'");
+   $result = mysqli_query($conn, "SELECT `text` FROM news_comments WHERE id='". mysqli_real_escape_string($conn, $_POST['id']) .";");
    $row = mysqli_fetch_assoc($result);
    echo $row['text'];
 }
@@ -38,7 +39,7 @@ if(isset($_POST['action']) && $_POST['action']=='editComment')
    $content = mysqli_real_escape_string(trim(htmlentities($_POST['content'])));
 	
    connect::selectDB('webdb');
-   mysqli_query($conn, "UPDATE news_comments SET `text` = '".$content."' WHERE id='".(int)$_POST['id']."'");
+   mysqli_query($conn, "UPDATE news_comments SET `text` = '".$content."' WHERE id='". mysqli_real_escape_string($conn, $_POST['id']) .";");
    
    mysqli_query($conn, "INSERT INTO admin_log (full_url, ip, timestamp, action, account, extended_inf) 
    VALUES('/index.php?page=news','".$_SERVER['REMOTE_ADDR']."', '".time()."', '编辑评论', '".$_SESSION['cw_user_id']."', 
@@ -98,7 +99,7 @@ if(isset($_POST['convertDonationList']))
 {
 	for ($row = 0; $row < count($GLOBALS['donationList']); $row++)
 		{
-				$value = (int)$_POST['convertDonationList'];
+				$value = mysqli_real_escape_string($conn, $_POST['convertDonationList']);
 				if($value == $GLOBALS['donationList'][$row][1])
 				{
 					echo $GLOBALS['donationList'][$row][2];

@@ -23,7 +23,9 @@
     <?php
     $result = mysqli_query($conn, "SELECT * FROM account_access;");
 	if(mysqli_num_rows($result)==0) 
-	 	echo "<b>没有发现GM账户!</b>";	
+	{
+	 	echo "<b>没有发现GM账户!</b>";
+	}
 	else
 	{
 		while($row = mysqli_fetch_assoc($result)) 
@@ -39,7 +41,7 @@
 						echo '所有';
 					else
 					{
-                        $getRealm = mysqli_query($conn, "SELECT name FROM realmlist WHERE id='" . $row['RealmID'] . "';");
+                        $getRealm = mysqli_query($conn, "SELECT name FROM realmlist WHERE id=". $row['RealmID'] .";");
 						if(mysqli_num_rows($getRealm)==0)
 							echo '未知';
 						$rows = mysqli_fetch_assoc($getRealm);
@@ -49,7 +51,7 @@
                 </td>
                 <td>
                 <?php
-					$getData = mysqli_query($conn, "SELECT last_login,online FROM account WHERE id='" . $row['id'] . "';");
+					$getData = mysqli_query($conn, "SELECT last_login, online FROM account WHERE id=". $row['id'] .";");
 					$rows = mysqli_fetch_assoc($getData);
 					if($rows['online']==0)
 					 	echo '<font color="red">离线</font>';

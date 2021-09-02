@@ -13,66 +13,58 @@
 	} 
 	else 
 	{
-
     echo "<div class='box_right_title'>页面</div>";
 
     if(!isset($_GET['action']))
     {
-
-    ?><table class='center'>
+    ?>
+    <table class='center'>
     <tr>
-        <th>名称</th><th>文件名</th><th>动作</th>
+        <th>名称</th>
+        <th>文件名</th>
+        <th>动作</th>
     </tr>
-<?php 
-    $result = mysqli_query($conn, "SELECT * FROM custom_pages ORDER BY id ASC;");
-    while ($row    = mysqli_fetch_assoc($result))
-    {
-        $check = mysqli_query($conn, "SELECT COUNT(filename) FROM disabled_pages WHERE filename='" . $row['filename'] . "';");
-        if (mysqli_data_seek($check, 0) == 0)
+    <?php
+        $result = mysqli_query($conn, "SELECT * FROM custom_pages ORDER BY id ASC;");
+        while ($row = mysqli_fetch_assoc($result))
             {
-                $disabled = false;
-            }
-            else
+                $disabled = true;
+        $check = mysqli_query($conn, "SELECT COUNT(filename) AS filename FROM disabled_pages WHERE filename='". $row['filename'] ."';");
+            if (mysqli_fetch_assoc($check)['filename'] == 1)
             {
                 $disabled = true;
             }
             ?>
-        <tr <?php
-            if ($disabled == true)
-            {
-                echo "style='color: #999;'";
-            }
-            ?>>
-        <td width="50"><?php echo $row['name']; ?></td>
-        <td width="100"><?php echo $row['filename']; ?>(Database)</td>
-        <td><select id="action-<?php echo $row['filename']; ?>"><?php
-            if ($disabled == true)
-            {
-            ?>
-            <option value="1">Enable</option>
-            <?php
-            }
-            else
-            {
-            ?>
-            <option value="2">Disable</option>
-    <?php   }
-            ?>
-            <option value="3">Edit</option>
-            <option value="4">Remove</option>
-        </select> &nbsp;<input type="submit" value="Save" onclick="savePage('<?php echo $row['filename']; ?>')"></td>
-    </tr>
-<?php
+            <tr <?php if ($disabled) echo "style='color: #999;'"; ?>>
+                <td width="50"><?php echo $row['name']; ?></td>
+                <td width="100"><?php echo $row['filename']; ?>(Database)</td>
+                <td><select id="action-<?php echo $row['filename']; ?>"><?php
+                        if ($disabled == true)
+                        {
+                            ?>
+                            <option value="1">启用</option>
+                            <?php
+                        }
+                        elseif ($disabled == false)
+                        {
+                            ?>
+                            <option value="2">关闭</option>
+                    <?php } ?>
+                        <option value="3">编辑</option>
+                        <option value="4">移除</option>
+                    </select> &nbsp;<input type="submit" value="Save" onclick="savePage('<?php echo $row['filename']; ?>')"></td>
+            </tr>
+        <?php
     }
 
         if (is_array($GLOBALS['core_pages']) || is_object($GLOBALS['core_pages']))
     {
-        foreach ($GLOBALS['core_pages'] as $k => $v)
+        foreach ($GLOBALS['core_pages'] as $pageName => $fileName)
 	{ 
-            $filename = substr($v, 0, -4);
-            unset($check);
-            $check    = mysqli_query($conn, "SELECT COUNT(filename) FROM disabled_pages WHERE filename='" . $filename . "';");
-	 	if(mysqli_data_seek($check,0) == 0) 
+        $filename = substr($fileName, 0, -4);
+        unset($check);
+        $check = mysqli_query($conn, "SELECT COUNT(filename) AS filename FROM disabled_pages WHERE filename='". $filename ."';");
+        if (mysqli_fetch_assoc($check)['filename'] == 1)
 	 	{
 			$disabled = false;
 	 	} 
@@ -80,13 +72,20 @@
 	 	{
 			$disabled = true;
 	 	}
-    ?>
-	<tr <?php if($disabled == true) { echo "style='color: #999;'"; }?>>
-        <td width="50"><?php echo $row['name']; ?></td>
-        <td width="100"><?php echo $row['filename']; ?>(Database)</td>
-        <td><select id="action-<?php echo $row['filename']; ?>"><?php if($disabled == true) {  ?>
+        ?>
+	    <tr <?php if ($disabled) echo "style='color: #999;'"; ?>>
+            <td><?php echo $pageName; ?></td>
+            <td><?php echo $fileName; ?></td>
+        <td><select id="action-<?php echo $row['filename']; ?>">
+            <?php 
+            if($disabled == true)
+            {
+            ?>
             <option value="1">启用</option>
-		<?php } else { ?>
+		    <?php
+		    }
+		    elseif (!$disabled)
+		    { ?>
 			<option value="2">禁用</option>
 		<?php } ?>
         <option value="3">编辑</option>
@@ -157,7 +156,9 @@ if (is_array($GLOBALS['core_pages']) || is_object($GLOBALS['core_pages']))
 		} 
 		else 
 		{
-            mysqli_query($conn, "UPDATE custom_pages SET name='" . $name . "',filename='" . $filename . "', content='" . $content . "' WHERE filename='" . mysqli_real_escape_string($conn, $_GET['filename']) . "';");
+            mysqli_query($conn, "UPDATE custom_pages 
+                SET name='". $name ."', filename='". $filename ."', content='". $content ."' 
+                WHERE filename='". mysqli_real_escape_string($conn, $_GET['filename']) ."';");
 
             echo "<h3>页面已成功更新。</h3> <a href='" . $GLOBALS['website_domain'] . "?p=" . $filename . "' target='_blank'>查看页面</a>";
 		}

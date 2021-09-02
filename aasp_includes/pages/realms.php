@@ -18,7 +18,6 @@
 if(isset($_POST['add_realm'])) 
 {
     $GameServer->addRealm(
-        $_POST['realm_id'],
         $_POST['realm_name'],
         $_POST['realm_desc'],
         $_POST['realm_host'],
@@ -36,10 +35,12 @@ if(isset($_POST['add_realm']))
 
     <form action="?p=realms" method="post" style="line-height: 15px;">
         <b>服务器常规信息</b><hr/>
+        <!--
         服务器ID：<br/>
         <input type="text" name="realm_id" placeholder="默认: 1"/> <br/>
         <i class='blue_text'>这个ID必须与您在Realm中的realmlist表中指定的ID相同。
                         	否则正常运行时间将不起作用。</i><br/>
+        -->
         服务器名称：<br/>
         <input type="text" name="realm_name" placeholder="默认: 时光回溯"/> <br/>
         （可选）服务器说明：<br/>
