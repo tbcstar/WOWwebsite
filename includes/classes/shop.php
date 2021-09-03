@@ -5,8 +5,8 @@ class Shop
 	public function search($value, $shop, $quality, $type, $ilevelfrom, $ilevelto, $results, $faction, $class, $subtype) 
 	{
 		global $Connect;
-        $conn = $Connect->connectDB();
-		$Connect->selectDB('webdb', $conn);
+        $conn = $Connect->connectToDB();
+        $Connect->selectDB("webdb", $conn);
 
 		if ($shop == 'vote')
 		{

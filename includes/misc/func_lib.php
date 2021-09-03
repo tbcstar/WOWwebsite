@@ -26,21 +26,21 @@ function convTime($time)
 {
 	if($time < 60)
 	{
-		$string = '秒';
+		$string = "秒";
 	}
-	elseif ($time > 60)
+	if ($time > 60)
 	{
 	    $time = $time / 60;
-		$string = '分';
+		$string = "分";
 	}
-	elseif ($time > 60) 
+	if ($time > 60)
 	{									 
-		$string = '小时';
+		$string = "小时";
 		$time = $time / 60;
 	}
-    elseif ($time > 24) 
+    if ($time > 24)
 	{
-		$string = '天';
+		$string = "天";
 		$time = $time / 24;
 	}
 

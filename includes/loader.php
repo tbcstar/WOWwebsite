@@ -23,18 +23,15 @@ if(isset($GLOBALS['not_installed']) && $GLOBALS['not_installed'] == true)
 	}
 	else
 	{
-		exit('<b>错误</b>。似乎你的网站还没有安装，但没有安装程序可以找到!');	
+		die("<b>错误</b>。似乎你的网站还没有安装，但没有安装程序可以找到!");
 	}
 }
 
 if($GLOBALS['maintainance']==TRUE && !in_array($_SERVER['REMOTE_ADDR'],$GLOBALS['maintainance_allowIPs']))
 { 
-  die("<center><h3>网站维护</h3>
-      ".$GLOBALS['website_title']." 目前正在进行一些主要的维护，并将尽快提供。
-      <br/><br/>TBCstar 项目组
-  </center>");
+    die(
+        htmlentities("<center><h3>网站维护</h3>". $GLOBALS['website_title'] ." 目前正在进行一些重大维护，将尽快恢复。<br/><br/>TBCstar 项目组</center>"));
 }
-
 
 require('includes/misc/connect.php'); //Load connection class
 global $Connect;
@@ -57,11 +54,11 @@ global $Plugins, $Account, $Website;
 /******* 加载插件 ***********/
 $Plugins->globalInit();
 
-$Plugins->init('classes');
-$Plugins->init('javascript');
-$Plugins->init('modules');
-$Plugins->init('styles');
-$Plugins->init('pages');
+$Plugins->init("classes");
+$Plugins->init("javascript");
+$Plugins->init("modules");
+$Plugins->init("styles");
+$Plugins->init("pages");
 
 //加载配置。
 if($GLOBALS['enablePlugins'] == true)
@@ -72,9 +69,9 @@ if($GLOBALS['enablePlugins'] == true)
 		{
 			foreach($_SESSION['loaded_plugins'] as $folderName)
 			{
-				if(file_exists('plugins/'.$folderName.'/config.php'))
+				if (file_exists("plugins/". $folderName ."/config.php"))
 				{
-					include_once('plugins/'.$folderName.'/config.php');
+					include_once("plugins/". $folderName ."/config.php");
 				}
 			}
 		}
@@ -93,15 +90,15 @@ if (!isset($_GET['p']))
 if(isset($_SESSION['votingUrlID']) && $_SESSION['votingUrlID']!=0 && $GLOBALS['vote']['type'] == 'confirm')
 {
     if ($Website->checkIfVoted(mysqli_real_escape_string($conn, $_SESSION['votingUrlID']), $GLOBALS['connection']['webdb']) == TRUE)
-		die("?p=vote");
+		die(htmlentities("?p=vote"));
 	
 	$acct_id = $Account->getAccountID($_SESSION['cw_user']);
 	
 	$next_vote = time() + $GLOBALS['vote']['timer'];
 	
-	$Connect->selectDB('webdb');
-	
-	mysqli_query($conn, "INSERT INTO votelog (siteid, userid, timestamp, next_vote, ip) VALUES 
+	$Connect->selectDB("webdb", $conn);
+
+	mysqli_query($conn, "INSERT INTO votelog (`siteid`, `userid`, `timestamp`, `next_vote`, `ip`) VALUES 
         (". mysqli_real_escape_string($conn, $_SESSION['votingUrlID']) .", ". $acct_id .", '" . time() . "', ". $next_vote .", '" . $_SERVER['REMOTE_ADDR'] . "');");
      
 	$getSiteData = mysqli_query($conn, "SELECT points,url FROM votingsites WHERE id=". mysqli_real_escape_string($conn, $_SESSION['votingUrlID']) .";");
@@ -109,13 +106,13 @@ if(isset($_SESSION['votingUrlID']) && $_SESSION['votingUrlID']!=0 && $GLOBALS['v
 	
 	if(mysqli_num_rows($getSiteData) == 0)
 	{
-		header('Location: index.php');
+		header("Location: index.php");
 		unset($_SESSION['votingUrlID']);
 	}
 	
 	//Update the points table.
 	$add = $row['points'] * $GLOBALS['vote']['multiplier'];
-	mysqli_query($conn, "UPDATE account_data SET vp=vp + " . $add . " WHERE id=". $acct_id .";");
+	mysqli_query($conn, "UPDATE account_data SET vp=vp + ". $add ." WHERE id=". $acct_id .";");
 	
 	unset($_SESSION['votingUrlID']);
 	

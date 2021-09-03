@@ -32,7 +32,7 @@ if (isset($_GET['newsid']))
 		$rows = mysqli_fetch_assoc($result);
 	if($rows['poster'] == $_SESSION['cw_user_id'] && isset($_SESSION['cw_user'])) 
 	{
-		echo "<p>您不能连续发表2条评论！</p>"; 
+		echo "<span class='attention'>您不能连续发表2条评论！</span>";
 	}
 	else 
 	{
@@ -60,16 +60,16 @@ if (isset($_GET['newsid']))
 		{
 			$text = mysqli_real_escape_string($conn, trim($_POST['text']));
 			$ip = $_SERVER['REMOTE_ADDR'];
-			$Connect->selectDB('logondb', $conn);
+			$Connect->selectDB("logondb", $conn);
 
 			$getAcct = mysqli_query($conn, "SELECT id FROM account WHERE username='" . $_SESSION['cw_user'] . "';");
 			$row     = mysqli_fetch_assoc($getAcct);
 			$account = $row['id'];
 			$Connect->selectDB('webdb', $conn); 
-			mysqli_query($conn, "INSERT INTO news_comments (`newsid`,`text`,`poster`,`ip`) VALUES 
-                (". $id .",'". $text ."','". $account ."','". $_SERVER['REMOTE_ADDR'] ."');");
-			
-			header("Location: ?p=news&id=".$_GET['id']."");
+			mysqli_query($conn, "INSERT INTO news_comments (`newsid`, `text`, `poster`, `ip`) VALUES 
+                (". $id .", '". $text ."', '". $account ."', '". $_SERVER['REMOTE_ADDR'] ."');");
+
+			header("Location: ?p=news&newsid=". $id);
 		}
 	}
 
@@ -87,7 +87,7 @@ if (isset($_GET['newsid']))
              "'<a href=\"$1\" target=\"_blank\">http://$3</a>$4'",
              $row['text']
             );
-			$Connect->selectDB('logondb', $conn);
+			$Connect->selectDB("logondb", $conn);
 			$query  = mysqli_query($conn, "SELECT username, id FROM account WHERE id=". $row['poster'] .";");
 			$pi		= mysqli_fetch_assoc($query); 
 			$user	= ucfirst(strtolower($pi['username']));

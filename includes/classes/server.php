@@ -37,13 +37,13 @@ class Server
 	    $fp = fsockopen($GLOBALS['realms'][$realmId]['host'], $GLOBALS['realms'][$realmId]['port'], $errno, $errstr, 1);
 		if (!$fp)
 		{
-	   		echo $status = '<h4 class="realm_status_title_offline">' . $GLOBALS['realms'][$realmId]['name'] . ' -  离线</h4>';
+	   		echo $status = "<h4 class='realm_status_title_offline'>" . $GLOBALS['realms'][$realmId]['name'] . " -  离线</h4>";
 		}
 		else 
 		{
-			echo $status = '<h4 class="realm_status_title_online">' . $GLOBALS['realms'][$realmId]['name'] . ' - 在线</h4>';
+			echo $status = "<h4 class='realm_status_title_online'>" . $GLOBALS['realms'][$realmId]['name'] . " - 在线</h4>";
 
-       	echo '<span class="realm_status_text">';
+       	    echo "<span class='realm_status_text'>";
 
 		   	/* Players online bar */
 		   	if($GLOBALS['serverStatus']['factionBar'] == TRUE) 
@@ -104,7 +104,7 @@ class Server
 		   		<?php
 	    	}
 
-		    echo '<table width="100%"><tr>';
+		    echo "<table width='100%'><tr>";
 			//Get players online
 			if ($GLOBALS['serverStatus']['playersOnline'] == TRUE) 
 			{

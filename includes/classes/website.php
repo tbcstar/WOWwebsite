@@ -8,54 +8,63 @@
 
         public function getNews()
         {
+
             global $Cache, $Connect, $Website;
             $conn = $Connect->connectToDB();
             if ($GLOBALS['news']['enable'] == true)
             {
-                echo '<div class="box_two_title">最近新闻</div>';
+                echo "<div class='box_two_title'>最近新闻</div>";
 
-                if ($Cache->exists('news') == true)
+                if ($Cache->exists("news") == true)
                 {
-                    $Cache->loadCache('news');
+                    $Cache->loadCache("news");
                 }
                 else
                 {
-                    $Connect->selectDB('webdb');
+                    $Connect->selectDB("webdb", $conn);
 
                     $result = mysqli_query($conn, "SELECT * FROM news ORDER BY id DESC LIMIT ". $GLOBALS['news']['maxShown'] .";");
                     if (mysqli_num_rows($result) == 0)
                     {
-                        echo '没有发现任何新闻';
+                        echo "没有发现任何新闻。";
                     }
                     else
                     {
                         $output = null;
-                        while ($row    = mysqli_fetch_assoc($result))
+                        while ($row = mysqli_fetch_assoc($result))
                         {
                             if (file_exists($row['image']))
                             {
-                                echo $newsPT1 = '
-								<table class="news" width="100%"> 
+                                echo $newsPT1 = "
+						        <table class='news' width='100%'>
 									<tr>
-									    <td><h3 class="yellow_text">' . $row['title'] . '</h3></td>
+									<td>
+									    <h3 class='yellow_text'>". 
+									    $row['title']
+                                        ."</h3>
+                                    </td>
 								    </tr>
-							   </table>
-	                           <table class="news_content" cellpadding="4"> 
-							       <tr>
-							          <td><img src="' . $row['image'] . '" alt=""/></td> 
-							          <td>';
+							    </table>
+	                            <table class='news_content' cellpadding='4'>
+							    <tr>
+							        <td><img src='". $row['image'] ."' alt=''/></td> 
+							        <td>";
                             }
                             else
                             {
-                                echo $newsPT1 = '
-								<table class="news" width="100%"> 
+                                echo $newsPT1 = "
+						        <table class='news' width='100%'> 
 							        <tr>
-									    <td><h3 class="yellow_text">' . $row['title'] . '</h3></td>
+									    <td>
+									    <h3 class='yellow_text'>".
+									    $row['title'] 
+									    ."</h3>
+									</td>
 								    </tr>
-							   </table>
-	                           <table class="news_content" cellpadding="4"> 
+							    </table>";/*
+	                           <table class='news_content' cellpadding='4'>
 							       <tr>
-							           <td>';
+							           <td>";*/
                             }
                             $output .= $newsPT1;
                             unset($newsPT1);
@@ -74,50 +83,50 @@
                                 echo nl2br($text);
                                 $output .= nl2br($row['body']);
                             }
+
                             $result      = mysqli_query($conn, "SELECT COUNT(id) FROM news_comments WHERE newsid=". $row['id'] .";");
                             $commentsNum = mysqli_fetch_row($result);
+
                             if ($GLOBALS['news']['enableComments'] == true)
                             {
-                                $comments = '| <a href="?p=news&amp;newsid=' . $row['id'] . '">Comments (' . $commentsNum[0] . ')</a>';
+                                $comments = '| <a href="?p=news&amp;newsid=' . $row['id'] . '">Comments ('. $commentsNum[0] .')</a>';
                             }
                             else
                             {
-                                $comments = '';
+                                $comments = "";
                             }
 
-                            echo $newsPT2 = '
-						<br/><br/><br/>
-						<i class="gray_text"> 作者 ' . $row['author'] . ' | ' . $row['date'] . ' ' . $comments . '</i>
+                            echo $newsPT2 = "<br/><br/><br/>
+        						<i class='gray_text'>作者 ". $row['author'] ." | ". $row['date'] ." ". $comments ."</i>
 						</td> 
 						</tr>
-					    </table>';
+					    </table";
                             $output  .= $newsPT2;
                             unset($newsPT2);
                         }
-                        echo '<hr/><a href="?p=news">查看旧的新闻...</a>';
-                        $Cache->buildCache('news', $output);
+                        echo "<hr/><a href='?p=news'>查看旧的新闻...</a>";
+                        $Cache->buildCache("news", $output);
                     }
                 }
             }
+
         }
 
         public function getSlideShowImages()
         {
             global $Cache, $Connect;
             $conn = $Connect->connectToDB();
-            if ($Cache->exists('slideshow') == true)
+            if ($Cache->exists("slideshow") == true)
             {
-                $Cache->loadCache('slideshow');
+                $Cache->loadCache("slideshow");
             }
             else
             {
-                $Connect->selectDB('webdb');
+                $Connect->selectDB("webdb", $conn);
                 $result = mysqli_query($conn, "SELECT `path`, `link` FROM slider_images ORDER BY position ASC;");
                 while ($row = mysqli_fetch_assoc($result))
                 {
-                    echo $outPutPT = '<a href="' . $row['link'] . '">
-								  <img border="none" src="' . $row['path'] . '" alt="" class="slideshow_image">
-								  </a>';
+                    echo $outPutPT = '<a href="'. $row['link'] .'"><img border="none" src="'. $row['path'] .'" alt="" class="slideshow_image"></a>';
                     $output   .= $outPutPT;
                 }
                 $Cache->buildCache('slideshow', $output);
@@ -128,7 +137,7 @@
         {
             global $Connect;
             $conn = $Connect->connectToDB();
-            $Connect->selectDB('webdb');
+            $Connect->selectDB("webdb", $conn);
 
             $result = mysqli_query($conn, "SELECT `position` FROM slider_images ORDER BY position ASC;");
             $x      = 1;
@@ -160,7 +169,7 @@
         {
             global $Connect, $Account, $Website;
             $conn = $Connect->connectToDB();
-            $Connect->selectDB('webdb');
+            $Connect->selectDB("webdb", $conn);
             $result = mysqli_query($conn, "SELECT * FROM votingsites ORDER BY id DESC;");
 
             if (mysqli_num_rows($result) == 0)
@@ -170,8 +179,7 @@
             else
             {
                 while ($row = mysqli_fetch_assoc($result))
-                {
-                ?>
+                { ?>
 
 				<div class="col">
 				<div class="item">
@@ -216,18 +224,12 @@
 			$db = $GLOBALS['connection']['webdb'];
             $acct_id = $Account->getAccountID($_SESSION['cw_user']);
 
-            $Connect->selectDB('webdb');
+            $Connect->selectDB("webdb", $conn);
 
-            $result = mysqli_query($conn, "SELECT COUNT(id) FROM votelog WHERE userid=". $acct_id ." AND siteid=". $siteId ." AND next_vote > ". time() .";");
+            $result = mysqli_query($conn, "SELECT COUNT(id) AS voted FROM votelog WHERE userid=". $acct_id ." AND siteid=". $siteId ." AND next_vote > ". time() .";");
 
-            if (mysqli_data_seek($result, 0) == 0)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            if (mysqli_fetch_assoc($result)['voted'] == 0) return false;
+            else return true;
         }
 
         public function sendEmail($to, $from, $subject, $body)
@@ -241,16 +243,9 @@
 
         public function convertCurrency($currency)
         {
-            if ($currency == 'dp')
-            {
-                return $GLOBALS['donation']['coins_name'];
-            }
-            elseif ($currency == 'vp')
-            {
-                return "投票积分";
-            }
+            if ($currency == "dp") return $GLOBALS['donation']['coins_name'];
+            elseif ($currency == "vp") return "Vote Points";
         }
 
     }
-
     $Website = new Website();

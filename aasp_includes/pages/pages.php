@@ -3,9 +3,9 @@
     global $GameServer, $GamePage;
     $conn = $GameServer->connect();
 
-    $GameServer->selectDB('webdb', $conn);
+    $$GameServer->selectDB("webdb", $conn);
 
-	$GamePage->validatePageAccess('Pages');
+	$GamePage->validatePageAccess("Pages");
 
     if($GamePage->validateSubPage() == TRUE) 
     {
@@ -38,7 +38,7 @@
             <tr <?php if ($disabled) echo "style='color: #999;'"; ?>>
                 <td width="50"><?php echo $row['name']; ?></td>
                 <td width="100"><?php echo $row['filename']; ?>(Database)</td>
-                <td><select id="action-<?php echo $row['filename']; ?>"><?php
+                <td><select id="action-<?php echo htmlentities($row['filename']); ?>"><?php
                         if ($disabled == true)
                         {
                             ?>

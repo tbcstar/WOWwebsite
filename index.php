@@ -12,11 +12,11 @@
 		<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
 		<title>
 			<?php
-                echo $website_title .' - ';
+                echo $website_title ." - ";
 
                 while ($page_title = current($GLOBALS['core_pages']))
                 {
-                    if ($page_title == $_GET['p'] . '.php')
+                    if ($page_title == $_GET['p'] .'.php')
                     {
                         echo key($GLOBALS['core_pages']);
                         $foundPT = true;
@@ -25,13 +25,13 @@
                 }
                 if (!isset($foundPT))
                 {
-                    echo ucfirst($_GET['p']);
+                    echo htmlentities(ucfirst($_GET['p']));
                 }
             ?>
         </title>
 
         <?php
-            $content = new Page('styles/' . $template['path'] . '/template.html');
+            $content = new Page("styles/". $template['path'] ."/template.html");
             $content->loadCustoms(); //Load custom modules
 
             $content->replace_tags(array('content' => 'modules/content.php')); //Main content 

@@ -79,7 +79,7 @@
         {
             $realmId = mysqli_real_escape_string($conn, $realmId);
             $conn = $this->connect();
-            $this->selectDB('webdb', $conn);
+            $this->selectDB("webdb", $conn);
 
             $result = mysqli_query($conn, "SELECT host, port FROM realms WHERE id=". $realmId .";");
             $row    = mysqli_fetch_assoc($result);
@@ -156,7 +156,7 @@
         public function getFactionRatio($rid)
         {
             $conn = $this->connect();
-            $this->selectDB('webdb', $conn);
+            $this->selectDB("webdb", $conn);
             $result = mysqli_query($conn, "SELECT id FROM realms;");
             if (mysqli_num_rows($result) == 0)
             {
@@ -206,7 +206,7 @@
         public function connectToRealmDB($realmId)
         {
             $conn = $this->connect();
-            $this->selectDB('webdb', $conn);
+            $this->selectDB("webdb", $conn);
 			$sql="SELECT mysqli_host,mysqli_user,mysqli_pass,char_db FROM realms WHERE id='".(int)$realmid."'";
             $ID = mysqli_real_escape_string($conn, $realmId);
             $getRealmData = mysqli_query($conn, "SELECT mysqli_host, mysqli_user, mysqli_pass, char_db FROM realms WHERE id=". $ID .";");
@@ -270,7 +270,7 @@
         public function logThis($action, $extended = NULL)
         {
             $conn = $this->connect();
-            $this->selectDB('webdb', $conn);
+            $this->selectDB("webdb", $conn);
             $url = $this->getAddress();
 
             if (isset($_SESSION['cw_admin']))
@@ -340,7 +340,7 @@
                     $soap_port = "7878";
                 }
 
-                $this->selectDB('webdb', $conn);
+                $this->selectDB("webdb", $conn);
                 if(mysqli_query($conn, "INSERT INTO realms 
                     (name, description, char_db, port, rank_user, rank_pass, ra_port, soap_port, host, sendType, mysqli_host, mysqli_user, mysqli_pass) 
                     VALUES 
@@ -373,7 +373,7 @@
         public function getRealmName($realmId)
         {
             $conn = $this->connect();
-            $this->selectDB('webdb', $conn);
+            $this->selectDB("webdb", $conn);
 
             $ID = mysqli_real_escape_string($conn, $realmId);
 
@@ -391,7 +391,7 @@
         {
             $conn = $this->connect();
             /* 未使用! */
-            $this->selectDB('webdb', $conn);
+            $this->selectDB("webdb", $conn);
 
 
 
@@ -414,7 +414,7 @@
             if (!isset($_COOKIE['presetRealmStatus']))
             {
                 $conn = $this->connect();
-                $this->selectDB('webdb', $conn);
+                $this->selectDB("webdb", $conn);
                 $getRealm = mysqli_query($conn, "SELECT id FROM realms ORDER BY id ASC LIMIT 1;");
                 $row      = mysqli_fetch_assoc($getRealm);
 
@@ -423,7 +423,7 @@
             else
                 $rid = $_COOKIE['presetRealmStatus'];
 
-            echo '选择服务器: <b>' . $this->getRealmName($rid) . '</b> <a href="#" onclick="changePresetRealmStatus()">(Change Realm)</a><hr/>';
+            echo "选择服务器: <b>". $this->getRealmName($rid) ."</b><a href='#' onclick='changePresetRealmStatus()'> (Change Realm)</a><hr/>";
             ?>
             <table>
                 <tr valign="top">
@@ -670,7 +670,7 @@
 
         public function titleLink()
         {
-            return '<a href="?p=' . $_GET['p'] . '" title="返回到 ' . ucfirst($_GET['p']) . '">' . ucfirst($_GET['p']) . '</a>';
+            return "<a href='?p=". htmlentities($_GET['p']) ."' title='返回到 ". htmlentities(ucfirst($_GET['p'])) ."'>". htmlentities(ucfirst($_GET['p'])) ."</a>";
         }
 
         public function addSlideImage($upload, $path, $url)
@@ -858,7 +858,7 @@
     function activeMenu($p)
     {
         if (isset($_GET['p']) && $_GET['p'] == $p)
-            echo "style='display:block;'";
+            echo htmlentities("style='display:block;'");
     }
 
     function limit_characters($str, $n)
@@ -867,12 +867,12 @@
         if (strlen($str) <= $n)
             return $str;
         else
-            return substr($str, 0, $n) . '';
+            return substr($str, 0, $n). "";
     }
 
     function stripBBCode($text_to_search)
     {
         $pattern = '|[[\/\!]*?[^\[\]]*?]|si';
-        $replace = '';
+        $replace = "";
         return preg_replace($pattern, $replace, $text_to_search);
     }
