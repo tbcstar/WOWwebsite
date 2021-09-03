@@ -33,11 +33,7 @@
             $conn = $this->connect();
             $this->connectToRealmDB($realmId);
             $result = mysqli_query($conn, "SELECT COUNT(guid) AS online FROM characters WHERE online=1;");
-            if (!$this->getServerStatus($realmId, false))
-            {
-                return '-----';
-            }
-            else
+            if ($this->getServerStatus($realmId, false)) 
             {
                 return round(mysqli_fetch_assoc($result)['online']);
             }
@@ -47,7 +43,7 @@
         {
             if (!$this->getServerStatus($realmId, false))
             {
-                return '-----';
+                return "";
             }
             $conn = $this->connect();
             $this->selectDB('logondb', $conn);
@@ -314,7 +310,12 @@
 
             if (empty($name) || empty($host) || empty($port) || empty($chardb) || empty($rank_user) || empty($rank_pass))
             {
-                echo "<pre><b class='red_text'>请输入所有必需的字段!</b></pre><br/>";
+                echo "<pre style='text-align:center;'>
+                    <b class='red_text'>
+                    请输入所有必需的字段!
+                    </b>
+                </pre>
+            <br/>";
             }
             else
             {
@@ -329,23 +330,43 @@
 
                 if (empty($ra_port) || $ra_port == null || !isset($ra_port))
                 {
-                    $ra_port   = 3443;
-                    $soap_port = "";
+                    $ra_port   = "3443";
+                    $soap_port = NULL;
                 }
 
                 if (empty($soap_port) || $soap_port == null || !isset($soap_port))
                 {
-                    $ra_port = "";
-                    $soap_port = 7878;
+                    $ra_port = NULL;
+                    $soap_port = "7878";
                 }
 
                 $this->selectDB('webdb', $conn);
-                mysqli_query($conn, "INSERT INTO realms VALUES 
-                    ('". $id ."', '". $name ."', '". $desc ."', '". $chardb ."', '". $port ."', '". $rank_user ."', '". $rank_pass ."', '". $ra_port ."', '". $soap_port ."', '". $host ."', '". $sendtype ."', '". $m_host ."', '". $m_user ."', '". $m_pass ."';)");
+                if(mysqli_query($conn, "INSERT INTO realms 
+                    (name, description, char_db, port, rank_user, rank_pass, ra_port, soap_port, host, sendType, mysqli_host, mysqli_user, mysqli_pass) 
+                    VALUES 
+                    ('". $name ."', 
+                    '". $desc ."', 
+                    '". $chardb ."', 
+                    ". $port .", 
+                    '". $rank_user ."', 
+                    '". $rank_pass ."', 
+                    '". $ra_port ."', 
+                    '". $soap_port ."', 
+                    '". $host ."', 
+                    '". $sendtype ."', 
+                    '". $m_host ."', 
+                    '". $m_user ."', 
+                    '". $m_pass ."');"))
+                {
+                    $this->logThis("Added the realm ". $name ."<br/>");
 
-                $this->logThis("添加服务器 ". $name ."<br/>");
+                echo "<pre><h3>&raquo; 成功添加realm `". $name ."`!</h3></pre><br/>";
+                }
+                else
+                {
+                    echo "<pre><h3>&raquo; 添加realm时出错 `". mysqli_error($conn) ."`</h3></pre><br/>";
+                }
 
-                echo '<pre><h3>&raquo; 成功添加服务器 '. $name .'!</h3></pre><br/>';
             }
         }
 

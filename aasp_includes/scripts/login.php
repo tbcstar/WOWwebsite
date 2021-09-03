@@ -11,7 +11,8 @@
 ###############################
     if (isset($_POST['login']))
     {
-        if (empty($_POST['username']) || empty($_POST['password']) && !isset($_POST['username']) || !isset($_POST['password']))
+        if (empty($_POST['username']) || empty($_POST['password']) &&
+            !isset($_POST['username']) || !isset($_POST['password']))
         {
             die("请输入账号和密码。");
         }

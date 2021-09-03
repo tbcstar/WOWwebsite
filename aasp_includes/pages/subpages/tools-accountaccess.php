@@ -2,9 +2,9 @@
     global $GamePage, $GameServer, $GameAccount;
 
     $conn = $GameServer->connect();
-    $GameServer->selectDB('logondb', $conn);
+    $GameServer->selectDB("logondb", $conn);
 
-    $GamePage->validatePageAccess('Tools->Account Access');
+    $GamePage->validatePageAccess("Tools->Account Access");
 
 ?>
 <div class="box_right_title">账号访问</div>
@@ -37,8 +37,8 @@
                 <td><?php echo $row['gmlevel']; ?></td>
                 <td>
                 <?php 
-					if($row['RealmID']=='-1')
-						echo '所有';
+					if ($row['RealmID'] == "-1")
+						echo "所有";
 					else
 					{
                         $getRealm = mysqli_query($conn, "SELECT name FROM realmlist WHERE id=". $row['RealmID'] .";");

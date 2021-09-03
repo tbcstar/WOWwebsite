@@ -55,24 +55,24 @@ if($pages >= 1 && $page <= $pages)
 	if($page > 1)
 	{
 	   $prev = $page - 1;
-	   echo '<a href="?p=logs&s=voteshop&page='.$prev.'" title="Previous">上一页</a> &nbsp;';
+	   echo "<a href='?p=logs&s=voteshop&page=". $prev ."' title='Previous'>上一页</a> &nbsp;";
 	}
 	for($x = 1; $x <= $pages; $x++)
 	{
 		if($page == $x)
 		{
-		   echo '<a href="?p=logs&s=voteshop&page='.$x.'" title="Page '.$x.'"><b>'.$x.'</b></a> ';
+		   echo "<a href='?p=logs&s=voteshop&page=". $x ."' title='Page ". $x ."'><b>". $x ."</b></a>";
 		}
 		else
 		{
-		   echo '<a href="?p=logs&s=voteshop&page='.$x.'" title="Page '.$x.'">'.$x.'</a> ';
+		   echo "<a href='?p=logs&s=voteshop&page=". $x ."' title='Page ". $x ."'>". $x ."</a> ";
 		}
 	}
 	
 	if($page < $x - 1)
 	{
 	   $next = $page+1;
-	   echo '&nbsp; <a href="?p=logs&s=voteshop&page='.$next.'" title="Next">下一页</a> &nbsp; &nbsp;';
+	   echo "&nbsp; <a href='?p=logs&s=voteshop&page=". $next ."' title='Next'>下一页</a> &nbsp; &nbsp;";
 	}
 }
 ?>

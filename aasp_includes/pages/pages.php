@@ -179,7 +179,7 @@ if (is_array($GLOBALS['core_pages']) || is_object($GLOBALS['core_pages']))
     <br/>
     <input type="submit" value="保存" name="editpage">
     
-<?php
+    </form><?php
             }
         }
     }

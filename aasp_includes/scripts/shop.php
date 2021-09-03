@@ -7,259 +7,275 @@
     global $GameServer, $GameAccount;
     $conn = $GameServer->connect();;
 
-    $GameServer->selectDB('webdb', $conn);
+    $GameServer->selectDB("webdb", $conn);
 
-###############################
-if($_POST['action'] == 'addsingle') 
-{
-    $entry  = mysqli_real_escape_string($conn, $_POST['entry']);
-    $price  = mysqli_real_escape_string($conn, $_POST['price']);
-	$shop 	= mysqli_real_escape_string($conn, $_POST['shop']);
-	
-	if(empty($entry) || empty($price) || empty($shop))
-	{
-		die("请输入所有字段。");
-	}
+    # Organized Alphabeticaly
 
-	$GameServer->selectDB('worlddb');
-    $get = mysqli_query($conn, "SELECT name,displayid,ItemLevel,quality,AllowableRace,AllowableClass,class,subclass,Flags FROM item_template WHERE entry=". $entry ."")
-        or die('从数据库获取物品数据时出错。错误消息: ' . mysqli_error($conn));
-	$row = mysqli_fetch_assoc($get);
-	$GameServer->selectDB('webdb', $conn);
-	
-	if($row['AllowableRace'] == "-1")
-	{
-		$faction = 0;
-	}
-	elseif($row['AllowableRace'] == 690)
-	{
-		$faction = 1;
-	}
-	elseif($row['AllowableRace'] == 1101)
-	{
-		$faction = 2;
-	}
-	else
-	{
-		$faction = $row['AllowableRace'];
-	}
-	
-    mysqli_query($conn, "INSERT INTO shopitems (entry,name,in_shop,displayid,type,itemlevel,quality,price,class,faction,subtype,flags) VALUES 
-        (". $entry .",
-        '". mysqli_real_escape_string($conn, $row['name']) ."',
-        '". $shop ."',
-        '". $row['displayid'] ."',
-        '". $row['class'] ."',
-        '". $row['ItemLevel'] ."',
-        '". $row['quality'] ."',
-        '". $price ."',
-        '". $row['AllowableClass'] ."',
-        '". $faction ."',
-        '". $row['subclass'] ."',
-        '". $row['Flags'] ."');")
-        or die("向数据库中添加物品时出错。错误消息: ". mysqli_error($conn));
+    switch ($_POST['action'])
+    {
 
-	$GameServer->logThis("添加 ".$row['name']." 到 ".$shop." shop");
-	
-	echo '物品添加成功。';
-}
-###############################
-if($_POST['action'] == 'addmulti') 
-{
-    $il_from    = mysqli_real_escape_string($conn, $_POST['il_from']);
-    $il_to      = mysqli_real_escape_string($conn, $_POST['il_to']);
-    $price      = mysqli_real_escape_string($conn, $_POST['price']);
-	$quality 	= mysqli_real_escape_string($conn, $_POST['quality']);
-	$shop 		= mysqli_real_escape_string($conn, $_POST['shop']);
-	$type 		= mysqli_real_escape_string($conn, $_POST['type']);
-	
-	if(empty($il_from) || empty($il_to) || empty($price) || empty($shop))
-	{
-		die("请输入所有字段。");
-	}
+        case "addmulti":
+        {
+            $il_from = mysqli_real_escape_string($conn, $_POST['il_from']);
+            $il_to   = mysqli_real_escape_string($conn, $_POST['il_to']);
+            $price   = mysqli_real_escape_string($conn, $_POST['price']);
+            $quality = mysqli_real_escape_string($conn, $_POST['quality']);
+            $shop    = mysqli_real_escape_string($conn, $_POST['shop']);
+            $type    = mysqli_real_escape_string($conn, $_POST['type']);
 
-	$advanced = "";
-	if($type != "all") 
-	{
-		if($type == "15-5" || $type == "15-5")  
-		{
-			//坐骑或宠物
-			$type = explode('-',$type);
-			
-			$advanced.= " AND class='".$type[0]."' AND subclass='".$type[1]."'";
-		} 
-		else
-		{
-			$advanced.= "AND class='".$type."'";
-		}
-	} 	
+            if (empty($il_from) || empty($il_to) || empty($price) || empty($shop))
+            {
+                die("请输入所有字段。");
+            }
 
-	if($quality != "all")
-	{
-		$advanced .= " AND quality='".$quality."'";
-	}
+            $advanced = "";
+            if ($type != "all")
+            {
+                if ($type == "15-5" || $type == "15-5")
+                {
+                    //Mount or pet
+                    $type = explode('-', $type);
 
-	$GameServer->selectDB('worlddb');
-    $get = mysqli_query($conn, "SELECT entry,name,displayid,ItemLevel,quality,class,AllowableRace,AllowableClass,subclass,Flags 
-        FROM item_template WHERE itemlevel>=". $il_from ."	AND itemlevel<=". $il_to ." ". $advanced .";") 
-    or die('从数据库获取物品数据时出错。错误消息: ' . mysqli_error());
-	
-	$GameServer->selectDB('webdb', $conn);
-	
-	$c = 0;
-	while($row = mysqli_fetch_assoc($get)) 
-	{
-		$faction = 0;
-		
-		if($row['AllowableRace'] == 690)
-		{
-			$faction = 1;
-		}
-		elseif($row['AllowableRace'] == 1101)
-		{
-			$faction = 2;
-		}
-		else
-		{
-			$faction = $row['AllowableRace'];
-		}
+                    $advanced .= "AND class='" . $type[0] . "' AND subclass='" . $type[1] . "'";
+                }
+                else
+                {
+                    $advanced .= "AND class='" . $type . "'";
+                }
+            }
 
-        mysqli_query($conn, "INSERT INTO shopitems (entry,name,in_shop,displayid,type,itemlevel,quality,price,class,faction,subtype,flags) VALUES 
-            ('". $row['entry'] ."',
-            '". mysqli_real_escape_string($conn, $row['name']) ."',
-            '". $shop ."',
-            '". $row['displayid'] ."',
-            '". $row['class'] ."',
-            '". $row['ItemLevel'] ."',
-            '". $row['quality'] ."',
-            '". $price ."',
-            '". $row['AllowableClass'] ."',
-            '". $faction ."',
-            '". $row['subclass'] ."',
-            '". $row['Flags'] ."')")
-            or die("向数据库中添加物品时出错。错误消息: " . mysqli_error());
+            if ($quality != "all")
+            {
+                $advanced .= " AND quality='" . $quality . "'";
+            }
 
-		$c++;
-	}
-	
-	$GameServer->logThis("添加多个物品到 ".$shop." 商城");
-	echo '添加成功'.$c.' 物品';
-}
-###############################
-if($_POST['action'] == 'clear') 
-{
-	$shop = mysqli_real_escape_string($conn, $_POST['shop']);
-	
-	if($shop == 1)
-	{
-		$shop = "vote";
-	}
-	elseif($shop == 2)
-	{
-		$shop = "donate";
-	}
-	
-	mysqli_query($conn, "DELETE FROM shopitems WHERE in_shop='".$shop."';");
-	mysqli_query($conn, "TRUNCATE shopitems;");
-	return;
-}
-###############################
-if($_POST['action'] == 'modsingle') 
-{
-    $entry = mysqli_real_escape_string($conn, $_POST['entry']);
-    $price = mysqli_real_escape_string($conn, $_POST['price']);
-	$shop = mysqli_real_escape_string($conn, $_POST['shop']);
-	
-	if(empty($entry) || empty($price) || empty($shop))
-	{
-		die("请输入所有字段。");
-	}
+            $GameServer->selectDB('worlddb');
+            $get = mysqli_query($conn, "SELECT entry,name,displayid,ItemLevel,quality,class,AllowableRace,AllowableClass,subclass,Flags 
+                FROM item_template WHERE itemlevel>=". $il_from ."  AND itemlevel<=". $il_to ." ". $advanced .";") 
+            or die('从数据库获取物品数据时出错。错误消息: ' . mysqli_error());
 
-    mysqli_query($conn, "UPDATE shopitems SET price='". $price ."' WHERE entry=". $entry ." AND in_shop='". $shop ."';");
-	echo '成功修改物品';
-}
-###############################
-if($_POST['action'] == 'delsingle') 
-{
-    $entry = mysqli_real_escape_string($conn, $_POST['entry']);
-	$shop  = mysqli_real_escape_string($conn, $_POST['shop']);
-	
-	if(empty($entry) || empty($shop))
-		die("请输入所有字段。");
+            $GameServer->selectDB('webdb', $conn);
 
-	mysqli_query($conn, "DELETE FROM shopitems WHERE entry=". $entry ." AND in_shop='". $shop ."';");
-	echo '成功删除物品';
-}
-###############################
-if($_POST['action'] == 'modmulti') 
-{
-    $il_from    = mysqli_real_escape_string($conn, $_POST['il_from']);
-    $il_to      = mysqli_real_escape_string($conn, $_POST['il_to']);
-    $price      = mysqli_real_escape_string($conn, $_POST['price']);
-	$quality	= mysqli_real_escape_string($conn, $_POST['quality']);
-	$shop		= mysqli_real_escape_string($conn, $_POST['shop']);
-	$type		= mysqli_real_escape_string($conn, $_POST['type']);
-	
-	if(empty($il_from) || empty($il_to) || empty($price) || empty($shop))
-		die("请输入所有字段。");
-		
-	$advanced = "";
-	if($type!="all") 
-	{
-		if($type=="15-5" || $type=="15-5")  
-		{
-			//坐骑或宠物
-			$type = explode('-',$type);
-			
-			$advanced.= " AND type='".$type[0]."' AND subtype='".$type[1]."'";
-		} 
-		else	
-			$advanced.= " AND type='".$type."'";
-	} 	
+            $c   = 0;
+            while ($row = mysqli_fetch_assoc($get))
+            {
+                $faction = 0;
 
-	if($quality!="all")
-		$advanced .= " AND quality='".$quality."'";
-		
-	$count = mysqli_query($conn, "COUNT(*) FROM shopitems WHERE itemlevel >='".$il_from."' AND itemlevel <='".$il_to."' ".$advanced);
+                if ($row['AllowableRace'] == 690)
+                {
+                    $faction = 1;
+                }
+                elseif ($row['AllowableRace'] == 1101)
+                {
+                    $faction = 2;
+                }
+                else
+                {
+                    $faction = $row['AllowableRace'];
+                }
 
-    mysqli_query($conn, "UPDATE shopitems SET price='". $price ."' WHERE itemlevel >=". $il_from ." AND itemlevel <=". $il_to ." ". $advanced .";");
-    echo "成功修改 ". $count ." 物品!";
-}
-###############################
-if($_POST['action'] == 'delmulti') 
-{
-    $il_from    = mysqli_real_escape_string($conn, $_POST['il_from']);
-    $il_to      = mysqli_real_escape_string($conn, $_POST['il_to']);
-	$quality	= mysqli_real_escape_string($_POST['quality']);
-	$shop		= mysqli_real_escape_string($_POST['shop']);
-	$type		= mysqli_real_escape_string($_POST['type']);
-	
-	if(empty($il_from) || empty($il_to) || empty($shop))
-	{
-		die("请输入所有字段。");
-	}
-		
-	$advanced = "";
-	if($type!="all") 
-	{
-		if($type=="15-5" || $type=="15-5")  
-		{
-			//坐骑或宠物
-			$type = explode('-',$type);
-			
-			$advanced.= " AND type='".$type[0]."' AND subtype='".$type[1]."'";
-		} 
-		else	
-			$advanced.= " AND type='".$type."'";
-	} 	
+                mysqli_query($conn, "INSERT INTO shopitems (entry,name,in_shop,displayid,type,itemlevel,quality,price,class,faction,subtype,flags) VALUES 
+                    ('". $row['entry'] ."',
+                    '". mysqli_real_escape_string($conn, $row['name']) ."',
+                    '". $shop ."',
+                    '". $row['displayid'] ."',
+                    '". $row['class'] ."',
+                    '". $row['ItemLevel'] ."',
+                    '". $row['quality'] ."',
+                    '". $price ."',
+                    '". $row['AllowableClass'] ."',
+                    '". $faction ."',
+                    '". $row['subclass'] ."',
+                    '". $row['Flags'] ."')")
+                or die("向数据库添加物品时出错。错误消息: " . mysqli_error());
 
-	if($quality!="all")
-		$advanced .= " AND quality='".$quality."'";
+                $c++;
+            }
 
-	$count = mysqli_query($conn, "SELECT COUNT(*) FROM shopitems WHERE itemlevel >=". $il_from ." AND itemlevel <=". $il_to ." ". $advanced .";");
-	
-    mysqli_query($conn, "DELETE FROM shopitems WHERE itemlevel >=". $il_from ." AND itemlevel <=". $il_to ." ". $advanced .";");
-    echo "成功移除 ". $count ." 物品!";	
-}
-###############################
-?>
+            $GameServer->logThis("将多个物品添加到 " . $shop . " 商城");
+            echo '已成功添加 ' . $c . ' 物品';
+            break;
+        }
+
+        case "addsingle":
+        {
+            $entry = mysqli_real_escape_string($conn, $_POST['entry']);
+            $price = mysqli_real_escape_string($conn, $_POST['price']);
+            $shop  = mysqli_real_escape_string($conn, $_POST['shop']);
+
+            if (empty($entry) || empty($price) || empty($shop))
+            {
+                die("请输入所有字段。");
+            }
+
+            $GameServer->selectDB('worlddb');
+            $get = mysqli_query($conn, "SELECT name,displayid,ItemLevel,quality,AllowableRace,AllowableClass,class,subclass,Flags FROM item_template WHERE entry=". $entry ."")
+                or die('从数据库获取物品数据时出错。错误消息: ' . mysqli_error($conn));
+            $row = mysqli_fetch_assoc($get);
+
+            $GameServer->selectDB('webdb', $conn);
+
+            if ($row['AllowableRace'] == "-1")
+            {
+                $faction = 0;
+            }
+            elseif ($row['AllowableRace'] == 690)
+            {
+                $faction = 1;
+            }
+            elseif ($row['AllowableRace'] == 1101)
+            {
+                $faction = 2;
+            }
+            else
+            {
+                $faction = $row['AllowableRace'];
+            }
+
+            mysqli_query($conn, "INSERT INTO shopitems (entry,name,in_shop,displayid,type,itemlevel,quality,price,class,faction,subtype,flags) VALUES 
+                (". $entry .",
+                '". mysqli_real_escape_string($conn, $row['name']) ."',
+                '". $shop ."',
+                '". $row['displayid'] ."',
+                '". $row['class'] ."',
+                '". $row['ItemLevel'] ."',
+                '". $row['quality'] ."',
+                '". $price ."',
+                '". $row['AllowableClass'] ."',
+                '". $faction ."',
+                '". $row['subclass'] ."',
+                '". $row['Flags'] ."');")
+                or die("向数据库添加物品时出错。错误消息: ". mysqli_error($conn));
+
+            $GameServer->logThis("添加 " . $row['name'] . " 到 " . $shop . " 商城");
+
+            echo '已成功添加物品';
+            break;
+        }
+
+        case "clear":
+        {
+            $shop = mysqli_real_escape_string($conn, $_POST['shop']);
+
+            if ($shop == 1)
+            {
+                $shop = "vote";
+            }
+            elseif ($shop == 2)
+            {
+                $shop = "donate";
+            }
+
+            mysqli_query($conn, "DELETE FROM shopitems WHERE in_shop='". $shop ."';");
+            mysqli_query($conn, "TRUNCATE shopitems;");
+            return;
+
+            break;
+        }
+
+        case "delmulti":
+        {
+            $il_from = mysqli_real_escape_string($conn, $_POST['il_from']);
+            $il_to   = mysqli_real_escape_string($conn, $_POST['il_to']);
+            $quality = mysqli_real_escape_string($conn, $_POST['quality']);
+            $shop    = mysqli_real_escape_string($conn, $_POST['shop']);
+            $type    = mysqli_real_escape_string($conn, $_POST['type']);
+
+            if (empty($il_from) || empty($il_to) || empty($shop))
+            {
+                die("请输入所有字段。");
+            }
+
+            $advanced = "";
+            if ($type != "all")
+            {
+                if ($type == "15-5" || $type == "15-5")
+                {
+                    //Mount or pet
+                    $type = explode('-', $type);
+
+                    $advanced .= "AND type='" . $type[0] . "' AND subtype='" . $type[1] . "'";
+                }
+                else
+                    $advanced .= "AND type='" . $type . "'";
+            }
+
+            if ($quality != "all")
+                $advanced .= "AND quality='" . $quality . "'";
+
+            $count = mysqli_query($conn, "SELECT COUNT(*) FROM shopitems WHERE itemlevel >=". $il_from ." AND itemlevel <=". $il_to ." ". $advanced .";");
+
+            mysqli_query($conn, "DELETE FROM shopitems WHERE itemlevel >=". $il_from ." AND itemlevel <=". $il_to ." ". $advanced .";");
+            echo "已成功移除 ". $count ." items!";
+
+            break;
+        }
+
+        case "delsingle":
+        {
+            $entry = mysqli_real_escape_string($conn, $_POST['entry']);
+            $shop  = mysqli_real_escape_string($conn, $_POST['shop']);
+
+            if (empty($entry) || empty($shop))
+                die("请输入所有字段。");
+
+            mysqli_query($conn, "DELETE FROM shopitems WHERE entry=". $entry ." AND in_shop='". $shop ."';");
+            echo '已成功移除物品';
+
+            break;
+        }
+
+        case "modmulti":
+        {
+            $il_from = mysqli_real_escape_string($conn, $_POST['il_from']);
+            $il_to   = mysqli_real_escape_string($conn, $_POST['il_to']);
+            $price   = mysqli_real_escape_string($conn, $_POST['price']);
+            $quality = mysqli_real_escape_string($conn, $_POST['quality']);
+            $shop    = mysqli_real_escape_string($conn, $_POST['shop']);
+            $type    = mysqli_real_escape_string($conn, $_POST['type']);
+
+            if (empty($il_from) || empty($il_to) || empty($price) || empty($shop))
+                die("请输入所有字段。");
+
+            $advanced = "";
+            if ($type != "all")
+            {
+                if ($type == "15-5" || $type == "15-5")
+                {
+                    //Mount or pet
+                    $type = explode('-', $type);
+
+                    $advanced .= "AND type='" . $type[0] . "' AND subtype='" . $type[1] . "'";
+                }
+                else
+                    $advanced .= "AND type='" . $type . "'";
+            }
+
+            if ($quality != "all")
+                $advanced .= "AND quality='" . $quality . "'";
+
+            $count = mysqli_query($conn, "COUNT(*) FROM shopitems WHERE itemlevel >='" . $il_from . "' AND itemlevel <='" . $il_to . "' " . $advanced);
+
+            mysqli_query($conn, "UPDATE shopitems SET price='". $price ."' WHERE itemlevel >=". $il_from ." AND itemlevel <=". $il_to ." ". $advanced .";");
+            echo "成功修改 ". $count ." 物品！";
+
+            break;
+        }
+
+        case "modsingle":
+        {
+            $entry = mysqli_real_escape_string($conn, $_POST['entry']);
+            $price = mysqli_real_escape_string($conn, $_POST['price']);
+            $shop  = mysqli_real_escape_string($conn, $_POST['shop']);
+
+            if (empty($entry) || empty($price) || empty($shop))
+            {
+                die("请输入所有字段。");
+            }
+
+            mysqli_query($conn, "UPDATE shopitems SET price='". $price ."' WHERE entry=". $entry ." AND in_shop='". $shop ."';");
+            echo '已成功修改物品';
+            break;
+        }
+
+    }

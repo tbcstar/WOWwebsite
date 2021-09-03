@@ -12,10 +12,10 @@
 过滤器:
 	   	<a href="?p=users&s=inventory&guid=<?php echo $_GET['guid']; ?>&rid=<?php echo $_GET['rid']; ?>&f=equip">
 			<?php 
-				if(isset($_GET['f']) && $_GET['f']=='equip') 
-					echo '<b>'; ?>装备物品</a><?php 
-				if(isset($_GET['f']) && $_GET['f']=='equip') 
-					echo '</b>'; 
+				if (isset($_GET['f']) && $_GET['f'] == "equip")
+					echo "<b>"; ?>装备物品</a><?php 
+				if (isset($_GET['f']) && $_GET['f'] == "equip")
+					echo "</b>"; 
 			?>
 		</a> 
 
@@ -23,10 +23,10 @@
 
     	<a href="?p=users&s=inventory&guid=<?php echo $_GET['guid']; ?>&rid=<?php echo $_GET['rid']; ?>&f=bank">
 			<?php 
-				if(isset($_GET['f']) && $_GET['f']=='bank') 
-					echo '<b>'; ?>银行物品<?php 
-				if(isset($_GET['f']) && $_GET['f']=='bank') 
-					echo '</b>'; 
+				if (isset($_GET['f']) && $_GET['f'] == "bank")
+					echo "<b>"; ?>银行物品<?php 
+				if (isset($_GET['f']) && $_GET['f'] == "bank")
+					echo "</b>"; 
 			?>
 		</a> 
 
@@ -34,10 +34,10 @@
 
     	<a href="?p=users&s=inventory&guid=<?php echo $_GET['guid']; ?>&rid=<?php echo $_GET['rid']; ?>&f=keyring">
 		<?php 
-			if(isset($_GET['f']) && $_GET['f']=='keyring') 
-				echo '<b>'; ?>Items in keyring<?php 
-			if(isset($_GET['f']) && $_GET['f']=='keyring') 
-				echo '</b>'; 
+			if (isset($_GET['f']) && $_GET['f'] == "keyring")
+				echo "<b>"; ?>Items in keyring<?php 
+			if (isset($_GET['f']) && $_GET['f'] == "keyring")
+				echo "</b>"; 
 		?>
         </a>
 
@@ -45,10 +45,10 @@
 
      	<a href="?p=users&s=inventory&guid=<?php echo $_GET['guid']; ?>&rid=<?php echo $_GET['rid']; ?>&f=currency">
 			<?php 
-				if(isset($_GET['f']) && $_GET['f']=='currency') 
-					echo '<b>'; ?>游戏币<?php 
-				if(isset($_GET['f']) && $_GET['f']=='currency') 
-					echo '</b>'; 
+				if (isset($_GET['f']) && $_GET['f'] == "currency")
+					echo "<b>"; ?>游戏币<?php 
+				if (isset($_GET['f']) && $_GET['f'] == "currency")
+					echo "</b>"; 
 			?>
 		</a> 
 
@@ -57,9 +57,9 @@
      	<a href="?p=users&s=inventory&guid=<?php echo $_GET['guid']; ?>&rid=<?php echo $_GET['rid']; ?>">
 			<?php 
 				if(!isset($_GET['f'])) 
-					echo '<b>'; ?>所有物品<?php 
+					echo "<b>"; ?>所有物品<?php 
 				if(!isset($_GET['f'])) 
-					echo '</b>'; 
+					echo "</b>"; 
 			?>
 		</a> 
 <p/>
@@ -70,11 +70,11 @@ $equip_array = array(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18);
 $result = mysqli_query($conn, "SELECT guid, itemEntry, count FROM item_instance WHERE owner_guid=". mysqli_real_escape_string($conn, $_GET['guid']) .";");
 if(mysqli_num_rows($result) == 0)
 {
-	echo '没有发现任何物品!';
+	echo "没有发现任何物品!";
 }
 else
-{	
-	echo '<table cellspacing="3" cellpadding="5">';
+{
+	echo "<table cellspacing='3' cellpadding='5'>";
 	while($row = mysqli_fetch_assoc($result)) 
 	{
 		$entry = $row['itemEntry'];
@@ -83,23 +83,23 @@ else
 		{
 			if($_GET['f'] == 'equip') 
 			{
-				$getPos = mysqli_query($conn, "SELECT slot,bag FROM character_inventory WHERE item='".$row['guid']."' AND bag='0' 
-				AND slot IN(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18) AND guid=". mysqli_real_escape_string($conn, $_GET['guid']) .";");
+				$getPos = mysqli_query($conn, "SELECT slot, bag FROM character_inventory 
+                WHERE item='". $row['guid'] ."' AND bag='0' AND slot RANGE(0,18) AND guid=". mysqli_real_escape_string($conn, $_GET['guid']) .";");
 			}
 			elseif($_GET['f'] == 'bank') 
 			{
-				$getPos = mysqli_query($conn, "SELECT slot,bag FROM character_inventory WHERE item='".$row['guid']."'
-				AND slot>=39 AND slot<=73");	
+				$getPos = mysqli_query($conn, "SELECT slot, bag FROM character_inventory 
+                WHERE item='". $row['guid'] ."' AND slot>=39 AND slot<=73;");
 			}
 			elseif($_GET['f'] == 'keyring') 
 			{
-				$getPos = mysqli_query($conn, "SELECT slot,bag FROM character_inventory WHERE item='".$row['guid']."'
-				AND slot>=86 AND slot<=117");	
+				$getPos = mysqli_query($conn, "SELECT slot, bag FROM character_inventory 
+                WHERE item='". $row['guid'] ."' AND slot>=86 AND slot<=117;");
 			}
 			elseif($_GET['f'] == 'currency') 
 			{
-				$getPos = mysqli_query($conn, "SELECT slot,bag FROM character_inventory WHERE item='".$row['guid']."'
-				AND slot>=118 AND slot<=135");	
+				$getPos = mysqli_query($conn, "SELECT slot, bag FROM character_inventory 
+                WHERE item='". $row['guid'] ."' AND slot>=118 AND slot<=135;");
 			}
 		}
 		else
@@ -120,7 +120,7 @@ else
 			 if(mysqli_num_rows($getIcon)==0) 
 			 {
 				 //发现没有图标。也许灾难项目。从wowhead获得图标。
-				 $sxml = new SimpleXmlElement(file_get_contents('http://www.wowhead.com/item='.$entry.'&xml'));
+				 $sxml = new SimpleXmlElement(file_get_contents("http://www.wowhead.com/item=". $entry ."&xml"));
 
 				  $icon = strtolower(mysqli_real_escape_string($conn, $sxml->item->icon));
 				  //现在我们已经装载好了。将其添加到数据库中以备将来使用。
@@ -146,10 +146,10 @@ else
 					<?php 
 					if(!isset($_GET['f']))
 					{
-						if(in_array($pos['slot'], $equip_array) && $pos['bag']==0) echo '(Equipped)';
-						if($pos['slot']>= 39 && $pos['slot'] <= 73) echo '(Bank)'; 
-						if($pos['slot']>= 86 && $pos['slot'] <= 117) echo '(Keyring)'; 
-						if($pos['slot']>= 118 && $pos['slot'] <= 135) echo '(Currency)'; 
+						if (in_array($pos['slot'], $equip_array) && $pos['bag'] == 0)   echo "(Equipped)";
+                        if ($pos['slot'] >= 39 && $pos['slot'] <= 73)                   echo "(Bank)";
+                        if ($pos['slot'] >= 86 && $pos['slot'] <= 117)                  echo "(Keyring)";
+                        if ($pos['slot'] >= 118 && $pos['slot'] <= 135)                 echo "(Currency)";
 					}
 					?>
 	            </td>
@@ -157,6 +157,6 @@ else
 	    <?php
 	 	}
 	}
- echo '</table>';
+ echo "</table>";
 }
 ?>

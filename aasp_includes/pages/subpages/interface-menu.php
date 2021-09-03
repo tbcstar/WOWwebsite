@@ -23,11 +23,11 @@
         <td><?php echo $row['title']; ?></td>
         <td><?php echo $row['url']; ?></td>
         <td><?php 
-    		if($row['shownWhen'] == 'logged') 
+    	if ($row['shownWhen'] == "logged")
         {
     			echo "已登录";
     		} 
-        elseif($row['shownWhen'] == 'notlogged') 
+        elseif ($row['shownWhen'] == "notlogged")
         {
     			echo "未登录";
     		}

@@ -272,7 +272,7 @@
 
                     <td><?php echo $GLOBALS['connection']['host']; ?></td>
                     <td><?php echo $GLOBALS['connection']['user']; ?></td>
-                    <td><?php echo substr($GLOBALS['connection']['password'], 0, 4); ?>****<br/></td>
+                    <td>****<br/></td>
 
                 </tr>
                </td>
@@ -282,7 +282,7 @@
                     <td>Logon Database:</td>
                     <td>Website Database:</td>
                     <td>World Database:</td>
-                    <td>Database Revision:</td>
+                    <td>Db Rev:</td>
 
                 </tr> 
                </td>

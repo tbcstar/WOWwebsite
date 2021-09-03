@@ -1,9 +1,9 @@
 <?php 
     global $GameServer, $GamePage;
     $conn = $GameServer->connect();
-    $GameServer->selectDB('webdb', $conn);
+    $GameServer->selectDB("webdb", $conn);
 	
-	$GamePage->validatePageAccess('Services');
+	$GamePage->validatePageAccess("Services");
 	
     if($GamePage->validateSubPage() == TRUE) 
     {

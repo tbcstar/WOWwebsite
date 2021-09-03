@@ -102,10 +102,10 @@ $row = mysqli_fetch_assoc($usersTotal);
         <td>
     	<?php 
             if ($row['online']==0)
-                echo '<input type="text" value="离线" disabled="disabled"/>';
+                echo "<input type='text' value='离线' disabled='disabled' />";
 		    else
-                echo '<input type="text" value="在线" disabled="disabled"/>'; 
-    	?>              
+                echo "<input type='text' value='在线' disabled='disabled' />";
+    	?>
         </td>
     </tr>
     <tr>    

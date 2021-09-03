@@ -7,23 +7,23 @@
 <?php
 if(isset($_GET['char']))
 {
-	echo '搜寻结果 <b>'.$_GET['char'].'</b><pre>';
+	echo "搜寻结果 <b>" . $_GET['char'] . "</b><pre>";
         $result = mysqli_query($conn, "SELECT name, id FROM realms;");
         while ($row = mysqli_fetch_assoc($result))
 	{
 		$GameServer->connectToRealmDB($row['id']);
-        $get = mysqli_query($conn, "SELECT account, name FROM characters WHERE name='". mysqli_real_escape_string($conn, $_GET['char']) ."' 
-            OR guid=". mysqli_real_escape_string($conn, $_GET['char']) .";");
+        $get = mysqli_query($conn, "SELECT account, name FROM characters 
+            WHERE name='". mysqli_real_escape_string($conn, $_GET['char']) ."' OR guid=". mysqli_real_escape_string($conn, $_GET['char']) .";");
 
         $rows = mysqli_fetch_assoc($get);
-		echo '<a href="?p=users&s=manage&user='.$rows['account'].'">'.$rows['name'].' - '.$row['name'].'</a><br/>';
+		echo "<a href='?p=users&s=manage&user=". $rows['account'] ."'>". $rows['name'] ." - ". $row['name'] ."</a><br/>";
 	}
-	echo '</pre><hr/>';
+	echo "</pre><hr/>";
 }
 
 if(isset($_GET['user']))  {
 	
-	$GameServer->selectDB('logondb', $conn);
+	$GameServer->selectDB("logondb", $conn);
 	$value 	= mysqli_real_escape_string($conn, $_GET['user']);
 	$result = mysqli_query($conn, "SELECT * FROM account WHERE username='". $value ."' OR id=". $value .";");
 	if(mysqli_num_rows($result) == 0) 
@@ -81,11 +81,11 @@ if(isset($_GET['user']))  {
                 $user = mysqli_real_escape_string($conn, $_GET['user']);
                 $account_id = $GameAccount->getAccID($user);
                 $GameServer->connectToRealmDB($row['id']);
-                $result  = mysqli_query($conn, "SELECT name, guid, level, class, race, gender, online FROM characters WHERE name='". $user ."' OR account=". $account_id .";");
+                $result  = mysqli_query($conn, "SELECT name, guid, level, class, race, gender, online FROM characters 
+                    WHERE name='". $user ."' OR account=". $account_id .";");
 
 				while($rows = mysqli_fetch_assoc($result))
-				{
-					?>
+				{ ?>
                     <tr class="center">
                     	<td><?php echo $rows['guid']; ?></td>
                         <td><?php echo $rows['name']; ?></td>
@@ -171,26 +171,24 @@ elseif (isset($_GET['getslogs']))
 		$result = mysqli_query($conn, "SELECT * FROM user_log WHERE account=". $getLogs .";");
 		if(mysqli_num_rows($result) == 0)
 		{
-			echo '没有找到该帐户的记录！';
+			echo "没有找到该帐户的记录！";
 		}
 		else
 		{
 			while($row = mysqli_fetch_assoc($result))
 			{
-				echo '<tr class="center">';
-					echo '<td>'.$row['service'].'</td>';
-					echo '<td>'.$row['desc'].'</td>';
-					echo '<td>'.$GameServer->getRealmName($row['realmid']).'</td>';
-					echo '<td>'.date('Y-m-d H:i',$row['timestamp']).'</td>';
-				echo '</tr>';
+				echo "<tr class='center'>";
+                echo "<td>". $row['service'] ."</td>";
+                echo "<td>". $row['desc'] ."</td>";
+                echo "<td>". $GameServer->getRealmName($row['realmid']) ."</td>";
+                echo "<td>". date('Y-m-d H:i', $row['timestamp']) ."</td>";
+                echo "</tr>";
 			}
-		}
-		?>
+		} ?>
     </table>
     <hr/>
 <?php
-}
-?>
+} ?>
 <table width="100%">
 	<tr>
     	<td>用户名或ID: </td>	

@@ -24,11 +24,11 @@ function edit_realm(id,name,host,port,chardb) {
 
 function edit_realmNow(id) {
 	
-	var new_id = document.getElementById('editrealm_newid').value;
-	var name = document.getElementById('editrealm_name').value;
-	var host = document.getElementById('editrealm_host').value;
-	var port = document.getElementById('editrealm_port').value;
-	var chardb = document.getElementById('editrealm_chardb').value;
+	var new_id  = document.getElementById('editrealm_newid').value;
+    var name    = document.getElementById('editrealm_name').value;
+    var host    = document.getElementById('editrealm_host').value;
+    var port    = document.getElementById('editrealm_port').value;
+    var chardb  = document.getElementById('editrealm_chardb').value;
 	
 	$("#loading").html("Saving...");
 	$.post("../aasp_includes/scripts/realms.php", { action: "edit", id: id, name: name, host: host, port: port, chardb: chardb,new_id: new_id },

@@ -2,7 +2,7 @@
     global $GameServer, $GameAccount, $GamePage;
     $conn = $GameServer->connect();
 
-    $GamePage->validatePageAccess('Tools->Tickets');
+    $GamePage->validatePageAccess("Tools->Tickets");
 
 ?>
 <div class="box_right_title">Tickets</div>
@@ -13,19 +13,19 @@
             <td>
             <select id="tickets_realm">
            		 <?php
-				 $GameServer->selectDB('webdb', $conn);
+				 $GameServer->selectDB("webdb", $conn);
 
 				$result = mysqli_query($conn, "SELECT char_db, name, description FROM realms;");
 				if(mysqli_num_rows($result) == 0) 
 				{
-					echo '<option value="NULL">找不到服务器。</option>';
+					echo "<option value='NULL'>找不到服务器。</option>";
 				}
 				else 
 				{
-					echo '<option value="NULL">--选择一个服务器--</option>';
+					echo "<option value='NULL'>--选择一个服务器--</option>";
 					while($row = mysqli_fetch_assoc($result)) 
 					{
-						echo '<option value="'.$row['char_db'].'">'.$row['name'].' - <i>'.$row['description'].'</i></option>';
+						echo "<option value='". $row['char_db'] ."'>". $row['name'] ." - <i>". $row['description'] ."</i></option>";
 					}
 				}
 				 ?>
@@ -43,20 +43,20 @@
 		   {
 			   ##############################
 				if($GLOBALS['core_expansion'] == 3)
-					$guidString = 'playerGuid';
+					$guidString = "playerGuid";
 				else
-					$guidString = 'guid';	
+					$guidString = "guid";
 				
 				if($GLOBALS['core_expansion'] == 3)
-					$closedString = 'closed';
+					$closedString = "closed";
 				else
-					$closedString = 'closedBy';
+					$closedString = "closedBy";
 					
 				if($GLOBALS['core_expansion'] == 3)
 				
-					$ticketString = 'guid';
+					$ticketString = "guid";
 				else
-					$ticketString = 'ticketId';
+					$ticketString = "ticketId";
 				############################
 						
 			  $offline = $_SESSION['lastTicketRealmOffline'];
@@ -73,9 +73,9 @@
 				if(mysqli_num_rows($result)==0)
 				   die("<pre>没有发现tickets！</pre>");
 
-				echo '
-				<table class="center">
-				   <tr>
+				echo "
+			        <table class='center'>
+				    <tr>
 					   <th>ID</th>
 					   <th>名字</th>
 					   <th>信息</th>
@@ -83,33 +83,33 @@
 					   <th>Ticket状态</th>
 					   <th>玩家状态</th>
 					   <th>敏捷工具</th>
-				   </tr>
-				';
+				    </tr>
+				";
 
 				while($row = mysqli_fetch_assoc($result)) 
 				{
 					$get = mysqli_query($conn, "SELECT COUNT(online) FROM characters WHERE guid='".$row[$guidString]."' AND online='1'");
 					if(mysqli_data_seek($get,0)==0 && $offline == "on") {
-					echo '<tr>';
-						echo '<td><a href="?p=tools&s=tickets&guid='.$row[$ticketString].'&db='.$realm.'">'.$row[$ticketString].'</td>';
-						echo '<td><a href="?p=tools&s=tickets&guid='.$row[$ticketString].'&db='.$realm.'">'.$row['name'].'</td>';
-						echo '<td><a href="?p=tools&s=tickets&guid='.$row[$ticketString].'&db='.$realm.'">'.substr($row['message'],0,15).'...</td>';
-						echo '<td><a href="?p=tools&s=tickets&guid='.$row[$ticketString].'&db='.$realm.'">'.date('Y-m-d H:i:s',$row['createtime']).'</a></td>';
-						
+					echo "<tr>";
+                    echo "<td><a href='?p=tools&s=tickets&guid=". $row[$ticketString] ."&db=". $realm ."'>". $row[$ticketString] ."</td>";
+                    echo "<td><a href='?p=tools&s=tickets&guid=". $row[$ticketString] ."&db=". $realm ."'>". $row['name'] ."</td>";
+                    echo "<td><a href='?p=tools&s=tickets&guid=". $row[$ticketString] ."&db=". $realm ."'>". substr($row['message'], 0, 15) ."...</td>";
+                    echo "<td><a href='?p=tools&s=tickets&guid=". $row[$ticketString] ."&db=". $realm ."'>". date('Y-m-d H:i:s', $row['createtime']) ."</a></td>";
+
                         if ($row[$closedString] == 1)
                         {
-                            echo '<td><font color="red">关闭</font></td>';
+                            echo "<td><font color='red'>关闭</font></td>";
                         }
                         else
                         {
-                            echo '<td><font color="green">打开</font></td>';
+                            echo "<td><font color='green'>打开</font></td>";
                         }		
 
 						$get = mysqli_query($conn, "SELECT COUNT(online) FROM characters WHERE guid=". $row[$guidString] ." AND online=1;");
 						if(mysqli_data_seek($get,0)>0)
-						   echo '<td><font color="green">在线</font></td>';
+						   echo "<td><font color='green'>在线</font></td>";
 						else
-						   echo '<td><font color="red">离线</font></td>';
+						   echo "<td><font color='red'>离线</font></td>";
 						   
 						?> <td><a href="#" onclick="deleteTicket('<?php echo $row[$ticketString]; ?>','<?php echo $realm; ?>')">删除</a>
 								&nbsp;
@@ -125,32 +125,32 @@
 								}
 								?>
 								</td><?php
-							echo '<tr>';
+							echo "<tr>";
 							}
             }
-            echo '</table>'; 
-		   }
-		   else
-			echo '<pre>请选择一个服务器。</pre>';
+            echo "</table>";
+		}
+		else
+		    echo "<pre>请选择一个服务器。</pre>";
 	   ?>
 </span>
 <?php } 
 elseif(isset($_GET['guid'])) 
 {
 	if($GLOBALS['core_expansion'] == 3)
-		$guidString = 'playerGuid';
+		$guidString = "playerGuid";
 	else
-		$guidString = 'guid';	
+		$guidString = "guid";	
 	
 	if($GLOBALS['core_expansion'] == 3)
-		$closedString = 'closed';
+		$closedString = "closed";
 	else
-		$closedString = 'closedBy';		
+		$closedString = "closedBy";	
 		
 	if($GLOBALS['core_expansion'] == 3)
-		$ticketString = 'guid';
+		$ticketString = "guid";
 	else
-		$ticketString = 'ticketId';		
+		$ticketString = "ticketId";
 	
 	mysqli_select_db($conn, $_GET['db']);
 	$result = mysqli_query($conn, "SELECT name, message, createtime, ". $guidString .", ". $closedString ." 
@@ -179,9 +179,9 @@ elseif(isset($_GET['guid']))
             <td>
 				<?php
                 if($row[$closedString]==1) 
-                    echo '<font color="red">Closed</font>';
+                    echo "<font color='red'>关闭</font>";
                 else
-                    echo '<font color="green">Open</font>';
+                    echo "<font color='green'>打开</font>";
                 ?>
             </td>
             
@@ -192,9 +192,9 @@ elseif(isset($_GET['guid']))
             	<?php
 				$get = mysqli_query($conn, "SELECT COUNT(online) FROM characters WHERE guid=". $row[$guidString] ." AND online=1;");
 				if(mysqli_data_seek($get,0)>0)
-				   	echo '<font color="green">在线</font>';
+				   	echo "<font color='green'>在线</font>";
 				else
-				   echo '<font color="red">离线</font>';
+				   echo "<font color='red'>离线</font>";
 			   ?>
             </td>
                 

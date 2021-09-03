@@ -5,26 +5,26 @@
 	{
 		$alert_enable = $_POST['alert_enable'];
 		$alert_message = trim($_POST['alert_message']);
-		
-		$alert_enable = ($alert_enable == 'on') ? 'true' : 'false';
-		
-		$file_content = '<?php
 
-						$alert_enabled = '.$alert_enable.';
+		$alert_enable = ($alert_enable == "on") ? "true" : "false";
 
-						$alert_message = "'.$alert_message.'";
+		$file_content = "<?php
+
+						$alert_enabled = ". $alert_enable .";
+
+						$alert_message = \"". $alert_message ."\";
 
 						?>
-						';
+						";
 		
 		$fp = fopen('../documents/alert.php', 'w');
 		if(fwrite($fp, $file_content))
 		{
-			$msg = '警报消息已更新!';
+			$msg = "警报消息已更新!";
 		}
 		else
 		{
-			$msg = '[失败]无法写入文件！';	
+			$msg = "[失败]无法写入文件!";
 		}
 
 		fclose($fp);

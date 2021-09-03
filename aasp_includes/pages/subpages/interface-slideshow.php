@@ -47,18 +47,17 @@ if(mysqli_num_rows($result) == 0)
 }
 else 
 {
-	echo '<table>';
+	echo "<table>";
 	$c = 1;
 	while($row = mysqli_fetch_assoc($result))
 	{
-		echo '<tr class="center">';
-		echo '<td><h2>&nbsp; '.$c.' &nbsp;</h2><br/>
-		<a href="#remove" onclick="removeSlideImage('.$row['position'].')">删除</a></td>';
-		echo '<td><img src="../'.$row['path'].'" alt="'.$c.'" class="slide_image" maxheight="200"/></td>';
-		echo '</tr>';
+		echo "<tr class='center'>";
+        echo "<td><h2>&nbsp; ". $c ." &nbsp;</h2><br/><a href='#remove' onclick='removeSlideImage(". $row['position'] .")'>移除</a></td>";
+        echo "<td><img src='../". $row['path'] ."' alt='". $c ."' class='slide_image' maxheight='200'/></td>";
+        echo "</tr>";
 		$c++;
 	}
-	  echo '</table>';
+	  echo "</table>";
 }
 ?>
 

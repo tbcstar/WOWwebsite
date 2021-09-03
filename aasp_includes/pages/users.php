@@ -2,9 +2,9 @@
     global $GameServer, $GamePage;
     $conn = $GameServer->connect();
 
-    $GameServer->selectDB('webdb', $conn);
+    $GameServer->selectDB("webdb", $conn);
 
-    $GamePage->validatePageAccess('Users');
+    $GamePage->validatePageAccess("Users");
 
     if ($GamePage->validateSubPage() == TRUE)
     {
@@ -12,7 +12,7 @@
 	} 
 	else 
 	{
-        $GameServer->selectDB('logondb', $conn);
+        $GameServer->selectDB("logondb", $conn);
         $usersTotal       = mysqli_query($conn, "SELECT COUNT(*) AS totalUsers FROM account;");
         $usersToday       = mysqli_query($conn, "SELECT COUNT(*) AS dailyUsers FROM account WHERE joindate LIKE '%". date("Y-m-d") ."%';");
         $usersMonth       = mysqli_query($conn, "SELECT COUNT(*) AS monthlyUsers FROM account WHERE joindate LIKE '%". date("Y-m") ."%';");
