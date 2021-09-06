@@ -41,22 +41,22 @@ if ($fp !== false)
 	
     $resp = end(explode("\n", $resp));
 	 
-	$item_number 	= mysqli_real_escape_string($conn, $_POST['item_number']);
-	$item_name 		= mysqli_real_escape_string($conn, $item_number['0']);
-	$mc_gross 		= mysqli_real_escape_string($conn, $_POST['mc_gross']);
-	$txn_id 		= mysqli_real_escape_string($conn, $_POST['txn_id']);
-	$payment_date 	= mysqli_real_escape_string($conn, $_POST['payment_date']);
-	$first_name 	= mysqli_real_escape_string($conn, $_POST['first_name']);
-	$last_name 		= mysqli_real_escape_string($conn, $_POST['last_name']);
-	$payment_type 	= mysqli_real_escape_string($conn, $_POST['payment_type']);
-	$payer_email 	= mysqli_real_escape_string($conn, $_POST['payer_email']);
-	$address_city 	= mysqli_real_escape_string($conn, $_POST['address_city']);
-	$address_country = mysqli_real_escape_string($conn, $_POST['address_country']);
-	$custom 		= mysqli_real_escape_string($conn, $_POST['custom']);
-	$mc_fee 		= mysqli_real_escape_string($conn, $_POST['mc_fee']);
-	$fecha 			= date("Y-m-d");
-	$payment_status = mysqli_real_escape_string($conn, $_POST['payment_status']);
-	$reciever 		= mysqli_real_escape_string($conn, $_POST['receiver_email']);		 
+	$item_number     = $conn->escape_string($_POST['item_number']);
+    $item_name       = $conn->escape_string($item_number['0']);
+    $mc_gross        = $conn->escape_string($_POST['mc_gross']);
+    $txn_id          = $conn->escape_string($_POST['txn_id']);
+    $payment_date    = $conn->escape_string($_POST['payment_date']);
+    $first_name      = $conn->escape_string($_POST['first_name']);
+    $last_name       = $conn->escape_string($_POST['last_name']);
+    $payment_type    = $conn->escape_string($_POST['payment_type']);
+    $payer_email     = $conn->escape_string($_POST['payer_email']);
+    $address_city    = $conn->escape_string($_POST['address_city']);
+    $address_country = $conn->escape_string($_POST['address_country']);
+    $custom          = $conn->escape_string($_POST['custom']);
+    $mc_fee          = $conn->escape_string($_POST['mc_fee']);
+	$fecha           = date("Y-m-d");
+	$payment_status  = $conn->escape_string($_POST['payment_status']);
+    $reciever        = $conn->escape_string($_POST['receiver_email']);
 	
 	if ($resp == 'VERIFIED')
 	{
@@ -65,7 +65,7 @@ if ($fp !== false)
 			exit();
 		}
 				
-		mysqli_query($conn, "INSERT INTO payments_log(userid,paymentstatus,buyer_email,firstname,lastname,city,country,mc_gross,mc_fee,itemname,paymenttype,
+		$conn->query("INSERT INTO payments_log(userid,paymentstatus,buyer_email,firstname,lastname,city,country,mc_gross,mc_fee,itemname,paymenttype,
 		paymentdate,txnid,pendingreason,reasoncode,datecreation) values ('".$custom."','".$payment_status."','".$payer_email."',
 		'".$first_name."','".$last_name."','".$address_city."','".$address_country."','".$mc_gross."',
 		'".$mc_fee."','".$item_name."','".$payment_type."','".$payment_date."','".$txn_id."','".$pending_reason."',
@@ -105,7 +105,7 @@ if ($fp !== false)
 		{
 			if($GLOBALS['donation']['donationType'] == 2)
 			{
-				mysqli_query($conn, "INSERT INTO payments_log(userid,paymentstatus,buyer_email,firstname,lastname,mc_gross,paymentdate,datecreation) values ('".$custom."',
+				$conn->query("INSERT INTO payments_log(userid,paymentstatus,buyer_email,firstname,lastname,mc_gross,paymentdate,datecreation) values ('".$custom."',
 				'".$mc_gross."','".$payer_email."','".$first_name."','".$last_name."','".$mc_gross."','".$payment_date."','".$fecha."')");
 				
 				for ($row = 0; $row < count($GLOBALS['donationList']); $row++)
@@ -113,14 +113,14 @@ if ($fp !== false)
 					$coins = $mc_gross;
 					if($coins == $GLOBALS['donationList'][$row][2])
 					{
-						mysqli_query($conn, "UPDATE account_data SET dp=dp + " . $GLOBALS['donationList'][$row][1] . " WHERE id=". $custom .";");
+						$conn->query("UPDATE account_data SET dp=dp + " . $GLOBALS['donationList'][$row][1] . " WHERE id=". $custom .";");
 					}
 				}
 			}
 			elseif($GLOBALS['donation']['donationType'] == 2)
 			{
 				$coins = ceil($mc_gross);
-				mysqli_query($conn, "UPDATE account_data SET d =dp + " . $coins . " WHERE id=". $custom .";");
+				$conn->query("UPDATE account_data SET d =dp + " . $coins . " WHERE id=". $custom .";");
 			}
 		}
 	}
@@ -128,7 +128,7 @@ if ($fp !== false)
 	{
 		if($GLOBALS['donation']['donationType'] == 2)
 		{
-			 mysqli_query($conn, "INSERT INTO payments_log(userid,paymentstatus,buyer_email,firstname,
+			 $conn->query("INSERT INTO payments_log(userid,paymentstatus,buyer_email,firstname,
 			 lastname,mc_gross,paymentdate,datecreation) values ('".$custom."','".$payment_status." - INVALID FUUUU ".$_POST['mc_gross']."','".$payer_email."',
 			 '".$first_name."','".$last_name."','".$mc_gross."','".$payment_date."','".$fecha."')");
 		}
@@ -147,7 +147,7 @@ if ($fp !== false)
 			Best regards.
 			The Management");
 	
-	 	mysqli_query($conn, "INSERT INTO payments_log(userid,paymentstatus,buyer_email,firstname,lastname,mc_gross,paymentdate,datecreation) values ('".$custom."','".$payment_status." - INVALID','".$payer_email."','".$first_name."','".$last_name."','".$mc_gross."','".$payment_date."','".$fecha."')");
+	 	$conn->query("INSERT INTO payments_log(userid,paymentstatus,buyer_email,firstname,lastname,mc_gross,paymentdate,datecreation) values ('".$custom."','".$payment_status." - INVALID','".$payer_email."','".$first_name."','".$last_name."','".$mc_gross."','".$payment_date."','".$fecha."')");
     }
 }
 

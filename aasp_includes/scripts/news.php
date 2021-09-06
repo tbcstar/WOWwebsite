@@ -20,8 +20,8 @@ $GameServer->selectDB("webdb", $conn);
         die('未指定 ID。 中止...');
       }
 
-      mysqli_query($conn, "DELETE FROM news WHERE id=". mysqli_real_escape_string($conn, $_POST['id']) .";");
-      mysqli_query($conn, "DELETE FROM news_comments WHERE id=". mysqli_real_escape_string($conn, $_POST['id']) .";");
+      $conn->query("DELETE FROM news WHERE id=". $conn->escape_string($_POST['id']) .";");
+      $conn->query("DELETE FROM news_comments WHERE id=". $conn->escape_string($_POST['id']) .";");
       $GameServer->logThis("删除了一个新闻帖子");
 
       break;
@@ -29,10 +29,10 @@ $GameServer->selectDB("webdb", $conn);
 
     case "edit":
     {
-      $id      = mysqli_real_escape_string($conn, $_POST['id']);
-      $title   = mysqli_real_escape_string($conn, ucfirst($_POST['title']));
-      $author  = mysqli_real_escape_string($conn, ucfirst($_POST['author']));
-      $content = mysqli_real_escape_string($conn, $_POST['content']);
+      $id      = $conn->escape_string($_POST['id']);
+      $title   = $conn->escape_string(ucfirst($_POST['title']));
+      $author  = $conn->escape_string(ucfirst($_POST['author']));
+      $content = $conn->escape_string($_POST['content']);
 
       if (empty($id) || empty($title) || empty($content))
       {
@@ -40,7 +40,7 @@ $GameServer->selectDB("webdb", $conn);
       }
       else
       {
-          mysqli_query($conn, "UPDATE news SET title='". $title ."', author='". $author ."', body='". $content ."' WHERE id=". $id .";");
+          $conn->query("UPDATE news SET title='". $title ."', author='". $author ."', body='". $content ."' WHERE id=". $id .";");
           $GameServer->logThis("已更新新闻帖子，ID: <b>". $id ."</b>");
           return TRUE;
       }
@@ -50,8 +50,8 @@ $GameServer->selectDB("webdb", $conn);
 
     case "getNewsContent":
     {
-      $result  = mysqli_query($conn, "SELECT * FROM news WHERE id=". mysqli_real_escape_string($conn, $_POST['id']) .";");
-      $row     = mysqli_fetch_assoc($result);
+      $result  = $conn->query("SELECT * FROM news WHERE id=". $conn->escape_string($_POST['id']) .";");
+      $row     = $result->fetch_assoc();
       $content = str_replace('<br />', "\n", $row['body']);
 
       echo "<h3>编辑新闻</h3><br/>标题: <br/><input type='text' id='editnews_title' value='". $row['title'] ."'><br/><br/>
@@ -68,13 +68,13 @@ $GameServer->selectDB("webdb", $conn);
         die('<span class="red_text">请输入所有字段。</span>');
       }
       
-      $title    = mysqli_real_escape_string($conn, $_POST['title']);
-      $content  = mysqli_real_escape_string($conn, $_POST['content']);
-      $author   = mysqli_real_escape_string($conn, $_SESSION['cw_user']);
-      $img      = mysqli_real_escape_string($conn, $_POST['image']);
+      $title    = $conn->escape_string($_POST['title']);
+      $content  = $conn->escape_string($_POST['content']);
+      $author   = $conn->escape_string($_SESSION['cw_user']);
+      $img      = $conn->escape_string($_POST['image']);
       $date     = date("Y-m-d H:i:s");
 
-      $result = mysqli_query($conn, "INSERT INTO news (`title`, `body`, `author`, `image`, `date`) VALUES 
+      $result = $conn->query("INSERT INTO news (`title`, `body`, `author`, `image`, `date`) VALUES 
         ('". $title ."','". $content ."', '". $author ."','". $img ."', '". $date ."');");
       if ($result) 
       {
@@ -83,7 +83,7 @@ $GameServer->selectDB("webdb", $conn);
       }
       else
       {
-        die("错误 - ". mysqli_error($conn));
+        die("错误 - ". $conn->error);
       }
 
       break;

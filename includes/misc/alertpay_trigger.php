@@ -96,9 +96,9 @@
 					global $Connect;
                     $conn = $Connect->connectToDB();
 
-					#mysqli_select_db($conn, "auth");
+					$conn->select_db("craftedcms");
 
-					mysqli_query($conn, "INSERT INTO paypal_payment_info(userid, paymentstatus, buyer_email, firstname, lastname) 
+					$conn->query("INSERT INTO paypal_payment_info (userid, paymentstatus, buyer_email, firstname, lastname) 
                         VALUES (". $myCustomField_1 .", '". $transactionStatus ."', '". $customerEmailAddress ."', '". $customerFirstName ."', '". $customerLastName ."');");
                 }
 				else 

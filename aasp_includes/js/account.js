@@ -38,9 +38,9 @@ function save_account_data()
 
 function editAccA(id,rank,realm) 
 {
-	$("#loading").html("Rank <br/>\
+	$("#loading").html("Rank (3 - Staff Panel | 4 - Admin Panel Access)<br/>\
 	<input type='text' value='"+rank+"' id='editAccARank'><br/>\
-	Realm ID<br/>\
+	Realm ID (-1 = All Servers)<br/>\
 	<input type='text' value='"+realm+"' id='editAccARealm'><br/>\
 	<input type='submit' value='保存' onclick='editAccANow("+id+")'>");
 	

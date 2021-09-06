@@ -13,8 +13,9 @@
     <th>动作</th>
 </tr>
 <?php
-$result = mysqli_query($conn, "SELECT * FROM votingsites ORDER BY id ASC;");
-while($row = mysqli_fetch_assoc($result)) { ?>
+$result = $conn->query("SELECT * FROM votingsites ORDER BY id ASC;");
+while ($row = $result->fetch_assoc())
+{ ?>
 	     <tr>
               <td><?php echo $row['title']; ?></td>
               <td><?php echo $row['points']; ?></td>

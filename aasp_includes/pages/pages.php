@@ -25,15 +25,15 @@
         <th>动作</th>
     </tr>
     <?php
-        $result = mysqli_query($conn, "SELECT * FROM custom_pages ORDER BY id ASC;");
-        while ($row = mysqli_fetch_assoc($result))
+        $result = $conn->query("SELECT * FROM custom_pages ORDER BY id ASC;");
+        while ($row = $result->fetch_assoc())
             {
                 $disabled = true;
-        $check = mysqli_query($conn, "SELECT COUNT(filename) AS filename FROM disabled_pages WHERE filename='". $row['filename'] ."';");
-            if (mysqli_fetch_assoc($check)['filename'] == 1)
-            {
-                $disabled = true;
-            }
+                $check = $conn->query("SELECT COUNT(filename) AS filename FROM disabled_pages WHERE filename='". $row['filename'] ."';");
+                if ($check->fetch_assoc()['filename'] == 1)
+                {
+                    $disabled = true;
+                }
             ?>
             <tr <?php if ($disabled) echo "style='color: #999;'"; ?>>
                 <td width="50"><?php echo $row['name']; ?></td>
@@ -63,8 +63,8 @@
 	{ 
         $filename = substr($fileName, 0, -4);
         unset($check);
-        $check = mysqli_query($conn, "SELECT COUNT(filename) AS filename FROM disabled_pages WHERE filename='". $filename ."';");
-        if (mysqli_fetch_assoc($check)['filename'] == 1)
+        $check = $conn->query("SELECT COUNT(filename) AS filename FROM disabled_pages WHERE filename='". $filename ."';");
+        if ($check->fetch_assoc()['filename'] == 1)
 	 	{
 			$disabled = false;
 	 	} 
@@ -146,9 +146,9 @@ if (is_array($GLOBALS['core_pages']) || is_object($GLOBALS['core_pages']))
 	if(isset($_POST['editpage']))
 	{
 		
-		$name 		= mysqli_real_escape_string($conn, $_POST['editpage_name']);
-		$filename 	= mysqli_real_escape_string($conn, trim(strtolower($_POST['editpage_filename'])));
-		$content 	= mysqli_real_escape_string($conn, htmlentities($_POST['editpage_content']));
+		$name     = $conn->escape_string($_POST['editpage_name']);
+        $filename = $conn->escape_string(trim(strtolower($_POST['editpage_filename'])));
+        $content  = $conn->escape_string(htmlentities($_POST['editpage_content']));
 
 		if(empty($name) || empty($filename) || empty($content)) 
 		{
@@ -156,16 +156,16 @@ if (is_array($GLOBALS['core_pages']) || is_object($GLOBALS['core_pages']))
 		} 
 		else 
 		{
-            mysqli_query($conn, "UPDATE custom_pages 
+            $conn->query("UPDATE custom_pages 
                 SET name='". $name ."', filename='". $filename ."', content='". $content ."' 
-                WHERE filename='". mysqli_real_escape_string($conn, $_GET['filename']) ."';");
+                WHERE filename='". $conn->escape_string($_GET['filename']) ."';");
 
             echo "<h3>页面已成功更新。</h3> <a href='" . $GLOBALS['website_domain'] . "?p=" . $filename . "' target='_blank'>查看页面</a>";
 		}
 	}
 
-	$result = mysqli_query($conn, "SELECT * FROM custom_pages WHERE filename='".mysqli_real_escape_string($conn, $_GET['filename'])."';"); 
-	$row = mysqli_fetch_assoc($result);
+	$result = $conn->query("SELECT * FROM custom_pages WHERE filename='". $conn->escape_string($_GET['filename']) ."';");
+    $row    = $result->fetch_assoc();
 ?>
 	   
      <h4>编辑 <?php echo $_GET['filename']; ?>.php</h4>

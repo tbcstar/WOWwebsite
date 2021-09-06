@@ -16,8 +16,8 @@ public static function serverStatus($realm_id)
 		if ($GLOBALS['serverStatus']['playersOnline']==TRUE) 
 		{
 			$Connect->connectToRealmDB($realm_id);
-			$getChars = mysqli_query($conn, "SELECT COUNT(online) FROM characters WHERE online=1");
-			$pOnline = mysqli_data_seek($getChars,0);
+			$getChars = $conn->query("SELECT COUNT(online) FROM characters WHERE online=1");
+			$pOnline = $getChars->data_seek(0);
 			echo '
 					',$pOnline,'
 				  ';

@@ -26,13 +26,15 @@
 				if (file_exists("../plugins/". $folderName ."/info.php"))
 				{
 					include("../plugins/" . $folderName . "/info.php");
+
 					?> <tr class="center" onclick="window.location='?p=interface&s=viewplugin&plugin=<?php echo $folderName; ?>'"> <?php
 						echo "<td><a href='?p=interface&s=viewplugin&plugin=". $folderName ."'>". $title ."</a></td>";
                         echo "<td>". substr($desc, 0, 42) ."</td>";
                         echo "<td>". $author ."</td>";
                         echo "<td>". $created ."</td>";
-                        $chk = mysqli_query($conn, "SELECT COUNT(*) AS disabledPlugins FROM disabled_plugins WHERE foldername='". mysqli_real_escape_string($conn, $folderName) ."';");
-                        if (mysqli_fetch_assoc($chk)['disabledPlugins'] == 0) echo "<td>Enabled</td>";
+
+                        $chk = $conn->query("SELECT COUNT(*) AS disabledPlugins FROM disabled_plugins WHERE foldername='". $conn->escape_string($folderName) ."';");
+                        if ($chk->fetch_assoc()['disabledPlugins'] == 0) echo "<td>启用</td>";
                         else echo "<td>禁用</td>";
                         echo "</tr>";
 				}

@@ -11,6 +11,7 @@
 
             global $Cache, $Connect, $Website;
             $conn = $Connect->connectToDB();
+
             if ($GLOBALS['news']['enable'] == true)
             {
                 echo "<div class='box_two_title'>最近新闻</div>";
@@ -23,15 +24,16 @@
                 {
                     $Connect->selectDB("webdb", $conn);
 
-                    $result = mysqli_query($conn, "SELECT * FROM news ORDER BY id DESC LIMIT ". $GLOBALS['news']['maxShown'] .";");
-                    if (mysqli_num_rows($result) == 0)
+                    $result = $conn->query("SELECT * FROM news ORDER BY id DESC LIMIT ". $GLOBALS['news']['maxShown'] .";");
+
+                    if ($result->num_rows == 0)
                     {
                         echo "没有发现任何新闻。";
                     }
                     else
                     {
                         $output = null;
-                        while ($row = mysqli_fetch_assoc($result))
+                        while ($row = $result->fetch_assoc())
                         {
                             if (file_exists($row['image']))
                             {
@@ -61,50 +63,51 @@
 									    ."</h3>
 									</td>
 								    </tr>
-							    </table>";/*
-	                           <table class='news_content' cellpadding='4'>
-							       <tr>
-							           <td>";*/
+							    </table>";
                             }
                             $output .= $newsPT1;
                             unset($newsPT1);
 
-                            $text = preg_replace("
-					  		#((http|https|ftp)://(\S*?\.\S*?))(\s|\;|\)|\]|\[|\{|\}|,|\"|'|:|\<|$|\.\s)#ie", "'<a href=\"$1\" target=\"_blank\">http://$3</a>$4'", $row['body']
-                            );
-
-                            if ($GLOBALS['news']['limitHomeCharacters'] == true)
+                            if (file_exists("includes/classes/validator.php"))
                             {
-                                echo $Website->limit_characters($text, 200);
-                                $output .= $Website->limit_characters($row['body'], 200);
-                            }
-                            else
-                            {
-                                echo nl2br($text);
-                                $output .= nl2br($row['body']);
-                            }
+                                include "includes/classes/validator.php";
 
-                            $result      = mysqli_query($conn, "SELECT COUNT(id) FROM news_comments WHERE newsid=". $row['id'] .";");
-                            $commentsNum = mysqli_fetch_row($result);
+                                $Validator = new Validator(array(), array($row['body']), array($row['body']));
+                                $sanatized_text = $Validator->sanatize($row['body'], "string");
 
-                            if ($GLOBALS['news']['enableComments'] == true)
-                            {
-                                $comments = '| <a href="?p=news&amp;newsid=' . $row['id'] . '">Comments ('. $commentsNum[0] .')</a>';
-                            }
-                            else
-                            {
-                                $comments = "";
-                            }
+                                if ($GLOBALS['news']['limitHomeCharacters'] == true)
+                                {
+                                    echo $Website->limit_characters($sanatized_text, 200);
+                                    $output .= $Website->limit_characters($row['body'], 200);
+                                }
+                                else
+                                {
+                                    echo nl2br("<br>".$sanatized_text);
+                                    $output .= nl2br($row['body']);
+                                }
 
-                            echo $newsPT2 = "<br/><br/><br/>
-        						<i class='gray_text'>作者 ". $row['author'] ." | ". $row['date'] ." ". $comments ."</i>
-						</td> 
-						</tr>
-					    </table";
-                            $output  .= $newsPT2;
-                            unset($newsPT2);
+                                $result      = $conn->query("SELECT COUNT(id) FROM news_comments WHERE newsid=". $row['id'] .";");
+                                $commentsNum = $result->fetch_row();
+
+                                if ($GLOBALS['news']['enableComments'] == true)
+                                {
+                                    $comments = '| <a href="?p=news&amp;newsid=' . $row['id'] . '">Comments ('. $commentsNum[0] .')</a>';
+                                }
+                                else
+                                {
+                                    $comments = "";
+                                }
+
+                                echo $newsPT2 = "<br/><br/><br/>
+                                    <i class='gray_text'>Written by ". $row['author'] ." | ". $row['date'] ." ". $comments ."</i>
+                                    </td> 
+                                    </tr>
+                                    </table";
+                                $output  .= $newsPT2;
+                                unset($newsPT2);
+                            }
                         }
-                        echo "<hr/><a href='?p=news'>查看旧的新闻...</a>";
+                        echo "<br><hr/><a href='?p=news'>查看旧的新闻...</a>";
                         $Cache->buildCache("news", $output);
                     }
                 }
@@ -116,6 +119,7 @@
         {
             global $Cache, $Connect;
             $conn = $Connect->connectToDB();
+            
             if ($Cache->exists("slideshow") == true)
             {
                 $Cache->loadCache("slideshow");
@@ -123,8 +127,8 @@
             else
             {
                 $Connect->selectDB("webdb", $conn);
-                $result = mysqli_query($conn, "SELECT `path`, `link` FROM slider_images ORDER BY position ASC;");
-                while ($row = mysqli_fetch_assoc($result))
+                $result = $conn->query("SELECT `path`, `link` FROM slider_images ORDER BY position ASC;");
+                while ($row = $result->fetch_assoc())
                 {
                     echo $outPutPT = '<a href="'. $row['link'] .'"><img border="none" src="'. $row['path'] .'" alt="" class="slideshow_image"></a>';
                     $output   .= $outPutPT;
@@ -139,10 +143,10 @@
             $conn = $Connect->connectToDB();
             $Connect->selectDB("webdb", $conn);
 
-            $result = mysqli_query($conn, "SELECT `position` FROM slider_images ORDER BY position ASC;");
+            $result = $conn->query("SELECT `position` FROM slider_images ORDER BY position ASC;");
             $x      = 1;
 
-            while ($row = mysqli_fetch_assoc($result))
+            while ($row = $result->fetch_assoc())
             {
                 echo '<a href="#" rel="' . $x . '">' . $x . '</a>';
                 $x++;
@@ -170,15 +174,16 @@
             global $Connect, $Account, $Website;
             $conn = $Connect->connectToDB();
             $Connect->selectDB("webdb", $conn);
-            $result = mysqli_query($conn, "SELECT * FROM votingsites ORDER BY id DESC;");
 
-            if (mysqli_num_rows($result) == 0)
+            $result = $conn->query("SELECT * FROM votingsites ORDER BY id DESC;");
+
+            if ($result->num_rows == 0)
             {
-                buildError("无法从数据库中获取任何投票链接. ". mysqli_error($conn));
+                buildError("无法从数据库中获取任何投票链接. ". $conn->error);
             }
             else
             {
-                while ($row = mysqli_fetch_assoc($result))
+                while ($row = $result->fetch_assoc())
                 { ?>
 
 				<div class="col">
@@ -195,11 +200,11 @@
 				}
 				else 
 				{
-				$getNext = mysqli_query($conn, "SELECT next_vote FROM ". $GLOBALS['connection']['webdb'] .".votelog 
+				$getNext = $conn->query("SELECT next_vote FROM ". $GLOBALS['connection']['webdb'] .".votelog 
 					WHERE userid=". $Account->getAccountID($_SESSION['cw_user']) ." 
 					AND siteid=". $row['id'] ." ORDER BY id DESC LIMIT 1;");
 
-				$row = mysqli_fetch_assoc($getNext);
+				$row  = $getNext->fetch_assoc();
 				$time = $row['next_vote'] - time();
 
 				echo '<font color="red">'.convTime($time);
@@ -219,17 +224,23 @@
         {
             global $Account, $Connect;
             $conn = $Connect->connectToDB();
-            $siteId  = mysqli_real_escape_string($conn, $siteid);
 
 			$db = $GLOBALS['connection']['webdb'];
-            $acct_id = $Account->getAccountID($_SESSION['cw_user']);
+            $siteId  = $conn->escape_string($siteid);
 
+            $acct_id = $Account->getAccountID($_SESSION['cw_user']);
             $Connect->selectDB("webdb", $conn);
 
-            $result = mysqli_query($conn, "SELECT COUNT(id) AS voted FROM votelog WHERE userid=". $acct_id ." AND siteid=". $siteId ." AND next_vote > ". time() .";");
+            $result = $conn->query("SELECT COUNT(id) AS voted FROM votelog WHERE userid=". $acct_id ." AND siteid=". $siteId ." AND next_vote > ". time() .";");
 
-            if (mysqli_fetch_assoc($result)['voted'] == 0) return false;
-            else return true;
+            if ($result->fetch_assoc()['voted'] == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         public function sendEmail($to, $from, $subject, $body)

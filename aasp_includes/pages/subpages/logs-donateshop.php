@@ -3,8 +3,9 @@
   $conn = $GameServer->connect();  
 ?> 
 <div class="box_right_title">公益商城日志</div>
-<?php $result = mysqli_query($conn, "SELECT * FROM shoplog WHERE shop='donate' ORDER BY id DESC LIMIT 10;"); 
-if(mysqli_num_rows($result) == 0) 
+<?php
+$result = $conn->query("SELECT * FROM shoplog WHERE shop='donate' ORDER BY id DESC LIMIT 10;");
+if ($result->num_rows == 0)
 {
 	echo "看来公益商城的日志是空的!";
 } 
@@ -20,7 +21,8 @@ else
         <th>物品</th>
         <th>日期</th>
       </tr>
-      <?php while($row = mysqli_fetch_assoc($result)) { ?>
+      <?php while ($row = $result->fetch_assoc())
+      { ?>
         <tr class="center">
             <td><?php echo $GameAccount->getAccName($row['account']); ?></td>
             <td><?php echo $GameAccount->getCharName($row['char_id'],$row['realm_id']); ?></td>

@@ -120,11 +120,11 @@ $uptime = "auth";
 ?>
 
 <?php
-mysqli_select_db($conn, "$arena_top");
+$conn->select_db("$arena_top");
 $a=0;
-$result = mysqli_query($conn, "SELECT `name`, `race`, `class`, `gender`, `level`, totalKills, totalHonorPoints, totaltime FROM `characters` ORDER BY `totalKills` DESC LIMIT 5;");
+$result = $conn->query("SELECT `name`, `race`, `class`, `gender`, `level`, totalKills, totalHonorPoints, totaltime FROM `characters` ORDER BY `totalKills` DESC LIMIT 5;");
 
-$msg = mysqli_num_rows($result);
+$msg = $result->num_rows;
  if (!$msg){ 
      echo '
 <table class="table">
@@ -147,7 +147,7 @@ echo '
 <th>总击杀数</th>
 </tr>
 ';
- while ($row = mysqli_fetch_array ($result))
+ while ($row = $result->fetch_array())
 
    {
 	   

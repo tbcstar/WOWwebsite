@@ -8,10 +8,11 @@ class Character
         global $Connect, $Account, $Server;
         $conn = $Connect->connectToDB();
 
-        $guId   = mysqli_real_escape_string($conn, $guid);
-        $charDb = mysqli_real_escape_string($conn, $char_db);
+        $guId   = $conn->escape_string($guid);
+        $charDb = $conn->escape_string($char_db);
 
         $rid  = $Server->getRealmId($charDb);
+		
 		$Connect->connectToRealmDB($rid);
 		
         if ($this->isOnline($guId) == TRUE)
@@ -45,8 +46,8 @@ class Character
 			}
 
 		    $Account->connectToRealmDB($rid);
-		    $getXYZ = mysqli_query($conn, "SELECT * FROM character_homebind WHERE guid=". $guId .";");
-			$row 	= mysqli_fetch_assoc($getXYZ);
+		    $getXYZ = $conn->query("SELECT * FROM character_homebind WHERE guid=". $guId .";");
+            $row    = $getXYZ->fetch_assoc();
 			
 			$new_x = $row['posX']; 
 			$new_y = $row['posY']; 
@@ -54,7 +55,7 @@ class Character
 			$new_zone = $row['zoneId']; 
 			$new_map = $row['mapId'];
 
-            mysqli_query($conn, "UPDATE characters 
+            $conn->query("UPDATE characters 
                 SET position_x='". $new_x ."', 
                 position_y='". $new_y ."', 
                 position_z='". $new_z ."', 
@@ -73,10 +74,11 @@ class Character
         global $Connect, $Server, $Account;
         $conn = $Connect->connectToDB();
 
-        $guId = mysqli_real_escape_string($conn, $guid);
-        $charDb = mysqli_real_escape_string($conn, $char_db);
+        $guId   = $conn->escape_string($guid);
+        $charDb = $conn->escape_string($char_db);
 
         $rid  = $Server->getRealmId($charDb);
+		
 		$Connect->connectToRealmDB($rid);
 		
 		if ($this->isOnline($guId) == TRUE)
@@ -110,7 +112,7 @@ class Character
 			}
 
 			$Account->connectToRealmDB($rid);
-			mysqli_query($conn, "DELETE FROM character_aura WHERE guid=". $guId ." AND spell=20584 OR guid=". $guId ." AND spell=8326;");
+			$conn->query("DELETE FROM character_aura WHERE guid=". $guId ." AND spell=20584 OR guid=". $guId ." AND spell=8326;");
 			
 			$Account->logThis("进行了复活 " . $this->getCharName($guId, $rid), 'Revive', $rid);
 			
@@ -124,7 +126,8 @@ class Character
         $conn = $Connect->connectToDB();
 
 		die("此功能被禁用。 <br/><i>还有，你不应该在这里…</i>");
-		$values = mysqli_real_escape_string($conn, $values);
+
+        $values = $conn->escape_string($values);
 		$values = explode("*", $values);
 		
 		$Connect->connectToRealmDB($values[1]);
@@ -157,7 +160,8 @@ class Character
 			{
 				//User got coins. Boost them up to 58 :D
 				$Connect->connectToRealmDB($values[1]);
-				mysqli_query($conn, "UPDATE characters SET level=58 WHERE guid=". $values[0] .";");
+				
+				$conn->query("UPDATE characters SET level=58 WHERE guid=". $values[0] .";");
 
 				$Account->logThis("立即达到58级 ".$this->getCharName($values[0], NULL), 'Instant', NULL);
 
@@ -171,9 +175,9 @@ class Character
         global $Connect;
         $conn = $Connect->connectToDB();
 
-        $charGuid = mysqli_real_escape_string($conn, $char_guid);
-        $result    = mysqli_query($conn, "SELECT COUNT('guid') FROM characters WHERE guid=". $charGuid ." AND online=1;");
-		if (mysqli_data_seek($result,0) == 0)
+        $charGuid = $conn->escape_string($char_guid);
+        $result    = $conn->query("SELECT COUNT('guid') FROM characters WHERE guid=". $charGuid ." AND online=1;");
+        if ($result->data_seek( 0) == 0)
 		{
 			return FALSE;
 		}
@@ -339,13 +343,13 @@ class Character
         global $Connect;
         $conn = $Connect->connectToDB();
 
-        $ID      = mysqli_real_escape_string($conn, $id);
-        $realmID = mysqli_real_escape_string($conn, $realm_id);
+        $ID      = $conn->escape_string($id);
+        $realmID = $conn->escape_string($realm_id);
 		
         $Connect->connectToRealmDB($realmID);
 
-        $result = mysqli_query($conn, "SELECT name FROM characters WHERE guid=". $ID .";");
-		$row = mysqli_fetch_assoc($result);
+        $result = $conn->query("SELECT name FROM characters WHERE guid=". $ID .";");
+        $row    = $result->fetch_assoc();
 		return $row['name'];	
 	}
 }

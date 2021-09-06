@@ -8,14 +8,16 @@
 
 $per_page = 40;
 
-$pages_query = mysqli_query($conn, "SELECT COUNT(*) AS voteLogs FROM shoplog WHERE shop='vote';");
-$pages       = ceil(mysqli_fetch_assoc($pages_query)['voteLogs'] / $per_page);
+$GameServer->selectDB("webdb", $conn);
 
-$page  = ( isset($_GET['page']) ) ? mysqli_real_escape_string($conn, $_GET['page']) : 1;
-$start 	= ($page - 1) * $per_page;
+$pages_query = $conn->query("SELECT COUNT(*) AS voteLogs FROM shoplog WHERE shop='vote';");
+$pages       = ceil($pages_query->fetch_assoc()['voteLogs'] / $per_page);
 
-$result = mysqli_query($conn, "SELECT * FROM shoplog WHERE shop='vote' ORDER BY id DESC LIMIT ". $start .", ". $per_page .";");
-if(mysqli_num_rows($result) == 0) 
+$page  = ( isset($_GET['page']) ) ? $conn->escape_string($_GET['page']) : 1;
+$start = ($page - 1) * $per_page;
+
+$result = $conn->query("SELECT * FROM shoplog WHERE shop='vote' ORDER BY id DESC LIMIT ". $start .", ". $per_page .";");
+if ($result->num_rows == 0)
 {
 	echo "看来投票商店的日志是空的!";
 } 
@@ -35,7 +37,7 @@ else
         	<th>日期</th>
         </tr>
         <?php 
-        while($row = mysqli_fetch_assoc($result)) 
+        while ($row = $result->fetch_assoc())
     	{ ?>
 			<tr class="center">
 	            <td><?php echo $GameAccount->getAccName($row['account']); ?></td>

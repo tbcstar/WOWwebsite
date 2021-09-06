@@ -11,7 +11,7 @@ $conn = $Connect->connectToDB();
 $Account->isNotLoggedIn();
 
  /* 声明一些通用变量 */ 
- $shopPage = mysqli_real_escape_string($conn, $_GET['p']);
+ $shopPage = $conn->escape_string($_GET['p']);
  $shopVar = "donate";
  $shopCurrency = $GLOBALS['donation']['coins_name'];
  

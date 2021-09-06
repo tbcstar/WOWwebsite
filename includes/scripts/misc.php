@@ -18,17 +18,17 @@ elseif(isset($_POST['element']) && $_POST['element'] == 'donate')
 ##
 if(isset($_POST['action']) && $_POST['action'] == 'removeComment') 
 {
-   $Connect->selectDB('webdb');
-   mysqli_query($conn, "DELETE FROM news_comments WHERE id=". mysqli_real_escape_string($conn, $_POST['id']) .";");
+   $Connect->selectDB('webdb', $conn);
+   $conn->query("DELETE FROM news_comments WHERE id=". $conn->escape_string($_POST['id']) .";");
 }
 ##
 #
 ##
 if(isset($_POST['action']) && $_POST['action']=='getComment') 
 {
-   $Connect->selectDB('webdb');
-   $result = mysqli_query($conn, "SELECT `text` FROM news_comments WHERE id='". mysqli_real_escape_string($conn, $_POST['id']) .";");
-   $row = mysqli_fetch_assoc($result);
+   $Connect->selectDB('webdb', $conn);
+   $result = $conn->query("SELECT `text` FROM news_comments WHERE id='". $conn->escape_string($_POST['id']) .";");
+   $row = $result->fetch_assoc();
    echo $row['text'];
 }
 ##
@@ -38,10 +38,10 @@ if(isset($_POST['action']) && $_POST['action']=='editComment')
 {
    $content = mysqli_real_escape_string(trim(htmlentities($_POST['content'])));
 	
-   connect::selectDB('webdb');
-   mysqli_query($conn, "UPDATE news_comments SET `text` = '".$content."' WHERE id='". mysqli_real_escape_string($conn, $_POST['id']) .";");
+   $Connect->selectDB('webdb', $conn);
+   $conn->query("UPDATE news_comments SET `text` = '".$content."' WHERE id='". $conn->escape_string($_POST['id']) .";");
    
-   mysqli_query($conn, "INSERT INTO admin_log (full_url, ip, timestamp, action, account, extended_inf) 
+   $conn->query("INSERT INTO admin_log (full_url, ip, timestamp, action, account, extended_inf) 
    VALUES('/index.php?page=news','".$_SERVER['REMOTE_ADDR']."', '".time()."', '编辑评论', '".$_SESSION['cw_user_id']."', 
    '编辑的评论ID： ".(int)$_POST['id']."')");
 }
@@ -99,7 +99,7 @@ if(isset($_POST['convertDonationList']))
 {
 	for ($row = 0; $row < count($GLOBALS['donationList']); $row++)
 		{
-				$value = mysqli_real_escape_string($conn, $_POST['convertDonationList']);
+				$value = $conn->escape_string($_POST['convertDonationList']);
 				if($value == $GLOBALS['donationList'][$row][1])
 				{
 					echo $GLOBALS['donationList'][$row][2];

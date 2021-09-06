@@ -99,7 +99,7 @@ $db_host = "game.tbcstar.com:3310";
 # 投票商店网站连接
 ######################################################
 
-mysql_connect("$db_host","$db_user", "$db_pass");
+mysqli_connect("$db_host","$db_user", "$db_pass");
 
 
 
@@ -117,9 +117,9 @@ $uptime = "auth";
 ?>
 <?php
 // Uptime
-mysql_select_db("$uptime");
-$reponse = mysql_query("SELECT uptime, starttime, maxplayers FROM `uptime` ORDER BY `uptime`.`starttime` DESC") or die(mysql_error());
-$donnees = mysql_fetch_array($reponse);
+$conn->select_db("$uptime");
+$reponse = $conn->query("SELECT uptime, starttime, maxplayers FROM `uptime` ORDER BY `uptime`.`starttime` DESC") or die($conn->error);
+$donnees = $reponse->fetch_array();
 $temps = $donnees['uptime'];
 $mx = $donnees['maxplayers'];
 $day = floor($temps / 86400);
@@ -140,37 +140,37 @@ $sec = "".$sec;
 // Uptime
 
 // 在线玩家
-mysql_select_db("$player_online");
+$conn->select_db("$player_online");
 $sql = "SELECT SUM(online) FROM characters";
-$sqlquery = mysql_query($sql) or die(mysql_error());
-$memb = mysql_result($sqlquery,0,0); 
+$sqlquery = $conn->query($sql) or die($conn->error);
+$memb = mysqli_result($sqlquery,0,0); 
 $asql = "SELECT SUM(online) FROM characters WHERE race IN(1,3,4,7,11)";
-$asqlquery = mysql_query($asql) or die(mysql_error());
-$amemb = mysql_result($asqlquery,0,0);  
+$asqlquery = $conn->query($asql) or die($conn->error);
+$amemb = mysqli_result($asqlquery,0,0);  
 
 $hsql = "SELECT SUM(online) FROM characters WHERE race IN(2,5,6,8,10)";
-$hsqlquery = mysql_query($hsql) or die(mysql_error());
-$hmemb = mysql_result($hsqlquery,0,0); 
-$chars = mysql_query("SELECT guid FROM characters");
-$char = mysql_num_rows($chars);
+$hsqlquery = $conn->query($hsql) or die($conn->error);
+$hmemb = mysqli_result($hsqlquery,0,0); 
+$chars = $conn->query("SELECT guid FROM characters");
+$char = $chars->num_rows;
 
 
-mysql_select_db("$uptime");
-$selalcm = mysql_query("SELECT id FROM account");
-$acc = mysql_num_rows($selalcm);
+$conn->select_db("$uptime");
+$selalcm = $conn->query("SELECT id FROM account");
+$acc = $selalcm->num_rows;
 
 
-$da = mysql_query("SELECT COUNT(*) FROM account WHERE last_login LIKE '%".date('Y-m-d')."%'");
-$daaa = mysql_result($da,0);
+$da = $conn->query("SELECT COUNT(*) FROM account WHERE last_login LIKE '%".date('Y-m-d')."%'");
+$daaa = mysqli_result($da,0);
 
-$da2 = mysql_query("SELECT COUNT(id) FROM account WHERE online=1");
-$daa2 = mysql_result($da2,0);
+$da2 = $conn->query("SELECT COUNT(id) FROM account WHERE online=1");
+$daa2 = mysqli_result($da2,0);
 
-$da3 = mysql_query("SELECT COUNT(id) FROM account WHERE joindate LIKE '%".date("Y-m-d")."%'");
-$daa3 = mysql_result($da3,0);
+$da3 = $conn->query("SELECT COUNT(id) FROM account WHERE joindate LIKE '%".date("Y-m-d")."%'");
+$daa3 = mysqli_result($da3,0);
 
-$da4 = mysql_query("SELECT COUNT(id) FROM account WHERE last_login LIKE '%".date("Y-m")."%'");
-$daa4 = mysql_result($da4,0);
+$da4 = $conn->query("SELECT COUNT(id) FROM account WHERE last_login LIKE '%".date("Y-m")."%'");
+$daa4 = mysqli_result($da4,0);
 
 // 在线玩家
 ?>

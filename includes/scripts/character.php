@@ -7,7 +7,7 @@ $conn = $Connect->connectToDB();
 
 if($_POST['action'] == 'unstuck') 
 {
-	$guid       = mysqli_real_escape_string($conn, $_POST['guid']);
+	$guid     = $conn->escape_string($_POST['guid']);
 	$realm_id 	= $Server->getRealmId($_POST['char_db']);
 	$Connect->connectToRealmDB($realm_id);
 	
@@ -16,7 +16,7 @@ if($_POST['action'] == 'unstuck')
 
 if($_POST['action'] == 'revive') 
 {
-	$guid     = mysqli_real_escape_string($conn, $_POST['guid']);
+	$guid     = $conn->escape_string($_POST['guid']);
 	$realm_id = $Server->getRealmId($_POST['char_db']);
 	$Connect->connectToRealmDB($realm_id);
 
@@ -27,12 +27,12 @@ if ($_POST['action'] == 'getLocations')
 {
 	$values = explode('*',$_POST['values']);
 	
-	$char 		= mysqli_real_escape_string($conn, $values[0]);
+	$char       = $conn->escape_string($values[0]);
 	$realm_id 	= $Server->getRealmId($values[1]);
 	$Connect->connectToRealmDB($realm_id);
 
-	$result = mysqli_query($conn, "SELECT race FROM characters WHERE guid=". $char .";");
-	$row 	= mysqli_fetch_assoc($result);
+	$result   = $conn->query("SELECT race FROM characters WHERE guid=". $char .";");
+    $row      = $result->fetch_assoc();
 	$alliance = array(1,3,4,7,11);
 	if (in_array($row['race'],$alliance)) 
 	{
@@ -96,21 +96,21 @@ if ($_POST['action'] == 'getLocations')
 
 if ($_POST['action']=='teleport') 
 {
-	$character 	= mysqli_real_escape_string($conn, $_POST['character']);
-	$char_db 	= mysqli_real_escape_string($conn, $_POST['char_db']);
-	$location 	= mysqli_real_escape_string($conn, $_POST['location']);
+	$character = $conn->escape_string($_POST['character']);
+    $char_db   = $conn->escape_string($_POST['char_db']);
+    $location  = $conn->escape_string($_POST['location']);
 	
     $realm_id = $Server->getRealmId($_POST['char_db']);
 	$Connect->connectToRealmDB($realm_id);
-	$result   = mysqli_query($conn, "SELECT race, account, level, online FROM characters WHERE guid=". $character .";");
+	$result   = $conn->query("SELECT race, account, level, online FROM characters WHERE guid=". $character .";");
     
-	if (mysqli_num_rows($result) == 0)
+	if ($result->num_rows == 0)
 	{
 		die("<span class='alert'>该帐户中不存在该角色！</span>");
 	}
 	else 
 	{
-		$row = mysqli_fetch_assoc($result);
+		$row = $result->fetch_assoc();
 	
 		if($row['online'] == 1)
 		{
@@ -257,8 +257,8 @@ if ($_POST['action']=='teleport')
 		$Connect->connectToRealmDB($realm_id);
 
 		//get pos x, y etc for the logs.
-		$result = mysqli_query($conn, "SELECT position_x, position_y, position_z, map FROM characters WHERE guid=". $character .";");
-		$pos = mysqli_fetch_assoc($result);
+		$result = $conn->query("SELECT position_x, position_y, position_z, map FROM characters WHERE guid=". $character .";");
+        $pos    = $result->fetch_assoc();
 
 		$char_x = $pos['position_x'];
 		$char_y = $pos['position_y'];
@@ -266,8 +266,8 @@ if ($_POST['action']=='teleport')
 		$char_map = $pos['map'];
 		$from = "X: ".$char_x." - Y: ".$char_y." - Z: ".$char_z." - MAP ID: ".$char_map;
 
-	    mysqli_query($conn, "UPDATE characters SET position_x = ".$x.", position_y= ".$y.", position_z = ".$z.", map = ".$map." WHERE account = ".$acct." 
-				     AND guid = '".$character."'");
+	    $conn->query("UPDATE characters SET position_x = " . $x . ", position_y= " . $y . ", position_z = " . $z . ", map = " . $map . " WHERE account = " . $acct . " 
+		    AND guid = '".$character."'");
 
 		if($GLOBALS['service']['teleport']['currency'] == "vp")
 		{
@@ -284,9 +284,9 @@ if ($_POST['action']=='teleport')
 
 if($_POST['action'] == 'service') 
 {
-	$guid     = mysqli_real_escape_string($conn, $_POST['guid']);
-    $realm_id = mysqli_real_escape_string($conn, $_POST['realm_id']);
-	$serviceX = mysqli_real_escape_string($conn, $_POST['service']);
+	$guid     = $conn->escape_string($_POST['guid']);
+    $realm_id = $conn->escape_string($_POST['realm_id']);
+    $serviceX = $conn->escape_string($_POST['service']);
 	
 	
 	if($Character->isOnline($guid) == true)
@@ -336,9 +336,9 @@ if($_POST['action'] == 'service')
 		
 	}
 	
-	$Connect->selectDB('webdb');
-	$getRA  = mysqli_query($conn, "SELECT sendType, host, ra_port, soap_port, rank_user, rank_pass FROM realms WHERE id=". $realm_id .";");
-	$row 	= mysqli_fetch_assoc($getRA);
+	$Connect->selectDB('webdb', $conn);
+	$getRA = $conn->query("SELECT sendType, host, ra_port, soap_port, rank_user, rank_pass FROM realms WHERE id=". $realm_id .";");
+    $row   = $getRA->fetch_assoc();
 	
 	if($row['sendType'] == 'ra') 
 	{

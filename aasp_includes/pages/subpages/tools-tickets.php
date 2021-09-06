@@ -15,15 +15,15 @@
            		 <?php
 				 $GameServer->selectDB("webdb", $conn);
 
-				$result = mysqli_query($conn, "SELECT char_db, name, description FROM realms;");
-				if(mysqli_num_rows($result) == 0) 
+				$result = $conn->query("SELECT char_db, name, description FROM realms;");
+                if ($result->num_rows == 0)
 				{
 					echo "<option value='NULL'>找不到服务器。</option>";
 				}
 				else 
 				{
 					echo "<option value='NULL'>--选择一个服务器--</option>";
-					while($row = mysqli_fetch_assoc($result)) 
+					while ($row = $result->fetch_assoc())
 					{
 						echo "<option value='". $row['char_db'] ."'>". $row['name'] ." - <i>". $row['description'] ."</i></option>";
 					}
@@ -58,20 +58,22 @@
 				else
 					$ticketString = "ticketId";
 				############################
-						
-			  $offline = $_SESSION['lastTicketRealmOffline'];
-			  $realm = mysqli_real_escape_string($conn, $_SESSION['lastTicketRealm']);
+
+			    $offline = $_SESSION['lastTicketRealmOffline'];
+			    $realm   = $conn->escape_string($_SESSION['lastTicketRealm']);
 
 
 				if($realm == "NULL")
 				   die("<pre>请选择一个服务器。</pre>");
 
-				mysqli_select_db($conn, $realm);
+				$conn->select_db($realm);
 
-                $result = mysqli_query($conn, "SELECT ". $ticketString .", name, message, createtime, ". $guidString .", ". $closedString ." 
+                $result = $conn->query("SELECT ". $ticketString .", name, message, createtime, ". $guidString .", ". $closedString ." 
                     FROM gm_tickets ORDER BY ticketId DESC;");
-				if(mysqli_num_rows($result)==0)
-				   die("<pre>没有发现tickets！</pre>");
+				if ($result->num_rows == 0)
+				{
+				    die("<pre>没有发现tickets！</pre>");
+				}
 
 				echo "
 			        <table class='center'>
@@ -86,15 +88,16 @@
 				    </tr>
 				";
 
-				while($row = mysqli_fetch_assoc($result)) 
+				while ($row = $result->fetch_assoc())
 				{
-					$get = mysqli_query($conn, "SELECT COUNT(online) FROM characters WHERE guid='".$row[$guidString]."' AND online='1'");
-					if(mysqli_data_seek($get,0)==0 && $offline == "on") {
-					echo "<tr>";
-                    echo "<td><a href='?p=tools&s=tickets&guid=". $row[$ticketString] ."&db=". $realm ."'>". $row[$ticketString] ."</td>";
-                    echo "<td><a href='?p=tools&s=tickets&guid=". $row[$ticketString] ."&db=". $realm ."'>". $row['name'] ."</td>";
-                    echo "<td><a href='?p=tools&s=tickets&guid=". $row[$ticketString] ."&db=". $realm ."'>". substr($row['message'], 0, 15) ."...</td>";
-                    echo "<td><a href='?p=tools&s=tickets&guid=". $row[$ticketString] ."&db=". $realm ."'>". date('Y-m-d H:i:s', $row['createtime']) ."</a></td>";
+					$get = $conn->query("SELECT COUNT(online) FROM characters WHERE guid='" . $row[$guidString] . "' AND online='1';");
+                    if ($get->data_seek(0) == 0 && $offline == "on")
+					{
+    					echo "<tr>";
+                        echo "<td><a href='?p=tools&s=tickets&guid=". $row[$ticketString] ."&db=". $realm ."'>". $row[$ticketString] ."</td>";
+                        echo "<td><a href='?p=tools&s=tickets&guid=". $row[$ticketString] ."&db=". $realm ."'>". $row['name'] ."</td>";
+                        echo "<td><a href='?p=tools&s=tickets&guid=". $row[$ticketString] ."&db=". $realm ."'>". substr($row['message'], 0, 15) ."...</td>";
+                        echo "<td><a href='?p=tools&s=tickets&guid=". $row[$ticketString] ."&db=". $realm ."'>". date('Y-m-d H:i:s', $row['createtime']) ."</a></td>";
 
                         if ($row[$closedString] == 1)
                         {
@@ -105,12 +108,15 @@
                             echo "<td><font color='green'>打开</font></td>";
                         }		
 
-						$get = mysqli_query($conn, "SELECT COUNT(online) FROM characters WHERE guid=". $row[$guidString] ." AND online=1;");
-						if(mysqli_data_seek($get,0)>0)
+						$get = $conn->query("SELECT COUNT(online) FROM characters WHERE guid=". $row[$guidString] ." AND online=1;");
+                        if ($get->data_seek(0) > 0)
+                        {
 						   echo "<td><font color='green'>在线</font></td>";
+                        }
 						else
+						{
 						   echo "<td><font color='red'>离线</font></td>";
-						   
+						}
 						?> <td><a href="#" onclick="deleteTicket('<?php echo $row[$ticketString]; ?>','<?php echo $realm; ?>')">删除</a>
 								&nbsp;
 								<?php if($row[$closedString]==1) 
@@ -152,10 +158,10 @@ elseif(isset($_GET['guid']))
 	else
 		$ticketString = "ticketId";
 	
-	mysqli_select_db($conn, $_GET['db']);
-	$result = mysqli_query($conn, "SELECT name, message, createtime, ". $guidString .", ". $closedString ." 
-        FROM gm_tickets WHERE ". $ticketString ."='" . mysqli_real_escape_string($conn, $_GET['guid']) ."';");
-    $row = mysqli_fetch_assoc($result);
+	$conn->select_db($_GET['db']);
+    $result = $conn->query("SELECT name, message, createtime, ". $guidString .", ". $closedString ." 
+        FROM gm_tickets WHERE ". $ticketString ."='" . $conn->escape_string($_GET['guid']) ."';");
+    $row = $result->fetch_assoc();
 	?>
     <table style="width: 100%;" class="center">
         <tr>
@@ -190,12 +196,16 @@ elseif(isset($_GET['guid']))
             </td>
             <td>
             	<?php
-				$get = mysqli_query($conn, "SELECT COUNT(online) FROM characters WHERE guid=". $row[$guidString] ." AND online=1;");
-				if(mysqli_data_seek($get,0)>0)
+				$get = $conn->query("SELECT COUNT(online) FROM characters WHERE guid=". $row[$guidString] ." AND online=1;");
+                if ($get->data_seek(0) > 0)
+                {
 				   	echo "<font color='green'>在线</font>";
+                }
 				else
+				{
 				   echo "<font color='red'>离线</font>";
-			   ?>
+				}
+			    ?>
             </td>
                 
         </tr>

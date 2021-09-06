@@ -7,7 +7,7 @@
     global $GameServer, $GameAccount;
     $conn = $GameServer->connect();
     
-    $GameServer->selectDB("webdb");
+    $GameServer->selectDB("webdb", $conn);
 
     # Organized Alphabeticaly
 
@@ -15,8 +15,8 @@
     {
     case "dshop":
     {
-		$result = mysqli_query($conn, "SELECT * FROM shoplog WHERE account=". mysqli_real_escape_string($conn, $_POST['id']) ." AND shop='donate';");
-		if(mysqli_num_rows($result) == 0)
+		$result = $conn->query("SELECT * FROM shoplog WHERE account=". $conn->escape_string($_POST['id']) ." AND shop='donate';");
+        if ($result->num_rows == 0)
 		{
 			echo "<b color='red'>没有发现此帐户的日志。</b>";
 		}
@@ -29,8 +29,7 @@
                    <th>日期</th>
                    <th>金额</th>
                </tr>
-           <?php
-		while($row = mysqli_fetch_assoc($result))
+        <?php while ($row = $result->fetch_assoc())
             { ?>
             <tr>
                 <td>
@@ -51,10 +50,10 @@
 
         case "payments":
         {
-            $result = mysqli_query($conn, "SELECT paymentstatus, mc_gross, datecreation FROM payments_log WHERE userid=". mysqli_real_escape_string($conn, $_POST['id']) .";");
-            if (mysqli_num_rows($result) == 0)
+            $result = $conn->query("SELECT paymentstatus, mc_gross, datecreation FROM payments_log WHERE userid=". $conn->escape_string($_POST['id']) .";");
+            if ($result->num_rows == 0)
             {
-                echo "<b color='red'>No payments was found for this account.</b>";
+                echo "<b color='red'>未找到此帐户的付款信息。</b>";
             }
             else
             { ?> 
@@ -65,7 +64,7 @@
                         <th>日期</th>
                     </tr>
                     <?php
-                    while ($row = mysqli_fetch_assoc($result))
+                    while ($row = $result->fetch_assoc())
                     { ?>
                     <tr>
                         <td><?php echo $row['mc_gross']; ?>$</td>
@@ -81,8 +80,8 @@
 
         case "search":
         {
-            $input      = mysqli_real_escape_string($conn, $_POST['input']);
-            $shop       = mysqli_real_escape_string($conn, $_POST['shop']); ?>
+            $input      = $conn->escape_string($_POST['input']);
+            $shop       = $conn->escape_string($_POST['shop']); ?>
             <table width="100%">
                 <tr>
                     <th>账号</th>
@@ -95,18 +94,18 @@
 
                 <?php
                 //Search via character name...
-                $loopRealms = mysqli_query($conn, "SELECT id FROM realms;");
-                while ($row = mysqli_fetch_assoc($loopRealms))
-		{
-        $GameServer->connectToRealmDB($row['id']);
-        $result = mysqli_query($conn, "SELECT guid FROM characters WHERE name LIKE '%". $input ."%';");
-        if (mysqli_num_rows($result) > 0)
-        {
-            $row    = mysqli_fetch_assoc($result);
-            $GameServer->selectDB('webdb');
-            $result = mysqli_query($conn, "SELECT * FROM shoplog WHERE shop='". $shop ."' AND char_id=". $row['guid'] .";");
-
-            while ($row = mysqli_fetch_assoc($result))
+                $loopRealms = $conn->query("SELECT id FROM realms;");
+                while ($row = $loopRealms->fetch_assoc())
+        		{
+                $GameServer->connectToRealmDB($row['id']);
+                $result = $conn->query("SELECT guid FROM characters WHERE name LIKE '%". $input ."%';");
+                if ($result->num_rows > 0)
+            {
+                $row    = $result->fetch_assoc();
+                $GameServer->selectDB('webdb');
+                $result = $conn->query("SELECT * FROM shoplog WHERE shop='". $shop ."' AND char_id=". $row['guid'] .";");
+    
+                while ($row = $result->fetch_assoc())
             { ?>
                 <tr class="center">
                     <td><?php echo $GameAccount->getAccName($row['account']); ?></td>
@@ -125,14 +124,14 @@
 	}	
                 //Search via account name
                 $GameServer->selectDB("logondb");
-                $result = mysqli_query($conn, "SELECT id FROM account WHERE username LIKE '%". $input ."%';");
-                if (mysqli_num_rows($result) > 0)
+                $result = $conn->query("SELECT id FROM account WHERE username LIKE '%". $input ."%';");
+                if ($result->num_rows > 0)
                 {
-                    $row    = mysqli_fetch_assoc($result);
-                    $GameServer->selectDB("webdb");
-                    $result = mysqli_query($conn, "SELECT * FROM shoplog WHERE shop='". $shop ."' AND account=". $row['id'] .";");
+                    $row    = $result->fetch_assoc();
+                    $GameServer->selectDB("webdb", $conn);
+                    $result = $conn->query("SELECT * FROM shoplog WHERE shop='". $shop ."' AND account=". $row['id'] .";");
 
-                    while ($row = mysqli_fetch_assoc($result))
+                    while ($row = $result->fetch_assoc())
                     { ?>
                         <tr class="center">
                             <td><?php echo $GameAccount->getAccName($row['account']); ?></td>
@@ -151,14 +150,14 @@
 
                 //Search via item name
                 $GameServer->selectDB('worlddb');
-                $result = mysqli_query($conn, "SELECT entry FROM item_template WHERE name LIKE '%". $input ."%';");
-                if (mysqli_num_rows($result) > 0)
+                $result = $conn->query("SELECT entry FROM item_template WHERE name LIKE '%". $input ."%';");
+                if ($result->num_rows > 0)
                 {
-                    $row    = mysqli_fetch_assoc($result);
+                    $row    = $result->fetch_assoc();
                     $GameServer->selectDB('webdb');
-                    $result = mysqli_query($conn, "SELECT * FROM shoplog WHERE shop='". $shop ."' AND entry=". $row['entry'] .";");
+                    $result = $conn->query("SELECT * FROM shoplog WHERE shop='". $shop ."' AND entry=". $row['entry'] .";");
 
-                    while ($row = mysqli_fetch_assoc($result))
+                    while ($row = $result->fetch_assoc())
                     { ?>
                         <tr class="center">
                             <td><?php echo $GameAccount->getAccName($row['account']); ?></td>
@@ -177,9 +176,9 @@
 
                 //Search via date
                 $GameServer->selectDB('webdb');
-                $result = mysqli_query($conn, "SELECT * FROM shoplog WHERE shop='". $shop ."' AND date LIKE '%". $input ."%';");
+                $result = $conn->query("SELECT * FROM shoplog WHERE shop='". $shop ."' AND date LIKE '%". $input ."%';");
 
-                while ($row = mysqli_fetch_assoc($result))
+                while ($row = $result->fetch_assoc())
                 { ?>
                     <tr class="center">
                         <td><?php echo $GameAccount->getAccName($row['account']); ?></td>
@@ -199,9 +198,9 @@
                 {
                     //View last 10 logs
                     $GameServer->selectDB('webdb');
-                    $result = mysqli_query($conn, "SELECT * FROM shoplog WHERE shop='". $shop ."' ORDER BY id DESC LIMIT 10;");
+                    $result = $conn->query("SELECT * FROM shoplog WHERE shop='". $shop ."' ORDER BY id DESC LIMIT 10;");
 
-                    while ($row = mysqli_fetch_assoc($result))
+                    while ($row = $result->fetch_assoc())
                     { ?>
                         <tr class="center">
                             <td><?php echo $GameAccount->getAccName($row['account']); ?></td>
@@ -225,8 +224,8 @@
 
         case "vshop":
 		{
-            $result = mysqli_query($conn, "SELECT * FROM shoplog WHERE account=". mysqli_real_escape_string($conn, $_POST['id']) ." AND shop='vote';");
-            if (mysqli_num_rows($result) == 0)
+            $result = $conn->query("SELECT * FROM shoplog WHERE account=". $conn->escape_string($_POST['id']) ." AND shop='vote';");
+            if ($result->num_rows == 0)
             {
                 echo "<b color='red'>No logs was found for this account.</b>";
             }
@@ -239,7 +238,7 @@
                         <th>日期</th>
                         <th>金额</th>
                     </tr><?php 
-                    while ($row = mysqli_fetch_assoc($result))
+                    while ($row = $result->fetch_assoc())
                     { ?>
                         <tr>
                             <td>

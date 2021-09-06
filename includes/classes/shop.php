@@ -17,16 +17,16 @@ class Shop
 			$shopGlobalVar = $GLOBALS['donateShop']; 
 		}
 
-		$value 		= mysqli_real_escape_string($conn, $value);
-		$shop 		= mysqli_real_escape_string($conn, $shop);
-		$quality    = mysqli_real_escape_string($conn, $quality);
-        $ilevelfrom = mysqli_real_escape_string($conn, $ilevelfrom);
-        $ilevelto   = mysqli_real_escape_string($conn, $ilevelto);
-        $results    = mysqli_real_escape_string($conn, $results);
-        $faction    = mysqli_real_escape_string($conn, $faction);
-        $class      = mysqli_real_escape_string($conn, $class);
-		$type		= mysqli_real_escape_string($conn, $type);
-		$subtype 	= mysqli_real_escape_string($conn, $subtype);
+		$value      = $conn->escape_string($value);
+        $shop       = $conn->escape_string($shop);
+        $quality    = $conn->escape_string($quality);
+        $ilevelfrom = $conn->escape_string($ilevelfrom);
+        $ilevelto   = $conn->escape_string($ilevelto);
+        $results    = $conn->escape_string($results);
+        $faction    = $conn->escape_string($faction);
+        $class      = $conn->escape_string($class);
+        $type       = $conn->escape_string($type);
+        $subtype    = $conn->escape_string($subtype);
 		
 		if($value == "搜索物品...")
 		{
@@ -77,16 +77,16 @@ class Shop
 				$advanced .= " AND itemlevel<='".$ilevelto."'";
 			}
 
-			$count = mysqli_query($conn, "SELECT COUNT(id) AS item FROM shopitems 
+			$count = $conn->query("SELECT COUNT(id) AS item FROM shopitems 
                 WHERE name LIKE '%". $value ."%' AND in_shop = '". $shop ."' ". $advanced .";");
 		
-			if(mysqli_data_seek($count, 0) == 0)
+			if ($count->data_seek(0) == 0)
 			{
 					$count = 0;
 			}
 			else
 			{
-				$count = mysqli_fetch_assoc($count)['item'];
+				$count = $count->fetch_assoc()['item'];
 			}
 			
 			if($results!="--结果--")
@@ -99,8 +99,8 @@ class Shop
 			}
 		}
 
-		$result = mysqli_query($conn, "SELECT entry, displayid, name, quality, price, faction, class FROM shopitems 
-            WHERE name LIKE '%". $value ."%' AND in_shop = '". mysqli_real_escape_string($conn, $shop) ."' ". $advanced .";");
+		$result = $conn->query("SELECT entry, displayid, name, quality, price, faction, class FROM shopitems 
+            WHERE name LIKE '%". $value ."%' AND in_shop = '". $conn->escape_string($shop) ."' ". $advanced .";");
 
 		if($results != "--结果--")
 		{
@@ -108,18 +108,18 @@ class Shop
 		}
 		else
 		{
-			$limited = mysqli_num_rows($result);
+			$limited = $result->num_rows;
 		}
 		
 	    echo "<div class='shopBox'><b>".$count."</b> 找到的结果。 (".$limited." displayed)</div>";
 		
-		if (mysqli_num_rows($result) == 0)
+		if ($result->num_rows == 0)
 		{
 			echo '<b class="red_text">没有找到结果!</b><br/>';
 		}
 		else 
 		{
-			while($row = mysqli_fetch_assoc($result)) 
+			while ($row = $result->fetch_assoc())
 			{
 				$entry = $row['entry'];
 				
@@ -158,20 +158,20 @@ class Shop
 						break;
 				}
 
-				$getIcon = mysqli_query($conn, "SELECT icon FROM item_icons WHERE displayid=". $row['displayid'] .";");
-				if(mysqli_num_rows($getIcon)==0) 
+				$getIcon = $conn->query("SELECT icon FROM item_icons WHERE displayid=". $row['displayid'] .";");
+                if ($getIcon->num_rows == 0)
 				{
 					//发现没有图标。也许灾难项目。从wowhead获取图标。
 					$sxml = new SimpleXmlElement(file_get_contents('http://www.wowhead.com/item='. $entry .'&xml'));
 
-					$icon = mysqli_real_escape_string($conn, strtolower($sxml->item->icon));
+					$icon = $conn->escape_string(strtolower($sxml->item->icon));
 					//现在我们已经加载了它。将其添加到数据库中供以后使用。
 					//注意，WoWHead XML非常慢。这就是我们将其添加到数据库中的主要原因。
-					mysqli_query($conn, "INSERT INTO item_icons VALUES(". $row['displayid'] .", '". $icon ."');");
+					$conn->query("INSERT INTO item_icons VALUES(". $row['displayid'] .", '". $icon ."');");
 				}
 				else 
 				{
-				   $iconrow = mysqli_fetch_assoc($getIcon);
+				   $iconrow = $getIcon->fetch_assoc();
 				   $icon 	= strtolower($iconrow['icon']);
 				}
 				?>
@@ -219,33 +219,33 @@ class Shop
         $conn = $Connect->connectToDB();
 		$Connect->selectDB('webdb', $conn);
 
-		$shop = mysqli_real_escape_string($conn, $shop);
+		$shop = $conn->escape_string($shop);
 		
-		$result = mysqli_query($conn, "SELECT entry, displayid, name, quality, price, faction, class FROM shopitems WHERE in_shop='". $shop ."';");
+		$result = $conn->query("SELECT entry, displayid, name, quality, price, faction, class FROM shopitems WHERE in_shop='". $shop ."';");
 		
-		if(mysqli_num_rows($result) == 0)
+		if ($result->num_rows == 0)
 		{
 			echo '在商城中找不到任何物品。';
 		}
 		else
 		{
-			while($row = mysqli_fetch_assoc($result))
+			while ($row = $result->fetch_assoc())
 			{
 				$entry 		= $row['entry'];
-				$getIcon    = mysqli_query($conn, "SELECT icon FROM item_icons WHERE displayid=". $row['displayid'] .";");
-				if(mysqli_num_rows($getIcon) == 0) 
+				$getIcon = $conn->query("SELECT icon FROM item_icons WHERE displayid=". $row['displayid'] .";");
+                if ($getIcon->num_rows == 0)
 				{
 					//发现没有图标。也许灾难项目。从wowhead获得图标。
 					$sxml = new SimpleXmlElement(file_get_contents('http://www.wowhead.com/item='.$entry.'&xml'));
 
-					$icon = mysqli_real_escape_string($conn, strtolower($sxml->item->icon));
+					$icon = $conn->escape_string(strtolower($sxml->item->icon));
 					//现在我们已经装载好了。将其添加到数据库中以备将来使用。
 					//注意，WoWHead XML非常慢。这就是为什么我们把它加到db中的主要原因。
-					mysqli_query($conn, "INSERT INTO item_icons VALUES(". $row['displayid'] .", '". $icon ."');");
+					$conn->query("INSERT INTO item_icons VALUES(". $row['displayid'] .", '". $icon ."');");
 				}
 				else 
 				{
-				   $iconrow = mysqli_fetch_assoc($getIcon);
+				   $iconrow = $getIcon->fetch_assoc();
 				   $icon 	= strtolower($iconrow['icon']);
 				}
 				?>
@@ -338,14 +338,14 @@ class Shop
 
 		date_default_timezone_set($GLOBALS['timezone']);
 
-        $entry      = mysqli_real_escape_string($conn, $entry);
-        $char_id    = mysqli_real_escape_string($conn, $char_id);
-        $shop       = mysqli_real_escape_string($conn, $shop);
-        $account    = mysqli_real_escape_string($conn, $account);
-        $realm_id   = mysqli_real_escape_string($conn, $realm_id);
-        $amount     = mysqli_real_escape_string($conn, $amount);
+        $entry      = $conn->escape_string($entry);
+        $char_id    = $conn->escape_string($char_id);
+        $shop       = $conn->escape_string($shop);
+        $account    = $conn->escape_string($account);
+        $realm_id   = $conn->escape_string($realm_id);
+        $amount     = $conn->escape_string($amount);
 
-        mysqli_query($conn, "INSERT INTO shoplog (`entry`, `char_id`, `date`, `ip`, `shop`, `account`, `realm_id`, `amount`) VALUES 
+        $conn->query("INSERT INTO shoplog (`entry`, `char_id`, `date`, `ip`, `shop`, `account`, `realm_id`, `amount`) VALUES 
             (". $entry .", '". $char_id ."', '". date("Y-m-d H:i:s") ."', '". $_SERVER['REMOTE_ADDR'] ."', '". $shop ."', '". $account ."', ". $realm_id .", '". $amount ."')");
     }
 	

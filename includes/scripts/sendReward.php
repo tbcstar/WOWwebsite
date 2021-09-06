@@ -7,9 +7,9 @@ $conn = $Connect->connectToDB();
 
 if (isset($_POST['item_entry'])) 
 {
-	$entry 				= mysqli_real_escape_string($conn, $_POST['item_entry']);
-	$character_realm 	= mysqli_real_escape_string($conn, $_POST['character_realm']);
-	$type 				= mysqli_real_escape_string($conn, $_POST['send_mode']);
+	$entry 				= $conn->escape_string($_POST['item_entry']);
+	$character_realm 	= $conn->escape_string($_POST['character_realm']);
+	$type 				= $conn->escape_string($_POST['send_mode']);
 	
 	if (empty($entry) || empty($character_realm) || empty($type))
 	{
@@ -17,12 +17,12 @@ if (isset($_POST['item_entry']))
 	}
 	else 
 	{
-		$Connect->selectDB('webdb');
+		$Connect->selectDB('webdb', $conn);
 		
 		$realm = explode("*", $character_realm);
 
-		$result         = mysqli_query($conn, "SELECT price FROM shopitems WHERE entry=". $entry .";");
-		$row 			= mysqli_fetch_assoc($result);
+		$result         = $conn->query("SELECT price FROM shopitems WHERE entry=". $entry .";");
+		$row 			= $result->fetch_assoc();
 		$account_id 	= $Account->getAccountIDFromCharId($realm[0], $realm[1]);
 		$account_name 	= $Account->getAccountName($account_id);
 		
@@ -47,8 +47,8 @@ if (isset($_POST['item_entry']))
 		}
 		
 	   $Shop->logItem($type,$entry, $realm[0], $account_id, $realm[1],1);
-       $result  = mysqli_query($conn, "SELECT * FROM realms WHERE id=". $realm[1] .";");
-	   $row 	= mysqli_fetch_assoc($result);
+       $result  = $conn->query("SELECT * FROM realms WHERE id=". $realm[1] .";");
+	   $row 	= $result->fetch_assoc();
 	   
 	  	if($row['sendType'] == 'ra') 
 	  	{

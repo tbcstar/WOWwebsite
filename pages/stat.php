@@ -1,6 +1,6 @@
 <?php 
-    global $Account;
-    $Account->isNotLoggedIn();
+global $Account;
+$Account->isNotLoggedIn();
 ?>
 <?php include "headers.php" ?>
 <div class="container">

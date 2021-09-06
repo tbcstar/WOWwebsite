@@ -1,6 +1,7 @@
 ﻿<?php 
 global $Account;
 $Account->isNotLoggedIn();
+$Connect->selectDB('webdb', $conn);
 ?>
 <?php include "headers.php" ?>
 <div class="container">
@@ -112,13 +113,13 @@ $j=1;
                 '5' => '5x5'
 				);
 				
-$connect = mysqli_connect($host,$user,$pass) OR DIE("'Can't connect with $host"); 
-mysqli_select_db($conn, $mangoscharacters,$connect) or die(mysqli_error()); 
+$connect = new mysqli($host,$user,$pass) OR DIE("'Can't connect with $host"); 
+$conn->select_db($mangoscharacters,$connect) or die($conn->error()); 
 
 
 if(!isset($_GET['guid'])){
 
-$sql = mysqli_query($conn, "SELECT * FROM `arena_team` ORDER by `name`");
+$sql = $conn->query("SELECT * FROM `arena_team` ORDER by `name`");
 
 echo "
 
@@ -132,10 +133,10 @@ echo "
 </tr>
 ";
 while ($row = mysqli_fetch_array($sql)){
-$query_num = mysqli_query($conn, "SELECT COUNT(*) FROM `arena_team_member` WHERE `arenaTeamId`='$row[arenaTeamId]'");
+$query_num = $conn->query("SELECT COUNT(*) FROM `arena_team_member` WHERE `arenaTeamId`='$row[arenaTeamId]'");
 $gleader = "SELECT name,race FROM `characters` WHERE `guid`='$row[captainGuid]'";
-$myrow = mysqli_fetch_array(mysqli_query($conn, $gleader));
-$top = mysqli_query($conn, "SELECT * FROM `arena_team_stats` WHERE `arenaTeamId`='$row[arenaTeamId]'");
+$myrow = mysqli_fetch_array($conn->query($gleader));
+$top = $conn->query("SELECT * FROM `arena_team_stats` WHERE `arenaTeamId`='$row[arenaTeamId]'");
 $toprow = mysqli_fetch_array($top);
 
 if($myrow['race']=="1" or $myrow['race']=="3" or $myrow['race']=="4" or $myrow['race']=="7" or  $myrow['race']=="11"){
@@ -164,13 +165,13 @@ echo "</table></center><br><br>";
 if (@$_GET['guid'] ) { 
 
 $name = "SELECT * FROM `arena_team` WHERE `arenaTeamId`='$_GET[guid]'";
-$nrow = mysqli_fetch_array(mysqli_query($conn, $name));
+$nrow = mysqli_fetch_array($conn->query($name));
 $top = "SELECT * FROM `arena_team` WHERE `arenaTeamId`='$_GET[guid]'";
-$trow = mysqli_fetch_array(mysqli_query($conn, $top));
+$trow = mysqli_fetch_array($conn->query($top));
 $member = "SELECT * FROM `arena_team_member` WHERE `arenaTeamId`='$_GET[guid]'";
-$mrow = mysqli_fetch_array(mysqli_query($conn, $member));
+$mrow = mysqli_fetch_array($conn->query($member));
 
-$sql = mysqli_query($conn, "SELECT * FROM `characters`, `arena_team_member` WHERE `characters`.`guid`=`arena_team_member`.`guid` and `arenaTeamId` = '".$_GET["guid"]."' ");
+$sql = $conn->query("SELECT * FROM `characters`, `arena_team_member` WHERE `characters`.`guid`=`arena_team_member`.`guid` and `arenaTeamId` = '".$_GET["guid"]."' ");
 $row = mysqli_fetch_array($sql);
 $data = explode(' ',$row['data']);
 $lvl = $data[$ver];	

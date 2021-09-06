@@ -34,8 +34,8 @@ function setError($haystack)
   <div class="box_right_title">管理面板日志</div>
   <?php
   $GameServer->selectDB('webdb', $conn);
-  $result = mysqli_query($conn, "SELECT * FROM admin_log ORDER BY id DESC LIMIT 25;");
-  if(mysqli_num_rows($result) == 0) 
+  $result = $conn->query("SELECT * FROM admin_log ORDER BY id DESC LIMIT 25;");
+  if ($result->num_rows == 0)
   {
       echo "管理日志为空!";
   } 
@@ -48,7 +48,8 @@ function setError($haystack)
       <th>动作</th>
     </tr>
     <?php
-    while($row = mysqli_fetch_assoc($result)) { ?>
+    while ($row = $result->fetch_assoc())
+    { ?>
       <tr>
         <td><?php echo date("Y-m-d H:i:s",$row['timestamp']); ?></td>
         <td><?php echo $GameAccount->getAccName($row['account']); ?></td>

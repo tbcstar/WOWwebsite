@@ -1,4 +1,5 @@
 <script type="text/javascript" src="javascript/main.js"></script>
+<script type="text/javascript" src="javascript/jquery.js"></script>
 <?php
 ####购物车####
 if($_GET['p'] ==' donateshop') 

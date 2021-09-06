@@ -7,8 +7,8 @@
 <?php
 $GameServer->connectToRealmDB($_GET['rid']);
 
-$usersTotal = mysqli_query($conn, "SELECT * FROM characters WHERE guid=". mysqli_real_escape_string($conn, $_GET['guid']) .";");
-$row = mysqli_fetch_assoc($usersTotal);
+$usersTotal = $conn->query("SELECT * FROM characters WHERE guid=". $conn->escape_string($_GET['guid']) .";");
+$row        = $usersTotal->fetch_assoc();
 ?>
 <hr/>
 <table style="width: 100%;">

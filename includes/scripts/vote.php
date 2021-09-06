@@ -8,7 +8,7 @@ if (isset($_POST['siteid']))
   global $Connect, $Account, $Website;
   $conn = $Connect->connectToDB();
 	
-  $siteid = mysqli_real_escape_string($conn, $_POST['siteid']);
+  $siteid = $conn->escape_string($_POST['siteid']);
 	
   $Connect->selectDB("webdb", $conn);
 	
@@ -18,8 +18,8 @@ if (isset($_POST['siteid']))
   }
 
   $Connect->selectDB('webdb', $conn);
-  $check = mysqli_query($conn, "SELECT COUNT(*) FROM votingsites WHERE id=". $siteid .";");
-  if (mysqli_data_seek($check, 0) == 0)
+  $check = $conn->query("SELECT COUNT(*) FROM votingsites WHERE id=". $siteid .";");
+  if ($check->data_seek(0) == 0)
   {
     die("?p=vote");
   }
@@ -37,25 +37,25 @@ if (isset($_POST['siteid']))
 
     $Connect->selectDB("webdb", $conn);
 	
-    mysqli_query($conn, "INSERT INTO votelog (`siteid`, `userid`, `timestamp`, `next_vote`, `ip`) VALUES (". $siteid .", ". $acct_id .", '". time() ."', ". $next_vote .", '". $_SERVER['REMOTE_ADDR'] ."');");
+    $conn->query("INSERT INTO votelog (`siteid`, `userid`, `timestamp`, `next_vote`, `ip`) VALUES (". $siteid .", ". $acct_id .", '". time() ."', ". $next_vote .", '". $_SERVER['REMOTE_ADDR'] ."');");
 
-    $getSiteData = mysqli_query($conn, "SELECT points, url FROM votingsites WHERE id=". $siteid .";");
-    $row         = mysqli_fetch_assoc($getSiteData);
+    $getSiteData = $conn->query("SELECT points, url FROM votingsites WHERE id=". $siteid .";");
+    $row         = $getSiteData->fetch_assoc($getSiteData);
 		
     //Update the points table.
     $add = $row['points'] * $GLOBALS['vote']['multiplier'];
-    mysqli_query($conn, "UPDATE account_data SET vp=vp + ". $add ." WHERE id=". $acct_id .";");
+    $conn->query("UPDATE account_data SET vp=vp + ". $add ." WHERE id=". $acct_id .";");
 
     echo $row['url'];
   }
   elseif ($GLOBALS['vote']['type'] == 'confirm')
   {
     $Connect->selectDB('webdb', $conn);
-    $getSiteData = mysqli_query($conn, "SELECT points, url FROM votingsites WHERE id=". $siteid .";");
-    $row = mysqli_fetch_assoc($getSiteData);
+    $getSiteData = $conn->query("SELECT points, url FROM votingsites WHERE id=". $siteid .";");
+    $row = $getSiteData->fetch_assoc($getSiteData);
 
 
-    $_SESSION['votingUrlID'] = mysqli_real_escape_string($conn, $_POST['siteid']);
+    $_SESSION['votingUrlID'] = $conn->escape_string($_POST['siteid']);
 
     echo $row['url'];
   }

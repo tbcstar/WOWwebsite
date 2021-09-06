@@ -82,7 +82,7 @@ elseif(isset($_GET['return']) && $_GET['return']!="true")
 	echo "<span class='alert'>".$_GET['return']."</span>";
 
 $Account->isNotLoggedIn();
-$Connect->selectDB('webdb');
+$Connect->selectDB('webdb', $conn);
 
 $counter = 0;
 $totalDP = 0;
@@ -104,8 +104,8 @@ if(isset($_SESSION['donateCart']) && !empty($_SESSION['donateCart']))
 			  $sql .= $entry. ',';
 
 			  $Connect->selectDB($GLOBALS['connection']['worlddb']);
-			  $result = mysqli_query($conn, "SELECT maxcount FROM item_template WHERE entry='".$entry."' AND maxcount>0");
-			  if(mysqli_data_seek($result,0)!=0)
+			  $result = $conn->query("SELECT maxcount FROM item_template WHERE entry='".$entry."' AND maxcount>0");
+			  if($result->data_seek(0)!=0)
 				  $_SESSION['donateCart'][$entry]['quantity']=1;
 
 			   $Connect->selectDB($GLOBALS['connection']['webdb']);
@@ -115,12 +115,12 @@ if(isset($_SESSION['donateCart']) && !empty($_SESSION['donateCart']))
 	  
 	$sql = substr($sql,0,-1) . ") AND in_shop='donate' ORDER BY `itemlevel` ASC";
 
-    $query = mysqli_query($conn, $sql);
+    $query = $conn->query($sql);
 ?>
 <table width="100%" >
 <tr id="cartHead"><th>名称</th><th>数量</th><th>价格</th><th>结算</th></tr>
 <?php
-while($row = mysqli_fetch_array($query)) 
+while($row = $query->fetch_array()) 
 {
 	?><tr align="center">
         <td><a href="http://<?php echo $GLOBALS['tooltip_href']; ?>item=<?php echo $row['entry']; ?>"><?php echo $row['name']; ?></a></td>
@@ -154,8 +154,8 @@ if(isset($_SESSION['voteCart']) && !empty($_SESSION['voteCart']))
 			if($_SESSION['voteCart'][$entry]['quantity']!=0) {
 			  $sql .= $entry. ',';
 			  $Connect->selectDB($GLOBALS['connection']['worlddb']);
-			  $result = mysqli_query($conn, "SELECT maxcount FROM item_template WHERE entry='".$entry."' AND maxcount>0");
-			  if(mysqli_data_seek($result,0)!=0)
+			  $result = $conn->query("SELECT maxcount FROM item_template WHERE entry='".$entry."' AND maxcount>0");
+			  if($result->data_seek(0)!=0)
 				  $_SESSION['voteCart'][$entry]['quantity']=1;
 
 			   $Connect->selectDB($GLOBALS['connection']['webdb']);
@@ -165,12 +165,12 @@ if(isset($_SESSION['voteCart']) && !empty($_SESSION['voteCart']))
 	  
 	  $sql = substr($sql,0,-1) . ") AND in_shop='vote' ORDER BY `itemlevel` ASC";
 
-$query = mysqli_query($conn, $sql);
+$query = $conn->query($sql);
 ?>
 <table width="100%" >
 <tr id="cartHead"><th>名称</th><th>数量</th><th>价格</th><th>结算</th></tr>
 <?php
-while($row = mysqli_fetch_array($query)) {
+while($row = $query->fetch_array()) {
 	?><tr align="center">
         <td><a href="http://<?php echo $GLOBALS['tooltip_href']; ?>item=<?php echo $row['entry']; ?>"><?php echo $row['name']; ?></a></td>
         <td><input type="text" value="<?php echo $_SESSION['voteCart'][$row['entry']]['quantity']; ?>" style="width: 30px; text-align: center;"

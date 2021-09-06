@@ -89,12 +89,12 @@ if (is_array($folder) || is_object($folder))
 
 //Plugins
 
-$chk = mysqli_query($conn, "SELECT COUNT(*) AS disabledPlugins FROM disabled_plugins WHERE foldername='". mysqli_real_escape_string($conn, $filename) ."';");
-if (mysqli_fetch_assoc($chk)['disabledPlugins'] > 0)
+$chk = $conn->query("SELECT COUNT(*) AS disabledPlugins FROM disabled_plugins WHERE foldername='". $conn->escape_string($filename) ."';");
+if ($chk->fetch_assoc()['disabledPlugins'] > 0)
 {
-	echo "<input type='submit' value='启用插件' onclick='enablePlugin(\'". $filename ."\')'>";
+	echo "<input type=\"submit\" value=\"启用插件\" onclick=\"enablePlugin('$filename')\">";
 }
 else
 {
-	echo "<input type='submit' value='禁用插件' onclick='disablePlugin(\'". $filename ."\')'>";
+	echo "<input type=\"submit\" value=\"禁用插件\" onclick=\"disablePlugin('$filename')\">";
 } 

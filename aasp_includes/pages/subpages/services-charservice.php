@@ -12,8 +12,9 @@
     <th>状态</th>
 </tr>
 <?php
-$result = mysqli_query($conn, "SELECT * FROM service_prices;");
-while ($row = mysqli_fetch_assoc($result))
+$GameServer->selectDB("webdb", $conn);
+$result = $conn->query("SELECT * FROM service_prices;");
+while ($row = $result->fetch_assoc())
 { ?>
 	<tr>
         <td><?php echo $row['service']; ?></td>

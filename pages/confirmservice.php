@@ -220,16 +220,16 @@ elseif($GLOBALS['service'][$service]['currency']=="dp")
 } 
 
 	$Account->isNotLoggedIn();
-	
-	$Connect->selectDB('webdb');
-	$result = mysqli_query($conn, "SELECT name FROM realms WHERE id='".$realm_id."'");
-	$row = mysqli_fetch_assoc($result);
+
+	$Connect->selectDB('webdb', $conn);
+	$result = $conn->query("SELECT name FROM realms WHERE id='".$realm_id."'");
+	$row = $result->fetch_assoc();
 	$realm = $row['name'];
 	
 	$Connect->connectToRealmDB($realm_id);
 
-	$result = mysqli_query($conn, "SELECT name,guid,gender,class,race,level,online FROM characters WHERE guid='".$guid."'");
-	$row = mysqli_fetch_assoc($result)
+	$result = $conn->query("SELECT name,guid,gender,class,race,level,online FROM characters WHERE guid='".$guid."'");
+	$row = $result->fetch_assoc()
 	?>
 
 

@@ -1,21 +1,23 @@
 <?php
-    global $GamePage, $GameServer;
-    $conn = $GameServer->connect();
-    if(isset($_POST['newpage'])) {
-	
-	$name 		= mysqli_real_escape_string($conn, $_POST['newpage_name']);
-	$filename 	= mysqli_real_escape_string($conn, trim(strtolower($_POST['newpage_filename'])));
-	$content 	= mysqli_real_escape_string($conn, htmlentities($_POST['newpage_content']));
+
+global $GamePage, $GameServer;
+$conn = $GameServer->connect();
+$GameServer->selectDB('webdb', $conn);
+if(isset($_POST['newpage']))
+{
+	$name     = $conn->escape_string($_POST['newpage_name']);
+    $filename = $conn->escape_string(trim(strtolower($_POST['newpage_filename'])));
+    $content  = $conn->escape_string(htmlentities($_POST['newpage_content']));
 	
 	if(empty($name) || empty($filename) || empty($content)) {
 		echo "<h3>请输入 <u>所有</u> 字段。</h3>";
 	}
 	else
 	{
-        mysqli_query($conn, "INSERT INTO custom_pages (name, filename, content, date) VALUES 
+        $conn->query("INSERT INTO custom_pages (name, filename, content, date) VALUES 
             ('". $name ."', '". $filename ."', '". $content ."', '". date("Y-m-d H:i:s") ."');");
 
-        echo "<h3>页面创建成功。</h3><a href='" . $GLOBALS['website_domain'] . "?p=" . $filename . "' target='_blank'>查看页面</a><br/><br/>";
+        echo "<h3>页面创建成功。</h3><a href='../?p=". $filename ."' target='_blank'>查看页面</a><br/><br/>";
     }
 } ?>
 <div class="box_right_title"><?php echo $GamePage->titleLink(); ?> &raquo; 新建页面</div>

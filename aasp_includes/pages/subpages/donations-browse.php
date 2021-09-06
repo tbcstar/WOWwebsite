@@ -1,24 +1,24 @@
 <?php 
   global $GamePage, $GameServer, $GameAccount; 
   $conn = $GameServer->connect();
-  $GameServer->selectDB('webdb', $conn);
+  $GameServer->selectDB("webdb", $conn);
 ?>
 <div class="box_right_title"><?php echo $GamePage->titleLink(); ?> &raquo; 浏览</div>
 <?php 
 
 $per_page = 20;
 
-$pages_query = mysqli_query($conn, "SELECT COUNT(*) AS payments FROM payments_log;");
-$pages       = ceil(mysqli_fetch_assoc($pages_query)['payments'] / $per_page);
+$pages_query = $conn->query("SELECT COUNT(*) AS payments FROM payments_log;");
+$pages       = ceil($pages_query->fetch_assoc()['payments'] / $per_page);
 
-if(mysqli_data_seek($pages_query,0) == 0) 
+if ($pages_query->data_seek($pages_query, 0) == 0)
 {
    echo "捐款日志好像是空的!";
 } 
 else 
 {
 
-$page   = (isset($_GET['page'])) ? mysqli_real_escape_string($conn, $_GET['page']) : 1;
+$page   = (isset($_GET['page'])) ? $conn->escape_string($_GET['page']) : 1;
 $start  = ($page - 1) * $per_page;
 ?>
 <table class="center">
@@ -30,9 +30,11 @@ $start  = ($page - 1) * $per_page;
    		<th>状态</th>
    	</tr>
    <?php
-    $GameServer->selectDB('webdb', $conn);
-	$result = mysqli_query($conn, "SELECT * FROM payments_log ORDER BY id DESC LIMIT ". $start .", ". $per_page .";");
-	while($row = mysqli_fetch_assoc($result)) { ?>
+    $GameServer->selectDB("webdb", $conn);
+    $countDonators = 0;
+	$result = $conn->query("SELECT * FROM payments_log ORDER BY id DESC LIMIT ". $start .", ". $per_page .";");
+    while ($row = $result->fetch_assoc())
+	{ ?>
 		<tr>
 	        <td><?php echo $row['datecreation']; ?></td>
 	        <td><?php echo $GameAccount->getAccName($row['userid']); ?></td>

@@ -11,27 +11,29 @@
     {   
         $conn = $GameServer->connect();
         $GameServer->selectDB("webdb", $conn);
-        $inShop     = mysqli_query($conn, "SELECT COUNT(*) AS items FROM shopitems;");
-        $purchToday = mysqli_query($conn, "SELECT COUNT(*) AS purchases FROM shoplog WHERE date LIKE '%". date('Y-m-d') ."%';");
-		$getAvg 	= mysqli_query($conn, "SELECT AVG(*) AS priceAvg FROM shopitems;");
-        $totalPurch = mysqli_query($conn, "SELECT COUNT(*) AS purchasesTotal FROM shoplog;");
+        $inShop     = $conn->query("SELECT COUNT(id) AS items FROM shopitems;");
+        $purchToday = $conn->query("SELECT COUNT(id) AS purchases FROM shoplog WHERE date LIKE '%". date('Y-m-d') ."%';");
+        $getAvg     = $conn->query("SELECT AVG(price) AS priceAvg FROM shopitems;");
+        $totalPurch = $conn->query("SELECT COUNT(id) AS purchasesTotal FROM shoplog;");
 
-		//注意:如果没有设置值，round()函数将返回0:)
+
+
+        //Note: The round() function will return 0 if no value is set :)
 ?>
 <div class="box_right_title">商城概述</div>
 <table style="width: 100%;">
 	<tr>
-        <td><span class='blue_text'>商城物品</span></td><td><?php echo round(mysqli_fetch_assoc($inShop)['items']); ?></td>
+        <td><span class='blue_text'>商城中的商品</span></td>
+        <td><?php echo round($inShop->fetch_assoc()['items']); ?></td>
+
+        <td><span class='blue_text'>平均物品成本</span></td>
+        <td><?php echo round($getAvg->fetch_assoc()['priceAvg']); ?> Vote Points</td>
 	</tr>
 	<tr>
 	    <td><span class='blue_text'>今日购买</span></td>
-        <td><?php echo round(mysqli_fetch_assoc($purchToday)['purchases']); ?></td>
+        <td><?php echo round($purchToday->fetch_assoc()['purchases']); ?></td>
 	    <td><span class='blue_text'>购买总额</span></td>
-        <td><?php echo round(mysqli_fetch_assoc($totalPurch)['purchasesTotal']); ?></td>
-	</tr>
-	<tr>
-	    <td><span class='blue_text'>平均物品价格</span></td>
-        <td><?php echo round(mysqli_fetch_assoc($getAvg)['priceAvg']); ?></td>
+        <td><?php echo round($totalPurch->fetch_assoc()['purchasesTotal']); ?></td>
 	</tr>
 </table>
 <hr/>

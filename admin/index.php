@@ -181,16 +181,16 @@
                                     </tr>
                                     <?php
                                     $GameServer->selectDB($GLOBALS['forum']['forum_db']);
-                                    $result = mysqli_query($conn, "SELECT poster_id, post_text, post_time, topic_id FROM phpbb_posts ORDER BY post_id DESC LIMIT 10");
-                                    while ($row    = mysqli_fetch_assoc($result))
+                                    $result = $conn->query("SELECT poster_id, post_text, post_time, topic_id FROM phpbb_posts ORDER BY post_id DESC LIMIT 10");
+                                    while ($row    = $result->fetch_assoc())
                                     {
                                         $string   = $row['post_text'];
                                         //Lets get the username     
-                                        $getUser  = mysqli_query($conn, "SELECT username FROM phpbb_users WHERE user_id=". $row['poster_id'] .";");
-                                        $user     = mysqli_fetch_assoc($getUser);
+                                        $getUser  = $conn->query("SELECT username FROM phpbb_users WHERE user_id=". $row['poster_id'] .";");
+                                        $user     = $getUser->fetch_assoc();
                                         //Get topic
-                                        $getTopic = mysqli_query($conn, "SELECT topic_title FROM phpbb_topics WHERE topic_id=". $row['topic_id'] .";");
-                                        $topic    = mysqli_fetch_assoc($getTopic);
+                                        $getTopic = $conn->query("SELECT topic_title FROM phpbb_topics WHERE topic_id=". $row['topic_id'] .";");
+                                        $topic    = $getTopic->fetch_assoc();
                                         ?>
                                         <tr class="center">
                                             <td><a href="http://heroic-wow.net/forum/memberlist.php?mode=viewprofile&u=<?php echo $row['poster_id']; ?>" title="View profile" 
@@ -232,8 +232,8 @@
                                     <td>
 
                                     <tr style="font-weight: bold;">
-                                        <td><?php echo $GLOBALS['connection']['host']; ?></td>
-                                        <td><?php echo $GLOBALS['connection']['user']; ?></td>
+                                        <td><?php echo $GLOBALS['connection']['web']['host']; ?></td>
+                                        <td><?php echo $GLOBALS['connection']['web']['user']; ?></td>
                                         <td>****<br/></td>
                                     </tr>
 
@@ -251,14 +251,14 @@
                                     <td>
                                     <tr style="font-weight: bold;">
 
-                                        <td><?php echo $GLOBALS['connection']['logondb']; ?></td>
-                                        <td><?php echo $GLOBALS['connection']['webdb']; ?></td>
-                                        <td><?php echo $GLOBALS['connection']['worlddb']; ?></td>
+                                        <td><?php echo $GLOBALS['connection']['logon']['database']; ?></td>
+                                        <td><?php echo $GLOBALS['connection']['web']['database']; ?></td>
+                                        <td><?php echo $GLOBALS['connection']['world']['database']; ?></td>
                                         <td>
                                             <?php
                                                 $GameServer->selectDB('webdb', $conn);
-                                                $get = mysqli_query($conn, "SELECT version FROM db_version;");
-                                                $row = mysqli_fetch_assoc($get);
+                                                $get = $conn->query("SELECT version FROM db_version;");
+                                                $row = $get->fetch_assoc();
                                                 if ($row['version'] == null || empty($row['version'])) $row['version'] = '1.0';
                                                 echo $row['version'];
                                             ?>

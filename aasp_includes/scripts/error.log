@@ -1,0 +1,4 @@
+*[03 Sep 2021 12:40] mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given
+*[03 Sep 2021 12:40] mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given
+*[03 Sep 2021 12:40] mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given
+*[03 Sep 2021 12:40] mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given

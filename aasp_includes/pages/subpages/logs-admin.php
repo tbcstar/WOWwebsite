@@ -5,10 +5,10 @@
 
 $per_page = 20;
 
-$pages_query = mysqli_query($conn, "SELECT COUNT(*) AS logs FROM admin_log;");
-$pages       = ceil(mysqli_fetch_assoc($pages_query)['logs'] / $per_page);
+$pages_query = $conn->query("SELECT COUNT(*) AS logs FROM admin_log;");
+$pages       = ceil($pages_query->fetch_assoc()['logs'] / $per_page);
 
-$page  = ( isset($_GET['page']) ) ? mysqli_real_escape_string($conn, $_GET['page']) : 1;
+$page  = ( isset($_GET['page']) ) ? $conn->escape_string($_GET['page']) : 1;
 $start = ($page - 1) * $per_page;
 
 if(isset($_SESSION['cw_staff']) && !isset($_SESSION['cw_admin']))
@@ -29,8 +29,9 @@ if(isset($_SESSION['cw_staff']) && !isset($_SESSION['cw_admin']))
    </tr>
    <?php
     $GameServer->selectDB('webdb', $conn);
-    $result = mysqli_query($conn, "SELECT * FROM admin_log ORDER BY id DESC LIMIT ". $start .", ". $per_page .";");
-	while($row = mysqli_fetch_assoc($result)) { ?>
+    $result = $conn->query("SELECT * FROM admin_log ORDER BY id DESC LIMIT ". $start .", ". $per_page .";");
+    while ($row    = $result->fetch_assoc())
+    { ?>
 		<tr>
             <td><?php echo date("Y-m-d H:i:s",$row['timestamp']); ?></td>
             <td><?php echo $GameAccount->getAccName($row['account']); ?></td>
