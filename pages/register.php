@@ -121,7 +121,7 @@ if ($_POST['register']) {
                 id="register"/> 
 
 
-<p><font color="white">已经有账户了? </font><a href="?p=login">这里登录</a></p>
+<p><font color="white">已经有账户了? </font><a href="?page=login">这里登录</a></p>
 </div>
 
 </div></div>

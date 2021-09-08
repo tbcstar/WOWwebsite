@@ -33,7 +33,7 @@ if(isset($_POST['add_realm']))
         $_POST['realm_a_pass']);	
 }?>
 
-    <form action="?p=realms" method="post" style="line-height: 15px;">
+    <form action="?page=realms" method="post" style="line-height: 15px;">
         <b>服务器常规信息</b><hr/>
         <!--
         服务器ID：<br/>

@@ -12,7 +12,7 @@ $Account->isNotLoggedIn();
 <div class="column">
 <div class="head-content">
 <div class="breadcrumbs">
-<a href="?p=ucp">
+<a href="?page=ucp">
 控制面板 </a>
 <span class="ico-raquo"></span>
 <div>
@@ -31,7 +31,7 @@ $Account->isNotLoggedIn();
 <p>E-mail地址</p>
 <div><?php echo $Account->getEmail($_SESSION['cw_user']);?></div>
 </div>
-<a href="?p=settings" class="btn btn-low-yellow">更换</a>
+<a href="?page=settings" class="btn btn-low-yellow">更换</a>
 </div>
 <div class="item item-2 tfa">
 <div class="item__info">
@@ -44,7 +44,7 @@ $Account->isNotLoggedIn();
 <p>帐户余额</p>
 <div><span class="coin-gold"></span> <span class="count-gold"><?php echo $Account->loadVP($_SESSION['cw_user']); ?></span></div>
 </div>
-<a href="?p=donate" class="btn btn-low-yellow">添加</a>
+<a href="?page=donate" class="btn btn-low-yellow">添加</a>
 </div>
 <div class="item item-4">
 <div class="item__info">
@@ -53,7 +53,7 @@ $Account->isNotLoggedIn();
 <p>最后IP</p>
 <div><span class="numbers">*********</span></div>
 </div>
-<a href="?p=changepass" class="btn btn-low-yellow">修改密码</a>
+<a href="?page=changepass" class="btn btn-low-yellow">修改密码</a>
 </div>
 </div>
 <section class="extra-info">
@@ -105,7 +105,7 @@ while($row = $result->fetch_assoc())
 </ul>
 <p>在线时长： <span class="time">0 h. 19 m. </span></p>
 </div>
-<a class="change first" href="?p=work_list">编辑</a> <a class="change last" href="#">出售</a></li>
+<a class="change first" href="?page=work_list">编辑</a> <a class="change last" href="#">出售</a></li>
 
 <?php 
 

@@ -7,10 +7,10 @@
 <div class="column">
 <div class="head-content">
 <div class="breadcrumbs">
-<a href="?p=ucp">
+<a href="?page=ucp">
 控制面板 </a>
 <span class="ico-raquo"></span>
-<a href="?p=shop">
+<a href="?page=shop">
 商城 </a>
 <span class="ico-raquo"></span>
 <div>
@@ -27,7 +27,7 @@
 <div class="shop-subcategory">
 <div class="row">
 <div class="col">
-<a href="?p=voteshop&search_value=&search=Search&q=--Quality--&r=--Results--&t=15-5&f=--Faction--&c=--Class--&ilfrom=--Item+level+from--&ilto=--Item+level+to--">
+<a href="?page=voteshop&search_value=&search=Search&q=--Quality--&r=--Results--&t=15-5&f=--Faction--&c=--Class--&ilfrom=--Item+level+from--&ilto=--Item+level+to--">
 <div class="item">
 <img src="/themes/cp_nefelin/icons/categories/maunty.png" alt="">
 <div class="item-content">

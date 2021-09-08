@@ -1,6 +1,6 @@
 <?php	
 
-function sendSoap($command, $username, $password, $host, $soapport)
+function send_soap($command, $username, $password, $host, $soapport)
 {
 
 $client = new SoapClient(NULL,

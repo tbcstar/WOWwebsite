@@ -4,7 +4,7 @@ CraftedWeb第一代
 主要加载程序文件
 *********************/
 
-require('includes/misc/headers.php'); //Load sessions, erorr reporting & ob.
+require('includes/misc/headers.php'); //Load sessions, error reporting & ob.
 
 if (file_exists("install/index.php"))
 {
@@ -15,11 +15,12 @@ define('INIT_SITE', TRUE);
 
 require('includes/configuration.php'); //加载配置文件
 
-if(isset($GLOBALS['not_installed']) && $GLOBALS['not_installed'] == true)
+if(isset($GLOBALS['not_installed']) && $GLOBALS['not_installed'] == TRUE)
 {
 	if (file_exists("install/index.php"))
 	{
 		header("Location: install/index.php");
+        exit;
 	}
 	else
 	{
@@ -61,7 +62,7 @@ $Plugins->init("styles");
 $Plugins->init("pages");
 
 //加载配置。
-if($GLOBALS['enablePlugins'] == true)
+if($GLOBALS['enablePlugins'] == TRUE)
 {
 	if($_SESSION['loaded_plugins'] != NULL)
 	{
@@ -81,9 +82,9 @@ if($GLOBALS['enablePlugins'] == true)
 $Account->getRemember(); //Remember thingy.
 
 //这是为了防止错误 "Undefined index: p"
-if (!isset($_GET['p']))
+if (!isset($_GET['page']))
 {
-	$_GET['p'] = 'login';
+	$_GET['page'] = 'login';
 }
 
 ###投票系统####
@@ -91,7 +92,7 @@ if(isset($_SESSION['votingUrlID']) && $_SESSION['votingUrlID']!=0 && $GLOBALS['v
 {
     if ($Website->checkIfVoted($conn->escape_string($_SESSION['votingUrlID']), $GLOBALS['connection']['webdb']) == TRUE)
         {
-            die(htmlentities("?p=vote"));
+            die(htmlentities("?page=vote"));
         }
 	
 	$acct_id = $Account->getAccountID($_SESSION['cw_user']);
@@ -118,7 +119,7 @@ if(isset($_SESSION['votingUrlID']) && $_SESSION['votingUrlID']!=0 && $GLOBALS['v
 	
 	unset($_SESSION['votingUrlID']);
 	
-	header("Location: ?p=vote");
+	header("Location: ?page=vote");
 }
 
 ###会话安全###
@@ -130,7 +131,7 @@ elseif(isset($_SESSION['last_ip']) && isset($_SESSION['cw_user']))
 {
 	if($_SESSION['last_ip']!=$_SERVER['REMOTE_ADDR'])
 	{
-		header("Location: ?p=logout");
+		header("Location: ?page=logout");
 	}
 	else
 	{

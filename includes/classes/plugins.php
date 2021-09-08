@@ -4,7 +4,7 @@ class Plugins
 {
 	public static function globalInit()
 	{
-		if($GLOBALS['enablePlugins'] == true)
+		if($GLOBALS['enablePlugins'] == TRUE)
 		{
 			if(!isset($_SESSION['loaded_plugins']))
 			{
@@ -47,7 +47,7 @@ class Plugins
 	
 	public static function init($type)
 	{
-		if($GLOBALS['enablePlugins'] == true)
+		if($GLOBALS['enablePlugins'] == TRUE)
 		{
 			if($_SESSION['loaded_plugins'] != NULL)
 			{
@@ -87,7 +87,7 @@ class Plugins
 	
 	public static function load($type)
 	{
-		if($GLOBALS['enablePlugins'] == true)
+		if($GLOBALS['enablePlugins'] == TRUE)
 		{
 			##########################
 			if ($type == "pages")
@@ -98,7 +98,7 @@ class Plugins
 					foreach($_SESSION['loaded_plugins_' . $type] as $filename)
 					{
 						$name = basename(substr($filename,0,-4));
-						if($name == $_GET['p'])
+						if($name == $_GET['page'])
 						{
 							include($filename);
 							$count = 1;

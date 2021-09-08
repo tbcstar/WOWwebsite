@@ -5,10 +5,10 @@ function login(panel)
 	
 	showLoader();
 	
-	$.post("../aasp_includes/scripts/login.php", { login: true, username: username, password: password, panel: panel },
+	$.post("../aasp_includes/scripts/login.php", { login: TRUE, username: username, password: password, panel: panel },
        function(data) 
        {
-          if(data==true) 
+          if(data==TRUE) 
           {
 				window.location="index.php";
 		  } 
@@ -56,7 +56,7 @@ function editAccANow(id)
 
 	$.post("../aasp_includes/scripts/account.php", { action: "saveAccA", id: id, rank: rank, realm: realm},
        function(data) {
-		 window.location='?p=tools&s=accountaccess';
+		 window.location='?page=tools&selected=accountaccess';
    });
 }
 
@@ -75,7 +75,7 @@ function removeAccANow(id)
 
 	$.post("../aasp_includes/scripts/account.php", { action: "removeAccA", id: id},
        function(data) {
-		 window.location='?p=tools&s=accountaccess';
+		 window.location='?page=tools&selected=accountaccess';
    });
 }
 
@@ -100,7 +100,7 @@ function addAccANow()
 	
 	$.post("../aasp_includes/scripts/account.php", { action: "addAccA", user: user, rank:rank, realm: realm},
        function(data) {
-		 window.location='?p=tools&s=accountaccess';
+		 window.location='?page=tools&selected=accountaccess';
    });
 }
 

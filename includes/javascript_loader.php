@@ -2,7 +2,7 @@
 <script type="text/javascript" src="javascript/jquery.js"></script>
 <?php
 ####购物车####
-if($_GET['p'] ==' donateshop') 
+if($_GET['page'] ==' donateshop') 
 { ?>
 <script type="text/javascript">
 		$(document).ready(function()
@@ -12,7 +12,7 @@ if($_GET['p'] ==' donateshop')
 </script>
 <?php }
 
-if($_GET['p']=='voteshop') 
+if($_GET['page']=='voteshop') 
 { ?>
 	<script type="text/javascript">
             $(document).ready(function()
@@ -38,7 +38,7 @@ else
 }
 
 ####CURSOR TRACKER####
-if($_GET['p'] == 'donateshop' || $_GET['p'] == 'voteshop') 
+if($_GET['page'] == 'donateshop' || $_GET['page'] == 'voteshop') 
 { 
 	?>
 	<script type="text/javascript">
@@ -66,13 +66,13 @@ if($GLOBALS['social']['enableFacebookModule'] == TRUE)
 }
 
 ####服务器状态######
-if($GLOBALS['serverStatus']['enable'] == true) 
+if($GLOBALS['serverStatus']['enable'] == TRUE) 
 {
 	?>
 	<script type="text/javascript">
         $(document).ready(function() 
         {
-            $.post("includes/scripts/misc.php", { serverStatus: true },
+            $.post("includes/scripts/misc.php", { serverStatus: TRUE },
            function(data) 
            {
                $("#server_status").html(data);

@@ -144,7 +144,7 @@ class Character
 				if($Account->hasDP($_SESSION['cw_user'],$GLOBALS['service']['instant58']['price']) == FALSE) 
 				{
 					echo '<b class="red_text">钱不够 '.$GLOBALS['donation']['coins_name'].'</b>';
-					$error = true;
+					$error = TRUE;
 				}
 			} 
 			elseif($service_values[1] == "vp") 
@@ -152,11 +152,11 @@ class Character
 				if($Account->hasVP($_SESSION['cw_user'],$GLOBALS['service']['instant58']['price']) == FALSE) 
 				{
 					echo '<b class="red_text">没有足够的投票积分。</b>';
-					$error = true;
+					$error = TRUE;
 				}
 			} 
 
-			if ($error != true) 
+			if ($error != TRUE) 
 			{
 				//User got coins. Boost them up to 58 :D
 				$Connect->connectToRealmDB($values[1]);

@@ -22,5 +22,11 @@
 		imageline($image, $x1, $y1, $x2, $x2, $text_color);
 	}
 	
-	imagettftext($image, $font_size, 0, 15, 30, $text_color, 'arial.ttf', $_SESSION['captcha_numero']);
-	imagejpeg($image); 
+    if (imagettftext($image, $font_size, 0, 15, 30, $text_color, "./arial.ttf", $_SESSION['captcha_numero']) !== false)
+    {
+        imagejpeg($image);
+    }
+    else
+    {
+        log_error("Captcha image could not be retrieved.", "C01");
+    }

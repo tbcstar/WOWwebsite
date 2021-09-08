@@ -69,7 +69,7 @@ class Validator
     {
 
         /**
-         * Validates an array of items (if needed) and returns true or false
+         * Validates an array of items (if needed) and returns TRUE or false
          *
          */
 
@@ -88,7 +88,7 @@ class Validator
 
             if($result === false) 
             {
-                $havefailures = true;
+                $havefailures = TRUE;
                 $this->addError($key, $this->validations[$key]);
             }
             else
@@ -246,7 +246,7 @@ class Validator
                 $filter = FILTER_VALIDATE_URL;
             break;
         }
-        return ($filter === false) ? false : filter_var($variable, $filter) !== false ? true : false;
+        return ($filter === false) ? false : filter_var($variable, $filter) !== false ? TRUE : false;
     }
 
 }

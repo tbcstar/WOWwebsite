@@ -38,7 +38,7 @@
 </a>
 </li>
 <?php if(isset($_SESSION['cw_user'])) { ?>
-<li class="last"><a href='?p=logout&last_page=<?php echo $_SERVER["REQUEST_URI"]; ?>'><span class="ico-exit"></span></a></li>
+<li class="last"><a href='?page=logout&last_page=<?php echo $_SERVER["REQUEST_URI"]; ?>'><span class="ico-exit"></span></a></li>
 <?php } ?>
 </ul>
 </nav>

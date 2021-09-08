@@ -13,9 +13,9 @@ class Account
 	{
 		if (!isset($username) || !isset($password) || empty($username) || empty($password))
 		{
-			echo '<span class="red_text">
+			echo "<span class=\"red_text\">
 			    请输入账号密码。
-			    </span>'; 
+			    </span>";
 		}
 		else 
 		{
@@ -24,58 +24,56 @@ class Account
             $username   = $conn->escape_string(trim(strtoupper($username)));
             $password   = $conn->escape_string(trim(strtoupper($password)));
 
-			$Connect->selectDB('logondb', $conn);
+			$Connect->selectDB("logondb", $conn);
 
             $checkForAccount = $conn->query("SELECT COUNT(id) AS username FROM account WHERE username='". $username ."';");
 
             if ($checkForAccount->fetch_assoc()['username'] == 0)
 			{
-				echo '<span class="red_text">
+				echo "<span class=\"red_text\">
 			       无效的用户名。
-			       </span>';
+			       </span>";
 			}
 			else 
 			{
-				if ($remember != 835727313) $password = sha1("". $username .":". $password ."");
+				if ($remember != 835727313) $password = sha1( $username .":". $password );
 
 				$result = $conn->query("SELECT id FROM account WHERE username='". $username ."' AND sha_pass_hash='". $password ."';");
                 if ($result->num_rows == 0)
                 {
-                    echo '<span class="red_text">
+                    echo "<span class=\"red_text\">
                         错误的密码。
-                    </span>';
+                        </span>";
+                    exit;
                 }
-				else 
+
+                if ($remember == "on")
 				{
-					if($remember=='on')
-					{ 
-						setcookie("cw_rememberMe", $username .' * '. $password, time()+30758400);
-						//Set "remember me" cookie. Expires in 1 year.
-					}
+                    # Set "remember me" cookie. Expires in 1 week
+                    setcookie("cw_rememberMe", $username .' * '. $password, time() + ( (60*60)*24)*7);
+                }
 
-					$id = $result->fetch_assoc();
-					$id = $id['id'];
+				$id = $result->fetch_assoc()['id'];
 					
-					$this->GMLogin($username);
-					$_SESSION['cw_user'] = ucfirst(strtolower($username));
-					$_SESSION['cw_user_id'] = $id;
+				$this->GMLogin($username);
+				$_SESSION['cw_user'] = ucfirst(strtolower($username));
+				$_SESSION['cw_user_id'] = $id;
 					
-					$Connect->selectDB('webdb', $conn);
+				$Connect->selectDB('webdb', $conn);
 
-                    $count = $conn->query("SELECT COUNT(*) FROM account_data WHERE id=". $id .";");
-                    if ($count->data_seek(0) == 0)
-                    {
-                        $conn->query("INSERT INTO account_data (id) VALUES(". $id .");");
-                    }
+                $count = $conn->query("SELECT COUNT(*) FROM account_data WHERE id=". $id .";");
+                if ($count->data_seek(0) == 0)
+                {
+                    $conn->query("INSERT INTO account_data (id) VALUES(". $id .");");
+                }
 					
-					if(!empty($last_page))
-					{
-					   header("Location: ".$last_page);
-					}
-					else
-					{
-					   header("Location: index.php"); 
-					}
+                if (!empty($last_page))
+                {
+                    header("Location: ". $last_page);
+                }
+                else
+                {
+                    header("Location: index.php");
 				}
 			}
 			
@@ -88,7 +86,7 @@ class Account
 		//未使用的函数
 		$user_info = array();
 		global $Connect, $conn;
-		$Connect->selectDB('logondb', $conn);
+		$Connect->selectDB("logondb", $conn);
 
         $account_info = $conn->query("SELECT id, username, email, joindate, locked, last_ip, expansion FROM account WHERE username='". $_SESSION['cw_user'] ."';");
             while ($row = $account_info->fetch_array())
@@ -109,7 +107,7 @@ class Account
 
 		if (empty($last_page)) 
 		{
-			header('Location: ?p=home"');
+			header('Location: ?page=home"');
 			exit();
 		}
 		header('Location: '.$last_page);
@@ -169,7 +167,7 @@ class Account
 				$errors[] = '密码必须介于'.$GLOBALS['registration']['passMinLength'].' 和 '.$GLOBALS['registration']['passMaxLength'].' letters.';
 			}
 				
-			if ($GLOBALS['registration']['validateEmail'] == true)
+			if ($GLOBALS['registration']['validateEmail'] == TRUE)
 			{
 			    if (filter_var($email, FILTER_VALIDATE_EMAIL) === false)
 			    {
@@ -190,7 +188,7 @@ class Account
         $raf             = $conn->escape_string($raf);
 		
 		
-		$Connect->selectDB('logondb', $conn);
+		$Connect->selectDB("logondb", $conn);
 		
 		//检查现有用户
 		$result = $conn->query("SELECT COUNT(id) FROM account WHERE username='". $username ."';");
@@ -222,10 +220,13 @@ class Account
 		} 
 		else 
 		{
-			$password = sha1("". $username .":". $password ."");
+            $password = sha1( $username .":". $password );
+
+            if ( empty($raf) ) $raf = 0;
 			
-            $conn->query("INSERT INTO account (username, email, sha_pass_hash, joindate, expansion, recruiter) VALUES
-                ('". $username ."', '". $email ."', '". $password ."', '". date("Y-m-d H:i:s") ."', '". $GLOBALS['core_expansion'] ."', '". $raf ."');");
+            $Connect->selectDB('logondb', $conn);
+            $conn->query("INSERT INTO account (username, email, sha_pass_hash, joindate, expansion, recruiter) VALUES 
+                ('". $username ."', '". $email ."', '". $password ."', '". date("Y-m-d H:i:s") ."', '". $GLOBALS['core_expansion'] ."', ". $raf .");");
 
             $getID = $conn->query("SELECT id FROM account WHERE username='". $username ."';");
             $row   = $getID->fetch_assoc();
@@ -233,6 +234,7 @@ class Account
 			$Connect->selectDB('webdb', $conn);
             $conn->query("INSERT INTO account_data (id) VALUES(". $row['id'] .");");
 
+            $Connect->selectDB('logondb', $conn);
             $result = $conn->query( "SELECT id FROM account WHERE username='". $username_clean ."';");
             $id     = $result->fetch_assoc();
 			$id 	= $id['id'];
@@ -258,7 +260,7 @@ class Account
 	{
 	////////PHPBB集成//////////////
 			ini_set('display_errors',1);
-			define('IN_PHPBB', true);
+			define('IN_PHPBB', TRUE);
 			define('ROOT_PATH', '../..'. $GLOBALS['forum']['forum_path']);
 
 			$phpEx = "php";
@@ -304,7 +306,7 @@ class Account
 	{
 		if (isset($_SESSION['cw_user']))
 		{
-			header("Location: ?p=account");
+			header("Location: ?page=account");
 		}
 	}
 	
@@ -317,7 +319,7 @@ class Account
 	{
 		if (!isset($_SESSION['cw_user']))
 		{
-			header("Location: ?p=login&r=". $_SERVER['REQUEST_URI']);
+			header("Location: ?page=login&r=" . $_SERVER['REQUEST_URI']);
 		}
 	}
 	
@@ -325,7 +327,7 @@ class Account
 	{
 		if (!isset($_SESSION['cw_gmlevel']))
 		{
-			header("Location: ?p=home");
+			header("Location: ?page=home");
 		}
 	}
 	
@@ -337,7 +339,7 @@ class Account
 	{
         global $Connect;
         $conn = $Connect->connectToDB();
-        $Connect->selectDB('logondb', $conn);
+        $Connect->selectDB("logondb", $conn);
 
 		$acct_id = $this->getAccountID($user);
 		
@@ -376,7 +378,7 @@ class Account
 
         $user   = $conn->escape_string($user);
 
-		$Connect->selectDB('logondb', $conn);
+		$Connect->selectDB("logondb", $conn);
 
         $result = $conn->query("SELECT id FROM account WHERE username='". $user ."';");
         $row    = $result->fetch_assoc();
@@ -391,7 +393,7 @@ class Account
 
         $id = $conn->escape_string($id);
 
-		$Connect->selectDB('logondb', $conn);
+		$Connect->selectDB("logondb", $conn);
 
         $result = $conn->query("SELECT username FROM account WHERE id=". $id .";");
         $row    = $result->fetch_assoc();
@@ -476,7 +478,7 @@ class Account
 
         $accountName = $conn->escape_string($account_name);
 
-		$Connect->selectDB('logondb', $conn);
+		$Connect->selectDB("logondb", $conn);
 
         $result       = $conn->query("SELECT email FROM account WHERE username='". $accountName ."';");
         $row          = $result->fetch_assoc();
@@ -494,7 +496,7 @@ class Account
 
         $accountName = $conn->escape_string($account_name);
 
-		$Connect->selectDB('logondb', $conn);
+		$Connect->selectDB("logondb", $conn);
 
         $result       = $conn->query("SELECT COUNT(online) FROM account WHERE username='" . $accountName . "' AND online=1;");
         if ($result->data_seek(0) == 0)
@@ -517,7 +519,7 @@ class Account
 
         $accountName = $conn->escape_string($account_name);
 
-		$Connect->selectDB('logondb', $conn);
+		$Connect->selectDB("logondb", $conn);
 
         $result       = $conn->query("SELECT joindate FROM account WHERE username='". $account_name ."';");
         $row          = $result->fetch_assoc();
@@ -532,7 +534,7 @@ class Account
 	{
 		global $Connect;
         $conn = $Connect->connectToDB();
-		$Connect->selectDB('logondb', $conn);
+		$Connect->selectDB("logondb", $conn);
 
 		$accountName = $conn->escape_string($account_name);
 
@@ -566,7 +568,7 @@ class Account
             $result = $conn->query("SELECT name, guid FROM characters WHERE account=". $acct_id .";");
             if ($result->num_rows == 0 && !isset($x))
 			{
-				$x = true;
+				$x = TRUE;
 			    echo '<option value="">没有发现角色！</option>';
 			}
 
@@ -596,7 +598,7 @@ class Account
 			global $Connect;
             $conn = $Connect->connectToDB();
 
-			$Connect->selectDB('logondb', $conn);
+			$Connect->selectDB("logondb", $conn);
 
 			$username = $conn->escape_string(trim(strtoupper($_SESSION['cw_user'])));
             $password = $conn->escape_string(trim(strtoupper($current_pass)));
@@ -609,7 +611,7 @@ class Account
 				$errors[] = '当前密码不正确。';
 			}
 			
-			if ($GLOBALS['registration']['validateEmail'] == true) 
+			if ($GLOBALS['registration']['validateEmail'] == TRUE) 
 			{
 			    if (filter_var($email, FILTER_VALIDATE_EMAIL) === false)
 			    {
@@ -679,7 +681,7 @@ class Account
 					//让我们检查一下旧密码是否正确!
 					$username = $conn->escape_string(strtoupper($_SESSION['cw_user']));
 
-					$Connect->selectDB('logondb', $conn);
+					$Connect->selectDB("logondb", $conn);
 
                     $getPass = $conn->query("SELECT `sha_pass_hash` FROM `account` WHERE `username`='". $username ."';");
 
@@ -723,7 +725,7 @@ class Account
 
 		$pass_hash = SHA1($username.':'.$pass);
 			
-		$Connect->selectDB('logondb', $conn);
+		$Connect->selectDB("logondb", $conn);
 
         $conn->query("UPDATE `account` SET `sha_pass_hash`='". $pass_hash ."' WHERE `username`='". $username ."';");
         $conn->query("UPDATE `account` SET `v`=0 AND `s`=0 WHERE username='". $username ."';");
@@ -745,7 +747,7 @@ class Account
 		}
 		else 
 		{
-			$Connect->selectDB('logondb', $conn);
+			$Connect->selectDB("logondb", $conn);
 
 			$result = $conn->query("SELECT COUNT('id') FROM account WHERE username='". $accountName ."' AND email='". $accountEmail ."';");
 
@@ -763,8 +765,8 @@ class Account
 				你好。<br/><br/>
 				要求为帐户重设密码 ". $accountName ." <br/>
 				如果要重置密码，请单击下面的链接：<br/>
-				<a href='". $GLOBALS['website_domain'] ."?p=forgotpw&code=". $code ."&account=". $this->getAccountID($accountName) ."'>
-				". $GLOBALS['website_domain'] ."?p=forgotpw&code=". $code ."&account=". $this->getAccountID($accountName) ."</a>
+				<a href='". $GLOBALS['website_domain'] ."?page=forgotpw&code=". $code ."&account=". $this->getAccountID($accountName) ."'>
+				". $GLOBALS['website_domain'] ."?page=forgotpw&code=". $code ."&account=". $this->getAccountID($accountName) ."</a>
 				
 				<br/><br/>
 				

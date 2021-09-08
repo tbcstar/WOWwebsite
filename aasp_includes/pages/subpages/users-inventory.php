@@ -5,12 +5,12 @@
 <div class="box_right_title">
     <?php echo $GamePage->titleLink(); ?> &raquo; 角色库存</div>
 显示角色明细 
-<a href="?p=users&s=viewchar&guid=<?php echo $_GET['guid']; ?>&rid=<?php echo $_GET['rid']; ?>">
+<a href="?page=users&selected=viewchar&guid=<?php echo $_GET['guid']; ?>&rid=<?php echo $_GET['rid']; ?>">
 	<?php echo $GameAccount->getCharName($_GET['guid'], $_GET['rid']); ?>
 </a>
 <hr/>
 过滤器:
-	   	<a href="?p=users&s=inventory&guid=<?php echo $_GET['guid']; ?>&rid=<?php echo $_GET['rid']; ?>&f=equip">
+	   	<a href="?page=users&selected=inventory&guid=<?php echo $_GET['guid']; ?>&rid=<?php echo $_GET['rid']; ?>&f=equip">
 			<?php 
 				if (isset($_GET['f']) && $_GET['f'] == "equip")
 					echo "<b>"; ?>装备物品</a><?php 
@@ -21,7 +21,7 @@
 
     	&nbsp; | &nbsp; 
 
-    	<a href="?p=users&s=inventory&guid=<?php echo $_GET['guid']; ?>&rid=<?php echo $_GET['rid']; ?>&f=bank">
+    	<a href="?page=users&selected=inventory&guid=<?php echo $_GET['guid']; ?>&rid=<?php echo $_GET['rid']; ?>&f=bank">
 			<?php 
 				if (isset($_GET['f']) && $_GET['f'] == "bank")
 					echo "<b>"; ?>银行物品<?php 
@@ -32,7 +32,7 @@
 
     	&nbsp; | &nbsp; 
 
-    	<a href="?p=users&s=inventory&guid=<?php echo $_GET['guid']; ?>&rid=<?php echo $_GET['rid']; ?>&f=keyring">
+    	<a href="?page=users&selected=inventory&guid=<?php echo $_GET['guid']; ?>&rid=<?php echo $_GET['rid']; ?>&f=keyring">
 		<?php 
 			if (isset($_GET['f']) && $_GET['f'] == "keyring")
 				echo "<b>"; ?>Items in keyring<?php 
@@ -43,7 +43,7 @@
 
      	&nbsp; | &nbsp; 
 
-     	<a href="?p=users&s=inventory&guid=<?php echo $_GET['guid']; ?>&rid=<?php echo $_GET['rid']; ?>&f=currency">
+     	<a href="?page=users&selected=inventory&guid=<?php echo $_GET['guid']; ?>&rid=<?php echo $_GET['rid']; ?>&f=currency">
 			<?php 
 				if (isset($_GET['f']) && $_GET['f'] == "currency")
 					echo "<b>"; ?>游戏币<?php 
@@ -54,7 +54,7 @@
 
      	&nbsp; | &nbsp; 
 
-     	<a href="?p=users&s=inventory&guid=<?php echo $_GET['guid']; ?>&rid=<?php echo $_GET['rid']; ?>">
+     	<a href="?page=users&selected=inventory&guid=<?php echo $_GET['guid']; ?>&rid=<?php echo $_GET['rid']; ?>">
 			<?php 
 				if(!isset($_GET['f'])) 
 					echo "<b>"; ?>所有物品<?php 

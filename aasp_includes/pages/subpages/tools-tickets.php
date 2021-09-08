@@ -94,10 +94,10 @@
                     if ($get->data_seek(0) == 0 && $offline == "on")
 					{
     					echo "<tr>";
-                        echo "<td><a href='?p=tools&s=tickets&guid=". $row[$ticketString] ."&db=". $realm ."'>". $row[$ticketString] ."</td>";
-                        echo "<td><a href='?p=tools&s=tickets&guid=". $row[$ticketString] ."&db=". $realm ."'>". $row['name'] ."</td>";
-                        echo "<td><a href='?p=tools&s=tickets&guid=". $row[$ticketString] ."&db=". $realm ."'>". substr($row['message'], 0, 15) ."...</td>";
-                        echo "<td><a href='?p=tools&s=tickets&guid=". $row[$ticketString] ."&db=". $realm ."'>". date('Y-m-d H:i:s', $row['createtime']) ."</a></td>";
+                        echo "<td><a href='?page=tools&selected=tickets&guid=". $row[$ticketString] ."&database=". $realm ."'>". $row[$ticketString] ."</td>";
+                        echo "<td><a href='?page=tools&selected=tickets&guid=". $row[$ticketString] ."&database=". $realm ."'>". $row['name'] ."</td>";
+                        echo "<td><a href='?page=tools&selected=tickets&guid=". $row[$ticketString] ."&database=". $realm ."'>". substr($row['message'], 0, 15) ."...</td>";
+                        echo "<td><a href='?page=tools&selected=tickets&guid=". $row[$ticketString] ."&database=". $realm ."'>". date('Y-m-d H:i:s', $row['createtime']) ."</a></td>";
 
                         if ($row[$closedString] == 1)
                         {
@@ -216,7 +216,7 @@ elseif(isset($_GET['guid']))
 	?>
     <hr/>
     <pre>
-        <a href="?p=tools&s=tickets">&laquo; 回到tickets</a>
+        <a href="?page=tools&selected=tickets">&laquo; 回到tickets</a>
         &nbsp; &nbsp; &nbsp;
         <a href="#" onclick="deleteTicket('<?php echo $_GET['guid']; ?>','<?php echo $_GET['db']; ?>')">移除tickets</a>
         &nbsp; &nbsp; &nbsp;

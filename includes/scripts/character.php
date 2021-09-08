@@ -278,7 +278,7 @@ if ($_POST['action']=='teleport')
 			echo $GLOBALS['service']['teleport']['price']." ".$GLOBALS['donation']['coins_name']." 已从您的账户中扣除。";
 		}
 		$Account->logThis("传送角色 ".$Character->getCharName($character,$realm_id)." 到 ".$location,'传送',$realm_id);
-		//echo true;
+		//echo TRUE;
 	}
 }
 
@@ -289,7 +289,7 @@ if($_POST['action'] == 'service')
     $serviceX = $conn->escape_string($_POST['service']);
 	
 	
-	if($Character->isOnline($guid) == true)
+	if($Character->isOnline($guid) == TRUE)
 	{
 		die('<b class="red_text">请先退回到登录界面，然后再继续。');
 	}
@@ -369,7 +369,7 @@ if($_POST['action'] == 'service')
 	$Account->logThis("Performed a ".$info." on ".$Character->getCharName($guid,$realm_id),$serviceX,$realm_id);
 	$Account->logThis("下次登录时，您将能够".$info." 的角色".character::getCharName($guid,$realm_id),$serviceX,$realm_id);
 	
-	//echo true;
+	//echo TRUE;
 }
 
 ?>

@@ -91,10 +91,10 @@ if ($fp !== false)
 		$headers = 'From: '.$GLOBALS['default_email'].'' . "\r\n" .
 			'X-Mailer: PHP/' . phpversion();
 		
-		if ($GLOBALS['donation']['emailResponse'] == true) 
+		if ($GLOBALS['donation']['emailResponse'] == TRUE) 
 		{
 			mail($to, $subject, $message, $headers); 
-			if ($GLOBALS['donation']['sendResponseCopy'] == true)
+			if ($GLOBALS['donation']['sendResponseCopy'] == TRUE)
 			{
 				mail($GLOBALS['donation']['copyTo'], $subject, $message, $headers); 
 			}

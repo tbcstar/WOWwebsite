@@ -9,28 +9,28 @@ $Account->isNotLoggedIn();
 <div class="row">
 <ul class="navbar-cp">
 <li>
-<a href="?p=ucp">
+<a href="?pag=ucp">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-01.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-01.png" alt="" /> </div>
 <p>账户</p>
 </a>
 </li>
 <li>
-<a href="?p=shop">
+<a href="?pag=shop">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-02.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-02.png" alt="" /> </div>
 <p>商城</p>
 </a>
 </li>
 <li>
-<a href="?p=donate">
+<a href="?pag=donate">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-03.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-03.png" alt="" /> </div>
 <p>捐赠充值</p>
 </a>
 </li>
 <li>
-<a class="active" href="?p=characters">
+<a class="active" href="?pag=characters">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-04.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-04.png" alt="" /> </div>
 <p>角色</p>
@@ -44,14 +44,14 @@ $Account->isNotLoggedIn();
 </a>
 </li>
 <li>
-<a href="?p=stat">
+<a href="?pag=stat">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-06.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-06.png" alt="" /> </div>
 <p>统计</p>
 </a>
 </li>
 <li>
-<a href="?p=vote">
+<a href="?pag=vote">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-07.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-07.png" alt="" /> </div>
 <p>投票</p>
@@ -68,10 +68,10 @@ $Account->isNotLoggedIn();
 <div class="column">
 <div class="head-content">
 <div class="breadcrumbs">
-<a href="?p=ucp">
+<a href="?pag=ucp">
 控制面板 </a>
 <span class="ico-raquo"></span>
-<a href="?p=shop">
+<a href="?pag=shop">
 商城 </a>
 <span class="ico-raquo"></span>
 <div>
@@ -88,7 +88,7 @@ $Account->isNotLoggedIn();
 <div class="shop-manchar">
 <div class="row">
 <div class="col">
-<a href="?p=service&s=faction">
+<a href="?pag=service&s=faction">
 <div class="item">
 <img src="/themes/cp_nefelin/images/manchar-01.jpg" alt="">
 <div class="item-content">
@@ -104,7 +104,7 @@ $Account->isNotLoggedIn();
 </a>
 </div>
 <div class="col">
-<a href="?p=service&s=race">
+<a href="?pag=service&s=race">
 <div class="item">
 <img src="/themes/cp_nefelin/images/manchar-02.jpg" alt="">
 <div class="item-content">
@@ -120,7 +120,7 @@ $Account->isNotLoggedIn();
 </a>
 </div>
 <div class="col">
-<a href="?p=service&s=appearance">
+<a href="?pag=service&s=appearance">
 <div class="item">
 <img src="/themes/cp_nefelin/images/manchar-03.jpg" alt="">
 <div class="item-content">
@@ -136,7 +136,7 @@ $Account->isNotLoggedIn();
 </a>
 </div>
 <div class="col">
-<a href="?p=service&s=name">
+<a href="?pag=service&s=name">
 <div class="item">
 <img src="/themes/cp_nefelin/images/manchar-04.jpg" alt="">
 <div class="item-content">
@@ -152,7 +152,7 @@ $Account->isNotLoggedIn();
 </a>
 </div>
 <div class="col">
-<a href="?p=unstuck">
+<a href="?pag=unstuck">
 <div class="item">
 <img src="/themes/cp_nefelin/images/manchar-06.jpg" alt="">
 <div class="item-content">
@@ -162,7 +162,7 @@ $Account->isNotLoggedIn();
 </div>
 
 <div class="col">
-<a href="?p=teleport">
+<a href="?pag=teleport">
 <div class="item">
 <img src="/themes/cp_nefelin/images/manchar-06.jpg" alt="">
 <div class="item-content">
@@ -183,7 +183,7 @@ $Account->isNotLoggedIn();
 </div>
 
 <div class="col">
-<a href="?p=revive">
+<a href="?pag=revive">
 <div class="item">
 <img src="/themes/cp_nefelin/images/manchar-07.jpg" alt="">
 <div class="item-content">

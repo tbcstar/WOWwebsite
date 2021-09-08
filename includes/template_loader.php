@@ -5,7 +5,8 @@ global $Connect, $Plugins;
 $conn = $Connect->connectToDB();
 $Connect->selectDB('webdb', $conn);
 
-$getTemplate = $conn->query("SELECT `path` FROM template WHERE applied='1';");
+if ($getTemplate = $conn->query("SELECT `path` FROM template WHERE applied='1';"))
+{
 
 $template = $getTemplate->fetch_assoc();
 
@@ -17,7 +18,12 @@ if (!file_exists("styles/". $template['path'] ."/style.css") || !file_exists("st
  
 ?>
 <link rel="stylesheet" href="styles/<?php echo $template['path']; ?>/style.css" />
-
+<link rel="stylesheet" href="styles/global/style.css" />
 <?php
 	$Plugins->load('styles');
+}
+else
+{
+    buildError("<b>获取模板路径时出错，有关详细信息，请参阅日志。</b>", NULL, $conn->error);
+}
 ?>

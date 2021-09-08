@@ -57,5 +57,5 @@
 	</tr>
 </table>
 <hr/>
-<a href="?p=donations&s=browse" class="content_hider">浏览捐款</a>
+<a href="?page=donations&selected=browse" class="content_hider">浏览捐款</a>
 <?php } ?>

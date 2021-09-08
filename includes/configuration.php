@@ -9,18 +9,18 @@
 	## Anthony @ CraftedDev    ##
 	## ------------------------##
 	## 请注意：                ##
-	## true = Enabled          ##
-	## false = Disabled        ##
+	## TRUE = Enabled          ##
+	## FALSE = Disabled        ##
 	#############################
 	
 	/*************************/
 	/* 常规设置      
 	/*************************/
-	 $useDebug = true; //如果你的网站有问题，设置为“true”，如果没有，设置为“false”。
-	 //所有错误都将被记录并在"include /error-log.php"中可见。如果设置为false，错误日志将为空。
+	 $useDebug = TRUE; //如果你的网站有问题，设置为“TRUE”，如果没有，设置为“FALSE”。
+	 //所有错误都将被记录并在"include /error-log.php"中可见。如果设置为FALSE，错误日志将为空。
 	 //This will also enable/disable errors on the Admin- & Staff panel.
 	 
-	 $maintainance = false; //维护模式下,将对所有人关闭网站。 True = enable, false = disable
+	 $maintainance = FALSE; //维护模式下,将对所有人关闭网站。 TRUE = enable, FALSE = disable
 	 $maintainance_allowIPs = array('herp.derp.13.37'); //允许特定的IP地址查看网站，即使您启用维护模式。
 	 //Example: '123.456.678', '987.654.321'
 	 
@@ -32,7 +32,7 @@
 	 //Example: http://yourserver.com/
 	 //如果你的网站在子目录下， include that aswell. Ex: http://yourserver.com/cataclysm/
 	 
-	 $showLoadTime = false; 
+	 $showLoadTime = FALSE; 
 	 //在页脚显示页面加载时间。
 	 
 	 $footer_text = 'Copyright &copy; TBCstar | 时光回溯 2021<br/>
@@ -50,28 +50,28 @@
 	 // 4 = Mists Of Pandaria
 	 // 5 = Legion
 	 
-    $config['srp6_support'] = false; //如果您的核心密码加密方式为“SRP6”，则需要启用该加密方式。
+    $config['srp6_support'] = FALSE; //如果您的核心密码加密方式为“SRP6”，则需要启用该加密方式。
     //参考资料https://github.com/azerothcore/azerothcore-wotlk/issues/5104 或 https://git.io/JJRH4
 	 
-	 $adminPanel_enable = true; //启用或禁用管理员面板。
-	 $staffPanel_enable = true; //启用或禁用Staff面板。
+	 $adminPanel_enable = TRUE; //启用或禁用管理员面板。
+	 $staffPanel_enable = TRUE; //启用或禁用Staff面板。
 	 
-	 $adminPanel_minlvl = 4; //最低的GM级别，其中帐户能够登录到管理面板。默认值:5
+	 $adminPanel_minlvl = 4; //最低的GM级别，其中帐户能够登录到管理面板。默认值:4
 	 $staffPanel_minlvl = 3; //能够登录到员工面板的最低GM级别。默认值:3
 	 
-	 $staffPanel_permissions['Pages'] = true;
-	 $staffPanel_permissions['News'] = true;
-	 $staffPanel_permissions['Shop'] = true;
-	 $staffPanel_permissions['Donations'] = true;
-	 $staffPanel_permissions['Logs'] = true;
-	 $staffPanel_permissions['Interface'] = true;
-	 $staffPanel_permissions['Users'] = true;
-	 $staffPanel_permissions['Realms'] = true;
-	 $staffPanel_permissions['Services'] = true;
-	 $staffPanel_permissions['Tools->Tickets'] = true;
-	 $staffPanel_permissions['Tools->Account Access'] = true;
-	 $staffPanel_permissions['editNewsComments'] = true;
-	 $staffPanel_permissions['editShopItems'] = true;
+	 $staffPanel_permissions['Pages'] = TRUE;
+	 $staffPanel_permissions['News'] = TRUE;
+	 $staffPanel_permissions['Shop'] = TRUE;
+	 $staffPanel_permissions['Donations'] = TRUE;
+	 $staffPanel_permissions['Logs'] = TRUE;
+	 $staffPanel_permissions['Interface'] = TRUE;
+	 $staffPanel_permissions['Users'] = TRUE;
+	 $staffPanel_permissions['Realms'] = TRUE;
+	 $staffPanel_permissions['Services'] = TRUE;
+	 $staffPanel_permissions['Tools->Tickets'] = TRUE;
+	 $staffPanel_permissions['Tools->Account Access'] = TRUE;
+	 $staffPanel_permissions['editNewsComments'] = TRUE;
+	 $staffPanel_permissions['editShopItems'] = TRUE;
 	 
 	 //Pages = 禁用/启用页面&创建自定义页面。
 	 //News = 编辑/删除/发布新闻。
@@ -87,63 +87,93 @@
 	 //editNewsComments = 编辑/删除新闻评论。
 	 //editShopItems = 编辑/删除商店物品。
 	 
-	$enablePlugins = true; //启用或禁用插件的使用。插件可能会让你的站点慢一点。
+	$enablePlugins = TRUE; //启用或禁用插件的使用。插件可能会让你的站点慢一点。
 	 
 	/*************************/
 	/* 幻灯片设置 
 	/*************************/
-	$enableSlideShow = true; //启用或禁用幻灯片。这将只在主页上显示。
+	$enableSlideShow = TRUE; //启用或禁用幻灯片。这将只在主页上显示。
 	
 	/*************************/
 	/* 网站压缩设置   
 	/*************************/
 	
-	$compression['gzip'] = false; //这很难解释，但它可能大大提高你的网站速度。
-	$compression['sanitize_output'] = true; //将删除所编写的HTML代码中的所有空白。这应该会稍微提高网站速度。
+	$compression['gzip'] = TRUE; //这很难解释，但它可能大大提高你的网站速度。
+	$compression['sanitize_output'] = TRUE; //将删除所编写的HTML代码中的所有空白。这应该会稍微提高网站速度。
 	//“模仿者”将很难窃取你的HTML代码:>
 	
-	$useCache = true; //启用/禁用缓存的使用。它还处于早期开发阶段，目前只应用于核心中的少数内容。
+	$useCache = FALSE; //启用/禁用缓存的使用。它还处于早期开发阶段，目前只应用于核心中的少数内容。
 	//在启用此功能时，您可能不会注意到任何差异，除非您有很多访问者。谁知道呢，我还没试过呢。
 	
 	
 	/*************************/
 	/* 新闻设置   
 	/*************************/
-	$news['enable'] = true; // 启用/禁用网页上的新闻系统。
-	$news['maxShown'] = 2; //将在主页上显示的新闻帖子的最大数量。
+	$news['enable'] = TRUE; // 启用/禁用网页上的新闻系统。
+	$news['maxShown'] = 5; //将在主页上显示的新闻帖子的最大数量。
 							//人们仍然可以通过点击“所有新闻”按钮查看所有的文章。
-	$news['enableComments'] = true; //让人们能够评论你的新闻帖子。
-	$news['limitHomeCharacters'] = false; //这将限制在新闻帖子中显示的字符。人们将不得不点击“阅读更多…”按钮
+	$news['enableComments'] = TRUE; //让人们能够评论你的新闻帖子。
+	$news['limitHomeCharacters'] = FALSE; //这将限制在新闻帖子中显示的字符。人们将不得不点击“阅读更多…”按钮
 	//阅读整篇新闻。
 	
 	
 	/***** 服务器状态 ******/
-	$serverStatus['enable'] = true; //这将启用/禁用伺服器状态框。
-	$serverStatus['nextArenaFlush'] = true; //将显示为您的领域刷新的下一个竞技场。
-	$serverStatus['uptime'] = true; //这将显示您的伺服器的正常运行时间。
-	$serverStatus['playersOnline'] = true; //这将显示当前的在线玩家
-	$serverStatus['factionBar'] = true; //这将显示在线玩家阵营。
+	$serverStatus['enable'] = TRUE; //这将启用/禁用伺服器状态框。
+	$serverStatus['nextArenaFlush'] = TRUE; //将显示为您的领域刷新的下一个竞技场。
+	$serverStatus['uptime'] = TRUE; //这将显示您的伺服器的正常运行时间。
+	$serverStatus['playersOnline'] = TRUE; //这将显示当前的在线玩家
+	$serverStatus['factionBar'] = TRUE; //这将显示在线玩家阵营。
+
+	#*************************#
+	# 网站数据库连接设置
+	#*************************#
 	
-	
-	/*************************/
-	/* mySQL连接设置
-	/*************************/
-	
-	$connection['host'] = 'game.tbcstar.com:3310';
-	$connection['user'] = 'root';
-	$connection['password'] = 'A112233a';
-	$connection['logondb'] = 'auth';
-	$connection['webdb'] = 'tbcstar';
-	$connection['worlddb'] = 'world';
-	$connection['realmlist'] = 'game.tbcstar.com';
+	$connection['web']['host']        = "game.tbcstar.com";
+    $connection['web']['port']        = "3310";
+	$connection['web']['user']        = "root";
+	$connection['web']['password']    = "A112233a";
+	$connection['web']['database']    = "tbcstar";
+
+    #*************************#
+    # 登录数据库连接设置
+    #*************************#
+
+    $connection['logon']['host']        = "game.tbcstar.com";
+    $connection['logon']['port']        = "3310";
+    $connection['logon']['user']        = "root";
+    $connection['logon']['password']    = "A112233a";
+    $connection['logon']['database']    = "auth";
+
+    #*************************#
+    # 角色数据库连接设置
+    #*************************#
+
+    $connection['characters']['host']        = "game.tbcstar.com";
+    $connection['characters']['port']        = "3310";
+    $connection['characters']['user']        = "root";
+    $connection['characters']['password']    = "A112233a";
+    $connection['characters']['database']    = "characters";
+
+    #*************************#
+    # World 数据库连接设置
+    #*************************#
+
+    $connection['world']['host']        = "game.tbcstar.com";
+    $connection['world']['port']        = "3310";
+    $connection['world']['user']        = "root";
+    $connection['world']['password']    = "A112233a";
+    $connection['world']['database']    = "world";
 	
 	// host = IP地址或域名地址（可以修改端口）
 	// user = 一个可以查看/写入整个数据库的mySQL用户
 	// password = The password for the user you specified
-	// logondb = The name of your "auth" or "realmdb" database name. Default: auth
-	// webdb = The name of the database with CraftedWeb data. Default: craftedweb
-	// worlddb = The name of your world database. Default: world
-	// realmlist = This could be your server IP or DNS. Ex: logon.yourserver.com
+	// database		= The name of your database name. Depending on the section
+
+    #*************************#
+    # Realmlist
+    #*************************#
+
+	$connection['realmlist']   = "game.tbcstar.com";
 	
 	/*************************/
 	/* 注册设置
@@ -152,8 +182,8 @@
 	$registration['userMinLength'] = 3;
 	$registration['passMaxLength'] = 22;
 	$registration['passMinLength'] = 5;
-	$registration['validateEmail'] = false;
-	$registration['captcha'] = false;
+	$registration['validateEmail'] = FALSE;
+	$registration['captcha'] = FALSE;
 	
 	//userMaxLength = 用户名的最大长度
 	//userMinLength = 用户名的最小长度
@@ -181,8 +211,8 @@
 	$donation['paypal_email'] = 'admin@tbcstar.com';
 	$donation['coins_name'] = '捐赠积分';
 	$donation['currency'] = 'USD';
-	$donation['emailResponse'] = true;
-	$donation['sendResponseCopy'] = false;
+	$donation['emailResponse'] = TRUE;
+	$donation['sendResponseCopy'] = FALSE;
 	$donation['copyTo'] = 'admin@tbcstar.com';
 	$donation['responseSubject'] = '感谢您对我们的支持！';
 	$donation['donationType'] = 2;
@@ -191,7 +221,7 @@
 	// coins_name = 用户将购买的捐款积分的名称。
 	// currency = 您希望用户使用的货币名称。默认值:
 	// emailResponse = 启用此功能将使捐赠者在捐赠后收到一封验证电子邮件，其中包含捐赠信息。
-	// sendResponseCopy = 如果您希望收到上述电子邮件回复的副本，请将此设置为“true”。
+	// sendResponseCopy = 如果您希望收到上述电子邮件回复的副本，请将此设置为“TRUE”。
 	// copyTo = 启用sendResponseCopy来激活此函数。请输入付款副本的电子邮件地址。
 	// responseSubject =  启用sendResponseCopy来激活此函数。发送给捐赠者的回复邮件的主题。
 	// donationType = 用户将如何捐赠。1 =他们可以输入他们希望购买多少枚硬币，其价值可以随着乘数而增加。
@@ -211,41 +241,41 @@
 	/*************************/
 	/* 投票和捐赠商店设置
 	/*************************/
-	$voteShop['enableShop'] = true;
-	$voteShop['enableAdvancedSearch'] = true;
+	$voteShop['enableShop'] = TRUE;
+	$voteShop['enableAdvancedSearch'] = TRUE;
 	$voteShop['shopType'] = 2;
 	
-	// enableShop = 启用/禁用投票商店的使用。"true" =启用，"false" =禁用。
-	// enableAdvancedSearch = 启用/禁用高级搜索功能。"true" =启用，"false" =禁用。
+	// enableShop = 启用/禁用投票商店的使用。"TRUE" =启用，"FALSE" =禁用。
+	// enableAdvancedSearch = 启用/禁用高级搜索功能。"TRUE" =启用，"FALSE" =禁用。
 	// shopType = 您希望使用的商店类型。 1 = "搜索". 2 = 列出所有可用的物品。
 	
 	
 	/*************************/
-	$donateShop['enableShop'] = true;
-	$donateShop['enableAdvancedSearch'] = true;
+	$donateShop['enableShop'] = TRUE;
+	$donateShop['enableAdvancedSearch'] = TRUE;
 	$donateShop['shopType'] = 2;
 	
-	// enableShop = 启用/禁用投票商店的使用。"true" =启用，"false" =禁用。
-	// enableAdvancedSearch = 启用/禁用高级搜索功能。"true" =启用，"false" =禁用。
+	// enableShop = 启用/禁用投票商店的使用。"TRUE" =启用，"FALSE" =禁用。
+	// enableAdvancedSearch = 启用/禁用高级搜索功能。"TRUE" =启用，"FALSE" =禁用。
 	// shopType = 您希望使用的商店类型。 1 = "搜索". 2 = 列出所有可用的物品。
 	
 	/*************************/
 	/* 社交插件设置
 	/*************************/
-	$social['enableFacebookModule'] = false;
-	$social['facebookGroupURL'] = 'http://www.facebook.com/YourServer';
+	$social['enableFacebookModule'] = FALSE;
+	$social['facebookGroupURL'] = "http://www.facebook.com/YourServer";
 	
-	// enableFacebookModule = 这将在服务器状态的左边创建一个Facebook框。"true" =启用，"false" =禁用。
+	// enableFacebookModule = 这将在服务器状态的左边创建一个Facebook框。"TRUE" =启用，"FALSE" =禁用。
 	// facebookGroupURL = 你的facebook群的完整URL。
 	// 注意!由于某些主题的宽度，这个特性可能会有一些bug。不过我还是祝你好运。
 	
 	/*************************/
 	/* 论坛设置
 	/*************************/
-	$forum['type'] = 'phpbb';
-	$forum['autoAccountCreate'] = true;
-	$forum['forum_path'] = "/forum/";
-	$forum['forum_db'] = 'phpbbs';
+	$forum['type']                 = "phpbb";
+	$forum['autoAccountCreate']    = FALSE;
+	$forum['forum_path']           = "/forum/";
+	$forum['forum_db']             = "phpbb";
 	
 	// type = 你使用的论坛类型。(phpbb链入页面)
 	// autoAccountCreate = 当用户在网站注册时，此功能创建一个论坛帐户。
@@ -284,6 +314,12 @@
 		break;
 		case(3):
 		$maxItemLevel = 416;
+		break;
+
+		case 4:
+		case 5:
+		case 6:
+		case 7:
 		break;
 	}
 	

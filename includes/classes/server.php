@@ -65,6 +65,7 @@ class Server
 			   	{
                     $getAlliance = $conn->query("SELECT COUNT(online) AS online FROM characters WHERE online=1 AND race IN(3, 4, 7, 11, 1, 22);");
                     $alliance = $getAlliance->fetch_assoc();
+
                     if ($alliance['online'] == 0 || empty($alliance['online']))
 				   	{
 					   	$per_alliance = 0;
@@ -113,17 +114,13 @@ class Server
                 $getChars = $conn->query("SELECT COUNT(online) AS online FROM characters WHERE online=1;");
 
                 $pOnline  = $getChars->fetch_assoc();
-                if ($pOnline['online'] > 1) 
+                if ($pOnline['online'] > 1 || $pOnline['online'] == 0) 
                 {
                     echo "<td><b>". $pOnline['online'] ."</b> 在线玩家</td>";
                 }
                 elseif ($pOnline['online'] == 1)
                 {
                     echo "<td><b>". $pOnline['online'] ."</b> 在线玩家</td>";
-                }
-                else
-                {
-                    echo "<td>无人在线</td>";
                 }
 
 			}

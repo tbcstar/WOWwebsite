@@ -11,10 +11,10 @@ global $Account, $Connect;
 <div class="column">
 <div class="head-content">
 <div class="breadcrumbs">
-<a href="?p=ucp">
+<a href="?page=ucp">
 控制面板 </a>
 <span class="ico-raquo"></span>
-<a href="?p=shop">
+<a href="?page=shop">
 商城 </a>
 <span class="ico-raquo"></span>
 <div>
@@ -76,9 +76,9 @@ echo '<span class="currency">投票积分： '.$Account->loadVP($_SESSION['cw_us
 '.$GLOBALS['donation']['coins_name'].': '.$Account->loadDP($_SESSION['cw_user']).'
 </span>';
 
-if(isset($_GET['return']) && $_GET['return']=="true")
+if(isset($_GET['return']) && $_GET['return']=="TRUE")
 	echo "<span class='accept'>物品已发送到选定的角色!</span>";
-elseif(isset($_GET['return']) && $_GET['return']!="true")
+elseif(isset($_GET['return']) && $_GET['return']!="TRUE")
 	echo "<span class='alert'>".$_GET['return']."</span>";
 
 $Account->isNotLoggedIn();

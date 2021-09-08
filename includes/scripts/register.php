@@ -26,14 +26,13 @@ if(isset($_POST['check']))
 	{
 		$username = $conn->escape_string($_POST['value']);
 
-		$result = $conn->query("SELECT COUNT(id) FROM account WHERE username='". $username ."';");
-		if(mysqli_data_seek($result, 0) == 1)
+		if ($conn->query("SELECT * FROM account WHERE username='". $username ."';")->num_rows > 0)
 		{
-			echo "<i class='green_text'>此用户名可用</i>";
+			echo "<i class='red_text'>此用户名不可用</i>";
 		}
 		else
 		{
-			echo "<i class='red_text'>此用户名不可用</i>";
+			echo "<i class='green_text'>此用户名可用</i>";
 		}
 	}
 } 

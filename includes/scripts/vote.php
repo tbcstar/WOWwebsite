@@ -14,14 +14,14 @@ if (isset($_POST['siteid']))
 	
   if ($Website->checkIfVoted($siteid, $GLOBALS['connection']['webdb']))
   {
-    die("?p=vote");
+    die("?page=vote");
   }
 
   $Connect->selectDB('webdb', $conn);
   $check = $conn->query("SELECT COUNT(*) FROM votingsites WHERE id=". $siteid .";");
   if ($check->data_seek(0) == 0)
   {
-    die("?p=vote");
+    die("?page=vote");
   }
 
   if ($GLOBALS['vote']['type'] == "instant")

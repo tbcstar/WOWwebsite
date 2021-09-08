@@ -37,73 +37,73 @@
 
 				<li>仪表盘</li>
 					<ul class="hidden" <?php activeMenu('dashboard'); ?>>
-						<a href="?p=dashboard">控制面板</a>
-						<a href="?p=updates">更新</a>
+						<a href="?page=dashboard">控制面板</a>
+						<a href="?page=updates">更新</a>
 					</ul>
 
 				<li>页面</li>
 					<ul class="hidden" <?php activeMenu('pages'); ?>>
-						<a href="?p=pages">所有页面</a>
-						<a href="?p=pages&s=new">添加新页面</a>
+						<a href="?page=pages">所有页面</a>
+						<a href="?page=pages&selected=new">添加新页面</a>
 					</ul>
 
 				<li>新闻</li>
 					<ul class="hidden" <?php activeMenu('news'); ?>>
-						<a href="?p=news">发布新闻</a>
-						<a href="?p=news&s=manage">管理新闻</a>
+						<a href="?page=news">发布新闻</a>
+						<a href="?page=news&selected=manage">管理新闻</a>
 					</ul>
 
 				<li>商城</li>
 					<ul class="hidden" <?php activeMenu('shop'); ?>>
-						<a href="?p=shop">总览</a>
-						<a href="?p=shop&s=add">添加物品</a>
-						<a href="?p=shop&s=manage">管理物品</a>
-						<a href="?p=shop&s=tools">工具</a>
+						<a href="?page=shop">总览</a>
+						<a href="?page=shop&selected=add">添加物品</a>
+						<a href="?page=shop&selected=manage">管理物品</a>
+						<a href="?page=shop&selected=tools">工具</a>
 					</ul>
 
 				<li>捐赠</li>
 					<ul class="hidden" <?php activeMenu('donations'); ?>>
-						<a href="?p=donations">总览</a>
-						<a href="?p=donations&s=browse">浏览</a>
+						<a href="?page=donations">总览</a>
+						<a href="?page=donations&selected=browse">浏览</a>
 					</ul>
 
 				<li>日志</li>
 					<ul class="hidden" <?php activeMenu('logs'); ?>>
-						<a href="?p=logs&s=voteshop">投票商店</a>
-						<a href="?p=logs&s=donateshop">公益商城</a>
-						<a href="?p=logs&s=admin">管理面板</a>
+						<a href="?page=logs&selected=voteshop">投票商店</a>
+						<a href="?page=logs&selected=donateshop">公益商城</a>
+						<a href="?page=logs&selected=admin">管理面板</a>
 					</ul>
 
 				<li>Interface</li>
 					<ul class="hidden" <?php activeMenu('interface'); ?>>
-						<a href="?p=interface">模板</a>
-						<a href="?p=interface&s=menu">菜单</a>
-						<a href="?p=interface&s=slideshow">幻灯片</a>
-						<a href="?p=interface&s=plugins">插件</a>
+						<a href="?page=interface">模板</a>
+						<a href="?page=interface&selected=menu">菜单</a>
+						<a href="?page=interface&selected=slideshow">幻灯片</a>
+						<a href="?page=interface&selected=plugins">插件</a>
 					</ul>
 
 				<li>用户</li>
 					<ul class="hidden" <?php activeMenu('users'); ?>>
-						<a href="?p=users">总览</a>
-						<a href="?p=users&s=manage">管理用户</a>
+						<a href="?page=users">总览</a>
+						<a href="?page=users&selected=manage">管理用户</a>
 					</ul>
 
 				<li>服务器</li>
 					<ul class="hidden" <?php activeMenu('realms'); ?>>
-						<a href="?p=realms">添加服务器</a>
-						<a href="?p=realms&s=manage">服务器管理</a>
+						<a href="?page=realms">添加服务器</a>
+						<a href="?page=realms&selected=manage">服务器管理</a>
 					</ul>
 
 				<li>服务项目</li>
 					<ul class="hidden" <?php activeMenu('services'); ?>>
-						<a href="?p=services&s=voting">投票链接</a>
-						<a href="?p=services&s=charservice">角色服务</a>
+						<a href="?page=services&selected=voting">投票链接</a>
+						<a href="?page=services&selected=charservice">角色服务</a>
 					</ul>
 
 				<li>工具</li>
 					<ul class="hidden" <?php activeMenu('tools'); ?>>
-						<a href="?p=tools&s=tickets">工单</a>
-						<a href="?p=tools&s=accountaccess">账号访问</a>
+						<a href="?page=tools&selected=tickets">工单</a>
+						<a href="?page=tools&selected=accountaccess">账号访问</a>
 					</ul>      
 			</ul>
 		</div>
@@ -114,7 +114,7 @@
                 <?php if (isset($_SESSION['cw_admin']))
                     { ?> 欢迎  
                         <b><?php echo $_SESSION['cw_admin']; ?> </b> 
-                        <a href="?p=logout"><i>(Log out)</i></a> &nbsp; | &nbsp;
+                        <a href="?page=logout"><i>(Log out)</i></a> &nbsp; | &nbsp;
                         <a href="../">返回网站</a>
                         <?php
                     }
@@ -145,11 +145,11 @@
                             ?>
                         <div class="box_right">
                             <?php
-                            if (!isset($_GET['p']))
+                            if (!isset($_GET['page']))
                                 $page = "dashboard";
                             else
                             {
-                                $page = $_GET['p'];
+                                $page = $_GET['page'];
                             }
                             $pages = scandir('../aasp_includes/pages');
                             unset($pages[0], $pages[1]);

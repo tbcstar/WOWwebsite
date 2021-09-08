@@ -770,5 +770,5 @@ T <span class="numbers">5</span>
 
 
 <?php if(isset($_SESSION['cw_user'])) { ?>
-<meta http-equiv="refresh" content="0;url=?p=account">
+<meta http-equiv="refresh" content="0;url=?page=account">
 <?php } ?>

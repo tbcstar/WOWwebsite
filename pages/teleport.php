@@ -10,13 +10,13 @@ $Account->isNotLoggedIn(); ?>
 <div class="column">
 <div class="head-content">
 <div class="breadcrumbs">
-<a href="?p=ucp">
+<a href="?page=ucp">
 控制面板 </a>
 <span class="ico-raquo"></span>
-<a href="?p=shop">
+<a href="?page=shop">
 商城 </a>
 <span class="ico-raquo"></span>
-<a href="?p=work_list">
+<a href="?page=work_list">
 服务项目 </a>
 <span class="ico-raquo"></span>
 <div>

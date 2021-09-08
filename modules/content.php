@@ -6,13 +6,13 @@
     
     $pages = scandir('pages');
     unset($pages[0], $pages[1]);
-    $page  = $conn->escape_string($_GET['p']);
+    $page  = $conn->escape_string($_GET['page']);
 
     if (!isset($page))
     {
         include("pages/home.php");
     }
-    elseif (isset($_SESSION['loaded_plugins_pages']) && $GLOBALS['enablePlugins'] == true && !in_array($page . '.php', $pages))
+    elseif (isset($_SESSION['loaded_plugins_pages']) && $GLOBALS['enablePlugins'] == TRUE && !in_array($page . '.php', $pages))
     {
         $Plugins->load("pages");
     }

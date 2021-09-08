@@ -17,14 +17,14 @@ if(isset($_POST['newpage']))
         $conn->query("INSERT INTO custom_pages (name, filename, content, date) VALUES 
             ('". $name ."', '". $filename ."', '". $content ."', '". date("Y-m-d H:i:s") ."');");
 
-        echo "<h3>页面创建成功。</h3><a href='../?p=". $filename ."' target='_blank'>查看页面</a><br/><br/>";
+        echo "<h3>页面创建成功。</h3><a href='../?page=". $filename ."' target='_blank'>查看页面</a><br/><br/>";
     }
 } ?>
 <div class="box_right_title"><?php echo $GamePage->titleLink(); ?> &raquo; 新建页面</div>
-<form action="?p=pages&s=new" method="post">
+<form action="?page=pages&selected=new" method="post">
     名称 <br/>
     <input type="text" name="newpage_name"><br/>
-    文件名 <i>(这就是 ?p=FILENAME 所指的内容。 例如。?p=connect 其中文件名是 'connect')<br/>
+    文件名 <i>(这就是 ?page=FILENAME 所指的内容。 例如。?page=connect 其中文件名是 'connect')<br/>
     <input type="text" name="newpage_filename"><br/>
     内容<br/>
     <textarea cols="77" rows="14" id="wysiwyg" name="newpage_content">

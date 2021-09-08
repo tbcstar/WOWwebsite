@@ -14,6 +14,6 @@ if($GLOBALS['social']['enableFacebookModule'] == TRUE) {
         }(document, 'script', 'facebook-jssdk'));
         </script>
     
-    <div class="fb-like-box" data-href="<?php echo $GLOBALS['social']['facebookGroupURL']; ?>" id="fb" data-colorscheme="dark" data-show-faces="false" data-border-color="#333" data-stream="true" data-header="false"></div>
+    <div class="fb-like-box" data-href="<?php echo $GLOBALS['social']['facebookGroupURL']; ?>" id="fb" data-colorscheme="dark" data-show-faces="false" data-border-color="#333" data-stream="TRUE" data-header="false"></div>
     </div>
 <?php } ?>

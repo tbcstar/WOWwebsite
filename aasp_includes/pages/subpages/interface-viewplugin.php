@@ -7,7 +7,7 @@
 	include("../plugins/". $filename ."/info.php");
 ?>
 <div class="box_right_title">
-    <a href="?p=interface&s=plugins">插件</a> 
+    <a href="?page=interface&selected=plugins">插件</a> 
     &raquo; 
     <?php echo $title; ?>
 </div>

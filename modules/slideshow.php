@@ -1,11 +1,11 @@
 <?php
 
-if(!isset($_GET['p']))
+if(!isset($_GET['page']))
 	$page = "home";
 else
-	$page = $_GET['p'];
+	$page = $_GET['page'];
 	
-if ($GLOBALS['enableSlideShow'] == TRUE && !isset($_COOKIE['hideslider']) && $_GET['p']=='home') 
+if ($GLOBALS['enableSlideShow'] == TRUE && !isset($_COOKIE['hideslider']) && $_GET['page']=='home') 
 { 
 	global $Website;?>
 <div class="main_view">

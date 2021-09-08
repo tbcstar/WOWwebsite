@@ -1,5 +1,5 @@
 <?php
-global $Connect
+global $Connect;
 
 class server {
 	

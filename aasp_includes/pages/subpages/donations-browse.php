@@ -51,23 +51,23 @@ if($pages>=1 && $page <= $pages)
 	if($page>1)
 	{
 	   $prev = $page - 1;
-	   echo "<a href='?p=donations&s=browse&page=". $prev ."' title='Previous'>Previous</a> &nbsp;";
+	   echo "<a href='?page=donations&selected=browse&log_page=". $prev ."' title='Previous'>Previous</a> &nbsp;";
 	}
 	for($x=1; $x<=$pages; $x++)
 	{
 		if ($page == $x && $countDonators > 19)
         {
-		   echo "<a href='?p=donations&s=browse&page=". $x ."' title='Page ". $x ."'><b>". $x ."</b></a> ";
+		   echo "<a href='?page=donations&selected=browse&log_page=". $x ."' title='Page ". $x ."'><b>". $x ."</b></a> ";
         }
         elseif ($countDonators > 19)
         {
-		   echo "<a href='?p=donations&s=browse&page=". $x ."' title='Page ". $x ."'>". $x ."</a> ";
+		   echo "<a href='?page=donations&selected=browse&log_page=". $x ."' title='Page ". $x ."'>". $x ."</a> ";
 	}
 	
 	if($page<$x - 1)
 	{
 	   $next = $page+1;
-	   echo "&nbsp; <a href='?p=donations&s=browse&page=". $next ."' title='Next'>下一页</a> &nbsp; &nbsp;";
+	   echo "&nbsp; <a href='?page=donations&selected=browse&log_page=". $next ."' title='Next'>下一页</a> &nbsp; &nbsp;";
 	}
 }
 }

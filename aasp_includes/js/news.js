@@ -20,7 +20,7 @@ function deleteNewsNow(id) {
 	$("#loading").html("Deleting...");
 	$.post("../aasp_includes/scripts/news.php", { function: "delete", id: id },
        function(data) {
-			 window.location='?p=news&s=manage';
+			 window.location='?page=news&selected=manage';
    });
 	
 }

@@ -7,28 +7,28 @@ $Account->isNotLoggedIn();
 <div class="row">
 <ul class="navbar-cp">
 <li>
-<a href="?p=ucp">
+<a href="?page=ucp">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-01.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-01.png" alt="" /> </div>
 <p>账户</p>
 </a>
 </li>
 <li>
-<a href="?p=shop">
+<a href="?page=shop">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-02.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-02.png" alt="" /> </div>
 <p>商城</p>
 </a>
 </li>
 <li>
-<a href="?p=donate">
+<a href="?page=donate">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-03.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-03.png" alt="" /> </div>
 <p>捐赠充值</p>
 </a>
 </li>
 <li>
-<a href="?p=characters">
+<a href="?page=characters">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-04.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-04.png" alt="" /> </div>
 <p>角色</p>
@@ -42,14 +42,14 @@ $Account->isNotLoggedIn();
 </a>
 </li>
 <li>
-<a class="active" href="?p=stat">
+<a class="active" href="?page=stat">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-06.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-06.png" alt="" /> </div>
 <p>统计</p>
 </a>
 </li>
 <li>
-<a href="?p=vote">
+<a href="?page=vote">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-07.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-07.png" alt="" /> </div>
 <p>投票</p>
@@ -65,7 +65,7 @@ $Account->isNotLoggedIn();
 <div class="column">
 <div class="head-content">
 <div class="breadcrumbs">
-<a href="?p=ucp">
+<a href="?page=ucp">
 控制面板 </a>
 <span class="ico-raquo"></span>
 <div>
@@ -99,7 +99,7 @@ $Account->isNotLoggedIn();
 <img src="/themes/cp_nefelin/images/stat-type-03.jpg" alt="">
 <div class="item-content">
 <div>击杀数</div>
-<a href="?p=kills" class="btn btn-low-green">查看</a>
+<a href="?page=kills" class="btn btn-low-green">查看</a>
 </div>
 </div>
 </div>
@@ -108,7 +108,7 @@ $Account->isNotLoggedIn();
 <img src="/themes/cp_nefelin/images/stat-type-04.jpg" alt="">
 <div class="item-content">
 <div>游戏时长</div>
-<a href="?p=stats" class="btn btn-low-green">查看</a>
+<a href="?page=stats" class="btn btn-low-green">查看</a>
 </div>
 </div>
 </div>

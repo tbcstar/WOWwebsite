@@ -23,28 +23,28 @@
 <div class="row">
 <ul class="navbar-cp">
 <li>
-<a href="?p=ucp">
+<a href="?page=ucp">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-01.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-01.png" alt="" /> </div>
 <p>账户</p>
 </a>
 </li>
 <li>
-<a class="active" href="?p=shop">
+<a class="active" href="?page=shop">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-02.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-02.png" alt="" /> </div>
 <p>商城</p>
 </a>
 </li>
 <li>
-<a href="?p=donate">
+<a href="?page=donate">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-03.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-03.png" alt="" /> </div>
 <p>捐赠充值</p>
 </a>
 </li>
 <li>
-<a href="?p=characters">
+<a href="?page=characters">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-04.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-04.png" alt="" /> </div>
 <p>角色</p>
@@ -58,14 +58,14 @@
 </a>
 </li>
 <li>
-<a href="?p=stat">
+<a href="?page=stat">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-06.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-06.png" alt="" /> </div>
 <p>统计</p>
 </a>
 </li>
 <li>
-<a href="?p=vote">
+<a href="?page=vote">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-07.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-07.png" alt="" /> </div>
 <p>投票</p>
@@ -82,10 +82,10 @@
 <div class="column">
 <div class="head-content">
 <div class="breadcrumbs">
-<a href="?p=ucp">
+<a href="?page=ucp">
 控制面板 </a>
 <span class="ico-raquo"></span>
-<a href="?p=shop">
+<a href="?page=shop">
 商城 </a>
 <span class="ico-raquo"></span>
 <div>
@@ -118,7 +118,7 @@
  ?>
 <div class='box_two_title'>投票商店
 
-<div id='cartHolder' onclick='window.location="?p=cart"'>加载购物车...</div> 
+<div id='cartHolder' onclick='window.location="?page=cart"'>加载购物车...</div> 
         <div id='cartArrow'>
         <img src='styles/default/images/arrow.png' border='none'/></div>
 </div>
@@ -139,7 +139,7 @@ if($GLOBALS[$shopVar.'Shop']['shopType']==1)
 	//Search enabled.
 ?>
 <center>
-        <form action="?p=<?php echo $shopPage; ?>" method="get">
+        <form action="?page=<?php echo $shopPage; ?>" method="get">
         <input type="hidden" name="p" value="<?php echo $shopPage; ?>">
         <table> <tr valign="middle">
             <td><input type="text" onclick="this.value=''" value="<?php echo $inputValue; ?>" name="search_value"></td>          

@@ -39,7 +39,7 @@ else
 ?>
 选择服务器：
 &nbsp;
-<form action="?p=instancereset" method="post">
+<form action="?page=instancereset" method="post">
 <table>
 <tr>
 <td>
@@ -78,7 +78,7 @@ else
 ?>
 选择角色： 
 &nbsp;
-<form action="?p=instancereset" method="post">
+<form action="?page=instancereset" method="post">
 <table>
 <tr>
 <td>
@@ -118,7 +118,7 @@ if(isset($_POST['ir_step2']) || isset($_POST['ir_step3']))
 ?>
 选择副本：
 &nbsp;
-<form action="?p=instancereset" method="post">
+<form action="?page=instancereset" method="post">
 <table>
 <tr>
 <td>
@@ -133,7 +133,7 @@ if(isset($_POST['ir_step2']) || isset($_POST['ir_step3']))
 	 if ($result->num_rows ==0) 
 	 {
 		 echo "<option value='#'>没有副本需要重置！</option>";
-		 $nope = true;
+		 $nope = TRUE;
 	 }
 	 else
 	 {
@@ -217,7 +217,7 @@ if(isset($_POST['ir_step3']))
 }
 ?>
 <br/>
-<a href="?p=instancereset">重新开始</a>
+<a href="?page=instancereset">重新开始</a>
 
 </div>
 <div id="footer">

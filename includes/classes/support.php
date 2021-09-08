@@ -8,7 +8,7 @@ class Support
 	public function loadEmailForm() 
 	{
 		?><br/>
-		<form action="?p=support&do=email" method="post">
+		<form action="?page=support&do=email" method="post">
 	        问题: <br/>
 	        		<select name="issue">
 	               		<option>技术问题</option>

@@ -6,7 +6,7 @@
 		$alert_enable = $_POST['alert_enable'];
 		$alert_message = trim($_POST['alert_message']);
 
-		$alert_enable = ($alert_enable == "on") ? "true" : "false";
+		$alert_enable = ($alert_enable == "on") ? "TRUE" : "false";
 
 		$file_content = "<?php
 
@@ -33,11 +33,11 @@
 	include('../documents/alert.php');
 ?>
 <div class="box_right_title"><?php echo $Page->titleLink(); ?> &raquo; 告警信息</div>
-<form action="?p=interface&s=alert" method="post">
+<form action="?page=interface&selected=alert" method="post">
 <table>
 	<tr>
     	<td>启用告警消息</td>
-        <td><input name="alert_enable" type="checkbox" <?php if ($alert_enabled == true) echo 'checked'; ?> /></td>
+        <td><input name="alert_enable" type="checkbox" <?php if ($alert_enabled == TRUE) echo 'checked'; ?> /></td>
     </tr>
     <tr>
     	<td>告警信息</td>

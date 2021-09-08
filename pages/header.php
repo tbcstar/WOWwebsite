@@ -63,7 +63,7 @@
 <li class="submenu last">
 <a href="">更多 <span class="caret"></span></a>
 <ul class="nav" style="display:none">
-<li><a href="?p=ucp">控制面板</a></li>
+<li><a href="?page=ucp">控制面板</a></li>
 <li><a href="#">Bug-跟踪</a></li>
 <li><a href="#">时间线</a></li>
 <li><a href="#">照片墙</a></li>
@@ -86,7 +86,7 @@
 <div class="status-info">
 <div class="status wow wobble">
 <p class="online">{serverstatus}</p>
-<a href="?p=stats">在这里查看我们的服务器状态</a>
+<a href="?page=stats">在这里查看我们的服务器状态</a>
 </div>
 </div>
 </div>

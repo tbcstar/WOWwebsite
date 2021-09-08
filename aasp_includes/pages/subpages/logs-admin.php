@@ -47,23 +47,23 @@ if(isset($_SESSION['cw_staff']) && !isset($_SESSION['cw_admin']))
 		if($page > 1)
 		{
 		   $prev = $page - 1;
-		   echo "<a href='?p=logs&s=admin&page=". $prev ."' title='Previous'>上一页</a> &nbsp;";
+		   echo "<a href='?page=logs&selected=admin&page=". $prev ."' title='Previous'>上一页</a> &nbsp;";
 		}
 		for($x = 1; $x <= $pages; $x++)
 		{
 			if($page == $x)
 			{
-			   echo "<a href='?p=logs&s=admin&page=". $x ."' title='Page ". $x ."'><b>". $x ."</b></a> ";
+			   echo "<a href='?page=logs&selected=admin&page=". $x ."' title='Page ". $x ."'><b>". $x ."</b></a> ";
 			}
 			else
 			{
-			   echo '<a href="?p=logs&s=admin&page='.$x.'" title="Page '.$x.'">'.$x.'</a> ';
+			   echo '<a href="?page=logs&selected=admin&page='.$x.'" title="Page '.$x.'">'.$x.'</a> ';
 			}
 		}
 
 		if($page < $x - 1)
 		{
 		   $next = $page+1;
-		   echo "&nbsp; <a href='?p=logs&s=admin&page=". $next ."' title='Next'>下一页</a> &nbsp; &nbsp;";
+		   echo "&nbsp; <a href='?page=logs&selected=admin&page=". $next ."' title='Next'>下一页</a> &nbsp; &nbsp;";
 		}
 	} 

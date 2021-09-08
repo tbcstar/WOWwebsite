@@ -28,18 +28,18 @@
         $result = $conn->query("SELECT * FROM custom_pages ORDER BY id ASC;");
         while ($row = $result->fetch_assoc())
             {
-                $disabled = true;
+                $disabled = TRUE;
                 $check = $conn->query("SELECT COUNT(filename) AS filename FROM disabled_pages WHERE filename='". $row['filename'] ."';");
                 if ($check->fetch_assoc()['filename'] == 1)
                 {
-                    $disabled = true;
+                    $disabled = TRUE;
                 }
             ?>
             <tr <?php if ($disabled) echo "style='color: #999;'"; ?>>
                 <td width="50"><?php echo $row['name']; ?></td>
                 <td width="100"><?php echo $row['filename']; ?>(Database)</td>
                 <td><select id="action-<?php echo htmlentities($row['filename']); ?>"><?php
-                        if ($disabled == true)
+                        if ($disabled == TRUE)
                         {
                             ?>
                             <option value="1">启用</option>
@@ -70,7 +70,7 @@
 	 	} 
 	 	else 
 	 	{
-			$disabled = true;
+			$disabled = TRUE;
 	 	}
         ?>
 	    <tr <?php if ($disabled) echo "style='color: #999;'"; ?>>
@@ -78,7 +78,7 @@
             <td><?php echo $fileName; ?></td>
         <td><select id="action-<?php echo $row['filename']; ?>">
             <?php 
-            if($disabled == true)
+            if($disabled == TRUE)
             {
             ?>
             <option value="1">启用</option>
@@ -107,17 +107,17 @@ if (is_array($GLOBALS['core_pages']) || is_object($GLOBALS['core_pages']))
 		} 
 		else 
 		{
-			$disabled = true;
+			$disabled = TRUE;
 		}
 	?>
 
-	<tr <?php if($disabled == true) { echo "style='color: #999;'";
+	<tr <?php if($disabled == TRUE) { echo "style='color: #999;'";
 	}?>>
 	    <td><?php echo $k; ?></td>
 	    <td><?php echo $v; ?></td>
         <td><select id="action-<?php echo $filename; ?>">
     <?php
-	    if($disabled == true)
+	    if($disabled == TRUE)
 	    {
 	    ?>
 	    <option value="1">启用</option>
@@ -160,7 +160,7 @@ if (is_array($GLOBALS['core_pages']) || is_object($GLOBALS['core_pages']))
                 SET name='". $name ."', filename='". $filename ."', content='". $content ."' 
                 WHERE filename='". $conn->escape_string($_GET['filename']) ."';");
 
-            echo "<h3>页面已成功更新。</h3> <a href='" . $GLOBALS['website_domain'] . "?p=" . $filename . "' target='_blank'>查看页面</a>";
+            echo "<h3>页面已成功更新。</h3> <a href='" . $GLOBALS['website_domain'] . "?page=" . $filename . "' target='_blank'>查看页面</a>";
 		}
 	}
 
@@ -169,7 +169,7 @@ if (is_array($GLOBALS['core_pages']) || is_object($GLOBALS['core_pages']))
 ?>
 	   
      <h4>编辑 <?php echo $_GET['filename']; ?>.php</h4>
-    <form action="?p=pages&action=edit&filename=<?php echo $_GET['filename']; ?>" method="post">
+    <form action="?page=pages&action=edit&filename=<?php echo $_GET['filename']; ?>" method="post">
 	名字<br/>
     <input type="text" name="editpage_name" value="<?php echo $row['name']; ?>"><br/>
     文件名<br/>

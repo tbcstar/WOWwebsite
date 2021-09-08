@@ -20,6 +20,6 @@
 
     $conn = $GameServer->connect();
 
-    if (isset($_SESSION['cw_staff']) && !isset($_SESSION['cw_staff_id']) && $_GET['p'] != 'notice')
-        header("Location: ?p=notice&e=看起来好像没有创建会话!您已注销，以防止对该网站的任何威胁。");
+    if (isset($_SESSION['cw_staff']) && !isset($_SESSION['cw_staff_id']) && $_GET['page'] != 'notice')
+        header("Location: ?page=notice&error=看起来好像没有创建会话!您已注销，以防止对该网站的任何威胁。");
 ?>

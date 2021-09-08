@@ -45,5 +45,5 @@
 </tr>
 </table>
 <hr/>
-<a href="?p=users&s=manage" class="content_hider">用户管理</a>
+<a href="?page=users&selected=manage" class="content_hider">用户管理</a>
 <?php } ?>

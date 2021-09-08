@@ -11,7 +11,7 @@ $conn = $Connect->connectToDB();
 $Account->isNotLoggedIn();
 
  /* 声明一些通用变量 */ 
- $shopPage = $conn->escape_string($_GET['p']);
+ $shopPage = $conn->escape_string($_GET['page']);
  $shopVar = "donate";
  $shopCurrency = $GLOBALS['donation']['coins_name'];
  
@@ -20,7 +20,7 @@ $Account->isNotLoggedIn();
  ?>
 <div class='box_two_title'>公益商城
 
-<div id='cartHolder' onclick='window.location="?p=cart"'>加载购物车...</div> 
+<div id='cartHolder' onclick='window.location="?page=cart"'>加载购物车...</div> 
         <div id='cartArrow'>
         <img src='styles/default/images/arrow.png' border='none'/></div>
 </div>
@@ -41,7 +41,7 @@ if($GLOBALS[$shopVar.'Shop']['shopType']==1)
 	//Search enabled.
 ?>
 <center>
-        <form action="?p=<?php echo $shopPage; ?>" method="get">
+        <form action="?page=<?php echo $shopPage; ?>" method="get">
         <input type="hidden" name="p" value="<?php echo $shopPage; ?>">
         <table> <tr valign="middle">
             <td><input type="text" onclick="this.value=''" value="<?php echo $inputValue; ?>" name="search_value"></td>          

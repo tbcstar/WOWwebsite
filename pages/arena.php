@@ -8,28 +8,28 @@ $Connect->selectDB('webdb', $conn);
 <div class="row">
 <ul class="navbar-cp">
 <li>
-<a href="?p=ucp">
+<a href="?page=ucp">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-01.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-01.png" alt="" /> </div>
 <p>账户</p>
 </a>
 </li>
 <li>
-<a href="?p=shop">
+<a href="?page=shop">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-02.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-02.png" alt="" /> </div>
 <p>商城</p>
 </a>
 </li>
 <li>
-<a href="?p=donate">
+<a href="?page=donate">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-03.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-03.png" alt="" /> </div>
 <p>捐赠充值</p>
 </a>
 </li>
 <li>
-<a href="?p=characters">
+<a href="?page=characters">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-04.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-04.png" alt="" /> </div>
 <p>角色</p>
@@ -43,14 +43,14 @@ $Connect->selectDB('webdb', $conn);
 </a>
 </li>
 <li>
-<a class="active" href="?p=stat">
+<a class="active" href="?page=stat">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-06.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-06.png" alt="" /> </div>
 <p>统计</p>
 </a>
 </li>
 <li>
-<a href="?p=vote">
+<a href="?page=vote">
 <div class="nav-img">
 <img src="/themes/cp_nefelin/images/cp-nav-07.png" alt="" /> <img class="hov" src="/themes/cp_nefelin/images/cp-nav-hov-07.png" alt="" /> </div>
 <p>投票</p>
@@ -66,10 +66,10 @@ $Connect->selectDB('webdb', $conn);
 <div class="column">
 <div class="head-content">
 <div class="breadcrumbs">
-<a href="?p=ucp">
+<a href="?page=ucp">
 控制面板 </a>
 <span class="ico-raquo"></span>
-<a href="?p=stat">
+<a href="?page=stat">
 统计 </a>
 <span class="ico-raquo"></span>
 <div>
@@ -150,9 +150,9 @@ if($myrow['race']=="1" or $myrow['race']=="3" or $myrow['race']=="4" or $myrow['
 echo "
 
 <tr>
-<td><a href=?p=arena&guid=".$row['arenaTeamId'].">".$row['name']."</a></td>
+<td><a href=?page=arena&guid=".$row['arenaTeamId'].">".$row['name']."</a></td>
 <td><center>".$teamType[$row['type']]."</center></td>
-<td><center><a href=?p=arena&player=".$row['captainGuid'].">".$myrow['name']."</a></center></td>
+<td><center><a href=?page=arena&player=".$row['captainGuid'].">".$myrow['name']."</a></center></td>
 <td><center><img src=images/".$faction.".png></center></td>
 <td>".$row['rating']."</td>
 </tr>
@@ -218,7 +218,7 @@ echo "<table border=1 width=100%>
 
 echo "<tr>
 <td valign=center width=3%>$j</td>
-<td align=center valign=center width=20%><a href='?p=arena&player=".$guid."' style='color: #ff9900; font-family : Geneva; text-decoration : none;'>".$row['name']."</a></td>
+<td align=center valign=center width=20%><a href='?page=arena&player=".$guid."' style='color: #ff9900; font-family : Geneva; text-decoration : none;'>".$row['name']."</a></td>
 <td align=center valign=center width=7%><img src=/themes/nefelin/images/race/".$race.".jpg></td>
 <td align=center valign=center width=7%><img src=/themes/nefelin/images/class/".$class.".gif></td>
 <td align=center width=20%>".$mrow['weekGames']."</td>

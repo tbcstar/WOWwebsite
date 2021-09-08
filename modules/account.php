@@ -15,8 +15,8 @@
      </form> <br/>
      <table width="100%">
             <tr>
-                <td><a href="?p=register">创建账户</a></td>
-                <td align="right"><a href="?p=forgotpw">忘记密码？</a></td>
+                <td><a href="?page=register">创建账户</a></td>
+                <td align="right"><a href="?page=forgotpw">忘记密码？</a></td>
             </tr>
      </table>
      </div>
@@ -28,20 +28,20 @@
 <div class="box_one_title">账户管理</div>
 <span style="z-index: 99;">欢迎回来 <?php echo $_SESSION['cw_user']; ?>
 			<?php 
-			if (isset($_SESSION['cw_gmlevel']) && $_SESSION['cw_gmlevel']>=$GLOBALS['adminPanel_minlvl'] && $GLOBALS['adminPanel_enable']==true) 
+			if (isset($_SESSION['cw_gmlevel']) && $_SESSION['cw_gmlevel']>=$GLOBALS['adminPanel_minlvl'] && $GLOBALS['adminPanel_enable']==TRUE) 
 				echo ' <a href="admin/">(管理面板)</a>';
 				
-			if (isset($_SESSION['cw_gmlevel']) && $_SESSION['cw_gmlevel']>=$GLOBALS['staffPanel_minlvl'] && $GLOBALS['staffPanel_enable']==true) 
+			if (isset($_SESSION['cw_gmlevel']) && $_SESSION['cw_gmlevel']>=$GLOBALS['staffPanel_minlvl'] && $GLOBALS['staffPanel_enable']==TRUE) 
 				echo ' <a href="staff/">(员工面板)</a>';
 			?>
             </span>
 			<hr/>
-            <input type='button' value='账户面板' onclick='window.location="?p=account"' class="leftbtn">
-			<input type='button' value='密码修改'  onclick='window.location="?p=changepass"' class="leftbtn">
-            <input type='button' value='投票商店' onclick='window.location="?p=voteshop"' class="leftbtn">  
-			<input type='button' value='公益商城'  onclick='window.location="?p=donateshop"' class="leftbtn">
-            <input type='button' value='战友招募'  onclick='window.location="?p=raf"' class="leftbtn">
+            <input type='button' value='账户面板' onclick='window.location="?page=account"' class="leftbtn">
+			<input type='button' value='密码修改'  onclick='window.location="?page=changepass"' class="leftbtn">
+            <input type='button' value='投票商店' onclick='window.location="?page=voteshop"' class="leftbtn">  
+			<input type='button' value='公益商城'  onclick='window.location="?page=donateshop"' class="leftbtn">
+            <input type='button' value='战友招募'  onclick='window.location="?page=raf"' class="leftbtn">
             <input type='button' value='注销'  
-            onclick='window.location="?p=logout&last_page=<?php echo $_SERVER["REQUEST_URI"]; ?>"' class="leftbtn">
+            onclick='window.location="?page=logout&last_page=<?php echo $_SERVER["REQUEST_URI"]; ?>"' class="leftbtn">
 </div>
 			<?php } ?>

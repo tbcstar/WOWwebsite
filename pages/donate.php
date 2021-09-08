@@ -66,7 +66,7 @@ $Account->isNotLoggedIn(); ?>
      </tr>
      <?php 
 	 	include("documents/refundpolicy.php"); 
-		if($rp_enable == true)
+		if($rp_enable == TRUE)
 		{
 	 	?>
      <tr>

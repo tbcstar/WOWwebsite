@@ -37,7 +37,7 @@
 	</tr>
 </table>
 <hr/>
-<a href="?p=shop&s=add" class="content_hider">添加物品</a>
-<a href="?p=shop&s=manage" class="content_hider">管理物品</a>
-<a href="?p=shop&s=tools" class="content_hider">工具</a>
+<a href="?page=shop&selected=add" class="content_hider">添加物品</a>
+<a href="?page=shop&selected=manage" class="content_hider">管理物品</a>
+<a href="?page=shop&selected=tools" class="content_hider">工具</a>
 <?php } ?>

@@ -22,7 +22,7 @@ if ($getMenuLinks->num_rows == 0)
 while ($row = $getMenuLinks->fetch_assoc())
 {
 	$curr = substr($row['url'],3);
-	if ($_GET['p'] == $curr)
+	if ($_GET['page'] == $curr)
 	{
 		echo '<a href="'.$row['url'].'" class="current">'.$row['title'].'</a>';
 	}

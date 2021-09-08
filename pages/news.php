@@ -26,7 +26,7 @@ if (isset($_GET['newsid']))
    
     <br/><br/>
     <span class='yellow_text'>作者 <b><?php echo $row['author'];?></b> | <?php echo $row['date']; ?></span>
-    <?php if ($GLOBALS['news']['enableComments']==true) 
+    <?php if ($GLOBALS['news']['enableComments']==TRUE) 
 	{
 		$result = $conn->query("SELECT poster FROM news_comments WHERE newsid=" . $id . " ORDER BY id DESC LIMIT 1;");
 		$rows = $result->fetch_assoc();
@@ -41,7 +41,7 @@ if (isset($_GET['newsid']))
     <h4 class="yellow_text">评论</h4>
     <?php if ($_SESSION['cw_user']) {?>
     <table width="100%"> <tr> <td>
-    <form action="?p=news&id=<?php echo $id; ?>" method="post">
+    <form action="?page=news&id=<?php echo $id; ?>" method="post">
     <textarea id="newscomment_textarea" name="text" placeholder="评论这篇文章..."></textarea>
     <td><input type="submit" value="Post" name="comment"></td>
     </form> 
@@ -69,7 +69,7 @@ if (isset($_GET['newsid']))
 			$conn->query("INSERT INTO news_comments (`newsid`, `text`, `poster`, `ip`) VALUES 
                 (". $id .", '". $text ."', '". $account ."', '". $_SERVER['REMOTE_ADDR'] ."');");
 
-			header("Location: ?p=news&newsid=". $id);
+			header("Location: ?page=news&newsid=". $id);
 		}
 	}
 
@@ -109,7 +109,7 @@ if (isset($_GET['newsid']))
                 if($getGM->data_seek(0)>0) { echo "</span>"; }
 				
 				if(isset($_SESSION['cw_gmlevel']) && $_SESSION['cw_gmlevel']>=$GLOBALS['adminPanel_minlvl'] || 
-				isset($_SESSION['cw_gmlevel']) && $_SESSION['cw_gmlevel']>=$GLOBALS['staffPanel_minlvl'] && $GLOBALS['editNewsComments']==true)
+				isset($_SESSION['cw_gmlevel']) && $_SESSION['cw_gmlevel']>=$GLOBALS['staffPanel_minlvl'] && $GLOBALS['editNewsComments']==TRUE)
 				 	echo '<br/><br/> ( <a href="#">编辑</a> | <a href="#remove" onclick="removeNewsComment('.$row['id'].')">移除</a> )';  
 			   ?>
                <div class='news_count'>
@@ -160,7 +160,7 @@ else
 			$row['body']
 			);
 			
-			if ($GLOBALS['news']['limitHomeCharacters']==true) 
+			if ($GLOBALS['news']['limitHomeCharacters']==TRUE) 
 			{ 		
 				    echo $Website->limit_characters(htmlentities($text,200));
 				    $output.= $Website->limit_characters($row['body'],200);
@@ -173,7 +173,7 @@ else
 			$commentsNum = $conn->query("SELECT COUNT(id) AS comments FROM news_comments WHERE newsid=". $row['id'] .";");
 							 
 			if($GLOBALS['news']['enableComments']==TRUE) 
-			   $comments = '| <a href="?p=news&amp;newsid=' . $row['id'] . '">Comments (' . $commentsNum->fetch_assoc()['comments'] . ')</a>';
+			   $comments = '| <a href="?page=news&amp;newsid=' . $row['id'] . '">Comments (' . $commentsNum->fetch_assoc()['comments'] . ')</a>';
 			else
 			    $comments = '';
 			 

@@ -57,6 +57,6 @@ function setError($haystack)
       </tr>
     <?php } ?>
   </table><br/>
-  <a href="?p=logs&s=admin" title="Get more logs">旧日志...</a>
+  <a href="?page=logs&selected=admin" title="Get more logs">旧日志...</a>
   <?php } ?>
 </div>

@@ -36,14 +36,14 @@ if(isset($_GET['code']) || isset($_GET['account'])) {
 		 
 		 $Account->changePassword($account_name,$newPass);
 		 
-		 $ignoreForgotForm = true;
+		 $ignoreForgotForm = TRUE;
 	 }
  }
 }
 if (!isset($ignoreForgotForm)) { ?> 
 要重置密码，请输入您的用户名和注册的电子邮件地址。您将收到一封包含重置密码链接的电子邮件。<br/><br/>
 
-<form action="?p=forgotpw" method="post">
+<form action="?page=forgotpw" method="post">
 <table width="80%">
     <tr>
          <td align="right">用户名：</td> 

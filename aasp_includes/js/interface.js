@@ -82,7 +82,7 @@ function setTemplate() {
 	$("#loading").html("Saving...");
 	$.post("../aasp_includes/scripts/layout.php", { action: "setTemplate", id: id },
        function(data) {
-			window.location='?p=interface'
+			window.location='?page=interface'
    });
    
 }
@@ -96,7 +96,7 @@ function installTemplate() {
 	$("#loading").html("Saving...");
 	$.post("../aasp_includes/scripts/layout.php", { action: "installTemplate", path: path,name: name },
        function(data) {
-			window.location='?p=interface'
+			window.location='?page=interface'
    });
 	
 }
@@ -109,7 +109,7 @@ function uninstallTemplate() {
 	$("#loading").html("Saving...");
 	$.post("../aasp_includes/scripts/layout.php", { action: "uninstallTemplate", id:id },
        function(data) {
-			window.location='?p=interface'
+			window.location='?page=interface'
    });
 	
 }
@@ -134,8 +134,8 @@ function saveMenuLink(pos) {
 	$("#loading").html("Saving...");
 	$.post("../aasp_includes/scripts/layout.php", { action: "saveMenu", title: title, url: url, shownWhen: shownWhen, id: pos },
        function(data) {
-			 if(data==true) {
-			window.location='?p=interface&s=menu'
+			 if(data==TRUE) {
+			window.location='?page=interface&selected=menu'
 		   } else {
 			 $("#loading").html(data);  
 		   }
@@ -157,8 +157,8 @@ function deleteLinkNow(id) {
 	$("#loading").html("Saving...");
 	$.post("../aasp_includes/scripts/layout.php", { action: "deleteLink", id: id },
        function(data) {
-			 if(data==true) {
-			window.location='?p=interface&s=menu'
+			 if(data==TRUE) {
+			window.location='?page=interface&selected=menu'
 		   } else {
 			 $("#loading").html(data);  
 		   }
@@ -190,8 +190,8 @@ function addLinkNow() {
 	
 	$.post("../aasp_includes/scripts/layout.php", { action: "addLink", title: title, url: url, shownWhen: shownWhen },
        function(data) {
-		   if(data==true) {
-			   window.location='?p=interface&s=menu';
+		   if(data==TRUE) {
+			   window.location='?page=interface&selected=menu';
 		   } else {
 			    $("#loading").html(data);  
 		   }
@@ -217,13 +217,13 @@ function savePage(filename) {
 	if(action==2 || action==1) {
 		$.post("../aasp_includes/scripts/pages.php", { action: "toggle", value: action, filename: filename },
        function(data) {
-			 window.location='?p=pages';
+			 window.location='?page=pages';
        });
 	}
 	
 	if(action==3) {
 		
-		window.location='?p=pages&action=edit&filename=' + filename;
+		window.location='?page=pages&action=edit&filename=' + filename;
 		
 	}
 	
@@ -239,7 +239,7 @@ function savePage(filename) {
 function deletePage(filename) {
 	$.post("../aasp_includes/scripts/pages.php", { action: "delete", filename: filename },
        function(data) {
-			 window.location='?p=pages';
+			 window.location='?page=pages';
        });
 }
 
@@ -253,7 +253,7 @@ function removeSlideImage(id) {
 function removeSlideImageNow(id) {
 	$.post("../aasp_includes/scripts/layout.php", { action: "deleteImage", id: id },
        function(data) {
-			 window.location='?p=slideshow';
+			 window.location='?page=slideshow';
        });
 }
 
@@ -278,7 +278,7 @@ function saveVoteLink(id) {
 	
 	$.post("../aasp_includes/scripts/pages.php", { action: "saveVoteLink", id: id, title:title, points:points, image:image, url:url },
        function(data) {
-			 window.location='?p=services&s=voting';
+			 window.location='?page=services&selected=voting';
        });
 }
 
@@ -292,7 +292,7 @@ function removeVoteLink(id) {
 function removeVoteLinkNow(id) {
 	$.post("../aasp_includes/scripts/pages.php", { action: "removeVoteLink", id: id },
        function(data) {
-			 window.location='?p=services&s=voting';
+			 window.location='?page=services&selected=voting';
        });
 }
 
@@ -313,7 +313,7 @@ function addVoteLinkNow() {
 	
 	   $.post("../aasp_includes/scripts/pages.php", { action: "addVoteLink", title:title, points:points, image:image, url:url },
        function(data) {
-			 window.location='?p=services&s=voting';
+			 window.location='?page=services&selected=voting';
        });
 }
 
@@ -325,7 +325,7 @@ function saveServicePrice(service) {
 	
 	$.post("../aasp_includes/scripts/pages.php", { action: "saveServicePrice", service:service, price: price, currency: currency, enabled: enabled },
        function(data) {
-			 window.location='?p=services&s=charservice';
+			 window.location='?page=services&selected=charservice';
        });
 }
 
@@ -333,7 +333,7 @@ function disablePlugin(foldername) {
 	
 	$.post("../aasp_includes/scripts/layout.php", { action: "disablePlugin", foldername: foldername},
        function(data) {
-			 window.location='?p=interface&s=viewplugin&plugin=' + foldername;
+			 window.location='?page=interface&selected=viewplugin&plugin=' + foldername;
        });
 }
 
@@ -341,6 +341,6 @@ function enablePlugin(foldername) {
 	
 	$.post("../aasp_includes/scripts/layout.php", { action: "enablePlugin", foldername: foldername},
        function(data) {
-			 window.location='?p=interface&s=viewplugin&plugin=' + foldername;
+			 window.location='?page=interface&selected=viewplugin&plugin=' + foldername;
        });
 }
