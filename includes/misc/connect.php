@@ -18,7 +18,7 @@ class Connect
 	 
         else
 	    { 
-            buildError("<b>Database Connection error:</b> A connection could not be established. Error: " . $conn->error, NULL);
+            buildError("<b>数据库连接错误：</b> 连接不能建立。 错误： " . $conn->error, NULL);
             self::$connectedTo = null;
         }
     }
@@ -26,7 +26,7 @@ class Connect
     public static function connectToRealmDB($realmid)
     {
         $conn = self::connectToDB();
-        self::selectDB('webdb', $conn);
+        self::selectDB("webdb", $conn);
 
         if ($GLOBALS['realms'][$realmid]['mysqli_host'] != $GLOBALS['connection']['host'] || 
             $GLOBALS['realms'][$realmid]['mysqli_user'] != $GLOBALS['connection']['user'] || 
@@ -34,13 +34,13 @@ class Connect
 	    {
             $conn->set_charset("UTF8");
             return new mysqli($GLOBALS['realms'][$realmid]['mysqli_host'], $GLOBALS['realms'][$realmid]['mysqli_user'], $GLOBALS['realms'][$realmid]['mysqli_pass'])
-            or buildError("<b>Database Connection error:</b> A connection could not be established to Realm. Error: " . $conn->error, NULL);
+            or buildError("<b>数据库连接错误：</b> 无法与 Realm 建立连接。 错误： " . $conn->error, NULL);
         }
         else
         {
             self::connectToDB();
         }
-        $conn->select_db($GLOBALS['realms'][$realmid]['chardb']) or buildError("<b>Database Selection error:</b> The realm database could not be selected. Error: " . $conn->error, NULL);
+        $conn->select_db($GLOBALS['realms'][$realmid]['chardb']) or buildError("<b>数据库选择错误：</b> 无法选择Realm数据库。 错误： " . $conn->error, NULL);
         self::$connectedTo = 'chardb';
     }
     public static function selectDB($db, $conn, $realmid = 1)

@@ -217,7 +217,7 @@ class Shop
 	{
 		global $Connect;
         $conn = $Connect->connectToDB();
-		$Connect->selectDB('webdb', $conn);
+		$Connect->selectDB("webdb", $conn);
 
 		$shop = $conn->escape_string($shop);
 		
@@ -334,7 +334,7 @@ class Shop
 	{
 		global $Connect;
         $conn = $Connect->connectToDB();;
-		$Connect->selectDB('webdb', $conn);
+		$Connect->selectDB("webdb", $conn);
 
 		date_default_timezone_set($GLOBALS['timezone']);
 

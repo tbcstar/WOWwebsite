@@ -1,0 +1,20 @@
+*[08 Sep 2021 15:11]<i>mysqli::__construct(): (HY000/2002): Connection refused</i>
+*[08 Sep 2021 15:11]<i>mysqli::set_charset(): Couldn't fetch mysqli</i>
+*[08 Sep 2021 15:11]<i>mysqli::__construct(): (HY000/2002): Connection refused</i>
+*[08 Sep 2021 15:11]<i>mysqli::set_charset(): Couldn't fetch mysqli</i>
+*[08 Sep 2021 15:11]<i>mysqli::__construct(): (HY000/2002): Connection refused</i>
+*[08 Sep 2021 15:11]<i>mysqli::set_charset(): Couldn't fetch mysqli</i>
+*[08 Sep 2021 17:19]<i>mysqli::__construct(): (HY000/2002): Connection refused</i>
+*[08 Sep 2021 17:19]<i>mysqli::set_charset(): Couldn't fetch mysqli</i>
+*[08 Sep 2021 17:19]<i>mysqli::__construct(): (HY000/2002): Connection refused</i>
+*[08 Sep 2021 17:19]<i>mysqli::set_charset(): Couldn't fetch mysqli</i>
+*[08 Sep 2021 17:19]<i>mysqli::__construct(): (HY000/2002): Connection refused</i>
+*[08 Sep 2021 17:19]<i>mysqli::set_charset(): Couldn't fetch mysqli</i>
+*[13 Sep 2021 21:14]<i>mysqli::__construct(): (HY000/2002): Connection timed out</i>
+*[13 Sep 2021 21:14]<i>mysqli::set_charset(): Couldn't fetch mysqli</i>
+*[13 Sep 2021 21:17]<i>mysqli::__construct(): (HY000/2002): Connection timed out</i>
+*[13 Sep 2021 21:17]<i>mysqli::set_charset(): Couldn't fetch mysqli</i>
+*[13 Sep 2021 21:56]<i>mysqli::__construct(): (HY000/2002): Connection timed out</i>
+*[13 Sep 2021 21:56]<i>mysqli::set_charset(): Couldn't fetch mysqli</i>
+*[14 Sep 2021 09:42]<i>mysqli::__construct(): (HY000/2002): Connection timed out</i>
+*[14 Sep 2021 09:42]<i>mysqli::set_charset(): Couldn't fetch mysqli</i>

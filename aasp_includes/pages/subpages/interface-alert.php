@@ -1,7 +1,7 @@
 <?php 
-	global $Page; 
+	global $GamePage;
 	
-	if(isset($_POST['update_alert']))
+	if ( isset($_POST['update_alert']) )
 	{
 		$alert_enable = $_POST['alert_enable'];
 		$alert_message = trim($_POST['alert_message']);
@@ -18,7 +18,7 @@
 						";
 		
 		$fp = fopen('../documents/alert.php', 'w');
-		if(fwrite($fp, $file_content))
+		if ( fwrite($fp, $file_content) )
 		{
 			$msg = "警报消息已更新!";
 		}
@@ -30,7 +30,7 @@
 		fclose($fp);
 	}
 
-	include('../documents/alert.php');
+	include "../documents/alert.php";
 ?>
 <div class="box_right_title"><?php echo $Page->titleLink(); ?> &raquo; 告警信息</div>
 <form action="?page=interface&selected=alert" method="post">
@@ -47,7 +47,7 @@
     	<td></td>
         <td><input type="submit" value="Save" name="update_alert">
         <?php
-			if(isset($msg))
+			if ( isset($msg) )
 			{
 				echo $msg;
 			}

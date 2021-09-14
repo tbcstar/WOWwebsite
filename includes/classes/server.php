@@ -6,7 +6,7 @@ class Server
 	{
         global $Connect;
         $conn = $Connect->connectToDB();
-		$Connect->selectDB('webdb', $conn);
+		$Connect->selectDB("webdb", $conn);
 
         $get = $conn->query("SELECT id FROM realms WHERE char_db='". $conn->escape_string($char_db) ."';");
         $row = $get->fetch_assoc();
@@ -18,7 +18,7 @@ class Server
 	{
         global $Connect;
         $conn = $Connect->connectToDB();
-        $Connect->selectDB('webdb', $conn);
+        $Connect->selectDB("webdb", $conn);
 
         $get = $conn->query("SELECT name FROM realms WHERE char_db='". $conn->escape_string($char_db) ."';");
         $row = $get->fetch_assoc();
@@ -128,7 +128,7 @@ class Server
 			//Get uptime
 			if ($GLOBALS['serverStatus']['uptime']==TRUE) 
 			{	
-				$Connect->selectDB('logondb');
+				$Connect->selectDB("logondb", $conn);
 				$getUp = $conn->query("SELECT starttime FROM uptime WHERE realmid=". $realmId ." ORDER BY starttime DESC LIMIT 1;");
                 $row   = $getUp->fetch_assoc();
 

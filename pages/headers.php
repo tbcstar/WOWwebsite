@@ -33,7 +33,7 @@
 <li class="">
 <p class="username"><?php echo ucfirst(strtolower($_SESSION['cw_user']));?></p>
 <a href="#" class="balance">
-<span class="coin-gold"><!--<?php echo account::loadDP($_SESSION['cw_user']); ?>--></span>
+<span class="coin-gold"><?php echo account::loadDP($_SESSION['cw_user']); ?></span>
 <span class="count-gold"><?php echo account::loadVP($_SESSION['cw_user']); ?></span>
 </a>
 </li>

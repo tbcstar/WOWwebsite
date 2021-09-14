@@ -11,7 +11,7 @@ if (isset($_GET['newsid']))
     global $Connect, $Website;
     $conn = $Connect->connectToDB();
 	$id = $conn->escape_string($_GET['newsid']);
-	$Connect->selectDB('webdb', $conn);
+	$Connect->selectDB("webdb", $conn);
 
 	$result = $conn->query("SELECT * FROM news WHERE id=". $id .";");
 	$row = $result->fetch_assoc(); ?>
@@ -65,7 +65,7 @@ if (isset($_GET['newsid']))
 			$getAcct = $conn->query("SELECT id FROM account WHERE username='" . $_SESSION['cw_user'] . "';");
 			$row     = $getAcct->fetch_assoc();
 			$account = $row['id'];
-			$Connect->selectDB('webdb', $conn); 
+			$Connect->selectDB("webdb", $conn); 
 			$conn->query("INSERT INTO news_comments (`newsid`, `text`, `poster`, `ip`) VALUES 
                 (". $id .", '". $text ."', '". $account ."', '". $_SERVER['REMOTE_ADDR'] ."');");
 

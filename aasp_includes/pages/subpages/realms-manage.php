@@ -1,7 +1,7 @@
 <?php 
   global $GamePage, $GameServer;
   $conn = $GameServer->connect();
-  $GameServer->selectDB('webdb', $conn);
+  $GameServer->selectDB("webdb", $conn);
 ?>
 <div class="box_right_title">服务器管理</div>
 <table class="center">

@@ -1,8 +1,8 @@
 <?php
     define('INIT_SITE', TRUE);
-    include('../../includes/misc/headers.php');
-    include('../../includes/configuration.php');
-    include('../functions.php');
+    include "../../includes/misc/headers.php";
+    include "../../includes/configuration.php";
+    include "../functions.php";
 
     global $GameServer, $GameAccount;
     $conn = $GameServer->connect();
@@ -42,7 +42,7 @@
             }
             $conn->query("UPDATE account SET email='". $email ."' WHERE id=". $id .";");
 
-            $GameServer->selectDB('webdb', $conn);
+            $GameServer->selectDB("webdb", $conn);
 
             $conn->query("INSERT INTO account_data (id) VALUES(". $id .");");
 
@@ -65,7 +65,7 @@
                 $username = strtoupper(trim($GameAccount->getAccName($id)));
 
                 $password = sha1("". $username .":". $password ."");
-                $GameServer->selectDB('logondb', $conn);
+                $GameServer->selectDB("logondb", $conn);
                 $conn->query("UPDATE account SET sha_pass_hash='". $password ."' WHERE id=". $id .";");
                 $conn->query("UPDATE account SET v='0', s='0' WHERE id=". $id .";");
                 $extended .= "更改密码<br/>";

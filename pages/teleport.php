@@ -69,7 +69,7 @@ elseif($GLOBALS['service'][$service]['currency']=="dp")
 <hr/>
 <h3 id="choosechar">选择角色</h3> 
 <?php
-$Connect->selectDB('webdb', $conn);
+$Connect->selectDB("webdb", $conn);
 $result = $conn->query("SELECT char_db, name FROM realms ORDER BY id ASC;");
 while ($row = $result->fetch_assoc())
 {

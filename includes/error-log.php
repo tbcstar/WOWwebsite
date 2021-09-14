@@ -1,6 +1,6 @@
 <?php 
 define('INIT_SITE', TRUE);
-require('configuration.php'); 
+require "configuration.php";
 ?>
 
 <h2>错误日志</h2>

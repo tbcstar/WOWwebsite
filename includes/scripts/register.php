@@ -1,11 +1,11 @@
 <?php
 
-require('../ext_scripts_class_loader.php');
+require "../ext_scripts_class_loader.php";
 
 global $Connect, $Account;
 $conn = $Connect->connectToDB();
 
-$Connect->selectDB('logondb', $conn);
+$Connect->selectDB("logondb", $conn);
 
 if (isset($_POST['register'])) 
 {

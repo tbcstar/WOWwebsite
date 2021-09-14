@@ -221,7 +221,7 @@ elseif($GLOBALS['service'][$service]['currency']=="dp")
 
 	$Account->isNotLoggedIn();
 
-	$Connect->selectDB('webdb', $conn);
+	$Connect->selectDB("webdb", $conn);
 	$result = $conn->query("SELECT name FROM realms WHERE id='".$realm_id."'");
 	$row = $result->fetch_assoc();
 	$realm = $row['name'];
@@ -261,7 +261,7 @@ elseif($GLOBALS['service'][$service]['currency']=="dp")
 </div>
 
 
-&nbsp;
+<br><br><br><br><br><br><br>
     <h4>条件和免责声明</h4>
     <?php
 	echo $service_desc[$service];

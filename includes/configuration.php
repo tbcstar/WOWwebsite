@@ -28,7 +28,7 @@
 	 
 	 $default_email = 'admin@tbcstar.com'; //将发送wich电子邮件的默认电子邮件地址。
 
-	 $website_domain = 'https://tbcstar.itpel.com/'; //提供域名和路径到你的网站。
+	 $website_domain = 'http://www.tbcstar.com/'; //提供域名和路径到你的网站。
 	 //Example: http://yourserver.com/
 	 //如果你的网站在子目录下， include that aswell. Ex: http://yourserver.com/cataclysm/
 	 
@@ -49,10 +49,7 @@
 	 // 3 = Cataclysm
 	 // 4 = Mists Of Pandaria
 	 // 5 = Legion
-	 
-    $config['srp6_support'] = FALSE; //如果您的核心密码加密方式为“SRP6”，则需要启用该加密方式。
-    //参考资料https://github.com/azerothcore/azerothcore-wotlk/issues/5104 或 https://git.io/JJRH4
-	 
+
 	 $adminPanel_enable = TRUE; //启用或禁用管理员面板。
 	 $staffPanel_enable = TRUE; //启用或禁用Staff面板。
 	 
@@ -129,9 +126,9 @@
 	#*************************#
 	
 	$connection['web']['host']        = "game.tbcstar.com";
-    $connection['web']['port']        = "3310";
+    $connection['web']['port']        = "3306";
 	$connection['web']['user']        = "root";
-	$connection['web']['password']    = "A112233a";
+	$connection['web']['password']    = "A112233a!";
 	$connection['web']['database']    = "tbcstar";
 
     #*************************#
@@ -139,9 +136,9 @@
     #*************************#
 
     $connection['logon']['host']        = "game.tbcstar.com";
-    $connection['logon']['port']        = "3310";
+    $connection['logon']['port']        = "3306";
     $connection['logon']['user']        = "root";
-    $connection['logon']['password']    = "A112233a";
+    $connection['logon']['password']    = "A112233a!";
     $connection['logon']['database']    = "auth";
 
     #*************************#
@@ -149,9 +146,9 @@
     #*************************#
 
     $connection['characters']['host']        = "game.tbcstar.com";
-    $connection['characters']['port']        = "3310";
+    $connection['characters']['port']        = "3306";
     $connection['characters']['user']        = "root";
-    $connection['characters']['password']    = "A112233a";
+    $connection['characters']['password']    = "A112233a!";
     $connection['characters']['database']    = "characters";
 
     #*************************#
@@ -159,9 +156,9 @@
     #*************************#
 
     $connection['world']['host']        = "game.tbcstar.com";
-    $connection['world']['port']        = "3310";
+    $connection['world']['port']        = "3306";
     $connection['world']['user']        = "root";
-    $connection['world']['password']    = "A112233a";
+    $connection['world']['password']    = "A112233a!";
     $connection['world']['database']    = "world";
 	
 	// host = IP地址或域名地址（可以修改端口）
@@ -332,25 +329,25 @@
 	date_default_timezone_set($GLOBALS['timezone']);
 	
 	//设置错误处理。
-	if(file_exists('includes/classes/error.php'))
+	if(file_exists("includes/classes/error.php"))
 	{
-		require('includes/classes/error.php');
-	}
-	elseif(file_exists('../classes/error.php'))
+		require "includes/classes/error.php";
+	}		
+	elseif(file_exists("../classes/error.php"))
 	{
-		require('../classes/error.php');
-	}
-	elseif(file_exists('../includes/classes/error.php'))
+		require "../classes/error.php";
+	}		
+	elseif(file_exists("../includes/classes/error.php"))
 	{
-		require('../includes/classes/error.php');
-	}
-	elseif(file_exists('../../includes/classes/error.php'))
+		require "../includes/classes/error.php";
+	}	
+	elseif(file_exists("../../includes/classes/error.php"))
 	{
-		require('../../includes/classes/error.php');
-	}
-	elseif(file_exists('../../../includes/classes/error.php'))
+		require "../../includes/classes/error.php";
+	}	
+	elseif(file_exists("../../../includes/classes/error.php"))
 	{
-		require('../../../includes/classes/error.php');
+		require "../../../includes/classes/error.php";
 	}
 	loadCustomErrors(); //加载自定义错误
 	?> 

@@ -1,8 +1,8 @@
 <?php
     define('INIT_SITE', TRUE);
-    include('../../includes/misc/headers.php');
-    include('../../includes/configuration.php');
-    include('../functions.php');
+    include "../../includes/misc/headers.php";
+    include "../../includes/configuration.php";
+    include "../functions.php";
 
     global $GameServer, $GameAccount;
     $conn = $GameServer->connect();
@@ -73,7 +73,7 @@
 
             if ($conn->query("INSERT INTO disabled_plugins VALUES('". $foldername ."');"))
             {
-                include('../../plugins/' . $foldername . '/info.php');
+                include "../../plugins/" . $foldername . "/info.php";
                 $GameServer->logThis("禁用了插件 " . $title);
             }
             else
@@ -89,7 +89,7 @@
 
             if ($conn->query("DELETE FROM disabled_plugins WHERE foldername='". $foldername ."';"))
             {
-                include('../../plugins/' . $foldername . '/info.php');
+                include "../../plugins/" . $foldername . "/info.php";
                 $GameServer->logThis("启用插件 -" . $title);
             }
             else

@@ -28,7 +28,7 @@ class Cache
 		 {
 			if (file_exists('cache/'.$filename.'.cache.php'))
 			{
-				include('cache/'.$filename.'.cache.php');
+				include "cache/". $filename .".cache.php";
 			}
 			else
 			{

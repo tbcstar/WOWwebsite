@@ -82,7 +82,7 @@ elseif(isset($_GET['return']) && $_GET['return']!="TRUE")
 	echo "<span class='alert'>".$_GET['return']."</span>";
 
 $Account->isNotLoggedIn();
-$Connect->selectDB('webdb', $conn);
+$Connect->selectDB("webdb", $conn);
 
 $counter = 0;
 $totalDP = 0;

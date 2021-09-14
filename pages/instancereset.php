@@ -142,7 +142,7 @@ if(isset($_POST['ir_step2']) || isset($_POST['ir_step3']))
 			 $getI     = $conn->query("SELECT id, map, difficulty FROM instance WHERE id=". $row['instance'] .";");
 			 $instance = $getI->fetch_assoc(); 
 			 
-			 $Connect->selectDB('webdb', $conn);
+			 $Connect->selectDB("webdb", $conn);
 			 $getName = $conn->query("SELECT name FROM instance_data WHERE map='" . $instance['map'] . "';");
 			 $name = $getName->fetch_assoc();
 			 

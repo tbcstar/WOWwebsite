@@ -1,6 +1,6 @@
 <?php
 
-include('documents/alert.php');
+include "documents/alert.php";
 
 if($alert_enabled == true)
 {

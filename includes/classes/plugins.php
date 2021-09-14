@@ -24,7 +24,7 @@ class Plugins
 							$Connect->selectDB("webdb", $conn);
 							if(file_exists('plugins/'. $folderName .'/config.php'))
 							{
-								include('plugins/'. $folderName .'/config.php');
+								include "plugins/". $folderName ."/config.php";
 							}
 
 							$loaded_plugins[] = $folderName;
@@ -100,7 +100,7 @@ class Plugins
 						$name = basename(substr($filename,0,-4));
 						if($name == $_GET['page'])
 						{
-							include($filename);
+							include "". $filename;
 							$count = 1;
 						}
 					}
@@ -108,7 +108,7 @@ class Plugins
 
 				if($count == 0)
 				{
-					include('pages/404.php');
+					include "pages/404.php";
 				}		  
 			}
 			###########################
@@ -141,7 +141,7 @@ class Plugins
 				{
 					foreach($_SESSION['loaded_plugins_' . $type] as $filename)
 					{
-						include($filename);
+						include "". $filename;
 					}
 				}
 			}

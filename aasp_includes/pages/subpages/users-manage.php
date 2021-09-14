@@ -194,7 +194,7 @@ elseif (isset($_GET['getslogs']))
             <th>日期</th>
         </tr>
         <?php
-		$GameServer->selectDB('webdb', $conn);
+		$GameServer->selectDB("webdb", $conn);
 		$result = $conn->query("SELECT * FROM user_log WHERE account=". $getLogs .";");
         if ($result->num_rows == 0)
 		{

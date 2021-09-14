@@ -1,11 +1,11 @@
 <?php
 session_start();
 define('INIT_SITE', TRUE);
-require('../configuration.php');
-require('../misc/connect.php');
-require('../classes/account.php');
-require('../classes/character.php');
-require('../classes/shop.php');
+require "../configuration.php";
+require "../misc/connect.php";
+require "../classes/account.php";
+require "../classes/character.php";
+require "../classes/shop.php";
 
 global $Connect, $Account, $Shop, $Character;
 $Connect->connectToDB();
@@ -28,7 +28,7 @@ if($_POST['action']=='addShopitem')
    	}
    	else
    	{
-		$Connect->selectDB('webdb', $conn);
+		$Connect->selectDB("webdb", $conn);
 
 		$result = $conn->query("SELECT entry, price FROM shopitems WHERE entry=". $entry ." AND in_shop='". $shop ."';");
 		if ($result->num_rows != 0)
@@ -65,7 +65,7 @@ if($_POST['action']=='getMinicart')
 		exit();
 	}
 
-	$Connect->selectDB('webdb', $conn);
+	$Connect->selectDB("webdb", $conn);
 	if (is_array($_SESSION[$_POST['cart']]) || is_object($_SESSION[$_POST['cart']]))
 	{
 		foreach($_SESSION[$_POST['cart']] as $entry => $value) 
@@ -103,9 +103,9 @@ if($_POST['action']=='checkout')
 	
 	$values = explode('*',$_POST['values']);
 	
-	$Connect->selectDB('webdb', $conn);
-	require("../misc/ra.php");
-	require('../misc/soap.php');
+	$Connect->selectDB("webdb", $conn);
+	require "../misc/ra.php";
+	require "../misc/soap.php";
 	
 	if(isset($_SESSION['donateCart'])) 
 	{
@@ -242,7 +242,7 @@ if($_POST['action'] == 'removeItem')
 	$entry = $conn->escape_string($_POST['entry']);
 	$shop  = $conn->escape_string($_POST['shop']);
 
-	$Connect->selectDB('webdb', $conn);
+	$Connect->selectDB("webdb", $conn);
 	$conn->query("DELETE FROM shopitems WHERE entry=". $entry ." AND in_shop='". $shop ."';");
 }
 
@@ -257,7 +257,7 @@ if($_POST['action'] == 'editItem')
 	$shop  = $conn->escape_string($_POST['shop']);
 	$price = $conn->escape_string($_POST['price']);
 	
-	$Connect->selectDB('webdb', $conn);
+	$Connect->selectDB("webdb", $conn);
 	
 	if($price > 0)
 	{

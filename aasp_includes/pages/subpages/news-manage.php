@@ -2,7 +2,7 @@
 
 global $GameServer;
 $conn = $GameServer->connect();
-$GameServer->selectDB('webdb', $conn);
+$GameServer->selectDB("webdb", $conn);
 $result = $conn->query("SELECT * FROM news ORDER BY id DESC;");
 if ($result->num_rows == 0)
 { 

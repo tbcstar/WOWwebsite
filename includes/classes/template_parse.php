@@ -16,7 +16,7 @@ class Page
   function parse($file)
   {
     ob_start();
-    include($file);
+    include $file;
     $buffer = ob_get_contents();
     ob_end_clean();
     return $buffer;

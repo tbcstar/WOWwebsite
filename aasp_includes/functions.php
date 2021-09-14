@@ -22,7 +22,7 @@
         public function getConnections()
         {
             $conn = $this->connect();
-            $this->selectDB('logondb', $conn);
+            $this->selectDB("logondb", $conn);
 
             $result = $conn->query("SELECT COUNT(id) AS connections FROM account WHERE online=1;");
             return $result->fetch_assoc()['connections'];
@@ -51,7 +51,7 @@
                 return 0;
             }
             $conn = $this->connect();
-            $this->selectDB('logondb', $conn);
+            $this->selectDB("logondb", $conn);
 
             $getUp = $conn->query("SELECT starttime FROM uptime WHERE realmid=". $realmId ." ORDER BY starttime DESC LIMIT 1;");
             $row   = $getUp->fetch_assoc();
@@ -118,7 +118,7 @@
         public function getGMSOnline()
         {
             $conn = $this->connect();
-            $this->selectDB('logondb', $conn);
+            $this->selectDB("logondb", $conn);
 
             $result = $conn->query("SELECT COUNT(id) AS GMOnline FROM account WHERE username
                 IN (SELECT username FROM account WHERE online=1) AND id IN (SELECT id FROM account_access WHERE gmlevel>1);");
@@ -129,7 +129,7 @@
         public function getAccountsCreatedToday()
         {
             $conn = $this->connect();
-            $this->selectDB('logondb', $conn);
+            $this->selectDB("logondb", $conn);
 
             $result = $conn->query("SELECT COUNT(id) AS accountsCreated FROM account WHERE joindate LIKE '%". date("Y-m-d") ."%';");
             $row = $result->fetch_assoc();
@@ -142,7 +142,7 @@
         public function getActiveAccounts()
         {
             $conn = $this->connect();
-            $this->selectDB('logondb', $conn);
+            $this->selectDB("logondb", $conn);
 
             $result = $conn->query("SELECT COUNT(id) AS activeMonth FROM account WHERE last_login LIKE '%". date("Y-m") ."%';");
             $row = $result->fetch_assoc();
@@ -155,7 +155,7 @@
         public function getActiveConnections()
         {
             $conn = $this->connect();
-            $this->selectDB('logondb', $conn);
+            $this->selectDB("logondb", $conn);
 
             $result = $conn->query("SELECT COUNT(id) AS activeConnections FROM account WHERE online='1';");
             $row = $result->fetch_assoc();
@@ -204,7 +204,7 @@
         public function getAccountsLoggedToday()
         {
             $conn = $this->connect();
-            $this->selectDB('logondb', $conn);
+            $this->selectDB("logondb", $conn);
 
             $result = $conn->query("SELECT COUNT(*) AS accountsToday FROM account WHERE last_login LIKE '%" . date('Y-m-d') . "%'");
             $row = $result->fetch_assoc();
@@ -505,7 +505,7 @@
 
             global $GameServer;
             $conn = $GameServer->connect();
-            $GameServer->selectDB('logondb', $conn);
+            $GameServer->selectDB("logondb", $conn);
 
             $user   = $conn->escape_string($user);
             $result = $conn->query("SELECT id FROM account WHERE username='". $user ."';");
@@ -519,7 +519,7 @@
             global $GameServer;
 
             $conn = $GameServer->connect();
-            $GameServer->selectDB('logondb', $conn);
+            $GameServer->selectDB("logondb", $conn);
 
             $accountId = $conn->escape_string($id);
 
@@ -567,7 +567,7 @@
             $conn = $GameServer->connect();
 
             $accountId = $conn->escape_string($id);
-            $GameServer->selectDB('logondb', $conn);
+            $GameServer->selectDB("logondb", $conn);
 
             $result = $conn->query("SELECT email FROM account WHERE id=". $accountId .";");
             $row    = $result->fetch_assoc();
@@ -579,7 +579,7 @@
         {
             global $GameServer;
             $conn = $GameServer->connect();
-            $GameServer->selectDB('webdb', $conn);
+            $GameServer->selectDB("webdb", $conn);
 
             $accountId = $conn->escape_string($id);
 
@@ -595,7 +595,7 @@
         {
             global $GameServer;
             $conn = $GameServer->connect();
-            $GameServer->selectDB('webdb', $conn);
+            $GameServer->selectDB("webdb", $conn);
 
             $accountId = $conn->escape_string($id);
 
@@ -611,7 +611,7 @@
         {
             global $GameServer;
             $conn = $GameServer->connect();
-            $GameServer->selectDB('logondb', $conn);
+            $GameServer->selectDB("logondb", $conn);
 
             $accountId = $conn->escape_string($id);
 
@@ -692,15 +692,15 @@
 
             if (!file_exists('../aasp_includes/pages/subpages/' . $page . '-' . $subpage . '.php'))
             {
-                include('../aasp_includes/pages/404.php');
+                include "../aasp_includes/pages/404.php";
             }
             elseif (in_array($page . '-' . $subpage . '.php', $pages))
             {
-                include('../aasp_includes/pages/subpages/' . $page . '-' . $subpage . '.php');
+                include "../aasp_includes/pages/subpages/". $page . "-" . $subpage .".php";
             }
             else
             {
-                include('../aasp_includes/pages/404.php');
+                include "../aasp_includes/pages/404.php";
             }
         }
 
@@ -714,7 +714,7 @@
             global $GameServer, $conn;
             $conn = $GameServer->connect();
 
-            $GameServer->selectDB('webdb', $conn);
+            $GameServer->selectDB("webdb", $conn);
             $path = $conn->escape_string($path);
             $url  = $conn->escape_string($url);
 
@@ -756,7 +756,7 @@
             if (!isset($abort))
             {
 
-                $GameServer->selectDB('webdb', $conn);
+                $GameServer->selectDB("webdb", $conn);
                 $conn->query("INSERT INTO slider_images (`path`, `link`) VALUES('". $path ."', '". $url ."');");
             }
         }

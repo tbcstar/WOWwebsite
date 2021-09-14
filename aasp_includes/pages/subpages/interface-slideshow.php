@@ -1,7 +1,7 @@
 <?php 
   global $GamePage, $GameServer;
   $conn = $GameServer->connect();
-  $GameServer->selectDB('webdb', $conn);
+  $GameServer->selectDB("webdb", $conn);
 ?>
 <div class="box_right_title"><?php echo $GamePage->titleLink(); ?> &raquo; 幻灯片</div>
 <?php 
@@ -14,7 +14,7 @@ else
 	$status = '禁用';
 }
 
-$GameServer->selectDB('webdb', $conn);
+$GameServer->selectDB("webdb", $conn);
 $count = $conn->query("SELECT COUNT(*) AS sliderImages FROM slider_images;");
 ?>
 幻灯片是 <b><?php echo $status; ?></b>。 你有<b><?php echo round($count->fetch_assoc()['sliderImages']); ?></b>幻灯片中的图像。
@@ -42,7 +42,7 @@ if(isset($_POST['addSlideImage']))
 </div>
 <br/>&nbsp;<br/>
 <?php 
-$GameServer->selectDB('webdb', $conn);
+$GameServer->selectDB("webdb", $conn);
 $result = $conn->query("SELECT * FROM slider_images ORDER BY position ASC;");
 if ($result->num_rows == 0)
 {

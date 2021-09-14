@@ -1,6 +1,6 @@
 <?php
 
-require('../ext_scripts_class_loader.php');
+require "../ext_scripts_class_loader.php";
 
 global $Connect, $Account, $Shop, $Character;
 $conn = $Connect->connectToDB();
@@ -17,7 +17,7 @@ if (isset($_POST['item_entry']))
 	}
 	else 
 	{
-		$Connect->selectDB('webdb', $conn);
+		$Connect->selectDB("webdb", $conn);
 		
 		$realm = explode("*", $character_realm);
 
@@ -52,16 +52,16 @@ if (isset($_POST['item_entry']))
 	   
 	  	if($row['sendType'] == 'ra') 
 	  	{
-			require('../misc/ra.php');
-			require('../classes/character.php');
+			require "../misc/ra.php";
+            require "../classes/character.php";
 		  
 			sendRa("send items ".$Character->getCharname($realm[0])." \"您购买的物品\" \"感谢您对我们的支持！\" ".$entry." ",
 			$row['rank_user'],$row['rank_pass'],$row['host'],$row['ra_port']); 
 	  	} 
 	  	elseif($row['sendType'] == 'soap') 
 	  	{
-			require('../misc/soap.php');
-			require('../classes/character.php'); 
+			require "../misc/soap.php";
+            require "../classes/character.php"; 
 			 
 			sendSoap("send items ".$Character->getCharname($realm[0])." \"您购买的物品\" \"感谢您对我们的支持！\" ".$entry." ",
 			$row['rank_user'],$row['rank_pass'],$row['host'],$row['soap_port']);

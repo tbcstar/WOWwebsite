@@ -1,7 +1,7 @@
 <?php 
     global $GamePage, $GameServer, $GameAccount;
     $conn = $GameServer->connect();
-    $GameServer->selectDB('webdb', $conn);
+    $GameServer->selectDB("webdb", $conn);
 ?> 
 <div class="box_right_title">投票链接</div>
 <table class="center">

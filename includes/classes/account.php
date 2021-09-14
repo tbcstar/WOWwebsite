@@ -1,4 +1,6 @@
 <?php
+
+require_once "random_compat-2.0.20/lib/random.php";
 ##############
 ##  Account functions goes here
 ##############
@@ -36,15 +38,17 @@ class Account
 			}
 			else 
 			{
-				if ($remember != 835727313) $password = sha1( $username .":". $password );
+				if ($remember != 835727313)
+				{
+					$data = $conn->query("SELECT salt, verifier FROM account WHERE username = '".$username."'");
+					$data = $data->fetch_assoc();
+					$salt = $data['salt'];
+					$verifier = $data['verifier'];
+				}
 
-				$result = $conn->query("SELECT id FROM account WHERE username='". $username ."' AND sha_pass_hash='". $password ."';");
-                if ($result->num_rows == 0)
-                {
-                    echo "<span class=\"red_text\">
-                        错误的密码。
-                        </span>";
-                    exit;
+				if (!account::verifySRP6($username, $password, $salt, $verifier))
+					echo '<span class="red_text">密码错误。</span>';
+                exit;
                 }
 
                 if ($remember == "on")
@@ -59,7 +63,7 @@ class Account
 				$_SESSION['cw_user'] = ucfirst(strtolower($username));
 				$_SESSION['cw_user_id'] = $id;
 					
-				$Connect->selectDB('webdb', $conn);
+				$Connect->selectDB("webdb", $conn);
 
                 $count = $conn->query("SELECT COUNT(*) FROM account_data WHERE id=". $id .";");
                 if ($count->data_seek(0) == 0)
@@ -112,8 +116,66 @@ class Account
 		}
 		header('Location: '.$last_page);
 	}
-	
-	
+
+
+	###############################
+	####### SRP6 methods
+	###############################
+	public function calculateSRP6Verifier($username, $password, $salt)
+    {
+        // algorithm constants
+        $g = gmp_init(7);
+        $N = gmp_init('894B645E89E1535BBDAD5B8B290650530801B18EBFBF5E8FAB3C82872A3E9BB7', 16);
+
+        // calculate first hash
+        $h1 = sha1(strtoupper($username . ':' . $password), TRUE);
+
+        // calculate second hash
+        $h2 = sha1($salt.$h1, TRUE);
+
+        // convert to integer (little-endian)
+        $h2 = gmp_import($h2, 1, GMP_LSW_FIRST);
+
+        // g^h2 mod N
+        $verifier = gmp_powm($g, $h2, $N);
+
+        // convert back to a byte array (little-endian)
+        $verifier = gmp_export($verifier, 1, GMP_LSW_FIRST);
+
+        // pad to 32 bytes, remember that zeros go on the end in little-endian!
+        $verifier = str_pad($verifier, 32, chr(0), STR_PAD_RIGHT);
+
+        // done!
+        return $verifier;
+    }
+
+    // Returns SRP6 parameters to register this username/password combination with
+    public function getRegistrationData($username, $password)
+    {
+        // generate a random salt
+        $salt = random_bytes(32);
+
+        // calculate verifier using this salt
+        $verifier = account::calculateSRP6Verifier($username, $password, $salt);
+
+        // done - this is what you put in the account table!
+        return array($salt, $verifier);
+    }
+
+    public function verifySRP6($user, $pass, $salt, $verifier)
+    {
+        $g = gmp_init(7);
+        $N = gmp_init('894B645E89E1535BBDAD5B8B290650530801B18EBFBF5E8FAB3C82872A3E9BB7', 16);
+        $x = gmp_import(
+            sha1($salt . sha1(strtoupper($user . ':' . $pass), TRUE), TRUE),
+            1,
+            GMP_LSW_FIRST
+        );
+        $v = gmp_powm($g, $x, $N);
+        return ($verifier === str_pad(gmp_export($v, 1, GMP_LSW_FIRST), 32, chr(0), STR_PAD_RIGHT));
+    }
+
+
 	###############################
 	####### 注册方法
 	###############################
@@ -220,21 +282,20 @@ class Account
 		} 
 		else 
 		{
-            $password = sha1( $username .":". $password );
+            $data = account::getRegistrationData($username, $password);
+			$salt = $data[0];
+			$verifier = $data[1];
 
-            if ( empty($raf) ) $raf = 0;
-			
-            $Connect->selectDB('logondb', $conn);
-            $conn->query("INSERT INTO account (username, email, sha_pass_hash, joindate, expansion, recruiter) VALUES 
-                ('". $username ."', '". $email ."', '". $password ."', '". date("Y-m-d H:i:s") ."', '". $GLOBALS['core_expansion'] ."', ". $raf .");");
+			$conn->query("INSERT INTO account (username, salt, verifier, email, joindate, expansion, recruiter)
+			VALUES('".$username."', '".$salt."', '".$verifier."', '".$email."', '".date("Y-m-d H:i:s")."', '".$GLOBALS['core_expansion']."', '".$raf."') ");
 
             $getID = $conn->query("SELECT id FROM account WHERE username='". $username ."';");
             $row   = $getID->fetch_assoc();
 
-			$Connect->selectDB('webdb', $conn);
+			$Connect->selectDB("webdb", $conn);
             $conn->query("INSERT INTO account_data (id) VALUES(". $row['id'] .");");
 
-            $Connect->selectDB('logondb', $conn);
+            $Connect->selectDB("logondb", $conn);
             $result = $conn->query( "SELECT id FROM account WHERE username='". $username_clean ."';");
             $id     = $result->fetch_assoc();
 			$id 	= $id['id'];
@@ -266,11 +327,11 @@ class Account
 			$phpEx = "php";
 			$phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : ROOT_PATH;
 
-			if(file_exists($phpbb_root_path . 'common.' . $phpEx) && file_exists($phpbb_root_path . 'includes/functions_user.' . $phpEx)) 
-			{
-				include($phpbb_root_path .'common.'. $phpEx);
+            if (file_exists($phpbb_root_path . 'common.' . $phpEx) && file_exists($phpbb_root_path . 'includes/functions_user.' . $phpEx))
+            {
+				include $phpbb_root_path ."common.". $phpEx;
 				
-				include($phpbb_root_path .'includes/functions_user.'. $phpEx);
+				include $phpbb_root_path ."includes/functions_user.". $phpEx;
 				
 				$arrTime = getdate();
 				$unixTime = strtotime($arrTime['year']."-".$arrTime['mon'].'-'.$arrTime['mday']." ".$arrTime['hours'].":".
@@ -427,7 +488,7 @@ class Account
         $accountName    = $conn->escape_string($account_name);
         $acct_id        = $this->getAccountID($accountName);
 
-		$Connect->selectDB('webdb', $conn);
+		$Connect->selectDB("webdb", $conn);
 
         $result = $conn->query("SELECT vp FROM account_data WHERE id=". $acct_id .";");
         if ($result->num_rows == 0)
@@ -451,7 +512,7 @@ class Account
         $accountName    = $conn->escape_string($account_name);
         $acct_id        = $this->getAccountID($accountName);
 
-		$Connect->selectDB('webdb', $conn);
+		$Connect->selectDB("webdb", $conn);
 
         $result  = $conn->query("SELECT dp FROM account_data WHERE id=". $acct_id .";");
         if ($result->num_rows == 0)
@@ -558,7 +619,7 @@ class Account
 
 		$acct_id = $this->getAccountID($accountName);
 
-		$Connect->selectDB('webdb', $conn);
+		$Connect->selectDB("webdb", $conn);
 
         $getRealms = $conn->query("SELECT id, name FROM realms;");
         while ($row = $getRealms->fetch_assoc())
@@ -603,10 +664,12 @@ class Account
 			$username = $conn->escape_string(trim(strtoupper($_SESSION['cw_user'])));
             $password = $conn->escape_string(trim(strtoupper($current_pass)));
 			
-			$password = sha1("". $username .":". $password ."");
+			$data = $conn->query("SELECT salt, verifier FROM account WHERE username = '".$username."'");
+			$data = $data->fetch_assoc();
+			$salt = $data['salt'];
+			$verifier = $data['verifier'];
 
-			$result = $conn->query("SELECT COUNT(id) FROM account WHERE username='". $username ."' AND sha_pass_hash='". $password ."';");
-            if ($result->data_seek(0) == 0)
+			if (!account::verifySRP6($username, $password, $salt, $verifier))
 			{
 				$errors[] = '当前密码不正确。';
 			}
@@ -619,7 +682,7 @@ class Account
 			    }
 				else
 				{
-					$conn->query("UPDATE account SET email='". $email ."' WHERE username='". $_SESSION['cw_user'] ."';");
+					$conn->query("UPDATE account SET email = '". $email ."' WHERE username = '".$username."'");
 				}
 			}
 			
@@ -650,9 +713,9 @@ class Account
 		global $Connect;
         $conn = $Connect->connectToDB();
 
-        $_POST['current_password']    = $conn->escape_string($old);
-        $_POST['new_password']        = $conn->escape_string($new);
-        $_POST['new_password_repeat'] = $conn->escape_string($new_repeat);
+        $old        = $conn->escape_string($old);
+        $new        = $conn->escape_string($new);
+        $new_repeat = $conn->escape_string($new_repeat);
 		
 		//检查是否所有字段值都已输入
         if (empty($_POST['current_password']) || empty($_POST['new_password']) || empty($_POST['new_password_repeat']))
@@ -662,40 +725,33 @@ class Account
 	    else 
 		{
 			//检查新密码是否匹配?
-            if ($_POST['new_password'] != $_POST['new_password_repeat'])
+            if ($new != $new_repeat)
 			{
 				echo '<b class="red_text">新密码不匹配!</b>';
 			}
 			else 
 			{
-                if (strlen($_POST['new_password']) < $GLOBALS['registration']['passMinLength'] ||
-                    strlen($_POST['new_password']) > $GLOBALS['registration']['passMaxLength'])
+                if (strlen($new) < $GLOBALS['registration']['passMinLength'] ||
+			        strlen($new) > $GLOBALS['registration']['passMaxLength'])
 				{
-                    echo "<b class='red_text'>
-                        您的密码必须是 ". $GLOBALS['registration']['passMinLength'] ."
-                        和 ". $GLOBALS['registration']['passMaxLength'] ." 之间。
-                    </b>";
+                    echo '<b class="red_text">
+                        您的密码必须介于 '.$GLOBALS['registration']['passMinLength'].' 
+                        和 '.$GLOBALS['registration']['passMaxLength'].' 字母和/或数字。
+                    </b>';
 				}
 				else 
 				{
 					//让我们检查一下旧密码是否正确!
-					$username = $conn->escape_string(strtoupper($_SESSION['cw_user']));
+					$username = $conn->escape_string(strtoupper(trim($_SESSION['cw_user'])));
 
 					$Connect->selectDB("logondb", $conn);
 
-                    $getPass = $conn->query("SELECT `sha_pass_hash` FROM `account` WHERE `username`='". $username ."';");
+				    $data = $conn->query("SELECT salt, verifier FROM account WHERE username = '".$username."'");
+				    $data = $data->fetch_assoc();
+				    $salt = $data['salt'];
+				    $verifier = $data['verifier'];
 
-                    $row     = $getPass->fetch_assoc();
-					$thePass = strtoupper($row['sha_pass_hash']);
-
-					$pass      = $conn->escape_string(strtoupper($_POST['current_password']));
-
-					$pass_hash = sha1("". $username .":". $pass ."");
-
-                    $new_password      = $conn->escape_string(strtoupper($_POST['new_password']));
-                    $new_password_hash = sha1("". $username .":". $new_password ."");
-
-					if ($thePass != $pass_hash)
+					if (!account::verifySRP6($username, $old, $salt, $verifier))
 					{
 						echo "<b class='red_text'>
 						    旧密码不正确!
@@ -704,11 +760,15 @@ class Account
 					else 
 					{
 						//成功,更改密码
+						$data2 = account::getRegistrationData($username, $new);
+					    $salt2 = $data2[0];
+					    $verifier2 = $data2[1];
+					    $conn->query("UPDATE account SET salt = '".$salt2."', verifier = '".$verifier2."' WHERE username = '".$username."'");
 						echo "<b class='green_text'>
 						    您的密码已更改!
 					    </b>";
-						$conn->query("UPDATE account SET sha_pass_hash='". $new_password_hash ."' WHERE username='". $username ."';");
-                        $conn->query("UPDATE account SET v=0 AND s=0 WHERE username='". $username ."';");
+						if (isset($_COOKIE['cw_rememberMe']))
+						setcookie("cw_rememberMe", $username.' * '.$new, time()+30758400);
 					}
 				}
 			}
@@ -775,7 +835,7 @@ class Account
 
 				$account_id = $this->getAccountID($accountName);
 
-				$Connect->selectDB('webdb', $conn);
+				$Connect->selectDB("webdb", $conn);
 				
 				$conn->query("DELETE FROM password_reset WHERE account_id=". $account_id .";");
                 $conn->query("INSERT INTO password_reset (code, account_id) VALUES ('". $code ."', ". $account_id .");");
@@ -796,7 +856,7 @@ class Account
 
             $account_id = $this->getAccountID($accountName);
 
-			$Connect->selectDB('webdb', $conn);
+			$Connect->selectDB("webdb", $conn);
             $result = $conn->query("SELECT COUNT(id) FROM account_data WHERE vp >= ". $points ." AND id=". $account_id .";");
 
             if ($result->data_seek(0) == 0)
@@ -819,7 +879,7 @@ class Account
 
             $account_id = $this->getAccountID($accountName);
 			
-			$Connect->selectDB('webdb', $conn);
+			$Connect->selectDB("webdb", $conn);
 
             $result = $conn->query("SELECT COUNT('id') FROM account_data WHERE dp >=". $points ." AND id=". $account_id .";");
 			
@@ -841,7 +901,7 @@ class Account
 			$points     = $conn->escape_string($points);
             $accountId  = $conn->escape_string($account_id);
 			
-			$Connect->selectDB('webdb', $conn);
+			$Connect->selectDB("webdb", $conn);
             
 			$conn->query("UPDATE account_data SET vp=vp - ". $points ." WHERE id=". $accountId .";");
 		}
@@ -854,7 +914,7 @@ class Account
             $points     = $conn->escape_string($points);
             $accountId  = $conn->escape_string($account_id);
 
-			$Connect->selectDB('webdb', $conn);
+			$Connect->selectDB("webdb", $conn);
             
 			$conn->query("UPDATE account_data SET dp=dp - ". $points ." WHERE id=". $accountId .";");
 		}
@@ -867,7 +927,7 @@ class Account
 			$accountId  = $conn->escape_string($account_id);
             $points     = $conn->escape_string($points);
 
-            $Connect->selectDB('webdb', $conn);
+            $Connect->selectDB("webdb", $conn);
 			
 			$conn->query("UPDATE account_data SET dp=dp + ". $points ." WHERE id=". $accountId .";");
 		}
@@ -879,7 +939,7 @@ class Account
 
             $accountId  = $conn->escape_string($account_id);
             $points     = $conn->escape_string($points);
-			$Connect->selectDB('webdb', $conn);
+			$Connect->selectDB("webdb", $conn);
 			
 			$conn->query("UPDATE account_data SET dp=dp + ". $points ." WHERE id=". $accountId .";");
 		}
@@ -892,7 +952,7 @@ class Account
             $charId  = $conn->escape_string($char_id);
             $realmId = $conn->escape_string($realm_id);
 
-            $Connect->selectDB('webdb', $conn);
+            $Connect->selectDB("webdb", $conn);
 			$Connect->connectToRealmDB($realmId);
 			
 			$result = $conn->query("SELECT account FROM characters WHERE guid=". $charId .";");
@@ -930,7 +990,7 @@ class Account
             $service = $conn->escape_string($service);
             $account = $conn->escape_string($_SESSION['cw_user_id']);
 			
-			$Connect->selectDB('webdb', $conn);
+			$Connect->selectDB("webdb", $conn);
             $conn->query("INSERT INTO user_log (`account`, `service`, `timestamp`, `ip`, `realmid`, `desc`) 
                 VALUES('". $account ."','". $service ."','". time() ."','". $_SERVER['REMOTE_ADDR'] ."','". $realmId ."','". $desc ."');");
 		}

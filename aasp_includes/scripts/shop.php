@@ -1,8 +1,8 @@
 <?php
     define('INIT_SITE', TRUE);
-    include('../../includes/misc/headers.php');
-    include('../../includes/configuration.php');
-    include('../functions.php');
+    include "../../includes/misc/headers.php";
+    include "../../includes/configuration.php";
+    include "../functions.php";
 
     global $GameServer, $GameAccount;
     $conn = $GameServer->connect();;
@@ -49,12 +49,12 @@
                 $advanced .= " AND quality='" . $quality . "'";
             }
 
-            $GameServer->selectDB('worlddb', $conn);
+            $GameServer->selectDB("worlddb", $conn);
             $get = $conn->query("SELECT entry,name,displayid,ItemLevel,quality,class,AllowableRace,AllowableClass,subclass,Flags 
                 FROM item_template WHERE itemlevel>=". $il_from ."  AND itemlevel<=". $il_to ." ". $advanced .";") 
             or die('从数据库获取物品数据时出错。错误消息: ' . $conn->error);
 
-            $GameServer->selectDB('webdb', $conn);
+            $GameServer->selectDB("webdb", $conn);
 
             $c   = 0;
             while ($row = $get->fetch_assoc())
@@ -108,12 +108,12 @@
                 die("请输入所有字段。");
             }
 
-            $GameServer->selectDB('worlddb', $conn);
+            $GameServer->selectDB("worlddb", $conn);
             $get = $conn->query("SELECT name,displayid,ItemLevel,quality,AllowableRace,AllowableClass,class,subclass,Flags FROM item_template WHERE entry=". $entry ."")
                 or die('从数据库获取物品数据时出错。错误消息:' . $conn->error);
             $row = $get->fetch_assoc();
 
-            $GameServer->selectDB('webdb', $conn);
+            $GameServer->selectDB("webdb", $conn);
 
             if ($row['AllowableRace'] == "-1")
             {

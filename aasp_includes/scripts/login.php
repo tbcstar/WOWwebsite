@@ -1,9 +1,9 @@
 <?php
 
     define('INIT_SITE', TRUE);
-    include('../../includes/misc/headers.php');
-    include('../../includes/configuration.php');
-    include('../functions.php');
+    include "../../includes/misc/headers.php";
+    include "../../includes/configuration.php";
+    include "../functions.php";
 
     global $GameServer;
     $conn = $GameServer->connect();

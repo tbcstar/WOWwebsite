@@ -9,9 +9,9 @@ define('THIS_SCRIPT', 'vb_register.php');
 $root_path = '../..'.$GLOBALS['forum']['forum_path'];
 
 
-require_once($root_path . 'global.php');
-require_once($root_path . '/includes/class_dm.php');
-require_once($root_path  .'/includes/class_dm_user.php');
+require_once $root_path ."global.php";
+require_once $root_path ."/includes/class_dm.php";
+require_once $root_path ."/includes/class_dm_user.php";
 
 $userdm = new vB_DataManager_User($vbulletin, ERRTYPE_ARRAY);
 

@@ -9,6 +9,7 @@
 global $Account, $Shop, $Connect;
 $conn = $Connect->connectToDB();
 $Account->isNotLoggedIn();
+$Connect->selectDB("webdb", $conn);
 
  /* 声明一些通用变量 */ 
  $shopPage = $conn->escape_string($_GET['page']);

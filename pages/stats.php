@@ -92,8 +92,8 @@ $Account->isNotLoggedIn();
 # SQL连接
 ######################################################
 $db_user = "root";
-$db_pass = "A112233a" ;
-$db_host = "game.tbcstar.com:3310";
+$db_pass = "A112233a!" ;
+$db_host = "game.tbcstar.com";
 
 ######################################################
 # 投票商店网站连接

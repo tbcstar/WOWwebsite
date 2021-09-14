@@ -176,7 +176,7 @@ elseif($GLOBALS['service'][$service]['currency']=="dp")
 } 
 
 $Account->isNotLoggedIn();
-$Connect->selectDB('webdb', $conn);
+$Connect->selectDB("webdb", $conn);
 $num = 0;
 $result = $conn->query("SELECT char_db, name, id FROM realms ORDER BY id ASC;");
 while($row = $result->fetch_assoc()) 

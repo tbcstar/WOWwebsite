@@ -22,7 +22,7 @@ if(isset($_GET['code']) || isset($_GET['account'])) {
 	 echo "<b class='red_text'>链接错误，缺少一个或多个必需的值。</b>";
  else 
  {
-	 $Connect->selectDB('webdb', $conn);
+	 $Connect->selectDB("webdb", $conn);
 	 $code = $conn->escape_string($_GET['code']); $account = $conn->escape_string($_GET['account']);
 	 $result = $conn->query("SELECT COUNT('id') FROM password_reset WHERE code='" . $code . "' AND account_id=". $account .";");
 	 if ($result->data_seek(0)==0)

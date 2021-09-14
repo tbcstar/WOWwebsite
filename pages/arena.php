@@ -1,7 +1,7 @@
 ﻿<?php 
 global $Account;
 $Account->isNotLoggedIn();
-$Connect->selectDB('webdb', $conn);
+$Connect->selectDB("webdb", $conn);
 ?>
 <?php include "headers.php" ?>
 <div class="container">
@@ -96,9 +96,9 @@ $Connect->selectDB('webdb', $conn);
 ######################################################
 # SQL连接
 ######################################################
-$host = "game.tbcstar.com:3310";
+$host = "game.tbcstar.com";
 $user = "root";
-$pass = "A112233a"; 
+$pass = "A112233a!"; 
 $mangoscharacters = "characters";
 $mangosrealm = "auth";
 ?>

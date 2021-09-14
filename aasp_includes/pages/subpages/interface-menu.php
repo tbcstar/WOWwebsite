@@ -1,7 +1,7 @@
 <?php 
   global $GamePage, $GameServer;
   $conn = $GameServer->connect();
-  $GameServer->selectDB('webdb', $conn);
+  $GameServer->selectDB("webdb", $conn);
 ?>
 <div class="box_right_title"><?php echo $GamePage->titleLink(); ?> &raquo; 菜单</div>
   <table class="center">
@@ -15,19 +15,18 @@
     <?php 
     $x = 1;
     $result = $conn->query("SELECT * FROM site_links ORDER BY position ASC;");
-    while ($row = $result->fetch_assoc())
-    {
-      ?>
+    while ( $row = $result->fetch_assoc() )
+    { ?>
       <tr>
         <td><?php echo $x; ?></td>
         <td><?php echo $row['title']; ?></td>
         <td><?php echo $row['url']; ?></td>
         <td><?php 
-    	if ($row['shownWhen'] == "logged")
+    	if ( $row['shownWhen'] == "logged" )
         {
     			echo "已登录";
     		} 
-        elseif ($row['shownWhen'] == "notlogged")
+        elseif ( $row['shownWhen'] == "notlogged" )
         {
     			echo "未登录";
     		}

@@ -1,6 +1,6 @@
 <?php
 
-require('../ext_scripts_class_loader.php');
+require "../ext_scripts_class_loader.php";
 
 global $Account, $Connect, $Server;
 $conn = $Connect->connectToDB();
@@ -18,7 +18,7 @@ elseif(isset($_POST['element']) && $_POST['element'] == 'donate')
 ##
 if(isset($_POST['action']) && $_POST['action'] == 'removeComment') 
 {
-   $Connect->selectDB('webdb', $conn);
+   $Connect->selectDB("webdb", $conn);
    $conn->query("DELETE FROM news_comments WHERE id=". $conn->escape_string($_POST['id']) .";");
 }
 ##
@@ -26,7 +26,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'removeComment')
 ##
 if(isset($_POST['action']) && $_POST['action']=='getComment') 
 {
-   $Connect->selectDB('webdb', $conn);
+   $Connect->selectDB("webdb", $conn);
    $result = $conn->query("SELECT `text` FROM news_comments WHERE id='". $conn->escape_string($_POST['id']) .";");
    $row = $result->fetch_assoc();
    echo $row['text'];
@@ -38,7 +38,7 @@ if(isset($_POST['action']) && $_POST['action']=='editComment')
 {
    $content = mysqli_real_escape_string(trim(htmlentities($_POST['content'])));
 	
-   $Connect->selectDB('webdb', $conn);
+   $Connect->selectDB("webdb", $conn);
    $conn->query("UPDATE news_comments SET `text` = '".$content."' WHERE id='". $conn->escape_string($_POST['id']) .";");
    
    $conn->query("INSERT INTO admin_log (full_url, ip, timestamp, action, account, extended_inf) 
@@ -50,7 +50,7 @@ if(isset($_POST['action']) && $_POST['action']=='editComment')
 ##
 if(isset($_POST['getTos'])) 
 {
-   include("../../documents/termsofservice.php");
+   include "../../documents/termsofservice.php";
    echo $tos_message;
 }
 ##
@@ -58,7 +58,7 @@ if(isset($_POST['getTos']))
 ##
 if(isset($_POST['getRefundPolicy'])) 
 {
-   include("../../documents/refundpolicy.php");
+   include "../../documents/refundpolicy.php";
    echo $rp_message;
 }
 ##
