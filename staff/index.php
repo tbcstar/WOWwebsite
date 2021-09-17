@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title><?php echo $GLOBALS['website_title']; ?> 员工面板</title>
+<title><?php echo $GLOBALS['website_title']; ?> - 员工面板</title>
 <link rel="stylesheet" href="../aasp_includes/styles/default/style.css" />
 <link rel="stylesheet" href="../aasp_includes/styles/wysiwyg.css" />
 <script type="text/javascript" src="../javascript/jquery.js"></script>
@@ -200,28 +200,28 @@
                     </tr>
                     <?php
                     $GameServer->selectDB($GLOBALS['forum']['forum_db'], $conn);
-                    $result = $conn->query("SELECT poster_id, post_text, post_time, topic_id FROM phpbb_posts ORDER BY post_id DESC LIMIT 10;");
-                    while ($row    = $result->fetch_assoc())
+                    $result = $Database->select("phpbb_posts", "poster_id, post_text, post_time, topic_id", null, null, "ORDER BY post_id DESC LIMIT 10");
+                    $result = $result->get_result();
+                    while ($row = $result->fetch_assoc())
                     {
                         $string   = $row['post_text'];
                         //Lets get the username			
-                        $getUser  = $conn->query("SELECT username FROM phpbb_users WHERE user_id=". $row['poster_id'] .";");
-                        $user     = $getUser->fetch_assoc();
+                        $getUser  = $Database->select("phpbb_users", "username", null, "user_id=". $row['poster_id']);
+                        $user     = $getUser->get_result()->fetch_assoc();
                         //Get topic
-                        $getTopic = $conn->query("SELECT topic_title FROM phpbb_topics WHERE topic_id=". $row['topic_id'] .";");
-                        $topic    = $getTopic->fetch_assoc();
-                        ?>
+                        $getTopic = $Database->select("phpbb_topics", "topic_title", null, "topic_id=". $row['topic_id']);
+                        $topic    = $getTopic->fetch_assoc(); ?>
                         <tr>
-                            <td><a href="http://tbcstar.com/forum/memberlist.php?mode=viewprofile&u=<?php echo $row['poster_id']; ?>" title="View profile" 
-                                   target="_blank"><?php echo $user['username']; ?></a></td>
-                            <td><?php echo limit_characters(stripBBcode($string)); ?></td>
-                            <td><a href="http://tbcstar.com/forum/viewtopic.php?t=<?php echo $row['topic_id'] ?>" title="View this topic" target="_blank">
-                                    查看主题</a></td>
-                        </tr>
-                <?php } ?>
+                        <td>
+                            <a href="http://www.tbcstar.com/forum/memberlist.php?mode=viewprofile&u=<?php echo $row['poster_id']; ?>" title="View profile" target="_blank">
+                               <?php echo $user['username']; ?>
+                           </a>
+                        </td>
+                        <td><?php echo limit_characters(stripBBcode($string)); ?></td>
+                        <td><a href="http://www.tbcstar.com/forum/viewtopic.php?t=<?php echo $row['topic_id'] ?>" title="View this topic" target="_blank">查看主题</a></td>
+                        </tr><?php } ?>
                 </table>
-                </div> 
-                                    <?php } ?>
+                </div><?php } ?>
                 <div class="box_right">
                 <div class="box_right_title">服务器状态 - <b><?php echo $GameServer->getServerStatus(1, TRUE); ?></b></div>
                 <table>
@@ -247,47 +247,40 @@
                 <table>
                 <tr valign="top">
                     <td>
-                        <tr>
-
-                            <td>MySQL Host:</td>
-                            <td>MySQL User:</td>
-                            <td>MySQL Password:</td>
-
-                        </tr>
+                    <tr>
+                        <td>MySQL Host:</td>
+                        <td>MySQL User:</td>
+                        <td>MySQL Password:</td>
+                    </tr>
                     </td>
                     <td>
-                        <tr style='font-weight: bold;'>
-
-                            <td><?php echo $GLOBALS['connection']['host']; ?></td>
-                            <td><?php echo $GLOBALS['connection']['user']; ?></td>
-                            <td>****<br/></td>
-
-                        </tr>
+                    <tr style='font-weight: bold;'>
+                        <td><?php echo $GLOBALS['connection']['host']; ?></td>
+                        <td><?php echo $GLOBALS['connection']['user']; ?></td>
+                        <td>****<br/></td>
+                    </tr>
                     </td>
                     <td>
-                        <tr>
-
-                            <td>Logon Database:</td>
-                            <td>Website Database:</td>
-                            <td>World Database:</td>
-                            <td>Db Rev:</td>
-
-                        </tr>                                         
+                    <tr>
+                        <td>Logon Database:</td>
+                        <td>Website Database:</td>
+                        <td>World Database:</td>
+                        <td>Db Rev:</td>
+                    </tr>                                      
                     </td>
                     <td>
-                        <tr style="font-weight: bold;">
-
-                            <td><?php echo $GLOBALS['connection']['logondb']; ?></td>
-                            <td><?php echo $GLOBALS['connection']['webdb']; ?></td>
-                            <td><?php echo $GLOBALS['connection']['worlddb']; ?></td>
-                            <td><?php
-                                $GameServer->selectDB("webdb", $conn);
-                                $get = $conn->query("SELECT version FROM db_version;");
-                                $row = $get->fetch_assoc();
-                                if ($row['version'] == null || empty($row['version'])) $row['version'] = '1.0';
-                                echo $row['version']; ?></td>
-
-                        </tr>
+                    <tr style="font-weight: bold;">
+                        <td><?php echo $GLOBALS['connection']['logondb']; ?></td>
+                        <td><?php echo $GLOBALS['connection']['webdb']; ?></td>
+                        <td><?php echo $GLOBALS['connection']['worlddb']; ?></td>
+                        <td><?php
+                            $GameServer->selectDB("webdb", $conn);
+                            $get = $Database->select("db_version", "version");
+                            $row = $get->get_result()->fetch_assoc();
+                            if ($row['version'] == null || empty($row['version'])) $row['version'] = '1.0';
+                            echo $row['version']; ?>        
+                        </td>
+                    </tr>
                     </td>
                 </tr>
                 </table>

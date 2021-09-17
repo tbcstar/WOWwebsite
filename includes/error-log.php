@@ -5,7 +5,7 @@ require "configuration.php";
 
 <h2>错误日志</h2>
 <?php
-if($GLOBALS['useDebug']==false)
+if ( DATA['use_debug'] == false )
 {
 	exit();
 }

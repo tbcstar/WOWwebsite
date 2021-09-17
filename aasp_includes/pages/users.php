@@ -13,12 +13,12 @@
 	else 
 	{
         $GameServer->selectDB("logondb", $conn);
-        $usersTotal       = $conn->query("SELECT COUNT(*) AS totalUsers FROM account;");
-        $usersToday       = $conn->query("SELECT COUNT(*) AS dailyUsers FROM account WHERE joindate LIKE '%". date("Y-m-d") ."%';");
-        $usersMonth       = $conn->query("SELECT COUNT(*) AS monthlyUsers FROM account WHERE joindate LIKE '%". date("Y-m") ."%';");
-        $usersOnline      = $conn->query("SELECT COUNT(*) AS onlineUsers FROM account WHERE online=1;");
-        $usersActive      = $conn->query("SELECT COUNT(*) AS activeUsers FROM account WHERE last_login LIKE '%". date("Y-m") ."%';");
-        $usersActiveToday = $conn->query("SELECT COUNT(*) AS activeUsersToday FROM account WHERE last_login LIKE '%". date("Y-m-d") ."%';"); 
+        $usersTotal       = $Database->select("account", "COUNT(*) AS totalUsers");
+        $usersToday       = $Database->select("account", "COUNT(*) AS dailyUsers", null, "joindate LIKE '%". date("Y-m-d") ."%'");
+        $usersMonth       = $Database->select("account", "COUNT(*) AS monthlyUsers", null, "joindate LIKE '%". date("Y-m") ."%'");
+        $usersOnline      = $Database->select("account", "COUNT(*) AS onlineUsers", null, "online=1");
+        $usersActive      = $Database->select("account", "COUNT(*) AS activeUsers", null, "last_login LIKE '%". date("Y-m") ."%'");
+        $usersActiveToday = $Database->select("account", "COUNT(*) AS activeUsersToday", null, "last_login LIKE '%". date("Y-m-d") ."%'");
 ?>
 <div class="box_right_title">用户概述</div>
 <table style="width: 100%;">

@@ -1,6 +1,6 @@
 <?php 
-    global $Account, $Connect;
-    $conn = $Connect->connectToDB();
+    global $Account, $Database;
+    $conn = $Database->database();
     $Account->isNotLoggedIn();
 ?>
 <?php include "headers.php" ?>
@@ -120,9 +120,9 @@ $uptime = "auth";
 ?>
 
 <?php
-$conn->select_db("$arena_top");
+$Database->conn->select_db("$arena_top");
 $a=0;
-$result = $conn->query("SELECT `name`, `race`, `class`, `gender`, `level`, totalKills, totalHonorPoints, totaltime FROM `characters` ORDER BY `totalKills` DESC LIMIT 5;");
+$result = $Database->select( `name`, `race`, `class`, `gender`, `level`, totalKills, totalHonorPoints, totaltime FROM `characters` ORDER BY `totalKills` DESC LIMIT 5;");
 
 $msg = $result->num_rows;
  if (!$msg){ 

@@ -2,8 +2,7 @@
 
 require "../ext_scripts_class_loader.php";
 
-global $Account, $Connect, $Server;
-$conn = $Connect->connectToDB();
+global $Account, $Database, $Server;
 
 if(isset($_POST['element']) &&$_POST['element'] == 'vote') 
 {
@@ -11,15 +10,15 @@ if(isset($_POST['element']) &&$_POST['element'] == 'vote')
 }
 elseif(isset($_POST['element']) && $_POST['element'] == 'donate') 
 {
-   echo $GLOBALS['donation']['coins_name'].': '.$Account->loadDP($_POST['account']);
+   echo DATA['website']['donation']['coins_name'] . ': ' . $Account->loadDP($_POST['account']);
 }
 ##
 #
 ##
 if(isset($_POST['action']) && $_POST['action'] == 'removeComment') 
 {
-   $Connect->selectDB("webdb", $conn);
-   $conn->query("DELETE FROM news_comments WHERE id=". $conn->escape_string($_POST['id']) .";");
+   $Database->selectDB("webdb");
+    $Database->conn->query("DELETE FROM news_comments WHERE id=". $Database->conn->escape_string($_POST['id']) .";");
 }
 ##
 #
@@ -46,31 +45,31 @@ if(isset($_POST['action']) && $_POST['action']=='editComment')
    '编辑的评论ID： ".(int)$_POST['id']."')");
 }
 ##
-#
+#   Terms Of Service
 ##
-if(isset($_POST['getTos'])) 
+if ( isset($_POST['getTos']) )
 {
    include "../../documents/termsofservice.php";
    echo $tos_message;
 }
 ##
-#
+#   Refund Policy
 ##
-if(isset($_POST['getRefundPolicy'])) 
+if ( isset($_POST['getRefundPolicy']) )
 {
    include "../../documents/refundpolicy.php";
    echo $rp_message;
 }
 ##
-#
+#   Server Status
 ##
-if(isset($_POST['serverStatus'])) 
+if ( isset($_POST['serverStatus']) )
 {
    	echo '<div class="box_one_title">服务器状态</div>';
 	$num = 0;
-	if (is_array($GLOBALS['realms']) || is_object($GLOBALS['realms']))
+	if ( is_array(DATA['realms']) || is_object(DATA['realms']) )
 	{
-		foreach ($GLOBALS['realms'] as $k => $v) 
+		foreach (DATA['realms'] as $k => $v)
 		{
 			if ($num != 0) 
 			{ 
@@ -80,7 +79,7 @@ if(isset($_POST['serverStatus']))
 			$num++;
 		}
 	}
-	if ($num == 0) 
+	if ( $num == 0 )
 	{
 		buildError("<b>找不到服务器: </b> 请设置您的数据库并添加您的服务器!",NULL);  
 		echo "找不到服务器。";
@@ -88,24 +87,22 @@ if(isset($_POST['serverStatus']))
 	unset($num);
 	?>
 	<hr/>
-	<span id="realmlist">设置服务器列表 <?php echo $GLOBALS['connection']['realmlist']; ?></span>
+	<span id="realmlist">设置服务器列表 <?php echo DATA['website']['realmlist']; ?></span>
 	</div>
 	<?php    
 }
 ##
-#
+#   Donation List
 ##
-if(isset($_POST['convertDonationList']))
+if ( isset($_POST['convertDonationList']) )
 {
-	for ($row = 0; $row < count($GLOBALS['donationList']); $row++)
+	for ($row = 0; $row < count(DATA['website']['donationList']); $row++)
 		{
-				$value = $conn->escape_string($_POST['convertDonationList']);
-				if($value == $GLOBALS['donationList'][$row][1])
+				$value = $Database->conn->escape_string($_POST['convertDonationList']);
+                if ( $value == DATA['website']['donationList'][$row][1] )
 				{
-					echo $GLOBALS['donationList'][$row][2];
+					echo DATA['website']['donationList'][$row][2];
 					exit();
 				}
 		}
 }
-
-?>

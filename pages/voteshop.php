@@ -104,13 +104,13 @@
 
 
 <?php 
- global $Account, $Shop, $Connect;
- $conn = $Connect->connectToDB();
+ global $Account, $Shop, $Database;
+ $conn = $Database->database();
  $Account->isNotLoggedIn();
 
  /* 声明一些通用变量 */ 
- $shopPage = $conn->escape_string($_GET['p']);
- $shopVar = "vote";
+ $shopPage     = $Database->conn->escape_string($_GET['page']);
+ $shopVar      = "vote";
  $shopCurrency = "Vote Points";
  
  $selected = 'selected="selected"';

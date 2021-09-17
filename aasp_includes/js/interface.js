@@ -134,7 +134,7 @@ function saveMenuLink(pos) {
 	$("#loading").html("Saving...");
 	$.post("../aasp_includes/scripts/layout.php", { action: "saveMenu", title: title, url: url, shownWhen: shownWhen, id: pos },
        function(data) {
-			 if(data==TRUE) {
+			 if(data==true) {
 			window.location='?page=interface&selected=menu'
 		   } else {
 			 $("#loading").html(data);  
@@ -157,7 +157,7 @@ function deleteLinkNow(id) {
 	$("#loading").html("Saving...");
 	$.post("../aasp_includes/scripts/layout.php", { action: "deleteLink", id: id },
        function(data) {
-			 if(data==TRUE) {
+			 if(data==true) {
 			window.location='?page=interface&selected=menu'
 		   } else {
 			 $("#loading").html(data);  
@@ -190,7 +190,7 @@ function addLinkNow() {
 	
 	$.post("../aasp_includes/scripts/layout.php", { action: "addLink", title: title, url: url, shownWhen: shownWhen },
        function(data) {
-		   if(data==TRUE) {
+		   if(data==true) {
 			   window.location='?page=interface&selected=menu';
 		   } else {
 			    $("#loading").html(data);  

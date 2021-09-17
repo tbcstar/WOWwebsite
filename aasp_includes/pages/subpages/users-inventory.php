@@ -64,10 +64,10 @@
 		</a> 
 <p/>
 <?php
-$GameServer->connectToRealmDB($_GET['rid']);
+$GameServer->realm($_GET['rid']);
 $equip_array = array(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18);
 
-$result = $conn->query("SELECT guid, itemEntry, count FROM item_instance WHERE owner_guid=". $conn->escape_string($_GET['guid']) .";");
+$result = $Database->select("item_instance", "guid, itemEntry, count", null, "owner_guid=". $Database->conn->escape_string($_GET['guid']))->get_result();
 if ($result->num_rows == 0)
 {
 	echo "没有发现任何物品!";
@@ -83,28 +83,24 @@ else
 		{
 			if($_GET['f'] == 'equip') 
 			{
-				$getPos = $conn->query("SELECT slot, bag FROM character_inventory 
-                WHERE item='". $row['guid'] ."' AND bag='0' AND slot RANGE(0,18) AND guid=". $conn->escape_string($_GET['guid']) .";");
-			}
+				$getPos = $Database->select("character_inventory", "slot, bag", null, "item='". $row['guid'] ."' AND bag='0' AND slot RANGE(0,18) AND guid=". $Database->conn->escape_string($_GET['guid']))->get_result();
+            }
 			elseif($_GET['f'] == 'bank') 
 			{
-				$getPos = $conn->query("SELECT slot, bag FROM character_inventory 
-                WHERE item='". $row['guid'] ."' AND slot>=39 AND slot<=73;");
-			}
+				$getPos = $Database->select("character_inventory", "slot, bag", null, "WHERE item='". $row['guid'] ."' AND slot>=39 AND slot<=73")->get_result();
+            }
 			elseif($_GET['f'] == 'keyring') 
 			{
-				$getPos = $conn->query("SELECT slot, bag FROM character_inventory 
-                WHERE item='". $row['guid'] ."' AND slot>=86 AND slot<=117;");
-			}
+				$getPos = $Database->select("character_inventory", "slot, bag", null, "WHERE item='". $row['guid'] ."' AND slot>=86 AND slot<=117")->get_result();
+            }
 			elseif($_GET['f'] == 'currency') 
 			{
-				$getPos = $conn->query("SELECT slot, bag FROM character_inventory 
-                WHERE item='". $row['guid'] ."' AND slot>=118 AND slot<=135;");
-			}
+				$getPos = $Database->select("character_inventory", "slot, bag", null, "WHERE item='". $row['guid'] ."' AND slot>=118 AND slot<=135")->get_result();
+            }
 		}
 		else
 		{
-			$getPos = $conn->query("SELECT slot, bag FROM character_inventory WHERE item='". $row['guid'] ."';");
+			$getPos = $Database->select("character_inventory", "slot, bag", null, "item='". $row['guid'] ."'")->get_result();
 		}
 
 		if ($getPos->data_seek(0) > 0)
@@ -112,20 +108,20 @@ else
 			$pos =$getPos->fetch_assoc();
 
 			$GameServer->selectDB('worlddb');
-			$get = $conn->query("SELECT name, entry, quality, displayid FROM item_template WHERE entry='". $entry ."';");
+			$get = $Database->select("item_template", "name, entry, quality, displayid", null, "entry='$entry'")->get_result();
             $r   = $get->fetch_assoc();
 
 			$GameServer->selectDB('webdb');
-			$getIcon = $conn->query("SELECT icon FROM item_icons WHERE displayid='". $r['displayid'] ."';");
+			$getIcon = $Database->select("item_icons", "icon", null, "displayid='". $r['displayid'] ."'")->get_result();
                 if ($getIcon->num_rows == 0)
 			{
 				//发现没有图标。也许灾难项目。从wowhead获得图标。
 				$sxml = new SimpleXmlElement(file_get_contents("http://www.wowhead.com/item=". $entry ."&xml"));
 
-			    $icon = strtolower($conn->escape_string($sxml->item->icon));
+			    $icon = strtolower($Database->conn->escape_string($sxml->item->icon));
 				//现在我们已经装载好了。将其添加到数据库中以备将来使用。
 				//注意，WoWHead XML非常慢。这就是为什么我们把它加到db中的主要原因。
-				mysqli_query($conn, "INSERT INTO item_icons VALUES('". $row['displayid'] ."', '". $icon ."');");
+				$Database->conn->query("INSERT INTO item_icons VALUES('". $row['displayid'] ."', '". $icon ."');");
 			}
 			else 
 			{
@@ -133,14 +129,14 @@ else
 			    $icon = strtolower($iconrow['icon']);
 			 }
 
-			$GameServer->connectToRealmDB($_GET['rid']);
+			$GameServer->realm($_GET['rid']);
 
 			?>
 				<tr bgcolor="#e9e9e9">
 					<td width="36"><img src="http://static.wowhead.com/images/wow/icons/medium/<?php echo $icon; ?>.jpg"></td>
 					<td>
-						<a href="http://<?php echo $GLOBALS['tooltip_href']; ?>item=<?php echo $r['entry']; ?>" title="" target="_blank"><?php echo $r['name']; ?></a>
-					</td>
+						<a href="http://<?php echo DATA['website']['tooltip_href']; ?>item=<?php echo $r['entry']; ?>" title="" target="_blank"><?php echo $r['name']; ?></a>
+                    </td>
 					<td>x<?php echo $row['count']; ?> 
 
 					<?php 

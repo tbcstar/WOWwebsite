@@ -4,11 +4,11 @@ function login(panel)
 	var password = document.getElementById("login_password").value;
 	
 	showLoader();
-	
-	$.post("../aasp_includes/scripts/login.php", { login: TRUE, username: username, password: password, panel: panel },
+
+	$.post("../aasp_includes/scripts/login.php", {login: true, username: username, password: password, panel: panel},
        function(data) 
        {
-          if(data==TRUE) 
+          if(data==true) 
           {
 				window.location="index.php";
 		  } 

@@ -2,62 +2,67 @@
 
 require "../ext_scripts_class_loader.php";
 
-if (isset($_POST['siteid']))
+if ( isset($_POST['siteid']) )
 {
 
-  global $Connect, $Account, $Website;
-  $conn = $Connect->connectToDB();
+  global $Database, $Account, $Website;
 	
-  $siteid = $conn->escape_string($_POST['siteid']);
+  $siteid = $Database->conn->escape_string($_POST['siteid']);
 	
-  $Connect->selectDB("webdb", $conn);
+  $Database->selectDB("webdb");
 	
-  if ($Website->checkIfVoted($siteid, $GLOBALS['connection']['webdb']))
+  if ( $Website->checkIfVoted($siteid))
   {
     die("?page=vote");
   }
 
-  $Connect->selectDB("webdb", $conn);
-  $check = $conn->query("SELECT COUNT(*) FROM votingsites WHERE id=". $siteid .";");
-  if ($check->data_seek(0) == 0)
+  $Database->selectDB("webdb");
+  $statement = $Database->select("votingsites", "COUNT(*) AS total", null, "id=$siteid");
+  $check = $statement->get_result();
+  if ( $check->fetch_assoc()['total'] == 0 )
   {
     die("?page=vote");
   }
+  $statement->close();
 
-  if ($GLOBALS['vote']['type'] == "instant")
+  if ( DATA['website']['vote']['type'] == "instant" )
   {
-    $acct_id = $Account->getAccountID($_SESSION['cw_user']);
+    $account_id = $Account->getAccountID($_SESSION['cw_user']);
 
-    if (empty($acct_id))
+    if ( empty($account_id) )
     {
       exit();
     }
 
-    $next_vote = time() + $GLOBALS['vote']['timer'];
+    $next_vote = time() + DATA['website']['vote']['timer'];
 
-    $Connect->selectDB("webdb", $conn);
+    $Database->selectDB("webdb");
 	
-    $conn->query("INSERT INTO votelog (`siteid`, `userid`, `timestamp`, `next_vote`, `ip`) VALUES (". $siteid .", ". $acct_id .", '". time() ."', ". $next_vote .", '". $_SERVER['REMOTE_ADDR'] ."');");
+    $Database->insert("votelog", array("siteid", "userid", "timestamp", "next_vote", "ip"), array($siteid, $account_id, time(), $next_vote, $_SERVER['REMOTE_ADDR']));
 
-    $getSiteData = $conn->query("SELECT points, url FROM votingsites WHERE id=". $siteid .";");
+    $statement = $Database->select("votingsites", "points, url", null, "id=$siteid");
+    $getSiteData = $statement->get_result();
     $row         = $getSiteData->fetch_assoc($getSiteData);
 		
     //Update the points table.
-    $add = $row['points'] * $GLOBALS['vote']['multiplier'];
-    $conn->query("UPDATE account_data SET vp=vp + ". $add ." WHERE id=". $acct_id .";");
+    $add = $row['points'] * DATA['website']['vote']['multiplier'];
+    $Database->update("account_data", array("vp"=>"vp + $add"), array("id"=>$account_id));
 
     echo $row['url'];
+    $statement->close();
   }
-  elseif ($GLOBALS['vote']['type'] == 'confirm')
+  elseif ( DATA['website']['vote']['type'] == 'confirm' )
   {
-    $Connect->selectDB("webdb", $conn);
-    $getSiteData = $conn->query("SELECT points, url FROM votingsites WHERE id=". $siteid .";");
+    $Database->selectDB("webdb");
+    $statement = $Database->select("votingsites", "points, url", null, "id=$siteid");
+    $getSiteData = $statement->get_result();
     $row = $getSiteData->fetch_assoc($getSiteData);
 
 
-    $_SESSION['votingUrlID'] = $conn->escape_string($_POST['siteid']);
+    $_SESSION['votingUrlID'] = $Database->conn->escape_string($_POST['siteid']);
 
     echo $row['url'];
+    $statement->close();
   }
   else
   {

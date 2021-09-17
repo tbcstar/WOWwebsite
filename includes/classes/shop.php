@@ -4,29 +4,20 @@ class Shop
 {
 	public function search($value, $shop, $quality, $type, $ilevelfrom, $ilevelto, $results, $faction, $class, $subtype) 
 	{
-		global $Connect;
-        $conn = $Connect->connectToDB();
-        $Connect->selectDB("webdb", $conn);
+		global $Database;
+        $conn = $Database->database();
+        $Database->selectDB("webdb", $conn);
 
-		if ($shop == 'vote')
-		{
-			$shopGlobalVar = $GLOBALS['voteShop']; 
-		}
-		elseif($shop == 'donate')
-		{
-			$shopGlobalVar = $GLOBALS['donateShop']; 
-		}
-
-		$value      = $conn->escape_string($value);
-        $shop       = $conn->escape_string($shop);
-        $quality    = $conn->escape_string($quality);
-        $ilevelfrom = $conn->escape_string($ilevelfrom);
-        $ilevelto   = $conn->escape_string($ilevelto);
-        $results    = $conn->escape_string($results);
-        $faction    = $conn->escape_string($faction);
-        $class      = $conn->escape_string($class);
-        $type       = $conn->escape_string($type);
-        $subtype    = $conn->escape_string($subtype);
+		$value      = $Database->conn->escape_string($value);
+        $shop       = $Database->conn->escape_string($shop);
+        $quality    = $Database->conn->escape_string($quality);
+        $ilevelfrom = $Database->conn->escape_string($ilevelfrom);
+        $ilevelto   = $Database->conn->escape_string($ilevelto);
+        $results    = $Database->conn->escape_string($results);
+        $faction    = $Database->conn->escape_string($faction);
+        $class      = $Database->conn->escape_string($class);
+        $type       = $Database->conn->escape_string($type);
+        $subtype    = $Database->conn->escape_string($subtype);
 		
 		if($value == "搜索物品...")
 		{
@@ -36,7 +27,7 @@ class Shop
 		$advanced = NULL;
 		
 		####高级搜索
-		if($GLOBALS[$shop.'Shop']['enableAdvancedSearch'] == TRUE) 
+		if ( DATA['website']['shop'][$shop]['enable_advanced_search'] == TRUE )
 		{
 			if($quality != "--品质--")
 			{
@@ -77,8 +68,7 @@ class Shop
 				$advanced .= " AND itemlevel<='".$ilevelto."'";
 			}
 
-			$count = $conn->query("SELECT COUNT(id) AS item FROM shopitems 
-                WHERE name LIKE '%". $value ."%' AND in_shop = '". $shop ."' ". $advanced .";");
+			$count = $Database->select("shopitems", "COUNT(id) AS item", null, "name LIKE '%$value%' AND in_shop='$shop' $advanced")->get_result();
 		
 			if ($count->data_seek(0) == 0)
 			{
@@ -99,8 +89,7 @@ class Shop
 			}
 		}
 
-		$result = $conn->query("SELECT entry, displayid, name, quality, price, faction, class FROM shopitems 
-            WHERE name LIKE '%". $value ."%' AND in_shop = '". $conn->escape_string($shop) ."' ". $advanced .";");
+		$result = $Database->select("shopitems", null, null, "name LIKE '%$value%' AND in_shop='". $Database->conn->escape_string($shop) ."' $advanced")->get_result();
 
 		if($results != "--结果--")
 		{
@@ -158,16 +147,16 @@ class Shop
 						break;
 				}
 
-				$getIcon = $conn->query("SELECT icon FROM item_icons WHERE displayid=". $row['displayid'] .";");
+				$getIcon = $Database->select("item_icons", "icon", null, "displayid=". $row['displayid'])->get_result();
                 if ($getIcon->num_rows == 0)
 				{
 					//发现没有图标。也许灾难项目。从wowhead获取图标。
 					$sxml = new SimpleXmlElement(file_get_contents('http://www.wowhead.com/item='. $entry .'&xml'));
 
-					$icon = $conn->escape_string(strtolower($sxml->item->icon));
+					$icon = $Database->conn->escape_string(strtolower($sxml->item->icon));
 					//现在我们已经加载了它。将其添加到数据库中供以后使用。
 					//注意，WoWHead XML非常慢。这就是我们将其添加到数据库中的主要原因。
-					$conn->query("INSERT INTO item_icons VALUES(". $row['displayid'] .", '". $icon ."');");
+					$Database->conn->query("INSERT INTO item_icons VALUES(". $row['displayid'] .", '". $icon ."');");
 				}
 				else 
 				{
@@ -176,35 +165,35 @@ class Shop
 				}
 				?>
 
-<div class="col" id="item-<?php echo $entry; ?>">
-<div class="item background" style="background-image: url('/images/shop/mounts/snow_hippogryph.png');">
-<div class="image" rel="50818">
-<img src="http://static.wowhead.com/images/wow/icons/medium/<?php echo $icon; ?>.jpg" alt="" /> <br><br>
-<input type="button" class="btn" value="Add to cart" onclick="addCartItem(<?php echo $entry; ?>,'<?php echo $shop; ?>Cart', '<?php echo $shop; ?>',this)">
-								   
-								   </div>
-<div class="name quality-4">
-<span><a href="http://<?php echo $GLOBALS['tooltip_href']; ?>item=<?php echo $entry; ?>" 
-                                       class="<?php echo $class; ?>_tooltip" target="_blank">
-                                       <?php echo $row['name']; ?></a></span>
-</div>
-<div class="price">
-<div style="display:none;" id="status-<?php echo $entry; ?>" class="green_text">
-						   物品已添加到您的购物车
-						   </div>
-<span class="coin-gold"></span>
-
-
-<?php echo $row["price"]; ?> 
- <?php 
-								   if ($shop=="donate") 
-								   	   echo $GLOBALS['donation']['coins_name'];
-								   else 
-									   echo '投票积分';   
-								   ?></div>
-
-</div>
-</div>
+    <div class="col" id="item-<?php echo $entry; ?>">
+    <div class="item background" style="background-image: url('/images/shop/mounts/snow_hippogryph.png');">
+    <div class="image" rel="50818">
+    <img src="http://static.wowhead.com/images/wow/icons/medium/<?php echo $icon; ?>.jpg" alt="" /> <br><br>
+    <input type="button" class="btn" value="Add to cart" onclick="addCartItem(<?php echo $entry; ?>,'<?php echo $shop; ?>Cart', '<?php echo $shop; ?>',this)">
+    								   
+    								   </div>
+    <div class="name quality-4">
+    <span><a href="http://<?php echo DATA['website']['tooltip_href']; ?>item=<?php echo $entry; ?>" 
+                                           class="<?php echo $class; ?>_tooltip" target="_blank">
+                                           <?php echo $row['name']; ?></a></span>
+    </div>
+    <div class="price">
+    <div style="display:none;" id="status-<?php echo $entry; ?>" class="green_text">
+    						   物品已添加到您的购物车
+    						   </div>
+    <span class="coin-gold"></span>
+    
+    
+    <?php echo $row["price"]; ?> 
+     <?php 
+    								   if ($shop=="donate") 
+    								   	   echo DATA['website']['donation']['coins_name'];
+    								   else 
+    									   echo '投票积分';   
+    								   ?></div>
+    
+    </div>
+    </div>
 
 			
 
@@ -215,13 +204,13 @@ class Shop
 	
 	public function listAll($shop)
 	{
-		global $Connect;
-        $conn = $Connect->connectToDB();
-		$Connect->selectDB("webdb", $conn);
+		global $Database;
+        $conn = $Database->database();
+        $Database->selectDB("webdb", $conn);
 
-		$shop = $conn->escape_string($shop);
+		$shop = $Database->conn->escape_string($shop);
 		
-		$result = $conn->query("SELECT entry, displayid, name, quality, price, faction, class FROM shopitems WHERE in_shop='". $shop ."';");
+		$result = $Database->select("shopitems", null, null, "in_shop='$shop'")->get_result();
 		
 		if ($result->num_rows == 0)
 		{
@@ -231,17 +220,17 @@ class Shop
 		{
 			while ($row = $result->fetch_assoc())
 			{
-				$entry 		= $row['entry'];
-				$getIcon = $conn->query("SELECT icon FROM item_icons WHERE displayid=". $row['displayid'] .";");
+				$entry 	 = $row['entry'];
+				$getIcon = $Database->select("item_icons", "icon", null, "displayid=". $row['displayid'])->get_result();
                 if ($getIcon->num_rows == 0)
 				{
 					//发现没有图标。也许灾难项目。从wowhead获得图标。
 					$sxml = new SimpleXmlElement(file_get_contents('http://www.wowhead.com/item='.$entry.'&xml'));
 
-					$icon = $conn->escape_string(strtolower($sxml->item->icon));
+					$icon = $Database->conn->escape_string(strtolower($sxml->item->icon));
 					//现在我们已经装载好了。将其添加到数据库中以备将来使用。
 					//注意，WoWHead XML非常慢。这就是为什么我们把它加到db中的主要原因。
-					$conn->query("INSERT INTO item_icons VALUES(". $row['displayid'] .", '". $icon ."');");
+					$Database->conn->query("INSERT INTO item_icons VALUES(". $row['displayid'] .", '". $icon ."');");
 				}
 				else 
 				{
@@ -259,8 +248,8 @@ class Shop
                                 </div>
                            	</td>
                            	<td width="380">
-                           		<a href="http://<?php echo $GLOBALS['tooltip_href']; ?>item=<?php echo $entry; ?>" class="<?php echo $class; ?>_tooltip" target="_blank">
-                           			<?php echo $row['name']; ?>
+                           		<a href="http://<?php echo DATA['website']['tooltip_href']; ?>item=<?php echo $entry; ?>" class="<?php echo $class; ?>_tooltip" target="_blank">
+                                    <?php echo $row['name']; ?>
                                 </a>
                            	</td>
                            	<td align="right" width="350">
@@ -287,15 +276,15 @@ class Shop
                                 	echo $Shop->getClassMask($row['class']);
                                	}
 
-							   	if(isset($_SESSION['cw_gmlevel']) && $_SESSION['cw_gmlevel'] >= $GLOBALS['adminPanel_minlvl'] || 
-							   	isset($_SESSION['cw_gmlevel']) && $_SESSION['cw_gmlevel'] >= $GLOBALS['staffPanel_minlvl'] && $GLOBALS['editShopItems'] == TRUE)
-							   	{
+							   	if (isset($_SESSION['cw_gmlevel']) && $_SESSION['cw_gmlevel'] >= DATA['website']['admin']['minlvl'] ||
+                                    isset($_SESSION['cw_gmlevel']) && $_SESSION['cw_gmlevel'] >= DATA['website']['staff']['minlvl'] && DATA['website']['staff']['permissions']['editShopItems'] == TRUE)
+                                {
 								?>
 									<font size="-2">( 
 										<a onclick="editShopItem('<?php echo $entry; ?>','<?php echo $shop; ?>','<?php echo $row['price']; ?>')">编辑</a> | 
 									  	<a onclick="removeShopItem('<?php echo $entry; ?>','<?php echo $shop; ?>')">移除</a> 
 									)</font>
-							 		&nbsp; &nbsp; &nbsp; &nbsp;   
+							 		&nbsp; &nbsp; &nbsp; &nbsp;
 							 		<?php
 							  	}
 
@@ -304,7 +293,7 @@ class Shop
                                	<?php 
 							   	if ($shop == "donate")
 							   	{
-								echo $GLOBALS['donation']['coins_name'];
+								echo DATA['website']['donation']['coins_name'];
 								}
                                 else
 								{
@@ -332,20 +321,20 @@ class Shop
 
 	public function logItem($shop, $entry, $char_id, $account, $realm_id, $amount) 
 	{
-		global $Connect;
-        $conn = $Connect->connectToDB();;
-		$Connect->selectDB("webdb", $conn);
+		global $Database;
+            $conn = $Database->database();;
+            $Database->selectDB("webdb", $conn);
 
-		date_default_timezone_set($GLOBALS['timezone']);
+		date_default_timezone_set(DATA['website']['timezone']);
 
-        $entry      = $conn->escape_string($entry);
-        $char_id    = $conn->escape_string($char_id);
-        $shop       = $conn->escape_string($shop);
-        $account    = $conn->escape_string($account);
-        $realm_id   = $conn->escape_string($realm_id);
-        $amount     = $conn->escape_string($amount);
+        $entry      = $Database->conn->escape_string($entry);
+        $char_id    = $Database->conn->escape_string($char_id);
+        $shop       = $Database->conn->escape_string($shop);
+        $account    = $Database->conn->escape_string($account);
+        $realm_id   = $Database->conn->escape_string($realm_id);
+        $amount     = $Database->conn->escape_string($amount);
 
-        $conn->query("INSERT INTO shoplog (`entry`, `char_id`, `date`, `ip`, `shop`, `account`, `realm_id`, `amount`) VALUES 
+        $Database->conn->query("INSERT INTO shoplog (`entry`, `char_id`, `date`, `ip`, `shop`, `account`, `realm_id`, `amount`) VALUES 
             (". $entry .", '". $char_id ."', '". date("Y-m-d H:i:s") ."', '". $_SERVER['REMOTE_ADDR'] ."', '". $shop ."', '". $account ."', ". $realm_id .", '". $amount ."')");
     }
 	

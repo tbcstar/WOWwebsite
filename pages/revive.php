@@ -47,8 +47,8 @@
 <th>&nbsp;</th>
 </tr>
 <?php 
-global $Website, $Account, $Connect, $Character;
-$conn = $Connect->connectToDB();
+global $Website, $Account, $Database, $Character;
+$conn = $Database->database();
 $service = "revive";
 
 if($GLOBALS['service'][$service]['price']==0) 
@@ -66,17 +66,17 @@ elseif($GLOBALS['service'][$service]['currency']=="dp")
 } 
 
 $Account->isNotLoggedIn();
-$Connect->selectDB("webdb", $conn);
+$Database->selectDB("webdb", $conn);
 $num = 0;
-$result = $conn->query('SELECT char_db, name FROM realms ORDER BY id ASC;');
+$result = $Database->conn->query('SELECT char_db, name FROM realms ORDER BY id ASC;');
 while($row = $result->fetch_assoc()) 
 {
          $acct_id = $Account->getAccountID($_SESSION['cw_user']);
 		 $realm = $row['name'];
 		 $char_db = $row['char_db'];
 		          	
-		$Connect->selectDB($char_db, $conn);
-		$result = $conn->query("SELECT name, guid, gender, class, race, level, online FROM characters WHERE account=". $acct_id .";");
+		$Database->selectDB($char_db, $conn);
+		$result = $Database->select( name, guid, gender, class, race, level, online FROM characters WHERE account=". $acct_id .";");
         while ($row = $result->fetch_assoc())
 		{
 	

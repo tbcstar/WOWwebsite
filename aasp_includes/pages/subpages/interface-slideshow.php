@@ -15,7 +15,7 @@ else
 }
 
 $GameServer->selectDB("webdb", $conn);
-$count = $conn->query("SELECT COUNT(*) AS sliderImages FROM slider_images;");
+if ( DATA['website']['use']['slideshow'] ) $status = 'Enabled';
 ?>
 幻灯片是 <b><?php echo $status; ?></b>。 你有<b><?php echo round($count->fetch_assoc()['sliderImages']); ?></b>幻灯片中的图像。
 <hr/>
@@ -43,7 +43,7 @@ if(isset($_POST['addSlideImage']))
 <br/>&nbsp;<br/>
 <?php 
 $GameServer->selectDB("webdb", $conn);
-$result = $conn->query("SELECT * FROM slider_images ORDER BY position ASC;");
+$result = $Database->select("slider_images", null, null, null, "ORDER BY position ASC;");
 if ($result->num_rows == 0)
 {
 	echo "幻灯片中没有图片！";

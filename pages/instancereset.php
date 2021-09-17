@@ -7,8 +7,8 @@
 <div class="box_two">
 
 <?php
-global $Account, $Website, $Server, $Character, $Connect;
-$conn = $Connect->connectToDB();
+global $Account, $Website, $Server, $Character, $Database;
+$conn = $Database->database();
 ?>
 
 <div class='box_two_title'>副本重置</div>
@@ -18,19 +18,20 @@ $Account->isNotLoggedIn();
 
 $service = "reset";
 
-if($GLOBALS['service'][$service]['price']==0) 
-      echo '<span class="attention">副本重置是免费的。</span>';
+if ( DATA['service'][$service]['price'] == 0 )
+    {
+        echo '<span class="attention">副本重置是免费的。</span>';
+    }
 else
 { ?>
 <span class="attention">重置副本费用 
+<?php echo DATA['service'][$service]['price'] .' '. $Website->convertCurrency(DATA['service'][$service]['currency']); ?></span>
 <?php 
-echo $GLOBALS['service'][$service]['price'].' '.$Website->convertCurrency($GLOBALS['service'][$service]['currency']); ?></span>
-<?php 
-if($GLOBALS['service'][$service]['currency']=="vp")
+if (DATA['service'][$service]['currency'] == "vp")
 	echo "<span class='currency'>投票积分：".$Account->loadVP($_SESSION['cw_user'])."</span>";
-elseif($GLOBALS['service'][$service]['currency']=="dp")
-	echo "<span class='currency'>".$GLOBALS['donation']['coins_name'].": ".$Account->loadDP($_SESSION['cw_user'])."</span>";
-} 
+elseif (DATA['service'][$service]['currency'] == "dp")
+    echo "<span class='currency'>" . DATA['website']['donation']['coins_name'] . ": " . $Account->loadDP($_SESSION['cw_user']) . "</span>";
+}
 
 if (isset($_POST['ir_step1']) || isset($_POST['ir_step2'])) 
 	echo '选择服务器： <b>'.$Server->getRealmName($_POST['ir_realm']).'</b><br/><br/>';
@@ -45,7 +46,7 @@ else
 <td>
 <select name="ir_realm">
 	 <?php
-	 $result = $conn->query("SELECT name,char_db FROM realms;");
+	 $result = $Database->select( name,char_db FROM realms;");
 	 while($row = $result->fetch_assoc())
 	 {
 		 if(isset($_POST['ir_realm']) && $_POST['ir_realm'] == $row['char_db'])
@@ -86,8 +87,8 @@ else
 <select name="ir_char">
 	 <?php
 	 $acc_id = $Account->getAccountID($_SESSION['username']);
-	 $Connect->selectDB($_POST['ir_realm']);
-	 $result = $conn->query("SELECT name, guid FROM characters WHERE account=". $acc_id .";");
+	 $Database->selectDB($_POST['ir_realm']);
+	 $result = $Database->select( name, guid FROM characters WHERE account=". $acc_id .";");
 
 	 while($row = $result->fetch_assoc())
 	 {
@@ -126,10 +127,10 @@ if(isset($_POST['ir_step2']) || isset($_POST['ir_step3']))
 <input type="hidden" name="ir_char" value="<?php echo $_POST['ir_char']; ?>">
 <select name="ir_instance">
 	 <?php
-	 $guid = $conn->escape_string($_POST['ir_char']);
-	 $Connect->selectDB($_POST['ir_realm']);
+	 $guid = $Database->conn->escape_string($_POST['ir_char']);
+	 $Database->selectDB($_POST['ir_realm']);
 
-	 $result = $conn->query("SELECT instance FROM character_instance WHERE guid=". $guid ." AND permanent=1;");
+	 $result = $Database->select( instance FROM character_instance WHERE guid=". $guid ." AND permanent=1;");
 	 if ($result->num_rows ==0) 
 	 {
 		 echo "<option value='#'>没有副本需要重置！</option>";
@@ -139,11 +140,11 @@ if(isset($_POST['ir_step2']) || isset($_POST['ir_step3']))
 	 {
 		 while($row = $result->fetch_assoc()) 
 		 {
-			 $getI     = $conn->query("SELECT id, map, difficulty FROM instance WHERE id=". $row['instance'] .";");
+			 $getI     = $Database->select( id, map, difficulty FROM instance WHERE id=". $row['instance'] .";");
 			 $instance = $getI->fetch_assoc(); 
 			 
-			 $Connect->selectDB("webdb", $conn);
-			 $getName = $conn->query("SELECT name FROM instance_data WHERE map='" . $instance['map'] . "';");
+			 $Database->selectDB("webdb", $conn);
+			 $getName = $Database->select( name FROM instance_data WHERE map='" . $instance['map'] . "';");
 			 $name = $getName->fetch_assoc();
 			 
 			 if(empty($name['name']))
@@ -188,27 +189,29 @@ if(!isset($_POST['ir_step1']) && !isset($nope))
 
 if(isset($_POST['ir_step3']))
 {
-	$guid     = $conn->escape_string($_POST['ir_char']);
-    $instance = $conn->escape_string($_POST['ir_instance']);
+	$guid     = $Database->conn->escape_string($_POST['ir_char']);
+    $instance = $Database->conn->escape_string($_POST['ir_instance']);
 	
-	if($GLOBALS['service'][$service]['currency']=="vp")
-		if($Account->hasVP($_SESSION['cw_user'],$GLOBALS['service'][$service]['price'])==FALSE)
+	if (DATA['service'][$service]['currency'] == "vp")
+	{
+		if ($Account->hasVP($_SESSION['cw_user'], DATA['service'][$service]['price']) == FALSE)
 			echo '<span class="alert">你没有足够的投票积分！';
 		else
 		{
-			$Connect->selectDB($_POST['ir_realm']);
-			$conn->query("DELETE FROM instance WHERE id='".$instance."'");
-			$Account->deductVP($Account->getAccountID($_SESSION['cw_user']),$GLOBALS['service'][$service]['price']);
+			$Database->selectDB($_POST['ir_realm']);
+			Database->conn->query("DELETE FROM instance WHERE id='".$instance."'");
+			$Account->deductVP($Account->getAccountID($_SESSION['cw_user']), DATA['service'][$service]['price']);
 			echo '<span class="approved">副本CD已重置！</span>';
 		}
-	elseif($GLOBALS['service'][$service]['currency']=="dp")
-		if($Account->hasDP($_SESSION['cw_user'],$GLOBALS['service'][$service]['price'])==FALSE)
-			echo '<span class="alert">你的捐赠积分不够'.$GLOBALS['donation']['coins_name'];
+	}
+	elseif (DATA['service'][$service]['currency'] == "dp")
+		if($Account->hasDP($_SESSION['cw_user'],DATA['service'][$service]['price'])==FALSE)
+			echo '<span class="alert">你的捐赠积分不够'.DATA['website']['donation']['coins_name'];
 		else
 		{
-			$Connect->selectDB($_POST['ir_realm']);
-			$conn->query("DELETE FROM instance WHERE id='".$instance."'");
-			$Account->deductDP($Account->getAccountID($_SESSION['cw_user']),$GLOBALS['service'][$service]['price']);
+			$Database->selectDB($_POST['ir_realm']);
+			Database->conn->query("DELETE FROM instance WHERE id='".$instance."'");
+			$Account->deductDP($Account->getAccountID($_SESSION['cw_user']),DATA['service'][$service]['price']);
 			echo '<span class="approved">副本CD已重置！</span>';
 			
 			$Account->logThis("Performed an Instance reset on ".$Character->getCharName($guid,$Server->getRealmId($_POST['ir_realm'])),"instancereset",

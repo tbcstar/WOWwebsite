@@ -19,7 +19,7 @@
     <h3>选择模板</h3>
         <select id="choose_template">
         <?php
-            $result = $conn->query("SELECT * FROM template ORDER BY id ASC;");
+            $result = $Database->select("template", null, null, null, "ORDER BY id ASC");
             while ($row = $result->fetch_assoc())
             {
                 if($row['applied'] == 1)
@@ -50,7 +50,7 @@
         <h3>卸载一个模板</h3>
         <select id="uninstall_template_id">
         <?php
-            $result = $conn->query("SELECT * FROM template ORDER BY id ASC;");
+            $result = $Database->select("template", null, null, null, "ORDER BY id ASC");
             while ($row = $result->fetch_assoc())
             {
                 if($row['applied'] == 1)

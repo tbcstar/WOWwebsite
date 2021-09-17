@@ -1,7 +1,8 @@
-<?php 
-global $Account, $Website, $Connect;
-$conn = $Connect->connectToDB();
-$Account->isNotLoggedIn(); ?>
+<?php
+
+global $Account, $Website, $Database;
+$Account->isNotLoggedIn();
+?>
 <?php include "headers.php" ?>
 <?php include "menus.php" ?>
 <main id="content-wrapper">
@@ -69,16 +70,16 @@ elseif($GLOBALS['service'][$service]['currency']=="dp")
 <hr/>
 <h3 id="choosechar">选择角色</h3> 
 <?php
-$Connect->selectDB("webdb", $conn);
-$result = $conn->query("SELECT char_db, name FROM realms ORDER BY id ASC;");
+$Database->selectDB("webdb", $conn);
+$result = $Database->select("realms", "char_db, name", null, null, "ORDER BY id ASC;")->get_result();
 while ($row = $result->fetch_assoc())
 {
         $acct_id = $Account->getAccountID($_SESSION['cw_user']);
 		$realm   = $row['name'];
 		$char_db = $row['char_db'];
 		          	
-		$Connect->selectDB($char_db, $conn);
-        $result = $conn->query("SELECT name, guid, gender, class, race, level, online FROM characters WHERE account=". $acct_id .";");
+		$Database->selectDB($char_db, $conn);
+        $result = $Database->select("characters", "name, guid, gender, class, race, level, online", null, "account=". $acct_id .";")->get_result();
         while ($row = $result->fetch_assoc())
 		{
 	?>

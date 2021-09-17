@@ -4,7 +4,7 @@
 ?> 
 <div class="box_right_title">公益商城日志</div>
 <?php
-$result = $conn->query("SELECT * FROM shoplog WHERE shop='donate' ORDER BY id DESC LIMIT 10;");
+$result = $Database->select("shoplog", null, null, "shop='donate' ORDER BY id DESC LIMIT 10")->get_result();
 if ($result->num_rows == 0)
 {
 	echo "看来公益商城的日志是空的!";
@@ -27,7 +27,7 @@ else
             <td><?php echo $GameAccount->getAccName($row['account']); ?></td>
             <td><?php echo $GameAccount->getCharName($row['char_id'],$row['realm_id']); ?></td>
             <td><?php echo $GameServer->getRealmName($row['realm_id']); ?></td>
-            <td><a href="http://<?php echo $GLOBALS['tooltip_href']; ?>item=<?php echo $row['entry']; ?>" title="" target="_blank">
+            <td><a href="http://<?php echo DATA['website']['tooltip_href']; ?>item=<?php echo $row['entry']; ?>" title="" target="_blank">
     	       <?php echo $GameServer->getItemName($row['entry']); ?></a></td>
             <td><?php echo $row['date']; ?></td>
         </tr>	

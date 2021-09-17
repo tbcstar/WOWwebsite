@@ -27,12 +27,17 @@
 <div class="box_one">
 <div class="box_one_title">账户管理</div>
 <span style="z-index: 99;">欢迎回来 <?php echo $_SESSION['cw_user']; ?>
-			<?php 
-			if (isset($_SESSION['cw_gmlevel']) && $_SESSION['cw_gmlevel']>=$GLOBALS['adminPanel_minlvl'] && $GLOBALS['adminPanel_enable']==TRUE) 
+			<?php
+			if (isset($_SESSION['cw_gmlevel']) && $_SESSION['cw_gmlevel'] >= DATA['website']['admin']['minlvl'] && DATA['admin']['enable'] == TRUE)
+			{
 				echo ' <a href="admin/">(管理面板)</a>';
-				
-			if (isset($_SESSION['cw_gmlevel']) && $_SESSION['cw_gmlevel']>=$GLOBALS['staffPanel_minlvl'] && $GLOBALS['staffPanel_enable']==TRUE) 
+			}
+
+			if (isset($_SESSION['cw_gmlevel']) && $_SESSION['cw_gmlevel'] >= DATA['website']['staff']['minlvl'] && DATA['staff']['enable'] == TRUE)
+			{
 				echo ' <a href="staff/">(员工面板)</a>';
+			}
+
 			?>
             </span>
 			<hr/>

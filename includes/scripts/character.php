@@ -1,40 +1,46 @@
 <?php 
 
+if ( !isset($_POST['action']) )
+{
+    exit;
+}
+
 require "../ext_scripts_class_loader.php";
 
-global $Connect, $Server, $Character, $Account;
-$conn = $Connect->connectToDB();
+global $Database, $Server, $Character, $Account;
 
-if($_POST['action'] == 'unstuck') 
+if ( $_POST['action'] == 'unstuck' )
 {
-	$guid     = $conn->escape_string($_POST['guid']);
+	$guid       = $Database->conn->escape_string($_POST['guid']);
 	$realm_id 	= $Server->getRealmId($_POST['char_db']);
-	$Connect->connectToRealmDB($realm_id);
+	$Database->realm($realm_id);
 	
 	$Character->unstuck($guid,$_POST['char_db']);
 }	
 
-if($_POST['action'] == 'revive') 
+if ( $_POST['action'] == 'revive' )
 {
-	$guid     = $conn->escape_string($_POST['guid']);
+	$guid     = $Database->conn->escape_string($_POST['guid']);
 	$realm_id = $Server->getRealmId($_POST['char_db']);
-	$Connect->connectToRealmDB($realm_id);
+	$Database->realm($realm_id);
 
 	$Character->revive($guid,$_POST['char_db']);
 }	
 
-if ($_POST['action'] == 'getLocations') 
+if ( $_POST['action'] == 'getLocations' )
 {
 	$values = explode('*',$_POST['values']);
 	
-	$char       = $conn->escape_string($values[0]);
+	$char       = $Database->conn->escape_string($values[0]);
 	$realm_id 	= $Server->getRealmId($values[1]);
-	$Connect->connectToRealmDB($realm_id);
+	$Database->realm($realm_id);
 
-	$result   = $conn->query("SELECT race FROM characters WHERE guid=". $char .";");
+	$statement   = $Database->select("characters", "race", null, "guid=$char");
+    $result = $statement->get_result();
     $row      = $result->fetch_assoc();
+    $statement->close();
 	$alliance = array(1,3,4,7,11);
-	if (in_array($row['race'],$alliance)) 
+	if ( in_array($row['race'], $alliance) )
 	{
 		//联盟
 		$locations_name = array( 
@@ -76,7 +82,7 @@ if ($_POST['action'] == 'getLocations')
         );
 	}
 	echo '<h3>选择位置</h3>';
-	if (is_array($locations_name) || is_object($locations_name))
+	if ( is_array($locations_name) || is_object($locations_name) )
 	{
 		foreach ($locations_name as $v) 
 		{
@@ -94,25 +100,26 @@ if ($_POST['action'] == 'getLocations')
 	}
 }
 
-if ($_POST['action']=='teleport') 
+if ( $_POST['action'] == 'teleport' )
 {
-	$character = $conn->escape_string($_POST['character']);
-    $char_db   = $conn->escape_string($_POST['char_db']);
-    $location  = $conn->escape_string($_POST['location']);
+	$character = $Database->conn->escape_string($_POST['character']);
+    $char_db   = $Database->conn->escape_string($_POST['char_db']);
+    $location  = $Database->conn->escape_string($_POST['location']);
 	
     $realm_id = $Server->getRealmId($_POST['char_db']);
-	$Connect->connectToRealmDB($realm_id);
-	$result   = $conn->query("SELECT race, account, level, online FROM characters WHERE guid=". $character .";");
-    
-	if ($result->num_rows == 0)
+    $Database->realm($realm_id);
+    $statement   = $Database->select("characters", "race, account, level, online", null, "guid=$character");
+    $result = $statement->get_result();
+    if ( $result->num_rows == 0 )
 	{
 		die("<span class='alert'>该帐户中不存在该角色！</span>");
 	}
 	else 
 	{
 		$row = $result->fetch_assoc();
+		$statement->close();
 	
-		if($row['online'] == 1)
+		if ( $row['online'] == 1 )
 		{
 			die("请先退出游戏，然后再继续。");
 		}
@@ -121,18 +128,18 @@ if ($_POST['action']=='teleport')
 		$race = $row['race'];
 		$level = $row['level'];
 	
-		if($GLOBALS['service']['teleport']['currency'] == "vp" && $GLOBALS['service']['teleport']['price'] > 0) 
+		if ( DATA['service']['teleport']['currency'] == "vp" && DATA['service']['teleport']['price'] > 0 )
 		{
-		 	if($Account->hasVP($_SESSION['cw_user'], $GLOBALS['service']['teleport']['price']) == false)
+		 	if ($Account->hasVP($_SESSION['cw_user'], DATA['service']['teleport']['price']) == false)
 		 	{
 		   		die("投票积分不足！");
 		 	}
 		} 
-		elseif($GLOBALS['service']['teleport']['currency'] == "dp" && $GLOBALS['service']['teleport']['price'] > 0) 
+		elseif ( DATA['service']['teleport']['currency'] == "dp" && DATA['service']['teleport']['price'] > 0 )
 		{
-			if($Account->hasDP($_SESSION['cw_user'], $GLOBALS['service']['teleport']['price']) == false)
+			if ( $Account->hasDP($_SESSION['cw_user'], DATA['service']['teleport']['price']) == false )
 			{
-		    	die($GLOBALS['donation']['coins_name']." 钱不够！");
+		    	die(DATA['website']['donation']['coins_name']." 钱不够！");
 			}
 		}
     	
@@ -240,25 +247,27 @@ if ($_POST['action']=='teleport')
 				break;
 		}
 
-		if ($location == "Dalaran" && $level < 68)
+		if ( $location == "Dalaran" && $level < 68 )
 		{
 			die("正在退出...<br/><span class='alert'>你的角色必须达到68级或以上才能传送到诺森德!</span>");
 		}
 
-		if($GLOBALS['service']['teleport']['currency'] == "vp")
+		if ( DATA['service']['teleport']['currency'] == "vp" )
 		{
-			 $Account->deductVP($Account->getAccountID($_SESSION['cw_user']),$GLOBALS['service']['teleport']['price']);
+			 $Account->deductVP($Account->getAccountID($_SESSION['cw_user']), DATA['service']['teleport']['price']);
 		}
-		elseif($GLOBALS['service']['teleport']['currency'] == "dp")
+		elseif ( DATA['service']['teleport']['currency'] == "dp" )
 		{
-			$Account->deductDP($Account->getAccountID($_SESSION['cw_user']),$GLOBALS['service']['teleport']['price']);
+			$Account->deductDP($Account->getAccountID($_SESSION['cw_user']), DATA['service']['teleport']['price']);
 		}
 		
-		$Connect->connectToRealmDB($realm_id);
+		$Database->realm($realm_id);
 
 		//get pos x, y etc for the logs.
-		$result = $conn->query("SELECT position_x, position_y, position_z, map FROM characters WHERE guid=". $character .";");
+		$statement = $Database->select("characters", "position_x, position_y, position_z, map", null, "guid='$character'");
+        $result = $statement->get_result();
         $pos    = $result->fetch_assoc();
+        $statement->close();
 
 		$char_x = $pos['position_x'];
 		$char_y = $pos['position_y'];
@@ -266,45 +275,51 @@ if ($_POST['action']=='teleport')
 		$char_map = $pos['map'];
 		$from = "X: ".$char_x." - Y: ".$char_y." - Z: ".$char_z." - MAP ID: ".$char_map;
 
-	    $conn->query("UPDATE characters SET position_x = " . $x . ", position_y= " . $y . ", position_z = " . $z . ", map = " . $map . " WHERE account = " . $acct . " 
-		    AND guid = '".$character."'");
+	    $set = array
+        (
+            "position_x" => $x, 
+            "position_y" => $y, 
+            "position_z" => $z, 
+            "map" => $map 
+        );
+        $Database->update("characters", $set, array("account" => $acct, "guid" => $character));
 
-		if($GLOBALS['service']['teleport']['currency'] == "vp")
+		if ( DATA['service']['teleport']['currency'] == "vp" )
 		{
-			echo $GLOBALS['service']['teleport']['price']." 投票积分已从您的帐户中扣除。";
+			echo DATA['service']['teleport']['price']." 投票积分已从您的帐户中扣除。";
 		}
-		elseif($GLOBALS['service']['teleport']['currency'] == "dp")
+		elseif ( DATA['service']['teleport']['currency'] == "dp" )
 		{
-			echo $GLOBALS['service']['teleport']['price']." ".$GLOBALS['donation']['coins_name']." 已从您的账户中扣除。";
+			echo DATA['service']['teleport']['price'] . " " . DATA['website']['donation']['coins_name'] ." 已从您的账户中扣除。";
 		}
 		$Account->logThis("传送角色 ".$Character->getCharName($character,$realm_id)." 到 ".$location,'传送',$realm_id);
 		//echo TRUE;
 	}
 }
 
-if($_POST['action'] == 'service') 
+if ( $_POST['action'] == 'service' )
 {
-	$guid     = $conn->escape_string($_POST['guid']);
-    $realm_id = $conn->escape_string($_POST['realm_id']);
-    $serviceX = $conn->escape_string($_POST['service']);
+	$guid     = $Database->conn->escape_string($_POST['guid']);
+    $realm_id = $Database->conn->escape_string($_POST['realm_id']);
+    $serviceX = $Database->conn->escape_string($_POST['service']);
 	
 	
-	if($Character->isOnline($guid) == TRUE)
+	if ( $Character->isOnline($guid) == TRUE )
 	{
 		die('<b class="red_text">请先退回到登录界面，然后再继续。');
 	}
 	
-	if($GLOBALS['service'][$serviceX]['currency'] == 'vp')
+	if ( DATA['service'][$serviceX]['currency'] == 'vp' )
 	{
-		if($Account->hasVP($_SESSION['cw_user'],$GLOBALS['service'][$serviceX]['price']) == false)
+		if ($Account->hasVP($_SESSION['cw_user'], DATA['service'][$serviceX]['price']) == false)
 			die('<b class="red_text">投票积分不足！</b>');
 	}
 	
-	if($GLOBALS['service'][$serviceX]['currency'] == 'dp')
+	if ( DATA['service'][$serviceX]['currency'] == 'dp' )
 	{
-		if($Account->hasDP($_SESSION['cw_user'],$GLOBALS['service'][$serviceX]['price']) == false)
+		if ($Account->hasDP($_SESSION['cw_user'], DATA['service'][$serviceX]['price']) == false)
 		{
-			die('<b class="red_text">'.$GLOBALS['donation']['coins_name'].' 钱不够！</b>');
+			die('<b class="red_text">'.DATA['website']['donation']['coins_name'].' 钱不够！</b>');
 		}
 	}
 	
@@ -336,11 +351,12 @@ if($_POST['action'] == 'service')
 		
 	}
 	
-	$Connect->selectDB("webdb", $conn);
-	$getRA = $conn->query("SELECT sendType, host, ra_port, soap_port, rank_user, rank_pass FROM realms WHERE id=". $realm_id .";");
-    $row   = $getRA->fetch_assoc();
+	$Database->selectDB("webdb", $Database->conn);
+    $statement = $Database->select("realms", null, null, "id=$realm_id");
+    $result = $statement->get_result();
+    $row   = $result->fetch_assoc();
 	
-	if($row['sendType'] == 'ra') 
+	if ( $row['sendType'] == 'ra' )
 	{
 		require "../misc/ra.php";
 		 
@@ -355,15 +371,15 @@ if($_POST['action'] == 'service')
 		sendSoap("character ".$command." ".$Character->getCharname($guid,$realm_id),
 		$row['rank_user'],$row['rank_pass'],$row['host'],$row['soap_port']);
     }
-	
-	if($GLOBALS['service'][$serviceX]['currency'] == 'vp')
+
+	if ( DATA['service'][$serviceX]['currency'] == 'vp' )
 	{
-		$Account->deductVP($Account->getAccountID($_SESSION['cw_user']),$GLOBALS['service'][$serviceX]['price']);
+		$Account->deductVP($Account->getAccountID($_SESSION['cw_user']), DATA['service'][$serviceX]['price']);
 	}
-	
-	if($GLOBALS['service'][$serviceX]['currency'] == 'dp')
+
+	if ( DATA['service'][$serviceX]['currency'] == 'dp' )
 	{
-		$Account->deductDP($Account->getAccountID($_SESSION['cw_user']),$GLOBALS['service'][$serviceX]['price']);
+		$Account->deductDP($Account->getAccountID($_SESSION['cw_user']), DATA['service'][$serviceX]['price']);
 	}
 
 	$Account->logThis("Performed a ".$info." on ".$Character->getCharName($guid,$realm_id),$serviceX,$realm_id);
@@ -371,5 +387,3 @@ if($_POST['action'] == 'service')
 	
 	//echo TRUE;
 }
-
-?>

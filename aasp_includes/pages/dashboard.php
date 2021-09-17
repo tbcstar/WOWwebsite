@@ -34,7 +34,7 @@ function setError($haystack)
   <div class="box_right_title">管理面板日志</div>
   <?php
   $GameServer->selectDB("webdb", $conn);
-  $result = $conn->query("SELECT * FROM admin_log ORDER BY id DESC LIMIT 25;");
+  $result = $Database->select("admin_log", null, null, null, "ORDER BY id DESC LIMIT 25");
   if ($result->num_rows == 0)
   {
       echo "管理日志为空!";

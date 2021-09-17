@@ -8,12 +8,12 @@
 <?php
 if (isset($_GET['newsid'])) 
 {
-    global $Connect, $Website;
-    $conn = $Connect->connectToDB();
-	$id = $conn->escape_string($_GET['newsid']);
-	$Connect->selectDB("webdb", $conn);
+    global $Database, $Website;
+    $conn = $Database->database();
+    $id = $Database->conn->escape_string($_GET['newsid']);
+    $Database->selectDB("webdb", $conn);
 
-	$result = $conn->query("SELECT * FROM news WHERE id=". $id .";");
+	$result = $Database->select( * FROM news WHERE id=". $id .";");
 	$row = $result->fetch_assoc(); ?>
     <div class='box_two_title'><?php echo $row['title']; ?></div>
     <?php 
@@ -28,7 +28,7 @@ if (isset($_GET['newsid']))
     <span class='yellow_text'>作者 <b><?php echo $row['author'];?></b> | <?php echo $row['date']; ?></span>
     <?php if ($GLOBALS['news']['enableComments']==TRUE) 
 	{
-		$result = $conn->query("SELECT poster FROM news_comments WHERE newsid=" . $id . " ORDER BY id DESC LIMIT 1;");
+		$result = $Database->select( poster FROM news_comments WHERE newsid=" . $id . " ORDER BY id DESC LIMIT 1;");
 		$rows = $result->fetch_assoc();
 	if($rows['poster'] == $_SESSION['cw_user_id'] && isset($_SESSION['cw_user'])) 
 	{
@@ -58,22 +58,23 @@ if (isset($_GET['newsid']))
 	{
 		if (isset($_POST['text']) && isset($_SESSION['cw_user']) && strlen($_POST['text'])<1000) 
 		{
-			$text = $conn->escape_string(trim($_POST['text']));
+			$text = $Database->conn->escape_string(trim($_POST['text']));
 			$ip = $_SERVER['REMOTE_ADDR'];
-			$Connect->selectDB("logondb", $conn);
+			$Database->selectDB("logondb", $conn);
 
-			$getAcct = $conn->query("SELECT id FROM account WHERE username='" . $_SESSION['cw_user'] . "';");
+			$getAcct = $Database->select( id FROM account WHERE username='" . $_SESSION['cw_user'] . "';");
 			$row     = $getAcct->fetch_assoc();
 			$account = $row['id'];
-			$Connect->selectDB("webdb", $conn); 
-			$conn->query("INSERT INTO news_comments (`newsid`, `text`, `poster`, `ip`) VALUES 
+
+			$Database->selectDB("webdb", $conn);
+			$Database->conn->query("INSERT INTO news_comments (`newsid`, `text`, `poster`, `ip`) VALUES 
                 (". $id .", '". $text ."', '". $account ."', '". $_SERVER['REMOTE_ADDR'] ."');");
 
 			header("Location: ?page=news&newsid=". $id);
 		}
 	}
 
-    $result = $conn->query("SELECT * FROM news_comments WHERE newsid=". $row['id'] ." ORDER BY id ASC;");
+    $result = $Database->select( * FROM news_comments WHERE newsid=". $row['id'] ." ORDER BY id ASC;");
 	if ($result->num_rows ==0)
 		echo "<span class='alert'>还没有发表任何评论!</span>";
 	else 
@@ -87,12 +88,12 @@ if (isset($_GET['newsid']))
              "'<a href=\"$1\" target=\"_blank\">http://$3</a>$4'",
              $row['text']
             );
-			$Connect->selectDB("logondb", $conn);
-			$query  = $conn->query("SELECT username, id FROM account WHERE id=". $row['poster'] .";");
+			$Database->selectDB("logondb", $conn);
+			$query  = $Database->select( username, id FROM account WHERE id=". $row['poster'] .";");
 			$pi		= $query->fetch_assoc();
 			$user	= ucfirst(strtolower($pi['username']));
 
-			$getGM = $conn->query("SELECT COUNT(gmlevel) FROM account_access WHERE id=". $pi['id'] ." AND gmlevel>0;");
+			$getGM = $Database->select( COUNT(gmlevel) FROM account_access WHERE id=". $pi['id'] ." AND gmlevel>0;");
 			?>
 			<div class="news_comment" id="comment-<?php echo $row['id']; ?>"> 
                 <div class="news_comment_user"><?php
@@ -125,7 +126,7 @@ if (isset($_GET['newsid']))
 }
 else
 {
-	 $result = $conn->query("SELECT * FROM news ORDER BY id DESC;");
+	 $result = $Database->select( * FROM news ORDER BY id DESC;");
 	 while($row = $result->fetch_assoc()) 
 	 {
 			if(file_exists($row['image']))
@@ -170,7 +171,7 @@ else
 					echo nl2br(htmlentities($text)); 
 					$output .= nl2br($row['body']); 
 				}
-			$commentsNum = $conn->query("SELECT COUNT(id) AS comments FROM news_comments WHERE newsid=". $row['id'] .";");
+			$commentsNum = $Database->select( COUNT(id) AS comments FROM news_comments WHERE newsid=". $row['id'] .";");
 							 
 			if($GLOBALS['news']['enableComments']==TRUE) 
 			   $comments = '| <a href="?page=news&amp;newsid=' . $row['id'] . '">Comments (' . $commentsNum->fetch_assoc()['comments'] . ')</a>';

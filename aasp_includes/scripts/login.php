@@ -17,20 +17,21 @@
             die("请输入账号和密码。");
         }
 
-        $username     = $conn->escape_string(strtoupper(trim($_POST['username'])));
-        $password     = $conn->escape_string(strtoupper(trim($_POST['password'])));
+        $username     = $Database->conn->escape_string(strtoupper(trim($_POST['username'])));
+        $password     = $Database->conn->escape_string(strtoupper(trim($_POST['password'])));
         $passwordHash = sha1("". $username .":". $password ."");
 
-        if($conn->select_db($GLOBALS['connection']['logon']['database']) == false)
+        if($Database->conn->select_db(DATA['logon']['database']) == false)
         {
-            die("数据库错误。 (". $conn->error.")");
+            die("数据库错误。 (". $Database->conn->error.")");
         }
-        $result = $conn->query("SELECT COUNT(id) FROM account WHERE username='". $username ."' AND sha_pass_hash = '". $passwordHash ."';");
 
-        $getId    = $conn->query("SELECT id FROM account WHERE username='". $username ."';");
+        $result = $Database->select("account", "COUNT(id)", null, "username='$username' AND sha_pass_hash = '$passwordHash'")->get_result();
+
+        $getId    = $Database->select("account", "id", null, "username='$username'")->get_result();
         $row      = $getId->fetch_assoc();
         $uid      = $row['id'];
-        $result   = $conn->query("SELECT gmlevel FROM account_access WHERE id=$uid AND gmlevel>=". $GLOBALS[$_POST['panel'] . 'Panel_minlvl'] .";");
+        $result   = $Database->select("account_access", "gmlevel", null, "id=$uid AND gmlevel>=". DATA[$_POST['panel']]['minlvl'] )->get_result();
 
         if ($result->num_rows == 0)
         {
@@ -48,7 +49,6 @@
             die('脚本遇到了一个错误。(1个或多个会话被设置为空)');
         }
 
-        sleep(1);
         die(TRUE);
     }
 ###############################  

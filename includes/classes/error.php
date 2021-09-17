@@ -2,7 +2,7 @@
 
 	function buildError($error, $num , $hidden_error = "")
 	{
-		if ($GLOBALS['useDebug'] == false)
+		if (DATA['use_debug'] == false)
 		{
 			log_error($error ." ". $hidden_error, $num);
 		}
@@ -36,7 +36,7 @@
 
 	function customError($errno, $errstr)
 	{
-		if ($errno != 8 && $errno != 2048 && $GLOBALS['useDebug'] == TRUE)
+		if ($errno != 8 && $errno != 2048 && DATA['website']['use_debug'] == TRUE)
 		{
 			error_log("*[" . date("d M Y H:i") . "]<i>" . $errstr . "</i>\n", 3, "error.log");
 		}

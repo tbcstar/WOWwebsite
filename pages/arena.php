@@ -1,5 +1,5 @@
-﻿<?php 
-global $Account;
+<?php 
+global $Account, $Connect;
 $Account->isNotLoggedIn();
 $Connect->selectDB("webdb", $conn);
 ?>

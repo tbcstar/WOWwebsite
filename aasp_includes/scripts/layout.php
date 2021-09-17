@@ -15,23 +15,23 @@
     {
         case "addLink": 
         {
-            $title     = $conn->escape_string($_POST['title']);
-            $url       = $conn->escape_string($_POST['url']);
-            $shownWhen = $conn->escape_string($_POST['shownWhen']);
+            $title     = $Database->conn->escape_string($_POST['title']);
+            $url       = $Database->conn->escape_string($_POST['url']);
+            $shownWhen = $Database->conn->escape_string($_POST['shownWhen']);
 
             if (empty($title) || empty($url) || empty($shownWhen))
             {
                 die("请输入所有字段。");
             }
 
-            if ($conn->query("INSERT INTO site_links (title, url, shownWhen) VALUES('". $title ."', '". $url ."', '". $shownWhen ."');"))
+            if ($Database->conn->query("INSERT INTO site_links (title, url, shownWhen) VALUES
+                ('$title', '$url', '$shownWhen');"))
             {
                 $GameServer->logThis("添加 ". $title ." 到菜单");
             }
             else
             {
-                $GameServer->logThis("无法添加菜单 - ". $conn->error);
-                $GameServer->logThis("无法添加菜单 - ". $conn->error);
+                $GameServer->logThis("无法添加菜单 - ". $Database->conn->error);
             }
             
             break;
@@ -39,70 +39,70 @@
         
         case "deleteImage":
         {
-            $id = $conn->escape_string($_POST['id']);
+            $id = $Database->conn->escape_string($_POST['id']);
 
-            if ($conn->query("DELETE FROM slider_images WHERE position=". $id .";"))
+            if ($Database->conn->query("DELETE FROM slider_images WHERE position=$id;"))
             {
                 $GameServer->logThis("删除了幻灯片图像");
             }
             else
             {
-                $GameServer->logThis("无法删除选定的幻灯片图像 - ". $conn->error);
+                $GameServer->logThis("无法删除选定的幻灯片图像 - ". $Database->conn->error);
             }
             break;
         }
 
         case "deleteLink":
         {
-            $id = $conn->escape_string($_POST['id']);
+            $id = $Database->conn->escape_string($_POST['id']);
 
-            if($conn->query("DELETE FROM site_links WHERE position=". $id .";"))
+            if($Database->conn->query("DELETE FROM site_links WHERE position=$id;"))
             {
                 $GameServer->logThis("删除了菜单链接");
             }
             else
             {
-                $GameServer->logThis("无法删除菜单链接 - ". $conn->error);
+                $GameServer->logThis("无法删除菜单链接 - ". $Database->conn->error);
             }
             break;
         }
 
         case "disablePlugin":
         {
-            $foldername = $conn->escape_string($_POST['foldername']);
+            $foldername = $Database->conn->escape_string($_POST['foldername']);
 
-            if ($conn->query("INSERT INTO disabled_plugins VALUES('". $foldername ."');"))
+            if ($Database->conn->query("INSERT INTO disabled_plugins VALUES('$foldername');"))
             {
                 include "../../plugins/" . $foldername . "/info.php";
                 $GameServer->logThis("禁用了插件 " . $title);
             }
             else
             {
-                $GameServer->logThis("无法禁用插件 - ". $conn->error);   
+                $GameServer->logThis("无法禁用插件 - ". $Database->conn->error);   
             }
             break;
         }
 
         case "enablePlugin":
         {
-            $foldername = $conn->escape_string($_POST['foldername']);
+            $foldername = $Database->conn->escape_string($_POST['foldername']);
 
-            if ($conn->query("DELETE FROM disabled_plugins WHERE foldername='". $foldername ."';"))
+            if ($Database->conn->query("DELETE FROM disabled_plugins WHERE foldername='$foldername';"))
             {
                 include "../../plugins/" . $foldername . "/info.php";
                 $GameServer->logThis("启用插件 -" . $title);
             }
             else
             {
-                $GameServer->logThis("无法启用插件 - ". $conn->error);
+                $GameServer->logThis("无法启用插件 - ". $Database->conn->error);
             }
             break;
         }
 
         case "getMenuEditForm":
         {
-            $id = $conn->escape_string($_POST['id']);
-            $result = $conn->query("SELECT * FROM site_links WHERE position=". $id .";");
+            $id = $Database->conn->escape_string($_POST['id']);
+            $result = $Database->select("site_links", null, null, "position=$id")->get_result();
             $rows   = $result->fetch_assoc();
             ?>
             标题<br/>
@@ -137,38 +137,38 @@
 
         case "installTemplate":
         {
-            $name = $conn->escape_string(trim($_POST['name']));
-            $path = $conn->escape_string(trim($_POST['path']));
-            if ($conn->query("INSERT INTO template (`name`, `path`) VALUES('". $name ."', '". $path ."');"))
+            $name = $Database->conn->escape_string(trim($_POST['name']));
+            $path = $Database->conn->escape_string(trim($_POST['path']));
+            if ($Database->conn->query("INSERT INTO template (`name`, `path`) VALUES('$name', '$path');"))
             {
                 $GameServer->logThis("安装了模板 ". $_POST['name']);
             }
             else
             {
-                $GameServer->logThis("安装模板时出错 ". $conn->error);
+                $GameServer->logThis("安装模板时出错 ". $Database->conn->error);
             }
             break;
         }
 
         case "saveMenu":
         {
-            $title     = $conn->escape_string($_POST['title']);
-            $url       = $conn->escape_string($_POST['url']);
-            $shownWhen = $conn->escape_string($_POST['shownWhen']);
-            $id        = $conn->escape_string($_POST['id']);
+            $title     = $Database->conn->escape_string($_POST['title']);
+            $url       = $Database->conn->escape_string($_POST['url']);
+            $shownWhen = $Database->conn->escape_string($_POST['shownWhen']);
+            $id        = $Database->conn->escape_string($_POST['id']);
 
             if (empty($title) || empty($url) || empty($shownWhen))
             {
                 die("请输入所有字段。");
             }
 
-            if ($conn->query("UPDATE site_links SET title='". $title ."', url='". $url ."', shownWhen='". $shownWhen ."' WHERE position=". $id .";"))
+            if ($Database->conn->query("UPDATE site_links SET title='$title', url='$url', shownWhen='$shownWhen' WHERE position=$position;"))
             {
                 $GameServer->logThis("修改了菜单");
             }
             else
             {
-                $GameServer->logThis("无法修改菜单 - ". $conn->error);
+                $GameServer->logThis("无法修改菜单 - ". $Database->conn->error);
             }
 
             echo TRUE;
@@ -177,33 +177,33 @@
 
         case "setTemplate":
         {
-            $templateId = $conn->escape_string($_POST['id']);
-            if ($conn->query("UPDATE template SET applied='0' WHERE applied='1';") && 
-                $conn->query("UPDATE template SET applied='1' WHERE id=". $templateId .";"))
+            $templateId = $Database->conn->escape_string($_POST['id']);
+            if ($Database->conn->query("UPDATE template SET applied='0' WHERE applied='1';") && 
+                $Database->conn->query("UPDATE template SET applied='1' WHERE id=". $templateId .";"))
             {
-                $result = $conn->query("SELECT name FROM template WHERE id=". $templateId .";");
+                $result = $Database->select("template", "name", null, "id=$templateId")->get_result();
                 $GameServer->logThis("Template Changed To `". $result->fetch_assoc()['name'] ."`");
             }
             else
             {
-                $GameServer->logThis("无法更改模板 - ". $conn->error);
+                $GameServer->logThis("无法更改模板 - ". $Database->conn->error);
             }
             break;
         }
 
         case "uninstallTemplate":
         {
-            $templateId = $conn->escape_string($_POST['id']);
-            $result = $conn->query("SELECT name FROM template WHERE id=". $templateId .";");
+            $templateId = $Database->conn->escape_string($_POST['id']);
+            $result = $Database->select("template", "name", null, "id=$templateId")->get_result();
 
-            if ($conn->query("DELETE FROM template WHERE id=". $templateId .";") && 
-                $conn->query("UPDATE template SET applied='1' ORDER BY id ASC LIMIT 1;"))
+            if ($Database->conn->query("DELETE FROM template WHERE id=$templateId;") && 
+                $Database->conn->query("UPDATE template SET applied='1' ORDER BY id ASC LIMIT 1;"))
             {
                 $GameServer->logThis("Uninstalled Template - `". $result->fetch_assoc()['name'] ."`");
             }
             else
             {
-                $GameServer->logThis("无法卸载模板 - ". $conn->error);
+                $GameServer->logThis("无法卸载模板 - ". $Database->conn->error);
             }
             break;
         }

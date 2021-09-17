@@ -1,8 +1,8 @@
 <?php
 
-global $Connect;
-$conn = $Connect->connectToDB();
-$Connect->selectDB("webdb", $conn);
+global $Database;
+$conn = $Database->database();
+$Database->selectDB("webdb", $conn);
 
 if (!isset($_SESSION['cw_user']))
 {
@@ -12,7 +12,7 @@ else
 {
 	$sql = "WHERE shownWhen = 'always' OR shownWhen = 'logged'";
 }
-$getMenuLinks = $conn->query("SELECT * FROM site_links ". $sql ." ORDER BY position ASC;");
+$getMenuLinks = $Database->select( * FROM site_links ". $sql ." ORDER BY position ASC;");
 if ($getMenuLinks->num_rows == 0)
 {
 	buildError("<b>模板错误:</b> 在Web数据库中没有发现菜单链接!", NULL);

@@ -3,7 +3,7 @@
 global $GameServer;
 $conn = $GameServer->connect();
 $GameServer->selectDB("webdb", $conn);
-$result = $conn->query("SELECT * FROM news ORDER BY id DESC;");
+$result = $Database->select("news", null, null, null, "ORDER BY id DESC")->get_result();
 if ($result->num_rows == 0)
 { 
 	echo "<span class='blue_text'>目前还没有任何消息!</span>"; 
@@ -22,7 +22,7 @@ else {
 <?php
 while ($row = $result->fetch_assoc())
 {
-    $comments = $conn->query("SELECT COUNT(id) AS comments FROM news_comments WHERE newsid=". $row['id'] .";");
+    $comments = $Database->select("news_comments", "COUNT(id) AS comments", null, "newsid=". $row['id'])->get_result();
 	echo "<tr class='center'>
                   		<td>". $row['id'] ."</td>
                   		<td>". $row['title'] ."</td>

@@ -28,7 +28,7 @@ if($_GET['page']=='voteshop')
 	
 <?php 
 }
-if($GLOBALS['core_expansion'] > 2)
+if ( DATA['website']['expansion'] > 2 )
 {
 	echo '<script type="text/javascript" src="/javascript/tooltip.js"></script>';
 }
@@ -52,7 +52,7 @@ if($_GET['page'] == 'donateshop' || $_GET['page'] == 'voteshop')
 }
 
 ####FACEBOOK####
-if($GLOBALS['social']['enableFacebookModule'] == TRUE) 
+if ( DATA['social']['facebook_module'] == true )
 {  
 	?>
 	<script type="text/javascript">
@@ -66,13 +66,13 @@ if($GLOBALS['social']['enableFacebookModule'] == TRUE)
 }
 
 ####服务器状态######
-if($GLOBALS['serverStatus']['enable'] == TRUE) 
+if ( DATA['website']['server_status']['enable'] == true )
 {
 	?>
 	<script type="text/javascript">
         $(document).ready(function() 
         {
-            $.post("includes/scripts/misc.php", { serverStatus: TRUE },
+            $.post("includes/scripts/misc.php", { serverStatus: true },
            function(data) 
            {
                $("#server_status").html(data);

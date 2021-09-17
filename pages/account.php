@@ -13,10 +13,10 @@
 <p>欢迎回来</p>
 <p><span><?php echo ucfirst(strtolower($_SESSION['cw_user']));?></span></p>
 <?php 
-			if (isset($_SESSION['cw_gmlevel']) && $_SESSION['cw_gmlevel']>=$GLOBALS['adminPanel_minlvl'] && $GLOBALS['adminPanel_enable']==TRUE) 
+			if (isset($_SESSION['cw_gmlevel']) && $_SESSION['cw_gmlevel']>=DATA['adminPanel_minlvl'] && DATA['adminPanel_enable']==true ) 
 				echo ' <a href="admin/">(管理面板)</a>';
 				
-			if (isset($_SESSION['cw_gmlevel']) && $_SESSION['cw_gmlevel']>=$GLOBALS['staffPanel_minlvl'] && $GLOBALS['staffPanel_enable']==TRUE) 
+			if (isset($_SESSION['cw_gmlevel']) && $_SESSION['cw_gmlevel']>=DATA['staffPanel_minlvl'] && DATA['staffPanel_enable']==true ) 
 				echo ' <a href="staff/">(员工面板)</a>';
 			?>
 </div>

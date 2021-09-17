@@ -4,25 +4,25 @@ class Plugins
 {
 	public static function globalInit()
 	{
-		if($GLOBALS['enablePlugins'] == TRUE)
+		if ( DATA['website']['enable_plugins'] == TRUE )
 		{
-			if(!isset($_SESSION['loaded_plugins']))
+			if ( !isset($_SESSION['loaded_plugins']) )
 			{
-				global $Connect, $conn;
+				global $Database;
 				$loaded_plugins = array();
 				
 				$bad 	= array('.','..','index.html');
 				$count 	= 0;
 				
 				$folder = scandir('plugins/');
-				if (is_array($folder) || is_object($folder))
+				if ( is_array($folder) || is_object($folder) )
 				{
 					foreach($folder as $folderName)
 					{
-						if(!in_array($folderName,$bad))
+						if ( !in_array($folderName, $bad) )
 						{
-							$Connect->selectDB("webdb", $conn);
-							if(file_exists('plugins/'. $folderName .'/config.php'))
+							$Database->selectDB("webdb");
+							if ( file_exists('plugins/'. $folderName .'/config.php') )
 							{
 								include "plugins/". $folderName ."/config.php";
 							}
@@ -33,7 +33,7 @@ class Plugins
 					}
 				}
 
-				if($count == 0)
+				if ( $count == 0 )
 				{
 					$_SESSION['loaded_plugins'] = NULL;
 				}
@@ -47,30 +47,31 @@ class Plugins
 	
 	public static function init($type)
 	{
-		if($GLOBALS['enablePlugins'] == TRUE)
+		if ( DATA['website']['enable_plugins'] == TRUE )
 		{
-			if($_SESSION['loaded_plugins'] != NULL)
+			if ( $_SESSION['loaded_plugins'] != NULL )
 			{
-				global $Connect;
-                $conn = $Connect->connectToDB();
+				global $Database;
 
 				$bad = array('.','..','index.html');
 				$loaded = array();
 
-				if (is_array($_SESSION['loaded_plugins']) || is_object($_SESSION['loaded_plugins']))
+				if ( is_array($_SESSION['loaded_plugins']) || is_object($_SESSION['loaded_plugins']) )
 				{
 					foreach($_SESSION['loaded_plugins'] as $folderName)
 					{	
-						$Connect->selectDB("webdb", $conn);
-						
-                        $chk = $conn->query("SELECT COUNT(*) FROM disabled_plugins WHERE foldername='". $conn->escape_string($folderName) ."';");
-                        if ($chk->field_seek(0) == 0 && file_exists('plugins/'. $folderName .'/'. $type .'/'))
+						$Database->selectDB("webdb");
+                        $folderName = $Database->conn->escape_string($folderName);
+
+                        $statement = $Database->select("disabled_plugins", "COUNT(*) AS plugins", null, "foldername=$folderName");
+                        $check = $statement->get_result();
+                        if ($check->fetch_assoc()['plugins'] == 0 && file_exists('plugins/'. $folderName .'/'. $type .'/'))
 						{	
 							$folder = scandir('plugins/'. $folderName .'/'. $type .'/');
 
 							foreach($folder as $fileName)
 							{
-								if(!in_array($fileName,$bad))
+								if ( !in_array($fileName, $bad) )
 								{
 									$loaded[] = 'plugins/'. $folderName .'/'. $type .'/'. $fileName;
 								}
@@ -87,18 +88,18 @@ class Plugins
 	
 	public static function load($type)
 	{
-		if($GLOBALS['enablePlugins'] == TRUE)
+		if ( DATA['website']['enable_plugins'] == TRUE )
 		{
 			##########################
-			if ($type == "pages")
+			if ( $type == "pages" )
 			{	
 				$count = 0;
-				if (is_array($_SESSION['loaded_plugins_' . $type]) || is_object($_SESSION['loaded_plugins_' . $type]))
+				if ( is_array($_SESSION['loaded_plugins_' . $type]) || is_object($_SESSION['loaded_plugins_' . $type]) )
 				{
 					foreach($_SESSION['loaded_plugins_' . $type] as $filename)
 					{
 						$name = basename(substr($filename,0,-4));
-						if($name == $_GET['page'])
+						if ( $name == $_GET['page'] )
 						{
 							include "". $filename;
 							$count = 1;
@@ -106,15 +107,15 @@ class Plugins
 					}
 				}
 
-				if($count == 0)
+				if ( $count == 0 )
 				{
 					include "pages/404.php";
 				}		  
 			}
 			###########################
-			elseif($type == 'javascript')
+			elseif ( $type == 'javascript' )
 			{
-				if (is_array($_SESSION['loaded_plugins_' . $type]) || is_object($_SESSION['loaded_plugins_' . $type]))
+				if ( is_array($_SESSION['loaded_plugins_' . $type]) || is_object($_SESSION['loaded_plugins_' . $type]) )
 				{
 					foreach($_SESSION['loaded_plugins_' . $type] as $filename)
 					{
@@ -124,9 +125,9 @@ class Plugins
 
 			}
 			###########################
-			elseif($type == 'styles')
+			elseif ( $type == 'styles' )
 			{
-				if (is_array($_SESSION['loaded_plugins_' . $type]) || is_object($_SESSION['loaded_plugins_' . $type]))
+				if ( is_array($_SESSION['loaded_plugins_' . $type]) || is_object($_SESSION['loaded_plugins_' . $type]) )
 				{
 					foreach($_SESSION['loaded_plugins_' . $type] as $filename)
 					{
@@ -135,9 +136,9 @@ class Plugins
 				}
 			}
 			###########################
-			elseif($type == 'classes')
+			elseif ( $type == 'classes' )
 			{
-				if (is_array($_SESSION['loaded_plugins_' . $type]) || is_object($_SESSION['loaded_plugins_' . $type]))
+				if ( is_array($_SESSION['loaded_plugins_' . $type]) || is_object($_SESSION['loaded_plugins_' . $type]) )
 				{
 					foreach($_SESSION['loaded_plugins_' . $type] as $filename)
 					{

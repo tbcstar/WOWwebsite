@@ -15,7 +15,7 @@
            		 <?php
 				 $GameServer->selectDB("webdb", $conn);
 
-				$result = $conn->query("SELECT char_db, name, description FROM realms;");
+				$result = $Database->select("realms", "char_db, name, description")->get_result();
                 if ($result->num_rows == 0)
 				{
 					echo "<option value='NULL'>找不到服务器。</option>";
@@ -42,17 +42,17 @@
 	    if(isset($_SESSION['lastTicketRealm']))
 		   {
 			   ##############################
-				if($GLOBALS['core_expansion'] == 3)
+				if (DATA['website']['expansion'] == 3)
 					$guidString = "playerGuid";
 				else
 					$guidString = "guid";
 				
-				if($GLOBALS['core_expansion'] == 3)
+				if (DATA['website']['expansion'] == 3)
 					$closedString = "closed";
 				else
 					$closedString = "closedBy";
 					
-				if($GLOBALS['core_expansion'] == 3)
+				if (DATA['website']['expansion'] == 3)
 				
 					$ticketString = "guid";
 				else
@@ -60,17 +60,16 @@
 				############################
 
 			    $offline = $_SESSION['lastTicketRealmOffline'];
-			    $realm   = $conn->escape_string($_SESSION['lastTicketRealm']);
+			    $realm   = $Database->conn->escape_string($_SESSION['lastTicketRealm']);
 
 
 				if($realm == "NULL")
 				   die("<pre>请选择一个服务器。</pre>");
 
-				$conn->select_db($realm);
+				$Database->conn->select_db($realm);
 
-                $result = $conn->query("SELECT ". $ticketString .", name, message, createtime, ". $guidString .", ". $closedString ." 
-                    FROM gm_tickets ORDER BY ticketId DESC;");
-				if ($result->num_rows == 0)
+                $result = $Database->select("gm_tickets",  "$ticketString, name, message, createtime, $guidString, $closedString", null, null, "ORDER BY ticketId DESC")->get_result();
+                if ($result->num_rows == 0)
 				{
 				    die("<pre>没有发现tickets！</pre>");
 				}
@@ -90,7 +89,7 @@
 
 				while ($row = $result->fetch_assoc())
 				{
-					$get = $conn->query("SELECT COUNT(online) FROM characters WHERE guid='" . $row[$guidString] . "' AND online='1';");
+					$get = $Database->select("characters", "COUNT(online)", null, "guid='" . $row[$guidString] . "' AND online='1'")->get_result();
                     if ($get->data_seek(0) == 0 && $offline == "on")
 					{
     					echo "<tr>";
@@ -108,7 +107,7 @@
                             echo "<td><font color='green'>打开</font></td>";
                         }		
 
-						$get = $conn->query("SELECT COUNT(online) FROM characters WHERE guid=". $row[$guidString] ." AND online=1;");
+						$get = $Database->select("characters", "COUNT(online)", "guid=". $row[$guidString] ." AND online=1")->get_result();
                         if ($get->data_seek(0) > 0)
                         {
 						   echo "<td><font color='green'>在线</font></td>";
@@ -143,24 +142,23 @@
 <?php } 
 elseif(isset($_GET['guid'])) 
 {
-	if($GLOBALS['core_expansion'] == 3)
+	if (DATA['website']['expansion'] == 3)
 		$guidString = "playerGuid";
 	else
 		$guidString = "guid";	
 	
-	if($GLOBALS['core_expansion'] == 3)
+	if (DATA['website']['expansion'] == 3)
 		$closedString = "closed";
 	else
 		$closedString = "closedBy";	
 		
-	if($GLOBALS['core_expansion'] == 3)
+	if (DATA['website']['expansion'] == 3)
 		$ticketString = "guid";
 	else
 		$ticketString = "ticketId";
 	
-	$conn->select_db($_GET['db']);
-    $result = $conn->query("SELECT name, message, createtime, ". $guidString .", ". $closedString ." 
-        FROM gm_tickets WHERE ". $ticketString ."='" . $conn->escape_string($_GET['guid']) ."';");
+	$Database->conn->select_db($_GET['db']);
+    $result = $Database->select("gm_tickets", "name, message, createtime, $guidString,  $closedString", null, "$ticketString ='" . $Database->conn->escape_string($_GET['guid']) ."'")->get_result();
     $row = $result->fetch_assoc();
 	?>
     <table style="width: 100%;" class="center">
@@ -196,7 +194,7 @@ elseif(isset($_GET['guid']))
             </td>
             <td>
             	<?php
-				$get = $conn->query("SELECT COUNT(online) FROM characters WHERE guid=". $row[$guidString] ." AND online=1;");
+				$get = $Database->select("characters", "COUNT(online)", null, "guid=". $row[$guidString] ." AND online=1")->get_result();
                 if ($get->data_seek(0) > 0)
                 {
 				   	echo "<font color='green'>在线</font>";

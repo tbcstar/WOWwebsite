@@ -89,7 +89,7 @@ if (is_array($folder) || is_object($folder))
 
 //Plugins
 
-$chk = $conn->query("SELECT COUNT(*) AS disabledPlugins FROM disabled_plugins WHERE foldername='". $conn->escape_string($filename) ."';");
+$chk = $Database->select("disabled_plugins", "COUNT(*) AS disabledPlugins", null, "foldername='". $Database->conn->escape_string($filename) ."'")->get_result();
 if ($chk->fetch_assoc()['disabledPlugins'] > 0)
 {
 	echo "<input type=\"submit\" value=\"启用插件\" onclick=\"enablePlugin('$filename')\">";

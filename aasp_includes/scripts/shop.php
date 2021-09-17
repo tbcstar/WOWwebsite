@@ -16,12 +16,12 @@
 
         case "addmulti":
         {
-            $il_from = $conn->escape_string($_POST['il_from']);
-            $il_to   = $conn->escape_string($_POST['il_to']);
-            $price   = $conn->escape_string($_POST['price']);
-            $quality = $conn->escape_string($_POST['quality']);
-            $shop    = $conn->escape_string($_POST['shop']);
-            $type    = $conn->escape_string($_POST['type']);
+            $il_from = $Database->conn->escape_string($_POST['il_from']);
+            $il_to   = $Database->conn->escape_string($_POST['il_to']);
+            $price   = $Database->conn->escape_string($_POST['price']);
+            $quality = $Database->conn->escape_string($_POST['quality']);
+            $shop    = $Database->conn->escape_string($_POST['shop']);
+            $type    = $Database->conn->escape_string($_POST['type']);
 
             if (empty($il_from) || empty($il_to) || empty($price) || empty($shop))
             {
@@ -50,9 +50,8 @@
             }
 
             $GameServer->selectDB("worlddb", $conn);
-            $get = $conn->query("SELECT entry,name,displayid,ItemLevel,quality,class,AllowableRace,AllowableClass,subclass,Flags 
-                FROM item_template WHERE itemlevel>=". $il_from ."  AND itemlevel<=". $il_to ." ". $advanced .";") 
-            or die('从数据库获取物品数据时出错。错误消息: ' . $conn->error);
+            $get = $Database->select("item_template", null, null, "itemlevel>=$il_from AND itemlevel<=$il_to $advanced")->get_result() 
+            or die('从数据库获取物品数据时出错。错误消息: ' . $Database->conn->error);
 
             $GameServer->selectDB("webdb", $conn);
 
@@ -74,9 +73,9 @@
                     $faction = $row['AllowableRace'];
                 }
 
-                $conn->query("INSERT INTO shopitems (entry,name,in_shop,displayid,type,itemlevel,quality,price,class,faction,subtype,flags) VALUES 
+                $Database->conn->query("INSERT INTO shopitems (entry,name,in_shop,displayid,type,itemlevel,quality,price,class,faction,subtype,flags) VALUES 
                     ('". $row['entry'] ."',
-                    '". $conn->escape_string($row['name']) ."',
+                    '". $Database->conn->escape_string($row['name']) ."',
                     '". $shop ."',
                     '". $row['displayid'] ."',
                     '". $row['class'] ."',
@@ -87,7 +86,7 @@
                     '". $faction ."',
                     '". $row['subclass'] ."',
                     '". $row['Flags'] ."')")
-                or die("向数据库添加物品时出错。错误消息: " . $conn->error);
+                or die("向数据库添加物品时出错。错误消息: " . $Database->conn->error);
 
                 $c++;
             }
@@ -99,9 +98,9 @@
 
         case "addsingle":
         {
-            $entry = $conn->escape_string($_POST['entry']);
-            $price = $conn->escape_string($_POST['price']);
-            $shop  = $conn->escape_string($_POST['shop']);
+            $entry = $Database->conn->escape_string($_POST['entry']);
+            $price = $Database->conn->escape_string($_POST['price']);
+            $shop  = $Database->conn->escape_string($_POST['shop']);
 
             if (empty($entry) || empty($price) || empty($shop))
             {
@@ -109,8 +108,8 @@
             }
 
             $GameServer->selectDB("worlddb", $conn);
-            $get = $conn->query("SELECT name,displayid,ItemLevel,quality,AllowableRace,AllowableClass,class,subclass,Flags FROM item_template WHERE entry=". $entry ."")
-                or die('从数据库获取物品数据时出错。错误消息:' . $conn->error);
+            $get = $Database->select("item_template", null, null, "entry=$entry")->get_result()
+                or die('从数据库获取物品数据时出错。错误消息:' . $Database->conn->error);
             $row = $get->fetch_assoc();
 
             $GameServer->selectDB("webdb", $conn);
@@ -132,9 +131,9 @@
                 $faction = $row['AllowableRace'];
             }
 
-            $conn->query("INSERT INTO shopitems (entry,name,in_shop,displayid,type,itemlevel,quality,price,class,faction,subtype,flags) VALUES 
+            $Database->conn->query("INSERT INTO shopitems (entry,name,in_shop,displayid,type,itemlevel,quality,price,class,faction,subtype,flags) VALUES 
                 (". $entry .",
-                '". $conn->escape_string($row['name']) ."',
+                '". $Database->conn->escape_string($row['name']) ."',
                 '". $shop ."',
                 '". $row['displayid'] ."',
                 '". $row['class'] ."',
@@ -145,7 +144,7 @@
                 '". $faction ."',
                 '". $row['subclass'] ."',
                 '". $row['Flags'] ."');")
-                or die("向数据库添加物品时出错。错误消息: ". $conn->error);
+                or die("向数据库添加物品时出错。错误消息: ". $Database->conn->error);
 
             $GameServer->logThis("添加 " . $row['name'] . " 到 " . $shop . " 商城");
 
@@ -155,7 +154,7 @@
 
         case "clear":
         {
-            $shop = $conn->escape_string($_POST['shop']);
+            $shop = $Database->conn->escape_string($_POST['shop']);
 
             if ($shop == 1)
             {
@@ -166,8 +165,8 @@
                 $shop = "donate";
             }
 
-            $conn->query("DELETE FROM shopitems WHERE in_shop='". $shop ."';");
-            $conn->query("TRUNCATE shopitems;");
+            $Database->conn->query("DELETE FROM shopitems WHERE in_shop='". $shop ."';");
+            $Database->conn->query("TRUNCATE shopitems;");
             return;
 
             break;
@@ -175,11 +174,11 @@
 
         case "delmulti":
         {
-            $il_from = $conn->escape_string($_POST['il_from']);
-            $il_to   = $conn->escape_string($_POST['il_to']);
-            $quality = $conn->escape_string($_POST['quality']);
-            $shop    = $conn->escape_string($_POST['shop']);
-            $type    = $conn->escape_string($_POST['type']);
+            $il_from = $Database->conn->escape_string($_POST['il_from']);
+            $il_to   = $Database->conn->escape_string($_POST['il_to']);
+            $quality = $Database->conn->escape_string($_POST['quality']);
+            $shop    = $Database->conn->escape_string($_POST['shop']);
+            $type    = $Database->conn->escape_string($_POST['type']);
 
             if (empty($il_from) || empty($il_to) || empty($shop))
             {
@@ -203,9 +202,9 @@
             if ($quality != "all")
                 $advanced .= "AND quality='" . $quality . "'";
 
-            $count = $conn->query("SELECT COUNT(*) FROM shopitems WHERE itemlevel >=". $il_from ." AND itemlevel <=". $il_to ." ". $advanced .";");
+            $count = $Database->select("shopitems", "COUNT(*)", null, "itemlevel >=$il_from AND itemlevel <=$il_to $advanced")->get_result();
 
-            $conn->query("DELETE FROM shopitems WHERE itemlevel >=". $il_from ." AND itemlevel <=". $il_to ." ". $advanced .";");
+            $Database->conn->query("DELETE FROM shopitems WHERE itemlevel >=". $il_from ." AND itemlevel <=". $il_to ." ". $advanced .";");
             echo "已成功移除 ". $count ." items!";
 
             break;
@@ -213,13 +212,13 @@
 
         case "delsingle":
         {
-            $entry = $conn->escape_string($_POST['entry']);
-            $shop  = $conn->escape_string($_POST['shop']);
+            $entry = $Database->conn->escape_string($_POST['entry']);
+            $shop  = $Database->conn->escape_string($_POST['shop']);
 
             if (empty($entry) || empty($shop))
                 die("请输入所有字段。");
 
-            $conn->query("DELETE FROM shopitems WHERE entry=". $entry ." AND in_shop='". $shop ."';");
+            $Database->conn->query("DELETE FROM shopitems WHERE entry=". $entry ." AND in_shop='". $shop ."';");
             echo '已成功移除物品';
 
             break;
@@ -227,12 +226,12 @@
 
         case "modmulti":
         {
-            $il_from = $conn->escape_string($_POST['il_from']);
-            $il_to   = $conn->escape_string($_POST['il_to']);
-            $price   = $conn->escape_string($_POST['price']);
-            $quality = $conn->escape_string($_POST['quality']);
-            $shop    = $conn->escape_string($_POST['shop']);
-            $type    = $conn->escape_string($_POST['type']);
+            $il_from = $Database->conn->escape_string($_POST['il_from']);
+            $il_to   = $Database->conn->escape_string($_POST['il_to']);
+            $price   = $Database->conn->escape_string($_POST['price']);
+            $quality = $Database->conn->escape_string($_POST['quality']);
+            $shop    = $Database->conn->escape_string($_POST['shop']);
+            $type    = $Database->conn->escape_string($_POST['type']);
 
             if (empty($il_from) || empty($il_to) || empty($price) || empty($shop))
                 die("请输入所有字段。");
@@ -254,9 +253,9 @@
             if ($quality != "all")
                 $advanced .= "AND quality='" . $quality . "'";
 
-            $count = $conn->query("COUNT(*) FROM shopitems WHERE itemlevel >='" . $il_from . "' AND itemlevel <='" . $il_to . "' " . $advanced);
+            $count = $Database->conn->query("COUNT(*) FROM shopitems WHERE itemlevel >='" . $il_from . "' AND itemlevel <='" . $il_to . "' " . $advanced);
 
-            $conn->query("UPDATE shopitems SET price='". $price ."' WHERE itemlevel >=". $il_from ." AND itemlevel <=". $il_to ." ". $advanced .";");
+            $Database->conn->query("UPDATE shopitems SET price='". $price ."' WHERE itemlevel >=". $il_from ." AND itemlevel <=". $il_to ." ". $advanced .";");
             echo "成功修改 ". $count ." 物品！";
 
             break;
@@ -264,16 +263,16 @@
 
         case "modsingle":
         {
-            $entry = $conn->escape_string($_POST['entry']);
-            $price = $conn->escape_string($_POST['price']);
-            $shop  = $conn->escape_string($_POST['shop']);
+            $entry = $Database->conn->escape_string($_POST['entry']);
+            $price = $Database->conn->escape_string($_POST['price']);
+            $shop  = $Database->conn->escape_string($_POST['shop']);
 
             if (empty($entry) || empty($price) || empty($shop))
             {
                 die("请输入所有字段。");
             }
 
-            $conn->query("UPDATE shopitems SET price='". $price ."' WHERE entry=". $entry ." AND in_shop='". $shop ."';");
+            $Database->conn->query("UPDATE shopitems SET price='". $price ."' WHERE entry=". $entry ." AND in_shop='". $shop ."';");
             echo '已成功修改物品';
             break;
         }

@@ -20,15 +20,19 @@
              <p/>
              物品等级<br/>
              <select style="width: 140px;" id="addmulti_il_from">
-                      <?php for ($i = 1; $i <= $GLOBALS['maxItemLevel']; $i++) {
-						echo "<option>".$i."</option>";
-					} ?>
+                    <?php
+                        for ($i = 1; $i <= DATA['website']['item_level'][3]; $i++)
+                        {
+						    echo "<option>".$i."</option>";
+					    } ?>
              </select>
              &
              <select style="width: 140px;" id="addmulti_il_to">
-                      <?php for ($i = $GLOBALS['maxItemLevel']; $i >= 1; $i--) {
-						echo "<option>".$i."</option>";
-					} ?>
+                    <?php
+                        for ($i = DATA['website']['item_level'][3]; $i >= 1; $i--)
+                        {
+						    echo "<option>".$i."</option>";
+					    } ?>
              </select><br/>
              价格<br/>
              <input type="text" style="width: 200px;" id="addmulti_price"/><br/>

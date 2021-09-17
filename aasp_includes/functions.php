@@ -24,16 +24,16 @@
             $conn = $this->connect();
             $this->selectDB("logondb", $conn);
 
-            $result = $conn->query("SELECT COUNT(id) AS connections FROM account WHERE online=1;");
+            $result = $Database->select("account", "COUNT(id) AS connections", null, "online=1")->get_result();
             return $result->fetch_assoc()['connections'];
         }
 
         public function getPlayersOnline($realmId = 1)
         {
             $conn = $this->connect();
-            $this->connectToRealmDB($realmId);
+            $this->realm($realmId);
 
-            $result = $conn->query("SELECT COUNT(guid) AS online FROM characters WHERE online=1;");
+            $result = $Database->select("characters", "COUNT(guid) AS online", null, "online=1")->get_result();
             if ($this->getServerStatus($realmId, false)) 
             {
                 return round($result->fetch_assoc()['online']);
@@ -53,7 +53,7 @@
             $conn = $this->connect();
             $this->selectDB("logondb", $conn);
 
-            $getUp = $conn->query("SELECT starttime FROM uptime WHERE realmid=". $realmId ." ORDER BY starttime DESC LIMIT 1;");
+            $getUp = $Database->select("uptime", "starttime", null, "realmid=$realmId ORDER BY starttime DESC LIMIT 1")->get_result();
             $row   = $getUp->fetch_assoc();
 
             $time   = time();
@@ -85,9 +85,9 @@
             $conn = $this->connect();
             $this->selectDB("webdb", $conn);
 
-            $realmId = $conn->escape_string($realmId);
+            $realmId = $Database->conn->escape_string($realmId);
 
-            $result = $conn->query("SELECT host, port FROM realms WHERE id=". $realmId .";");
+            $result = $Database->select("realms", "host, port", null, "id=$realmId")->get_result();
             $row    = $result->fetch_assoc();
 
             $fp = fsockopen($row['host'], $row['port'], $errno, $errstr, 1);
@@ -120,8 +120,8 @@
             $conn = $this->connect();
             $this->selectDB("logondb", $conn);
 
-            $result = $conn->query("SELECT COUNT(id) AS GMOnline FROM account WHERE username
-                IN (SELECT username FROM account WHERE online=1) AND id IN (SELECT id FROM account_access WHERE gmlevel>1);");
+            $result = $Database->select("account", "COUNT(id) AS GMOnline", null, "username 
+                IN (SELECT username FROM account WHERE online=1) AND id IN (SELECT id FROM account_access WHERE gmlevel>1)")->get_result();
 
             return $result->fetch_assoc()['GMOnline'];
         }
@@ -131,7 +131,7 @@
             $conn = $this->connect();
             $this->selectDB("logondb", $conn);
 
-            $result = $conn->query("SELECT COUNT(id) AS accountsCreated FROM account WHERE joindate LIKE '%". date("Y-m-d") ."%';");
+            $result = $Database->select("account", "COUNT(id) AS accountsCreated", null, "joindate LIKE '%". date("Y-m-d") ."%'")->get_result();
             $row = $result->fetch_assoc();
             if ($row['accountsCreated'] == null || empty($row['accountsCreated']))
                 $row['accountsCreated'] = 0;
@@ -144,7 +144,7 @@
             $conn = $this->connect();
             $this->selectDB("logondb", $conn);
 
-            $result = $conn->query("SELECT COUNT(id) AS activeMonth FROM account WHERE last_login LIKE '%". date("Y-m") ."%';");
+            $result = $Database->select("account", "COUNT(id) AS activeMonth", null, "last_login LIKE '%". date("Y-m") ."%'")->get_result();
             $row = $result->fetch_assoc();
             if ($row['activeMonth'] == null || empty($row['activeMonth']))
                 $row['activeMonth'] = 0;
@@ -157,7 +157,7 @@
             $conn = $this->connect();
             $this->selectDB("logondb", $conn);
 
-            $result = $conn->query("SELECT COUNT(id) AS activeConnections FROM account WHERE online='1';");
+            $result = $Database->select("account", "COUNT(id) AS activeConnections", null, "online='1'")->get_result();
             $row = $result->fetch_assoc();
             if (empty($row['activeConnections']))
             {
@@ -172,7 +172,7 @@
             $conn = $this->connect();
             $this->selectDB("webdb", $conn);
 
-            $result = $conn->query("SELECT id FROM realms;");
+            $result = $Database->select("realms", "id")->get_result();
             if ($result->num_rows == 0)
             {
                 $this->faction_ratio = "Unknown";
@@ -184,15 +184,15 @@
                 $h   = 0;
                 while ($row = $result->fetch_assoc())
                 {
-                    $this->connectToRealmDB($row['id']);
+                    $this->realm($row['id']);
 
-                    $result = $conn->query("SELECT COUNT(*) AS players FROM characters");
+                    $result = $Database->select("characters", "COUNT(*) AS players")->get_result();
                     $t      = $t + $result->fetch_assoc()['players'];
 
-                    $result = $conn->query("SELECT COUNT(*) AS ally FROM characters WHERE race IN(3,4,7,11,1,22);");
+                    $result = $Database->select("characters", "COUNT(*) AS ally", null, "race IN(3,4,7,11,1,22)")->get_result();
                     $a      = $a + $result->fetch_assoc()['ally'];
 
-                    $result = $conn->query("SELECT COUNT(*) AS horde FROM characters WHERE race IN(2,5,6,8,10,9);");
+                    $result = $Database->select("characters", "COUNT(*) AS horde", null, "race IN(2,5,6,8,10,9)")->get_result();
                     $h      = $h + $result->fetch_assoc()['horde'];
                 }
                 $a = ($a / $t) * 100;
@@ -206,7 +206,7 @@
             $conn = $this->connect();
             $this->selectDB("logondb", $conn);
 
-            $result = $conn->query("SELECT COUNT(*) AS accountsToday FROM account WHERE last_login LIKE '%" . date('Y-m-d') . "%'");
+            $result = $Database->select("account", "COUNT(*) AS accountsToday", null, "last_login LIKE '%" . date('Y-m-d') . "%'")->get_result();
             $row = $result->fetch_assoc();
             if ($row['accountsToday'] == null || empty($row['accountsToday']))
                 $row['accountsToday'] = 0;
@@ -214,78 +214,12 @@
             return $row['accountsToday'];
         }
 
-        public function connect()
-        {
-            if($conn = new mysqli(
-                $GLOBALS['connection']['web']['host'], 
-                $GLOBALS['connection']['web']['user'], 
-                $GLOBALS['connection']['web']['password']))
-            {
-                $conn->set_charset("UTF8");
-                return $conn;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public function connectToRealmDB($realmId)
-        {
-            $conn = $this->connect();
-            $this->selectDB("webdb", $conn);
-			$sql="SELECT mysqli_host,mysqli_user,mysqli_pass,char_db FROM realms WHERE id='".(int)$realmid."'";
-
-            $ID = $conn->escape_string($realmId);
-            $getRealmData = $conn->query("SELECT mysqli_host, mysqli_user, mysqli_pass, char_db FROM realms WHERE id=". $ID .";");
-            if ($getRealmData->num_rows > 0)
-            {
-                $row = $getRealmData->fetch_assoc();
-                if ($row['mysqli_host'] != $GLOBALS['connection']['web']['host'] || 
-                    $row['mysqli_user'] != $GLOBALS['connection']['web']['user'] || 
-                    $row['mysqli_pass'] != $GLOBALS['connection']['web']['password'])
-                {
-                    return $connection = new mysqli($row['mysqli_host'], $row['mysqli_user'], $row['mysqli_pass']) 
-                        or buildError("<b>数据库连接错误：</b> 无法建立与服务器的连接。错误:". $connection->error, NULL);
-                }
-                else
-                {
-                    return $this->connect();
-                }
-
-                $conn->select_db($row['char_db']) 
-                    or buildError("<b>数据库选择错误:</b> 无法选择服务器数据库。错误: " . $conn->error, NULL);
-            }
-        }
-
-        public function selectDB($database, $connection)
-        {
-            switch ($database)
-            {
-                default:
-                    if($connection->set_charset("UTF8")) $connection->select_db($database);
-                    break;
-
-                case('logondb'):
-                    if($connection->set_charset("UTF8")) $connection->select_db($GLOBALS['connection']['logon']['database']);
-                    break;
-
-                case('webdb'):
-                    if($connection->set_charset("UTF8")) $connection->select_db($GLOBALS['connection']['web']['database']);
-                    break;
-
-                case('worlddb'):
-                    if($connection->set_charset("UTF8")) $connection->select_db($GLOBALS['connection']['world']['database']);
-                    break;
-            }
-        }
-
         public function getItemName($id)
         {
             $conn = $this->connect();
             $this->selectDB('worlddb', $conn);
 
-            $result = $conn->query("SELECT name FROM item_template WHERE entry=". $id .";");
+            $result = $Database->select("item_template", "name", null, "entry=$id")->get_result();
             $row    = $result->fetch_assoc();
             return $row['name'];
         }
@@ -303,38 +237,38 @@
 
             if (isset($_SESSION['cw_admin']))
             {
-                $aid = $conn->escape_string($_SESSION['cw_admin_id']);
+                $aid = $Database->conn->escape_string($_SESSION['cw_admin_id']);
             }
             elseif (isset($_SESSION['cw_staff']))
             {
-                $aid = $conn->escape_string($_SESSION['cw_staff_id']);
+                $aid = $Database->conn->escape_string($_SESSION['cw_staff_id']);
             }
 
-            $url        = $conn->escape_string($url);
-            $action     = $conn->escape_string($action);
-            $extended   = $conn->escape_string($extended);
+            $url        = $Database->conn->escape_string($url);
+            $action     = $Database->conn->escape_string($action);
+            $extended   = $Database->conn->escape_string($extended);
 
 
-            $conn->query("INSERT INTO admin_log (`full_url`, `ip`, `timestamp`, `action`, `account`, `extended_inf`) VALUES 
+            $Database->conn->query("INSERT INTO admin_log (`full_url`, `ip`, `timestamp`, `action`, `account`, `extended_inf`) VALUES 
                 ('". $url ."', '". $_SERVER['REMOTE_ADDR'] ."', '". time() ."', '". $action ."', '". $aid ."', '". $extended ."');");
         }
 
         public function addRealm($name, $desc, $host, $port, $chardb, $sendtype, $rank_user, $rank_pass, $ra_port, $soap_port, $m_host, $m_user, $m_pass)
         {
             $conn      = $this->connect();
-            $name      = $conn->escape_string($name);
-            $desc      = $conn->escape_string($desc);
-            $host      = $conn->escape_string($host);
-            $port      = $conn->escape_string($port);
-            $chardb    = $conn->escape_string($chardb);
-            $sendtype  = $conn->escape_string($sendtype);
-            $rank_user = $conn->escape_string($rank_user);
-            $rank_pass = $conn->escape_string($rank_pass);
-            $ra_port   = $conn->escape_string($ra_port);
-            $soap_port = $conn->escape_string($soap_port);
-            $m_host    = $conn->escape_string($m_host);
-            $m_user    = $conn->escape_string($m_user);
-            $m_pass    = $conn->escape_string($m_pass);
+            $name      = $Database->conn->escape_string($name);
+            $desc      = $Database->conn->escape_string($desc);
+            $host      = $Database->conn->escape_string($host);
+            $port      = $Database->conn->escape_string($port);
+            $chardb    = $Database->conn->escape_string($chardb);
+            $sendtype  = $Database->conn->escape_string($sendtype);
+            $rank_user = $Database->conn->escape_string($rank_user);
+            $rank_pass = $Database->conn->escape_string($rank_pass);
+            $ra_port   = $Database->conn->escape_string($ra_port);
+            $soap_port = $Database->conn->escape_string($soap_port);
+            $m_host    = $Database->conn->escape_string($m_host);
+            $m_user    = $Database->conn->escape_string($m_user);
+            $m_pass    = $Database->conn->escape_string($m_pass);
 
             if (empty($name) || empty($host) || empty($port) || empty($chardb) || empty($rank_user) || empty($rank_pass))
             {
@@ -348,13 +282,13 @@
             else
             {
                 if (empty($m_host))
-                    $m_host = $GLOBALS['connection']['web']['host'];
+                    $m_host = DATA['website']['connection']['host'];
 
                 if (empty($m_user))
-                    $m_host = $GLOBALS['connection']['web']['user'];
+                    $m_host = DATA['website']['connection']['user'];
 
                 if (empty($m_pass))
-                    $m_pass = $GLOBALS['connection']['web']['password'];
+                    $m_pass = DATA['website']['connection']['password'];
 
                 if (empty($ra_port) || $ra_port == null || !isset($ra_port))
                 {
@@ -369,7 +303,7 @@
                 }
 
                 $this->selectDB("webdb", $conn);
-                if($conn->query("INSERT INTO realms 
+                if($Database->conn->query("INSERT INTO realms 
                     (name, description, char_db, port, rank_user, rank_pass, ra_port, soap_port, host, sendType, mysqli_host, mysqli_user, mysqli_pass) 
                     VALUES 
                     ('". $name ."', 
@@ -392,7 +326,7 @@
                 }
                 else
                 {
-                    echo "<pre><h3>&raquo; 添加服务器时出错 `". $conn->error ."`</h3></pre><br/>";
+                    echo "<pre><h3>&raquo; 添加服务器时出错 `". $Database->conn->error ."`</h3></pre><br/>";
                 }
 
             }
@@ -403,11 +337,11 @@
             $conn = $this->connect();
             $this->selectDB("webdb", $conn);
 
-            $ID = $conn->escape_string($realmId);
+            $ID = $Database->conn->escape_string($realmId);
 
             $value = "<i>Unknown</i>";
 
-            $result = $conn->query("SELECT name FROM realms WHERE id=". $ID .";");
+            $result = $Database->select("realms", "name", null, "id=$ID")->get_result();
             $row    = $result->fetch_assoc();
 
             if (!empty($row['name']))
@@ -428,7 +362,7 @@
 
             //检查旧的votelogs
             $old    = time() - 2592000;
-            $result = $conn->query("SELECT COUNT(*) AS records FROM votelog WHERE `timestamp` <= ". $old .";");
+            $result = $Database->select("votelog", "COUNT(*) AS records", null, "`timestamp` <= $old")->get_result();
 
             if ($result->data_seek(0) > 1)
             {
@@ -447,7 +381,7 @@
                 $conn = $this->connect();
                 $this->selectDB("webdb", $conn);
 
-                $getRealm = $conn->query("SELECT id FROM realms ORDER BY id ASC LIMIT 1;");
+                $getRealm = $Database->select("realms", "id", null, null, "ORDER BY id ASC LIMIT 1")->get_result();
                 $row      = $getRealm->fetch_assoc();
 
                 $rid = $row['id'];
@@ -507,8 +441,8 @@
             $conn = $GameServer->connect();
             $GameServer->selectDB("logondb", $conn);
 
-            $user   = $conn->escape_string($user);
-            $result = $conn->query("SELECT id FROM account WHERE username='". $user ."';");
+            $user   = $Database->conn->escape_string($user);
+            $result = $Database->select("account", "id", null, "username='$user'")->get_result();
             $row    = $result->fetch_assoc();
 
             return $row['id'];
@@ -521,9 +455,9 @@
             $conn = $GameServer->connect();
             $GameServer->selectDB("logondb", $conn);
 
-            $accountId = $conn->escape_string($id);
+            $accountId = $Database->conn->escape_string($id);
 
-            $result = $conn->query("SELECT username FROM account WHERE id='". $accountId ."';");
+            $result = $Database->select("account", "username", null, "id='$accountId'")->get_result();
             $row    = $result->fetch_assoc();
 
             if (empty($row['username']))
@@ -541,13 +475,13 @@
             global $GameServer;
             $conn = $GameServer->connect();
 
-            $GameServer->connectToRealmDB($realmId);
+            $GameServer->realm($realmId);
 
-            $guid = $conn->escape_string($id);
+            $guid = $Database->conn->escape_string($id);
 
             $return = "<i>Unknown</i>";
 
-            $result = $conn->query("SELECT name FROM characters WHERE guid=". $guid .";");
+            $result = $Database->select("characters", "name", null, "guid=$guid")->get_result();
             if ($result->num_rows > 0)
             {
                 $row = $result->fetch_assoc();
@@ -566,10 +500,10 @@
             global $GameServer;
             $conn = $GameServer->connect();
 
-            $accountId = $conn->escape_string($id);
+            $accountId = $Database->conn->escape_string($id);
             $GameServer->selectDB("logondb", $conn);
 
-            $result = $conn->query("SELECT email FROM account WHERE id=". $accountId .";");
+            $result = $Database->select("account", "email", null, "id=$accountId")->get_result();
             $row    = $result->fetch_assoc();
 
             return $row['email'];
@@ -581,11 +515,10 @@
             $conn = $GameServer->connect();
             $GameServer->selectDB("webdb", $conn);
 
-            $accountId = $conn->escape_string($id);
+            $accountId = $Database->conn->escape_string($id);
 
-            $result = $conn->query("SELECT vp FROM account_data WHERE id=". $accountId .";");
-            if ($result->num_rows == 0)
-                return 0;
+            $result = $Database->select("account_data", "vp", null, "id=$accountId")->get_result();
+            if ($result->num_rows == 0) return 0;
 
             $row = $result->fetch_assoc();
             return $row['vp'];
@@ -597,9 +530,9 @@
             $conn = $GameServer->connect();
             $GameServer->selectDB("webdb", $conn);
 
-            $accountId = $conn->escape_string($id);
+            $accountId = $Database->conn->escape_string($id);
 
-            $result = $conn->query("SELECT dp FROM account_data WHERE id=". $accountId .";");
+            $result = $Database->select("account_data", "dp", null, "id=$accountId")->get_result();
             if ($result->num_rows == 0)
                 return 0;
 
@@ -613,17 +546,14 @@
             $conn = $GameServer->connect();
             $GameServer->selectDB("logondb", $conn);
 
-            $accountId = $conn->escape_string($id);
+            $accountId = $Database->conn->escape_string($id);
 
-            $result = $conn->query("SELECT * FROM account_banned WHERE id=". $accountId ." AND active=1 ORDER by bandate DESC LIMIT 1;");
-            if ($result->num_rows == 0)
-                return "<span class='green_text'>Active</span>";
+            $result = $Database->select("account_banned", null, null, "id=$accountId AND active=1 ORDER by bandate DESC LIMIT 1")->get_result();
+            if ($result->num_rows == 0) return "<span class='green_text'>Active</span>";
 
             $row  = $result->fetch_assoc();
-            if ($row['unbandate'] < $row['bandate'])
-                $time = "Never";
-            else
-                $time = date("Y-m-d H:i", $row['unbandate']);
+            if ($row['unbandate'] < $row['bandate']) $time = "Never";
+            else $time = date("Y-m-d H:i", $row['unbandate']);
 
             return
                     "<font size='-4'><b class='red_text'>封禁</b><br/>
@@ -650,11 +580,9 @@
                 }
             }
 
-            if ($file)
-                fclose($file);
+            if ($file) fclose($file);
 
-            if ($newf)
-                fclose($newf);
+            if ($newf) fclose($newf);
         }
 
     }
@@ -665,17 +593,15 @@
 
         public function validateSubPage()
         {
-            if (isset($_GET['s']) && !empty($_GET['s']))
-                return TRUE;
-            else
-                return FALSE;
+            if (isset($_GET['s']) && !empty($_GET['s'])) return TRUE;
+            else return FALSE;
         }
 
         public function validatePageAccess($page)
         {
             if (isset($_SESSION['cw_staff']) && !isset($_SESSION['cw_admin']))
             {
-                if ($GLOBALS['staffPanel_permissions'][$page] != TRUE)
+                if ( DATA['staff']['permissions'][$page] != TRUE )
                 {
                     header("Location: ?page=notice&error=<h2>未经授权！</h2>
                     您无权查看此页面！");
@@ -715,8 +641,8 @@
             $conn = $GameServer->connect();
 
             $GameServer->selectDB("webdb", $conn);
-            $path = $conn->escape_string($path);
-            $url  = $conn->escape_string($url);
+            $path = $Database->conn->escape_string($path);
+            $url  = $Database->conn->escape_string($url);
 
             if (empty($path) || empty($url))
             {
@@ -757,7 +683,7 @@
             {
 
                 $GameServer->selectDB("webdb", $conn);
-                $conn->query("INSERT INTO slider_images (`path`, `link`) VALUES('". $path ."', '". $url ."');");
+                $Database->conn->query("INSERT INTO slider_images (`path`, `link`) VALUES('". $path ."', '". $url ."');");
             }
         }
     }

@@ -21,7 +21,7 @@
         <th>动作</th>
     </tr>
     <?php
-    $result = $conn->query("SELECT * FROM account_access;");
+    $result = $Database->select("account_access")->get_result();
     if ($result->num_rows == 0)
 	{
 	 	echo "<b>没有发现GM账户!</b>";
@@ -41,7 +41,7 @@
 						echo "所有";
 					else
 					{
-						$getRealm = $conn->query("SELECT name FROM realmlist WHERE id=". $row['RealmID'] .";");
+						$getRealm = $Database->select("realmlist", "name", null, "id=". $row['RealmID'])->get_result();
                         if ($getRealm->num_rows == 0) echo '未知';
                         $rows     = $getRealm->fetch_assoc();
 						echo $rows['name'];
@@ -50,7 +50,7 @@
                 </td>
                 <td>
                 <?php
-					$getData = $conn->query("SELECT last_login, online FROM account WHERE id=". $row['id'] .";");
+					$getData = $Database->select("account", "last_login, online", null, "id=". $row['id'])->get_result();
                     $rows    = $getData->fetch_assoc();
 					if($rows['online']==0)
 					 	echo '<font color="red">离线</font>';

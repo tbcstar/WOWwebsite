@@ -9,10 +9,10 @@
         public function getNews()
         {
 
-            global $Cache, $Connect, $Website;
-            $conn = $Connect->connectToDB();
+            global $Cache, $Database, $Website;
+            $conn = $Database->database();
 
-            if ($GLOBALS['news']['enable'] == TRUE)
+            if ( DATA['website']['news']['enable'] == TRUE )
             {
                 echo "<div class='box_two_title'>最近新闻</div>";
 
@@ -22,9 +22,9 @@
                 }
                 else
                 {
-                    $Connect->selectDB("webdb", $conn);
+                    $Database->selectDB("webdb", $conn);
 
-                    $result = $conn->query("SELECT * FROM news ORDER BY id DESC LIMIT ". $GLOBALS['news']['maxShown'] .";");
+                    $result = $Database->select("news", null, null, null, "ORDER BY id DESC LIMIT ". DATA['website']['news']['max_shown'])->get_result();
 
                     if ($result->num_rows == 0)
                     {
@@ -75,7 +75,7 @@
                                 $Validator = new Validator(array(), array($row['body']), array($row['body']));
                                 $sanatized_text = $Validator->sanatize($row['body'], "string");
 
-                                if ($GLOBALS['news']['limitHomeCharacters'] == TRUE)
+                                if ( DATA['website']['news']['limit_home_characters'] == TRUE )
                                 {
                                     echo $Website->limit_characters($sanatized_text, 200);
                                     $output .= $Website->limit_characters($row['body'], 200);
@@ -86,10 +86,10 @@
                                     $output .= nl2br($row['body']);
                                 }
 
-                                $result      = $conn->query("SELECT COUNT(id) FROM news_comments WHERE newsid=". $row['id'] .";");
+                                $result = $Database->select("news_comments", "COUNT(id)", null, "newsid=". $row['id'])->get_result();
                                 $commentsNum = $result->fetch_row();
 
-                                if ($GLOBALS['news']['enableComments'] == TRUE)
+                                if ( DATA['website']['news']['enable_comments'] == true )
                                 {
                                     $comments = '| <a href="?page=news&amp;newsid=' . $row['id'] . '">Comments ('. $commentsNum[0] .')</a>';
                                 }
@@ -117,8 +117,8 @@
 
         public function getSlideShowImages()
         {
-            global $Cache, $Connect;
-            $conn = $Connect->connectToDB();
+            global $Cache, $Database;
+            $conn = $Database->database();
             
             if ($Cache->exists("slideshow") == TRUE)
             {
@@ -126,8 +126,8 @@
             }
             else
             {
-                $Connect->selectDB("webdb", $conn);
-                $result = $conn->query("SELECT `path`, `link` FROM slider_images ORDER BY position ASC;");
+                $Database->selectDB("webdb", $conn);
+                $result = $Database->select("slider_images", "path,link", null, null, "ORDER BY position ASC")->get_result();
                 while ($row = $result->fetch_assoc())
                 {
                     echo $outPutPT = '<a href="'. htmlspecialchars($row['link']) .'"><img border="none" src="'. htmlspecialchars($row['path']) .'" alt="" class="slideshow_image"></a>';
@@ -139,11 +139,11 @@
 
         public function getSlideShowImageNumbers()
         {
-            global $Connect;
-            $conn = $Connect->connectToDB();
-            $Connect->selectDB("webdb", $conn);
+            global $Database;
+            $conn = $Database->database();
+            $Database->selectDB("webdb", $conn);
 
-            $result = $conn->query("SELECT `position` FROM slider_images ORDER BY position ASC;");
+            $result = $Database->select("slider_images", "position", null, null, null, "ORDER BY position ASC")->get_result();
             $x      = 1;
 
             while ($row = $result->fetch_assoc())
@@ -171,15 +171,15 @@
 
         public function loadVotingLinks()
         {
-            global $Connect, $Account, $Website;
-            $conn = $Connect->connectToDB();
-            $Connect->selectDB("webdb", $conn);
+            global $Database, $Account, $Website;
+            $conn = $Database->database();
+            $Database->selectDB("webdb", $conn);
 
-            $result = $conn->query("SELECT * FROM votingsites ORDER BY id DESC;");
+            $result = $Database->select("votingsites", null, null, null, "ORDER BY id DESC")->get_result();
 
             if ($result->num_rows == 0)
             {
-                buildError("无法从数据库中获取任何投票链接. ". $conn->error);
+                buildError("无法从数据库中获取任何投票链接. ". $Database->conn->error);
             }
             else
             {
@@ -200,11 +200,9 @@
 				}
 				else 
 				{
-				$getNext = $conn->query("SELECT next_vote FROM ". $GLOBALS['connection']['webdb'] .".votelog 
-					WHERE userid=". $Account->getAccountID($_SESSION['cw_user']) ." 
-					AND siteid=". $row['id'] ." ORDER BY id DESC LIMIT 1;");
+				$getNext = $Database->select(DATA['website']['connection']['name'].".votelog", "next_vote", null, " WHERE userid=". $Account->getAccountID($_SESSION['cw_user']) ." AND siteid=". $row['id'] ." ORDER BY id DESC LIMIT 1;")->get_result();
 
-				$row  = $getNext->fetch_assoc();
+                $row  = $getNext->fetch_assoc();
 				$time = $row['next_vote'] - time();
 
 				echo '<font color="red">'.convTime($time);
@@ -222,16 +220,15 @@
 
         public function checkIfVoted($siteid)
         {
-            global $Account, $Connect;
-            $conn = $Connect->connectToDB();
+            global $Account, $Database;
+            $conn = $Database->database();
 
-			$db = $GLOBALS['connection']['webdb'];
-            $siteId  = $conn->escape_string($siteid);
+            $siteId  = $Database->conn->escape_string($siteid);
 
             $acct_id = $Account->getAccountID($_SESSION['cw_user']);
-            $Connect->selectDB("webdb", $conn);
+            $Database->selectDB("webdb", $conn);
 
-            $result = $conn->query("SELECT COUNT(id) AS voted FROM votelog WHERE userid=". $acct_id ." AND siteid=". $siteId ." AND next_vote > ". time() .";");
+            $result = $Database->select("votelog", "COUNT(id) AS voted", null, "userid=". $acct_id ." AND siteid=". $siteId ." AND next_vote > ". time())->get_result();
 
             if ($result->fetch_assoc()['voted'] == 0)
             {
@@ -254,7 +251,7 @@
 
         public function convertCurrency($currency)
         {
-            if ($currency == "dp") return $GLOBALS['donation']['coins_name'];
+            if ($currency == "dp") return DATA['website']['donation']['coins_name'];
             elseif ($currency == "vp") return "Vote Points";
         }
 

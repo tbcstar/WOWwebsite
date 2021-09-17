@@ -9,7 +9,7 @@
 	define('INIT_SITE', TRUE);
 	include "../includes/configuration.php";
 
-    if ($GLOBALS['adminPanel_enable'] == FALSE) exit();
+    if ( DATA['admin']['enabled'] == FALSE ) exit();
 
 	require "../includes/misc/compress.php"; //Load compression file
 	include "../aasp_includes/functions.php";

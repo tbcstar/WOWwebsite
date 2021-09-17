@@ -6,15 +6,15 @@
 <div id="leftcontent">
 <div class="box_two">
 <?php 
-global $Account, $Shop, $Connect;
-$conn = $Connect->connectToDB();
+global $Account, $Shop, $Database;
+$conn = $Database->database();
 $Account->isNotLoggedIn();
-$Connect->selectDB("webdb", $conn);
+$Database->conn->select_db("webdb", $conn);
 
  /* 声明一些通用变量 */ 
- $shopPage = $conn->escape_string($_GET['page']);
- $shopVar = "donate";
- $shopCurrency = $GLOBALS['donation']['coins_name'];
+ $shopPage     = $Database->conn->escape_string($_GET['page']);
+ $shopVar      = "donate";
+ $shopCurrency = DATA['website']['donation']['coins_name'];
  
  $selected = 'selected="selected"';
  ///////////////////////////////
@@ -27,8 +27,10 @@ $Connect->selectDB("webdb", $conn);
 </div>
 
 <?php
-if($GLOBALS[$shopVar.'Shop']['enableShop']==FALSE)
+if ( DATA['website']['shop'][$shopVar]['enable'] == false )
+{
 	echo "<span class='attention'><b>注意！ </b>商城还未开放。请稍后再来。</span>";
+}
 else 
 {
 ?>
@@ -37,7 +39,7 @@ else
 <?php echo $Account->loadDP($_SESSION['cw_user']); ?></span>
 <?php if (!isset($_GET['search'])) { $inputValue = "搜索物品..."; } else { $inputValue = $_GET['search_value']; } 
 
-if($GLOBALS[$shopVar.'Shop']['shopType']==1)
+if (DATA['website']['shop'][$shopVar]['type'] == 1)
 {
 	//Search enabled.
 ?>
@@ -49,8 +51,9 @@ if($GLOBALS[$shopVar.'Shop']['shopType']==1)
             <td><input type="submit" value="Search" name="search"></td>
             <tr>
         </table>
-        <?php if($GLOBALS[$shopVar.'Shop']['enableAdvancedSearch']==TRUE) { ?> <br/>
-        高级搜索<br/>
+        <?php if (DATA['website']['shop'][$shopVar]['enable_advanced_search'] == true)
+        {?>
+        <br/>高级搜索<br/>
 		<table width="56%">
 		                   <tr>	<td>	
                             <select name="q" style="width: 100%">
@@ -127,7 +130,7 @@ if($GLOBALS[$shopVar.'Shop']['shopType']==1)
                                             <select name="ilfrom" style="width: 100%">
                                             <option>--物品等级--</option>
                                             <?php
-											    for ($i = 1; $i <= $GLOBALS['maxItemLevel']; $i++) 
+											    for ($i = 1; $i <= DATA['website']['max_ilvl']; $i++)
 												{
 													 if($_GET['ilfrom']==$i)
 														 echo "<option selected='selected'>";
@@ -143,7 +146,7 @@ if($GLOBALS[$shopVar.'Shop']['shopType']==1)
                                             <select name="ilto" style="width: 100%">
                                             <option>--物品等级--</option>
                                             <?php
-											    for ($i = $GLOBALS['maxItemLevel']; $i >= 1; $i--) 
+											    for ($i = DATA['website']['max_ilvl']; $i >= 1; $i--)
 												{
 													 if($_GET['ilto']==$i)
 														 echo "<option selected='selected'>";
@@ -165,7 +168,7 @@ if (isset($_GET['search'])) {
 		$Shop->search($_GET['search_value'],$shopVar,$_GET['q'],$_GET['t'],$_GET['ilfrom'],$_GET['ilto'],$_GET['r'],$_GET['f'],$_GET['c'],$_GET['st']);
 	}
 }
-elseif($GLOBALS[$shopVar.'Shop']['shopType']==2)
+elseif (DATA['website']['shop'][$shopVar]['type'] == 2)
 {
 	//List all items.
 		$Shop->listAll($shopVar);	

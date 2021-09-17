@@ -7,7 +7,7 @@
 <?php 
     $per_page = 20;
 
-    $pages_query = $conn->query("SELECT COUNT(*) AS payments FROM payments_log;");
+    $pages_query = $Database->select("payments_log", "COUNT(*) AS payments")->get_result();
     $pages       = ceil($pages_query->fetch_assoc()['payments'] / $per_page);
 
 	if ( $pages_query->fetch_assoc()['payments'] == 0 )
@@ -16,7 +16,7 @@
 	}
 	else
 	{
-		$page   = (isset($_GET['page'])) ? $conn->escape_string($_GET['page']) : 1;
+		$page   = (isset($_GET['page'])) ? $Database->conn->escape_string($_GET['page']) : 1;
 		$start  = ($page - 1) * $per_page;
 	?>
 		<table class="center">
@@ -30,7 +30,7 @@
 	<?php
 		$GameServer->selectDB("webdb", $conn);
 		$countDonators = 0;
-		$result = $conn->query("SELECT * FROM payments_log ORDER BY id DESC LIMIT ". $start .", ". $per_page .";");
+		$result = $Database->select("payments_log", null, null, null, "ORDER BY id DESC LIMIT $start, $per_page")->get_result();
 		while ( $row = $result->fetch_assoc() )
 		{?>
 			<tr>

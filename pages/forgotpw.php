@@ -7,8 +7,8 @@
 <div class="box_two">
 
 <?php
-global $Account, $Connect;
-$conn = $Connect->connectToDB();
+global $Account, $Database;
+$conn = $Database->database();
 ?>
 
 <div class='box_two_title'>忘记密码</div>
@@ -22,16 +22,17 @@ if(isset($_GET['code']) || isset($_GET['account'])) {
 	 echo "<b class='red_text'>链接错误，缺少一个或多个必需的值。</b>";
  else 
  {
-	 $Connect->selectDB("webdb", $conn);
-	 $code = $conn->escape_string($_GET['code']); $account = $conn->escape_string($_GET['account']);
-	 $result = $conn->query("SELECT COUNT('id') FROM password_reset WHERE code='" . $code . "' AND account_id=". $account .";");
+	$Database->selectDB("webdb", $conn);
+    $code    = $Database->conn->escape_string($_GET['code']);
+    $account = $Database->conn->escape_string($_GET['account']);
+    $result  = $Database->select( COUNT('id') FROM password_reset WHERE code='" . $code . "' AND account_id=". $account .";");
 	 if ($result->data_seek(0)==0)
 		 echo "<b class='red_text'>指定的值与数据库中的值不匹配。</b>";
 	 else 
 	 {
 		 $newPass = RandomString();
 		 echo "<b class='yellow_text'>您的新密码是: ".$newPass." <br/><br/>请登录并更改您的密码。</b>";
-		 $conn->query("DELETE FROM password_reset WHERE account_id=". $account .";");
+		 $Database->conn->query("DELETE FROM password_reset WHERE account_id=". $account .";");
 		 $account_name = $Account->getAccountName($account);
 		 
 		 $Account->changePassword($account_name,$newPass);

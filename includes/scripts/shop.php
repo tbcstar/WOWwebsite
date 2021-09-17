@@ -7,66 +7,67 @@ require "../classes/account.php";
 require "../classes/character.php";
 require "../classes/shop.php";
 
-global $Connect, $Account, $Shop, $Character;
-$Connect->connectToDB();
+global $Database, $Account, $Shop, $Character;
 
 
-if($_POST['action'] == 'removeFromCart')
+if ( $_POST['action'] == 'removeFromCart' )
 {
 	unset($_SESSION[$_POST['cart']][$_POST['entry']]);
 	return;
 }
 
-if($_POST['action']=='addShopitem') 
+if ( $_POST['action'] == 'addShopitem' )
 {
-   	$entry  = $conn->escape_string($_POST['entry']);
-   	$shop 	= $conn->escape_string($_POST['shop']);
+   	$entry  = $Database->conn->escape_string($_POST['entry']);
+   	$shop 	= $Database->conn->escape_string($_POST['shop']);
 	
-   	if(isset($_SESSION[$_POST['cart']][$entry]))
+   	if ( isset($_SESSION[$_POST['cart']][$entry]) )
    	{
 		$_SESSION[$_POST['cart']][$entry]['quantity']++;
    	}
    	else
    	{
-		$Connect->selectDB("webdb", $conn);
+		$Database->selectDB("webdb");
 
-		$result = $conn->query("SELECT entry, price FROM shopitems WHERE entry=". $entry ." AND in_shop='". $shop ."';");
+		$statement = $Database->selecT("shopitems", "entry, price", null, "entry=$entry AND in_shop=$shop");
+        $result = $statement->get_result();
 		if ($result->num_rows != 0)
 		{
 			$row = $result->fetch_array();
 			$_SESSION[$_POST['cart']][$row['entry']] = array("quantity" => 1, "price" => $row['price']);
-		} 
+		}
+		$statement->close();
   	}
 }
 
-if($_POST['action']=='clear') 
+if ( $_POST['action'] == 'clear' )
 {
 	unset($_SESSION['donateCart']);
 	unset($_SESSION['voteCart']);
 }
 
-if($_POST['action']=='getMinicart') 
+if ( $_POST['action'] == 'getMinicart' )
 {
 	$num = 0;
 	$totalPrice = 0;
 	
-	if($_POST['cart']=="donateCart")
+	if ( $_POST['cart'] == "donateCart" )
 	{
-	   $curr = $GLOBALS['donation']['coins_name'];
+	   $curr = DATA['website']['donation']['coins_name'];
 	}
 	else
 	{
-	   $curr = "Vote Points"; 
+	   $curr = "投票点数"; 
 	}
 
-	if(!isset($_SESSION[$_POST['cart']]))
+	if ( !isset($_SESSION[$_POST['cart']]) )
 	{
 		echo "<b>显示购物车:</b> 0 物品 (0 ".$curr.")";
 		exit();
 	}
 
-	$Connect->selectDB("webdb", $conn);
-	if (is_array($_SESSION[$_POST['cart']]) || is_object($_SESSION[$_POST['cart']]))
+	$Database->selectDB("webdb");
+    if ( is_array($_SESSION[$_POST['cart']]) || is_object($_SESSION[$_POST['cart']]) )
 	{
 		foreach($_SESSION[$_POST['cart']] as $entry => $value) 
 		{
@@ -74,7 +75,10 @@ if($_POST['action']=='getMinicart')
 
 			$shop_filt = substr($_POST['cart'],0,-4);
 
-			$result = $conn->query("SELECT price FROM shopitems WHERE entry=". $entry ." AND in_shop='". $conn->escape_string($shop_filt) ."';");
+			$shop_filt = $Database->conn->escape_string($shop_filt);
+
+            $statement = $Database->select("shopitems", "price", null, "entry=$entry AND in_shop=$shop_filt");
+            $result = $statement->get_result();
 			$row 	= $result->fetch_assoc();
 
 
@@ -85,9 +89,9 @@ if($_POST['action']=='getMinicart')
 	echo "<b>显示购物车:</b> ".$num." 物品 (".$totalPrice." ".$curr.")";
 }
 
-if($_POST['action'] == 'saveQuantity') 
+if ( $_POST['action'] == 'saveQuantity' )
 {
-	if($_POST['quantity'] == 0)
+	if ( $_POST['quantity'] == 0 )
 	{
 		unset($_SESSION[$_POST['cart']][$_POST['entry']]);
 	}
@@ -97,24 +101,24 @@ if($_POST['action'] == 'saveQuantity')
 	}
 }
 
-if($_POST['action']=='checkout') 
+if ( $_POST['action'] == 'checkout' )
 {
 	$totalPrice = 0;
 	
 	$values = explode('*',$_POST['values']);
 	
-	$Connect->selectDB("webdb", $conn);
+	$Database->selectDB("webdb");
 	require "../misc/ra.php";
 	require "../misc/soap.php";
 	
-	if(isset($_SESSION['donateCart'])) 
+	if ( isset($_SESSION['donateCart']) )
 	{
 		#####捐赠购物车
-	 	if (is_array($_SESSION['donateCart']) || is_object($_SESSION['donateCart']))
+	 	if ( is_array($_SESSION['donateCart']) || is_object($_SESSION['donateCart']) )
 	 	{
 			foreach($_SESSION['donateCart'] as $entry => $value) 
 			{
-				$result = $conn->query("SELECT price FROM shopitems WHERE entry=" . $entry . " AND in_shop='donate';");
+				$result = $Database->select("shopitems", "price", null, "entry=$entry AND in_shop='donate'");
 				$row = $result->fetch_assoc();
 
 				$add = $row['price'] * $_SESSION['donateCart'][$entry]['quantity'];
@@ -124,26 +128,28 @@ if($_POST['action']=='checkout')
 		}
 
 
-	  	if($Account->hasDP($_SESSION['cw_user'],$totalPrice) == FALSE)
-			die("你的钱不够 ".$GLOBALS['donation']['coins_name']."！");
+	  	if ( $Account->hasDP($_SESSION['cw_user'], $totalPrice) == FALSE )
+        {
+			die("你的钱不够 ".DATA['website']['donation']['coins_name']."！");
+        }
 
-		$host		= $GLOBALS['realms'][$values[1]]['host'];
-		$rank_user	= $GLOBALS['realms'][$values[1]]['rank_user'];
-		$rank_pass	= $GLOBALS['realms'][$values[1]]['rank_pass'];
-		$ra_port	= $GLOBALS['realms'][$values[1]]['ra_port'];
-		$soap_port  = $GLOBALS['realms'][$values[1]]['soap_port'];
+		$host      = DATA['realms'][$values[1]]['host'];
+        $rank_user = DATA['realms'][$values[1]]['rank_user'];
+        $rank_pass = DATA['realms'][$values[1]]['rank_pass'];
+        $ra_port   = DATA['realms'][$values[1]]['ra_port'];
+		$soap_port = DATA['realms'][$values[1]]['soap_port'];
 	  	
-	  	if (is_array($_SESSION['donateCart']) || is_object($_SESSION['donateCart']))
+	  	if ( is_array($_SESSION['donateCart']) || is_object($_SESSION['donateCart']) )
 	  	{
 			foreach($_SESSION['donateCart'] as $entry => $value) 
 			{
-				if($_SESSION['donateCart'][$entry]['quantity']>12) 
+				if ( $_SESSION['donateCart'][$entry]['quantity'] > 12 )
 				{
 					$num = $_SESSION['donateCart'][$entry]['quantity'];
 
 					while($num>0) 
 					{
-						if($num>12) 
+						if ( $num > 12 )
 						$command = "send items ".$Character->getCharname($values[0],$values[1])." \"Your requested item\" \"Thanks for supporting us!\" ".$entry.":12 ";
 						else
 						$command = "send items ".$Character->getCharname($values[0],$values[1])." \"Your requested item\" \"Thanks for supporting us!\" ".$entry.":".$num." ";
@@ -168,42 +174,46 @@ if($_POST['action']=='checkout')
 	}
    ######
    
-   	if(isset($_SESSION['voteCart'])) 
+   	if ( isset($_SESSION['voteCart']) )
    	{
 	 	#####捐赠购物车
-	 	if (is_array($_SESSION['voteCart']) || is_object($_SESSION['voteCart']))
+	 	if ( is_array($_SESSION['voteCart']) || is_object($_SESSION['voteCart']) )
 	 	{
 		 	foreach($_SESSION['voteCart'] as $entry => $value) 
 		 	{
-				$result = $conn->query("SELECT price FROM shopitems WHERE entry=". $entry ." AND in_shop='vote';");
+				$statement = $Database->select("shopitems", "price", null, "entry=$entry AND in_shop='vote'");
+                $result = $statement->get_result();
 				$row = $result->fetch_assoc();
 
 				$add = $row['price'] * $_SESSION['voteCart'][$entry]['quantity'];
 
 				$totalPrice = $totalPrice + $add;
+				$statement->close();
 		  	}
 	  	}
 
-	  	if($Account->hasVP($_SESSION['cw_user'],$totalPrice)==FALSE)
+	  	if ( $Account->hasVP($_SESSION['cw_user'], $totalPrice) == FALSE )
+	  	{
 			die("你没有足够的投票积分!");
+	  	}
 
-		$host		= $GLOBALS['realms'][$values[1]]['host'];
-		$rank_user	= $GLOBALS['realms'][$values[1]]['rank_user'];
-		$rank_pass	= $GLOBALS['realms'][$values[1]]['rank_pass'];
-		$ra_port	= $GLOBALS['realms'][$values[1]]['ra_port'];
-		$soap_port  = $GLOBALS['realms'][$values[1]]['soap_port'];
+		$host		= DATA['realms'][$values[1]]['host'];
+		$rank_user	= DATA['realms'][$values[1]]['rank_user'];
+		$rank_pass	= DATA['realms'][$values[1]]['rank_pass'];
+		$ra_port	= DATA['realms'][$values[1]]['ra_port'];
+		$soap_port  = DATA['realms'][$values[1]]['soap_port'];
 
-		if (is_array($_SESSION['voteCart']) || is_object($_SESSION['voteCart']))
+		if ( is_array($_SESSION['voteCart']) || is_object($_SESSION['voteCart']) )
 		{
 			foreach($_SESSION['voteCart'] as $entry => $value) 
 			{
-				if($_SESSION['voteCart'][$entry]['quantity']>12) 
+				if ( $_SESSION['voteCart'][$entry]['quantity'] > 12 )
 				{
 					$num = $_SESSION['voteCart'][$entry]['quantity'];
 
 					while($num > 0) 
 					{
-						if($num > 12)
+						if ( $num > 12 )
 						{
 							$command = "send items ".$Character->getCharname($values[0],$values[1])." \"Your requested item\" \"Thanks for supporting us!\" ".$entry.":12 ";
 						}
@@ -232,35 +242,35 @@ if($_POST['action']=='checkout')
    	echo TRUE;
 }
 
-if($_POST['action'] == 'removeItem')
+if ( $_POST['action'] == 'removeItem' )
 {
-	if($Account->isGM($_SESSION['cw_user'])==FALSE)
+	if ( $Account->isGM($_SESSION['cw_user']) == FALSE )
 	{
 		exit();
 	}
 
-	$entry = $conn->escape_string($_POST['entry']);
-	$shop  = $conn->escape_string($_POST['shop']);
+	$entry = $Database->conn->escape_string($_POST['entry']);
+	$shop  = $Database->conn->escape_string($_POST['shop']);
 
-	$Connect->selectDB("webdb", $conn);
-	$conn->query("DELETE FROM shopitems WHERE entry=". $entry ." AND in_shop='". $shop ."';");
+	$Database->selectDB("webdb", $Database->conn);
+	$Database->conn->query("DELETE FROM shopitems WHERE entry=". $entry ." AND in_shop='". $shop ."';");
 }
 
-if($_POST['action'] == 'editItem')
+if ( $_POST['action'] == 'editItem' )
 {
-	if($Account->isGM($_SESSION['cw_user'])==FALSE)
+	if ( $Account->isGM($_SESSION['cw_user']) == FALSE )
 	{
     	exit();
 	}
 
-	$entry = $conn->escape_string($_POST['entry']);
-	$shop  = $conn->escape_string($_POST['shop']);
-	$price = $conn->escape_string($_POST['price']);
+	$entry = $Database->conn->escape_string($_POST['entry']);
+	$shop  = $Database->conn->escape_string($_POST['shop']);
+	$price = $Database->conn->escape_string($_POST['price']);
 	
-	$Connect->selectDB("webdb", $conn);
+	$Database->selectDB("webdb");
 	
 	if($price > 0)
 	{
-		$conn->query("UPDATE shopitems SET price=". $price ." WHERE entry=". $entry ." AND in_shop='". $shop ."';");
+		$Database->update("shopitems", "price", $price, array("entry", "in_shop"), array($entry, $shop));
 	}
 } 

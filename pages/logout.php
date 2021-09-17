@@ -1,7 +1,7 @@
 <?php
 
-global $Account, $Connect;
-$conn = $Connect->connectToDB();
+global $Account, $Database;
+$conn = $Database->database();
 $Account->isNotLoggedIn();
 
 echo "<h2>注销</h2>";

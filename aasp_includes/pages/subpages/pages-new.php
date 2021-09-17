@@ -5,16 +5,16 @@ $conn = $GameServer->connect();
 $GameServer->selectDB("webdb", $conn);
 if(isset($_POST['newpage']))
 {
-	$name     = $conn->escape_string($_POST['newpage_name']);
-    $filename = $conn->escape_string(trim(strtolower($_POST['newpage_filename'])));
-    $content  = $conn->escape_string(htmlentities($_POST['newpage_content']));
+	$name     = $Database->conn->escape_string($_POST['newpage_name']);
+    $filename = $Database->conn->escape_string(trim(strtolower($_POST['newpage_filename'])));
+    $content  = $Database->conn->escape_string(htmlentities($_POST['newpage_content']));
 	
 	if(empty($name) || empty($filename) || empty($content)) {
 		echo "<h3>请输入 <u>所有</u> 字段。</h3>";
 	}
 	else
 	{
-        $conn->query("INSERT INTO custom_pages (name, filename, content, date) VALUES 
+        $Database->conn->query("INSERT INTO custom_pages (name, filename, content, date) VALUES 
             ('". $name ."', '". $filename ."', '". $content ."', '". date("Y-m-d H:i:s") ."');");
 
         echo "<h3>页面创建成功。</h3><a href='../?page=". $filename ."' target='_blank'>查看页面</a><br/><br/>";

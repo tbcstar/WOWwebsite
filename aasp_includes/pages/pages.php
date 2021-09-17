@@ -25,11 +25,11 @@
         <th>动作</th>
     </tr>
     <?php
-        $result = $conn->query("SELECT * FROM custom_pages ORDER BY id ASC;");
+        $result = $Database->select("custom_pages", null, null, null, "ORDER BY id ASC");
         while ($row = $result->fetch_assoc())
             {
                 $disabled = TRUE;
-                $check = $conn->query("SELECT COUNT(filename) AS filename FROM disabled_pages WHERE filename='". $row['filename'] ."';");
+                $check = $Database->select("disabled_pages", "COUNT(filename) AS filename", null, "filename='". $row['filename'] ."'");
                 if ($check->fetch_assoc()['filename'] == 1)
                 {
                     $disabled = TRUE;
@@ -57,13 +57,13 @@
         <?php
     }
 
-        if (is_array($GLOBALS['core_pages']) || is_object($GLOBALS['core_pages']))
+    if (is_array(DATA['website']['core_pages']) || is_object(DATA['website']['core_pages']))
     {
-        foreach ($GLOBALS['core_pages'] as $pageName => $fileName)
+        foreach (DATA['website']['core_pages'] as $pageName => $fileName)
 	{ 
         $filename = substr($fileName, 0, -4);
         unset($check);
-        $check = $conn->query("SELECT COUNT(filename) AS filename FROM disabled_pages WHERE filename='". $filename ."';");
+        $check = $Database->select("disabled_pages", "COUNT(filename) AS filename", null, "filename='". $filename ."';");
         if ($check->fetch_assoc()['filename'] == 1)
 	 	{
 			$disabled = false;
@@ -94,7 +94,7 @@
     </tr>
 <?php }
 
-if (is_array($GLOBALS['core_pages']) || is_object($GLOBALS['core_pages']))
+if (is_array(DATA['website']['core_pages']) || is_object(DATA['website']['core_pages']))
 {
 	foreach ($GLOBALS['core_pages'] as $k => $v) 
 	{ 
@@ -146,9 +146,9 @@ if (is_array($GLOBALS['core_pages']) || is_object($GLOBALS['core_pages']))
 	if(isset($_POST['editpage']))
 	{
 		
-		$name     = $conn->escape_string($_POST['editpage_name']);
-        $filename = $conn->escape_string(trim(strtolower($_POST['editpage_filename'])));
-        $content  = $conn->escape_string(htmlentities($_POST['editpage_content']));
+		$name     = $Database->conn->escape_string($_POST['editpage_name']);
+        $filename = $Database->conn->escape_string(trim(strtolower($_POST['editpage_filename'])));
+        $content  = $Database->conn->escape_string(htmlentities($_POST['editpage_content']));
 
 		if(empty($name) || empty($filename) || empty($content)) 
 		{
@@ -156,15 +156,15 @@ if (is_array($GLOBALS['core_pages']) || is_object($GLOBALS['core_pages']))
 		} 
 		else 
 		{
-            $conn->query("UPDATE custom_pages 
+            $Database->conn->query("UPDATE custom_pages 
                 SET name='". $name ."', filename='". $filename ."', content='". $content ."' 
-                WHERE filename='". $conn->escape_string($_GET['filename']) ."';");
+                WHERE filename='". $Database->conn->escape_string($_GET['filename']) ."';");
 
-            echo "<h3>页面已成功更新。</h3> <a href='" . $GLOBALS['website_domain'] . "?page=" . $filename . "' target='_blank'>查看页面</a>";
+            echo "<h3>页面已成功更新。</h3> <a href='" . DATA['website']['domain'] . "?page=" . $filename . "' target='_blank'>查看页面</a>";
 		}
 	}
 
-	$result = $conn->query("SELECT * FROM custom_pages WHERE filename='". $conn->escape_string($_GET['filename']) ."';");
+	$result = $Database->select("custom_pages", null, null, null, "filename='". $Database->conn->escape_string($_GET['filename']) ."'");
     $row    = $result->fetch_assoc();
 ?>
 	   

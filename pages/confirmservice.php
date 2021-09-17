@@ -1,8 +1,11 @@
 <?php
 
-$service = $_GET['s'];
-$guid = (int)$_GET['guid'];
-$realm_id = (int)$_GET['rid'];
+global $Account, $Website, $Database, $Character;
+$conn = $Database->database();
+
+$service  = $_GET['s'];
+$guid     = $Database->conn->escape_string($_GET['guid']);
+$realm_id = $Database->conn->escape_string($_GET['rid']);
 
 $service_title = ucfirst($service." Change");
 
@@ -46,8 +49,7 @@ $service_desc = array(
 	</ul>'
 			
 );
-global $Account, $Website, $Connect, $Character;
-if($GLOBALS['service'][$service]['status']!="TRUE") 
+if ( DATA['service'][$service]['status'] != true )
 	echo "此页面目前不可用。";
 else
 {
@@ -205,30 +207,28 @@ span.attention, span.notice, span.alert, span.download, span.approved, span.medi
 
 <div class="box_two_title">确认 <?php echo $service_title; ?></div>
 <?php
-if($GLOBALS['service'][$service]['price']==0) 
+if ( DATA['service'][$service]['price'] == 0 )
       	echo '<span class="attention">'.$service_title.' 是免费的。</span>';
 else
 { ?>
 <span class="attention"><?php echo $service_title; ?> 费用 
 <?php 
-echo $GLOBALS['service'][$service]['price'].' '.$Website->convertCurrency($GLOBALS['service'][$service]['currency']); ?></span>
+echo DATA['service'][$service]['price'].' '.$Website->convertCurrency(DATA['service'][$service]['currency']); ?></span>
 <?php 
-if($GLOBALS['service'][$service]['currency']=="vp")
-	echo "<span class='currency'>Vote Points: ".$Account->loadVP($_SESSION['cw_user'])."</span>";
-elseif($GLOBALS['service'][$service]['currency']=="dp")
-	echo "<span class='currency'>".$GLOBALS['donation']['coins_name'].": ".$Account->loadDP($_SESSION['cw_user'])."</span>";
-} 
+if ( DATA['service'][$service]['currency'] == "vp" ) echo "<span class='currency'>Vote Points: " . $Account->loadVP($_SESSION['cw_user']) . "</span>";
+elseif (DATA['service'][$service]['currency'] == "dp") echo "<span class='currency'>" . DATA['website']['donation']['coins_name'] . ": " . $Account->loadDP($_SESSION['cw_user']) . "</span>";
+}
 
 	$Account->isNotLoggedIn();
 
-	$Connect->selectDB("webdb", $conn);
-	$result = $conn->query("SELECT name FROM realms WHERE id='".$realm_id."'");
+	$Database->selectDB("webdb", $conn);
+    $result = $Database->select("realms", "name", null, "id=$realm_id")->get_result();
 	$row = $result->fetch_assoc();
 	$realm = $row['name'];
 	
-	$Connect->connectToRealmDB($realm_id);
+	$Database->realm($realm_id);
 
-	$result = $conn->query("SELECT name,guid,gender,class,race,level,online FROM characters WHERE guid='".$guid."'");
+	$result = $Database->select("characters", null, null, "guid=$guid")->get_result();
 	$row = $result->fetch_assoc()
 	?>
 
@@ -236,7 +236,7 @@ elseif($GLOBALS['service'][$service]['currency']=="dp")
 
 <tr>
 <td><?php if(!file_exists('styles/global/images/portraits/'.$row['gender'].'-'.$row['race'].'-'.$row['class'].'.gif'))
-				       echo '<img src="styles/'.$GLOBALS['template']['path'].'/images/unknown.png" />';
+				       echo '<img src="styles/'.DATA['template']['path'].'/images/unknown.png" />';
 					   else 
 					   { ?>
                         <img src="styles/global/images/portraits/

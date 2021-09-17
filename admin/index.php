@@ -8,7 +8,7 @@
 	<head>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title><?php echo $GLOBALS['website_title']; ?> 管理面板</title>
+	<title><?php echo DATA['website']['title']; ?> 管理面板</title>
 	<link rel="stylesheet" href="/aasp_includes/styles/default/style.css" />
 	<link rel="stylesheet" href="/aasp_includes/styles/wysiwyg.css" />
 	<script type="text/javascript" src="/aasp_includes/js/jquery.min.js"></script>
@@ -168,7 +168,7 @@
                             }
                         }
                     ?>
-<?php if ($GLOBALS['forum']['type'] == 'phpbb' && $GLOBALS['forum']['autoAccountCreate'] == TRUE && $page == 'dashboard')
+            <?php if (DATA['website']['forum']['type'] == "phpbb" && DATA['website']['forum']['auto_account_create'] == TRUE && $page == 'dashboard')
     { ?>
                             <div class="box_right">
                                 <div class="box_right_title">最近的论坛活动</div>
@@ -180,24 +180,24 @@
                                         <th>主题</th>
                                     </tr>
                                     <?php
-                                    $GameServer->selectDB($GLOBALS['forum']['forum_db']);
-                                    $result = $conn->query("SELECT poster_id, post_text, post_time, topic_id FROM phpbb_posts ORDER BY post_id DESC LIMIT 10");
+                                    $GameServer->selectDB(DATA['website']['forum']['db']);
+                                    $result = $Database->select("phpbb_posts", "poster_id, post_text, post_time, topic_id", null,null,"ORDER BY post_id DESC LIMIT 10")->get_result();
                                     while ($row    = $result->fetch_assoc())
                                     {
                                         $string   = $row['post_text'];
                                         //Lets get the username     
-                                        $getUser  = $conn->query("SELECT username FROM phpbb_users WHERE user_id=". $row['poster_id'] .";");
+                                        $getUser  = $Database->select("phpbb_users", "username", null, "user_id=". $row['poster_id'])->get_result();
                                         $user     = $getUser->fetch_assoc();
                                         //Get topic
-                                        $getTopic = $conn->query("SELECT topic_title FROM phpbb_topics WHERE topic_id=". $row['topic_id'] .";");
+                                        $getTopic = $Database->select("phpbb_topics", "topic_title", null, "topic_id=". $row['topic_id'])->get_result();
                                         $topic    = $getTopic->fetch_assoc();
                                         ?>
                                         <tr class="center">
-                                            <td><a href="http://heroic-wow.net/forum/memberlist.php?mode=viewprofile&u=<?php echo $row['poster_id']; ?>" title="View profile" 
+                                            <td><a href="http://www.tbcstar.com/forum/memberlist.php?mode=viewprofile&u=<?php echo $row['poster_id']; ?>" title="View profile" 
                                                    target="_blank"><?php echo $user['username']; ?></a></td>
                                             <td><?php echo $topic['topic_title']; ?></td>
                                             <td><?php echo limit_characters(strip_tags($string), 75); ?>...</td>
-                                            <td><a href="<?php echo $GLOBALS['website_domain'] . substr($GLOBALS['forum']['forum_path'], 1); ?>viewtopic.php?t=<?php echo $row['topic_id'] ?>" 
+                                            <td><a href="<?php echo DATA['website']['domain'] . substr(DATA['website']['forum']['path'], 1); ?>viewtopic.php?t=<?php echo $row['topic_id'] ?>" 
                                                    title="View this topic" target="_blank">
                                                     查看主题</a></td>
                                         </tr>
@@ -208,7 +208,7 @@
                 </div>
 
             </div>
-<?php if (isset($_SESSION['cw_admin']))
+    <?php if ( isset($_SESSION['cw_admin']) )
     { ?>
                     <div id="rightcontent">
                         <div class="box_right">
@@ -232,8 +232,8 @@
                                     <td>
 
                                     <tr style="font-weight: bold;">
-                                        <td><?php echo $GLOBALS['connection']['web']['host']; ?></td>
-                                        <td><?php echo $GLOBALS['connection']['web']['user']; ?></td>
+                                        <td><?php echo DATA['website']['connection']['host']; ?></td>
+                                        <td><?php echo DATA['website']['connection']['username']; ?></td>
                                         <td>****<br/></td>
                                     </tr>
 
@@ -250,14 +250,13 @@
                                     </td>
                                     <td>
                                     <tr style="font-weight: bold;">
-
-                                        <td><?php echo $GLOBALS['connection']['logon']['database']; ?></td>
-                                        <td><?php echo $GLOBALS['connection']['web']['database']; ?></td>
-                                        <td><?php echo $GLOBALS['connection']['world']['database']; ?></td>
+                                        <td><?php echo DATA['logon']['database']; ?></td>
+                                        <td><?php echo DATA['website']['connection']['name']; ?></td>
+                                        <td><?php echo DATA['world']['database']; ?></td>
                                         <td>
                                             <?php
                                                 $GameServer->selectDB("webdb", $conn);
-                                                $get = $conn->query("SELECT version FROM db_version;");
+                                                $get = $Database->select("db_version", "version")->get_result();
                                                 $row = $get->fetch_assoc();
                                                 if ($row['version'] == null || empty($row['version'])) $row['version'] = '1.0';
                                                 echo $row['version'];

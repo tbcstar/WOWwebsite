@@ -13,7 +13,7 @@
     <th>动作</th>
 </tr>
 <?php
-$result = $conn->query("SELECT * FROM votingsites ORDER BY id ASC;");
+$result = $Database->select("votingsites", null, null, null, "ORDER BY id ASC")->get_result();
 while ($row = $result->fetch_assoc())
 { ?>
 	     <tr>

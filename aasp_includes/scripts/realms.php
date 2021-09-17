@@ -14,7 +14,7 @@
     #                                                                   #
         ############################################################
     #                                                                   #
-    if ($GLOBALS['core_expansion'] == 3)
+    if ( DATA['website']['core_expansion'] == 3 )
     {
         $guidString = 'playerGuid';
     }
@@ -23,7 +23,7 @@
         $guidString = 'guid';
     }
 
-    if ($GLOBALS['core_expansion'] == 3)
+    if ( DATA['website']['core_expansion'] == 3 )
     {
         $closedString = 'closed';
     }
@@ -32,7 +32,7 @@
         $closedString = 'closedBy';
     }
 
-    if ($GLOBALS['core_expansion'] == 3)
+    if ( DATA['website']['core_expansion'] == 3 )
     {
         $ticketString = 'guid';
     }
@@ -50,11 +50,11 @@
 
         case "closeTicket":
         {
-            $id = $conn->escape_string($_POST['id']);
-            $db = $conn->escape_string($_POST['db']);
-            $conn->select_db($db);
+            $id = $Database->conn->escape_string($_POST['id']);
+            $db = $Database->conn->escape_string($_POST['db']);
+            $Database->conn->select_db($db);
 
-            $conn->query("UPDATE gm_tickets SET ". $closedString ."=1 WHERE ". $ticketString ."=". $id .";");
+            $Database->conn->query("UPDATE gm_tickets SET ". $closedString ."=1 WHERE ". $ticketString ."=". $id .";");
 
 
             break;
@@ -62,9 +62,9 @@
 
         case "delete":
         {
-            $id = $conn->escape_string($_POST['id']);
+            $id = $Database->conn->escape_string($_POST['id']);
 
-            $conn->query("DELETE FROM realms WHERE id=". $id .";");
+            $Database->conn->query("DELETE FROM realms WHERE id=". $id .";");
 
             $GameServer->logThis("删除服务器");
 
@@ -73,30 +73,30 @@
 
         case "deleteTicket":
         {
-            $id = $conn->escape_string($_POST['id']);
-            $db = $conn->escape_string($_POST['db']);
-            $conn->select_db($db);
+            $id = $Database->conn->escape_string($_POST['id']);
+            $db = $Database->conn->escape_string($_POST['db']);
+            $Database->conn->select_db($db);
 
-            $conn->query("DELETE FROM gm_tickets WHERE ". $ticketString ."=". $id .";");
+            $Database->conn->query("DELETE FROM gm_tickets WHERE ". $ticketString ."=". $id .";");
 
             break;
         }
         
         case "edit":
         {
-            $id     = $conn->escape_string($_POST['id']);
-            $new_id = $conn->escape_string($_POST['new_id']);
-            $name   = $conn->escape_string(trim($_POST['name']));
-            $host   = $conn->escape_string(trim($_POST['host']));
-            $port   = $conn->escape_string($_POST['port']);
-            $chardb = $conn->escape_string(trim($_POST['chardb']));
+            $id     = $Database->conn->escape_string($_POST['id']);
+            $new_id = $Database->conn->escape_string($_POST['new_id']);
+            $name   = $Database->conn->escape_string(trim($_POST['name']));
+            $host   = $Database->conn->escape_string(trim($_POST['host']));
+            $port   = $Database->conn->escape_string($_POST['port']);
+            $chardb = $Database->conn->escape_string(trim($_POST['chardb']));
 
             if (empty($name) || empty($host) || empty($port) || empty($chardb))
                 die("<span class='red_text'>请输入所有字段。</span><br/>");
 
             $GameServer->logThis("更新了服务器信息 " . $name);
 
-            $conn->query("UPDATE realms SET id=". $new_id .", name='". $name ."', host='". $host ."', port='". $port ."', char_database='". $chardb ."' 
+            $Database->conn->query("UPDATE realms SET id=". $new_id .", name='". $name ."', host='". $host ."', port='". $port ."', char_database='". $chardb ."' 
                 WHERE id=". $id .";");
             return TRUE;
 
@@ -105,10 +105,10 @@
         
         case "edit_console":
         {
-            $id   = $conn->escape_string($_POST['id']);
-            $type = $conn->escape_string($_POST['type']);
-            $user = $conn->escape_string(trim($_POST['user']));
-            $pass = $conn->escape_string(trim($_POST['pass']));
+            $id   = $Database->conn->escape_string($_POST['id']);
+            $type = $Database->conn->escape_string($_POST['type']);
+            $user = $Database->conn->escape_string(trim($_POST['user']));
+            $pass = $Database->conn->escape_string(trim($_POST['pass']));
 
             if (empty($id) || empty($type) || empty($user) || empty($pass))
             {
@@ -117,7 +117,7 @@
 
             $GameServer->logThis("更新了服务器的控制台信息，服务器ID: " . $id);
 
-            $conn->query("UPDATE realms SET sendType='". $type ."', rank_user='". $user ."', rank_pass='". $pass ."' WHERE id=". $id . ";");
+            $Database->conn->query("UPDATE realms SET sendType='". $type ."', rank_user='". $user ."', rank_pass='". $pass ."' WHERE id=". $id . ";");
             return TRUE;
 
             break;
@@ -128,7 +128,7 @@
             echo '<h3>选择一个服务器</h3><hr/>';
             $GameServer->selectDB("webdb", $conn);
 
-            $result = $conn->query("SELECT id, name, description FROM realms ORDER BY id ASC;");
+            $result = $Database->select("realms", "id, name, description", null, null, "ORDER BY id ASC")->get_result();
             while ($row = $result->fetch_assoc())
             {
                 echo '<table width="100%">';
@@ -150,8 +150,8 @@
         
         case "loadTickets":
         {
-            $offline = $conn->escape_string($_POST['offline']);
-            $realm   = $conn->escape_string($_POST['realm']);
+            $offline = $Database->conn->escape_string($_POST['offline']);
+            $realm   = $Database->conn->escape_string($_POST['realm']);
 
             $_SESSION['lastTicketRealm']        = $realm;
             $_SESSION['lastTicketRealmOffline'] = $offline;
@@ -161,7 +161,7 @@
 
             $GameServer->selectDB($realm, $conn);
 
-            $result = $conn->query("SELECT ". $ticketString .", name, message, createtime, ". $guidString .", ". $closedString ." FROM gm_tickets ORDER BY ticketId DESC;");
+            $result = $Database->select("gm_tickets", "$ticketString, name, message, createtime, $guidString, $closedString", null, null, "ORDER BY ticketId DESC")->get_result();
             if ($result->num_rows == 0)
                 die("<pre>没有找到tickets！</pre>");
 
@@ -178,7 +178,7 @@
 
             while ($row = $result->fetch_assoc())
             {
-                $get = $conn->query("SELECT COUNT(online) FROM characters WHERE guid=". $row[$guidString] ." AND online=1;");
+                $get = $Database->select("characters", "COUNT(online)", null, "guid=$row[$guidString] AND online=1")->get_result();
                 if ($get->data_seek(0) == 0 && $offline == "on")
                 {
                     echo '<tr>';
@@ -196,7 +196,7 @@
                         echo '<td><font color="green">打开</font></td>';
                     }
 
-                    $get = $conn->query("SELECT COUNT(online) FROM characters WHERE guid=". $row[$guidString] ." AND online=1;");
+                    $get = $Database->select("characters", "COUNT(online)", null, "guid=$row[$guidString] AND online=1")->get_result();
                     if ($get->data_seek(0) > 0)
                     {
                         echo '<td><font color="green">在线</font></td>';
@@ -231,18 +231,18 @@
         
         case "openTicket":
         {
-            $id = $conn->escape_string($_POST['id']);
-            $db = $conn->escape_string($_POST['db']);
-            $conn->select_db($db);
+            $id = $Database->conn->escape_string($_POST['id']);
+            $db = $Database->conn->escape_string($_POST['db']);
+            $Database->conn->select_db($db);
 
-            $conn->query("UPDATE gm_tickets SET ". $closedString ."=0 WHERE ". $ticketString ."=". $id .";");
+            $Database->conn->query("UPDATE gm_tickets SET ". $closedString ."=0 WHERE ". $ticketString ."=". $id .";");
 
             break;
         }
         
         case "savePresetRealm":
         {
-            $rid = $conn->escape_string($_POST['rid']);
+            $rid = $Database->conn->escape_string($_POST['rid']);
 
             if (isset($_COOKIE['presetRealmStatus']))
             {

@@ -2,7 +2,7 @@
 include "headers.php";
 include "menus.php";
 
-global $Account, $Connect;
+global $Account, $Database;
 ?>
 
 <main id="content-wrapper">
@@ -24,7 +24,7 @@ global $Account, $Connect;
 <div class="">
 所在服务器: </div>
 <a href="game.tbcstar.com">
-Nighthaven </a>
+时光回溯 </a>
 </div>
 </div>
 <div class="content-box info">
@@ -72,17 +72,18 @@ span.attention, span.notice, span.alert, span.download, span.approved, span.medi
 	</style>
 {alert}
 <?php
-echo '<span class="currency">投票积分： '.$Account->loadVP($_SESSION['cw_user']).'<br/>
-'.$GLOBALS['donation']['coins_name'].': '.$Account->loadDP($_SESSION['cw_user']).'
-</span>';
+echo '<span class="currency">投票积分： '.
+$Account->loadVP($_SESSION['cw_user']) . '<br/>' . 
+DATA['website']['donation']['coins_name'] . ': '. $Account->loadDP($_SESSION['cw_user']) . '</span>';
 
 if(isset($_GET['return']) && $_GET['return']=="TRUE")
 	echo "<span class='accept'>物品已发送到选定的角色!</span>";
 elseif(isset($_GET['return']) && $_GET['return']!="TRUE")
 	echo "<span class='alert'>".$_GET['return']."</span>";
 
+$conn = $Database->database();
 $Account->isNotLoggedIn();
-$Connect->selectDB("webdb", $conn);
+$Database->selectDB("webdb", $conn);
 
 $counter = 0;
 $totalDP = 0;
@@ -103,19 +104,19 @@ if(isset($_SESSION['donateCart']) && !empty($_SESSION['donateCart']))
 			{
 			  $sql .= $entry. ',';
 
-			  $Connect->selectDB($GLOBALS['connection']['worlddb']);
-			  $result = $conn->query("SELECT maxcount FROM item_template WHERE entry='".$entry."' AND maxcount>0");
+			  $Database->selectDB(DATA['world']['database']);
+              $result = $Database->select("item_template", "maxcount", null, "entry=$entry AND maxcount>0")->get_result();
 			  if($result->data_seek(0)!=0)
 				  $_SESSION['donateCart'][$entry]['quantity']=1;
 
-			   $Connect->selectDB($GLOBALS['connection']['webdb']);
+			  $Database->selectDB(DATA['website']['connection']['name']);
 			}
 		}
 	}
 	  
 	$sql = substr($sql,0,-1) . ") AND in_shop='donate' ORDER BY `itemlevel` ASC";
 
-    $query = $conn->query($sql);
+    $query = $Database->conn->query($sql);
 ?>
 <table width="100%" >
 <tr id="cartHead"><th>名称</th><th>数量</th><th>价格</th><th>结算</th></tr>
@@ -123,7 +124,7 @@ if(isset($_SESSION['donateCart']) && !empty($_SESSION['donateCart']))
 while($row = $query->fetch_array()) 
 {
 	?><tr align="center">
-        <td><a href="http://<?php echo $GLOBALS['tooltip_href']; ?>item=<?php echo $row['entry']; ?>"><?php echo $row['name']; ?></a></td>
+        <td><a href="http://<?php echo DATA['website']['tooltip_href']; ?>item=<?php echo $row['entry']; ?>"><?php echo $row['name']; ?></a></td>
         <td><input type="text" value="<?php echo $_SESSION['donateCart'][$row['entry']]['quantity']; ?>" style="width: 30px; text-align: center;"
         
         onFocus="$(this).next('.quantitySave').fadeIn()" id="donateCartQuantity-<?php echo $row['entry']; ?>" />
@@ -132,7 +133,7 @@ while($row = $query->fetch_array())
         </div>
         </td>
         <td><?php echo $_SESSION['donateCart'][$row['entry']]['quantity'] * $row['price']; ?> 
-		<?php echo $GLOBALS['donation']['coins_name']; ?></td>
+		<?php echo DATA['website']['donation']['coins_name']; ?></td>
         <td><a href="#" onclick="removeItemFromCart('donateCart',<?php echo $row['entry']; ?>)">移除</a></td>
     </tr>
     <?php
@@ -150,29 +151,31 @@ if(isset($_SESSION['voteCart']) && !empty($_SESSION['voteCart']))
 	$sql = "SELECT * FROM shopitems WHERE entry IN(";
 	if (is_array($_SESSION['voteCart']) || is_object($_SESSION['voteCart']))
 	{
-		foreach($_SESSION['voteCart'] as $entry => $value) {
-			if($_SESSION['voteCart'][$entry]['quantity']!=0) {
-			  $sql .= $entry. ',';
-			  $Connect->selectDB($GLOBALS['connection']['worlddb']);
-			  $result = $conn->query("SELECT maxcount FROM item_template WHERE entry='".$entry."' AND maxcount>0");
-			  if($result->data_seek(0)!=0)
+		foreach($_SESSION['voteCart'] as $entry => $value)
+		{
+			if ($_SESSION['voteCart'][$entry]['quantity'] != 0)
+			{
+			  $sql                                      .= $entry . ',';
+			  $Database->selectDB(DATA['world']['database']);
+              $result                                   = $Database->select("item_template", "maxcount", null, "entry=$entry AND maxcount>0")->get_result();
+              if ($result->data_seek(0) != 0)
 				  $_SESSION['voteCart'][$entry]['quantity']=1;
 
-			   $Connect->selectDB($GLOBALS['connection']['webdb']);
+			   $Database->selectDB(DATA['website']['connection']['name']);
 			}
 		}
 	}
 	  
 	  $sql = substr($sql,0,-1) . ") AND in_shop='vote' ORDER BY `itemlevel` ASC";
 
-$query = $conn->query($sql);
+$query = $Database->conn->query($sql);
 ?>
 <table width="100%" >
 <tr id="cartHead"><th>名称</th><th>数量</th><th>价格</th><th>结算</th></tr>
 <?php
 while($row = $query->fetch_array()) {
 	?><tr align="center">
-        <td><a href="http://<?php echo $GLOBALS['tooltip_href']; ?>item=<?php echo $row['entry']; ?>"><?php echo $row['name']; ?></a></td>
+        <td><a href="http://<?php echo DATA['website']['tooltip_href']; ?>item=<?php echo $row['entry']; ?>"><?php echo $row['name']; ?></a></td>
         <td><input type="text" value="<?php echo $_SESSION['voteCart'][$row['entry']]['quantity']; ?>" style="width: 30px; text-align: center;"
         onFocus="$(this).next('.quantitySave').fadeIn()" id="voteCartQuantity-<?php echo $row['entry']; ?>" />
         <div class="quantitySave" style="display:none;">
@@ -190,7 +193,7 @@ while($row = $query->fetch_array()) {
 <?php
 }
 ?>
-<br/>合计：<?php echo $totalVP; ?> 投票积分，<?php echo $totalDP.' '.$GLOBALS['donation']['coins_name']; ?>
+<br/>合计：<?php echo $totalVP; ?> 投票积分，<?php echo $totalDP.' '.DATA['website']['donation']['coins_name']; ?>
 <hr/>
 <?php
 if(isset($_SESSION['donateCart']) && !empty($_SESSION['donateCart']) || isset($_SESSION['voteCart']) 

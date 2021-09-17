@@ -138,8 +138,8 @@ span.attention, span.notice, span.alert, span.download, span.approved, span.medi
 </tr>
 </br>
 <?php
-global $Account, $Connect, $Character, $Website;
-$conn = $Connect->connectToDB();
+global $Account, $Database, $Character, $Website;
+$conn = $Database->database();
 $service = $_GET['s'];
 
 $service_title = ucfirst($service." Change");
@@ -176,9 +176,9 @@ elseif($GLOBALS['service'][$service]['currency']=="dp")
 } 
 
 $Account->isNotLoggedIn();
-$Connect->selectDB("webdb", $conn);
+$Database->selectDB("webdb", $conn);
 $num = 0;
-$result = $conn->query("SELECT char_db, name, id FROM realms ORDER BY id ASC;");
+$result = $Database->select( char_db, name, id FROM realms ORDER BY id ASC;");
 while($row = $result->fetch_assoc()) 
 {
          $acct_id = $Account->getAccountID($_SESSION['cw_user']);
@@ -186,8 +186,8 @@ while($row = $result->fetch_assoc())
 		 $char_db = $row['char_db'];
 		 $realm_id = $row['id'];
 		          	
-		$Connect->selectDB($char_db, $conn);
-		$result = $conn->query("SELECT name, guid, gender, class, race, level, online FROM characters WHERE account=". $acct_id .";");
+		$Database->selectDB($char_db, $conn);
+		$result = $Database->select( name, guid, gender, class, race, level, online FROM characters WHERE account=". $acct_id .";");
 		while($row = $result->fetch_assoc()) {
 	?>
 	

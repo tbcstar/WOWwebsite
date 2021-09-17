@@ -13,7 +13,7 @@
  	global $Website;
     $Website->getNews();
 	 
-	if ($GLOBALS['enableSlideShow']==false && $GLOBALS['news']['enable']==false)  
+	if ( DATA['use']['slideshow'] == false && DATA['website']['news']['enable'] == false )
 	{
 		buildError("<b>配置文件错误。</b>幻灯片和新闻都不显示，主页将是空的。");
 		echo "看起来主页是空的!";

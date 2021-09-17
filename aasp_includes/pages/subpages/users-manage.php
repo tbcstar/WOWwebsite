@@ -10,15 +10,15 @@ if(isset($_GET['char']))
 	echo "搜寻结果 <b>" . $_GET['char'] . "</b><pre>";
         $GameServer->selectDB("webdb", $conn);
 
-        $character = $conn->escape_string($_GET['char']);
+        $character = $Database->conn->escape_string($_GET['char']);
 
-        $result = $conn->query("SELECT name, id FROM realms;");
+        $result = $Database->select("realms", "name, id")->get_result();
 
         while ($row = $result->fetch_assoc())
 	{
-        #$GameServer->connectToRealmDB($row['id']);
-        $conn->select_db("characters");
-        $get = $conn->query("SELECT account, name FROM characters WHERE name='". ucfirst($character) ."' OR guid='$character';");
+        #$GameServer->realm($row['id']);
+        $Database->conn->select_db("characters");
+        $get = $Database->select("characters", "account, name", null, "name='". ucfirst($character) ."' OR guid='$character'")->get_result();
 
         if ($get->num_rows > 0)
         {
@@ -36,8 +36,8 @@ if(isset($_GET['char']))
 if(isset($_GET['user']))  {
 	
 	$GameServer->selectDB("logondb", $conn);
-    $value  = $conn->escape_string(strtoupper($_GET['user']));
-    $result = $conn->query("SELECT * FROM account WHERE username='$value' OR id='$value';");
+    $value  = $Database->conn->escape_string(strtoupper($_GET['user']));
+    $result = $Database->select("account", null, null, "username='$value' OR id='$value'")->get_result();
     if ($result->num_rows == 0)
 	{
 		echo "<span class='red_text'>没有找到结果！</span>";
@@ -45,6 +45,7 @@ if(isset($_GET['user']))  {
 	else 
 	{
 		$row = $result->fetch_assoc();
+		?>
 		<table width="100%">
 			<tr>
             <td><span class='blue_text'>账号名称</span></td>
@@ -64,7 +65,7 @@ if(isset($_GET['user']))  {
                 <td><span class='blue_text'>账号状态</span></td>
                 <td><?php echo $GameAccount->getBan($row['id']); ?></td>
 
-                <td><span class='blue_text'><?php echo $GLOBALS['donation']['coins_name']; ?></span></td>
+                <td><span class='blue_text'><?php echo DATA['website']['donation']['coins_name']; ?></span></td>
                 <td><?php echo $GameAccount->getDP($row['id']); ?></td>
 			</tr>
 			<tr><td><a href='?page=users&selected=manage&getlogs=<?php echo $row['id']; ?>'>帐户付款&购买记录</a><br />
@@ -87,15 +88,15 @@ if(isset($_GET['user']))  {
             </tr>
             <?php
             $GameServer->selectDB("webdb", $conn);
-            $result = $conn->query("SELECT name, id FROM realms;");
+            $result = $Database->select("realms", "name, id")->get_result();
 
             if (is_numeric($_GET['user']))
 			{
-                $account_id = $conn->escape_string($_GET['user']);
+                $account_id = $Database->conn->escape_string($_GET['user']);
             }
             if (!is_numeric($_GET['user']))
             {
-                $user = $conn->escape_string($_GET['user']);
+                $user = $Database->conn->escape_string($_GET['user']);
                 $account_id = $GameAccount->getAccID($user);
 
             }
@@ -103,13 +104,12 @@ if(isset($_GET['user']))  {
             {
 
 
-                #$conn = $GameServer->connectToRealmDB($row['id']);
-                $conn->select_db("characters");
+                #$conn = $GameServer->realm($row['id']);
+                $Database->conn->select_db("characters");
 
-                $result  = $conn->query("SELECT name, guid, level, class, race, gender, online FROM characters 
-                    WHERE name='$user' OR account='$account_id';");
+                $result  = $Database->select("characters", null, null, "name='$user' OR account='$account_id'")->get_result();
 
-                if (!$result) die($conn->error);
+                if (!$result) die($Database->conn->error);
 
                 while ($rows = $result->fetch_assoc())
 				{ ?>
@@ -143,13 +143,13 @@ elseif (isset($_GET['getlogs'])) {
 	?>
 	选择账号： <a href='?page=users&selected=manage&user=<?php echo $_GET['getlogs']; ?>'><?php echo $GameAccount->getAccName($_GET['getlogs']); ?></a><p />
 
-	<h4 class='payments' onclick='loadPaymentsLog(<?php echo $conn->escape_string($_GET['getlogs']); ?>)'>付款记录</h4>
+	<h4 class='payments' onclick='loadPaymentsLog(<?php echo $Database->conn->escape_string($_GET['getlogs']); ?>)'>付款记录</h4>
 	<div class='hidden_content' id='payments'></div>
 	<hr/>
-	<h4 class='payments' onclick='loadDshopLog(<?php echo $conn->escape_string($_GET['getlogs']); ?>)'>捐赠商城记录</h4>
+	<h4 class='payments' onclick='loadDshopLog(<?php echo $Database->conn->escape_string($_GET['getlogs']); ?>)'>捐赠商城记录</h4>
 	<div class='hidden_content' id='dshop'></div>
 	<hr/>
-	<h4 class='payments' onclick='loadVshopLog(<?php echo $conn->escape_string($_GET['getlogs']); ?>)'>投票商店记录</h4>
+	<h4 class='payments' onclick='loadVshopLog(<?php echo $Database->conn->escape_string($_GET['getlogs']); ?>)'>投票商店记录</h4>
 	<div class='hidden_content' id='vshop'></div>
 	<?php
 }
@@ -171,7 +171,7 @@ elseif (isset($_GET['editaccount']))
 	   		<td><input type="text" id="edit_vp" value="<?php echo $GameAccount->getVP($_GET['editaccount']); ?>" class='noremove'/> 
 	   	</tr>
 	   	<tr>
-	   		<td><?php echo $GLOBALS['donation']['coins_name']; ?></td> 
+	   		<td><?php echo DATA['website']['donation']['coins_name']; ?></td>
 			<td><input type="text" id="edit_dp" value="<?php echo $GameAccount->getDP($_GET['editaccount']); ?>" class='noremove'/></td>
 		</tr>
 	   	<tr>
@@ -183,7 +183,7 @@ elseif (isset($_GET['editaccount']))
 <?php } 
 elseif (isset($_GET['getslogs'])) 
 {
-    $getLogs = $conn->escape_string($_GET['getslogs']);
+    $getLogs = $Database->conn->escape_string($_GET['getslogs']);
     ?>
 	所选账号: <a href='?page=users&selected=manage&user=<?php echo $getLogs; ?>'><?php echo $GameAccount->getAccName($getLogs); ?></a><p />
 	<table>
@@ -195,7 +195,7 @@ elseif (isset($_GET['getslogs']))
         </tr>
         <?php
 		$GameServer->selectDB("webdb", $conn);
-		$result = $conn->query("SELECT * FROM user_log WHERE account=". $getLogs .";");
+		$result = $Database->select("user_log", null, null, "account=$getLogs")->get_result();
         if ($result->num_rows == 0)
 		{
 			echo "没有找到该帐户的记录！";

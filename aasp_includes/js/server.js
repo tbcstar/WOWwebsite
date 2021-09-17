@@ -2,7 +2,7 @@ function test_settings() {
 	
 	showLoader();
 	
-	$.post("../aasp_includes/scripts/test_settings.php", {test: TRUE},
+	$.post("../aasp_includes/scripts/test_settings.php", {test: true},
        function(data) {
 			 $("#loading").html(data + "<br/><a href='#' onclick='hideLoader()'>Close</a>");
    });

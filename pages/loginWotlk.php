@@ -1,6 +1,12 @@
-<?php if (!isset($_SESSION['cw_user'])) { 
- 	  if (isset($_POST['login'])) 
-	  	account::logIn($_POST['login_username'],$_POST['login_password'],$_SERVER['REQUEST_URI'],$_POST['login_remember']);
+<?php
+
+global $Account, $Database;
+$conn = $Database->database();
+
+if (!isset($_SESSION['cw_user'])) { 
+if (isset($_POST['login'])) 
+$Account->logIn($_POST['login_username'],$_POST['login_password'],$_SERVER['REQUEST_URI'],$_POST['login_remember']);
+
 ?>
 
 <?php include "header.php" ?>
@@ -84,9 +90,9 @@ Sunday, August 11th Dark Portal will open to all of Azeroth. Players who are lev
 </main>
 
 <?php 
-account::isLoggedIn();
+$Account->isLoggedIn();
 if ($_POST['register']) {
-	account::register($_POST['username'],$_POST['email'],$_POST['password'],$_POST['password_repeat'],$_POST['referer'],$_POST['captcha']);
+	$Account->register($_POST['username'],$_POST['email'],$_POST['password'],$_POST['password_repeat'],$_POST['referer'],$_POST['captcha']);
 } 
 ?>
 

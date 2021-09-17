@@ -14,7 +14,7 @@
     </tr>
     <?php 
     $x = 1;
-    $result = $conn->query("SELECT * FROM site_links ORDER BY position ASC;");
+    $result = $Database->select("site_links", null, null, null, "ORDER BY position ASC")->get_result();
     while ( $row = $result->fetch_assoc() )
     { ?>
       <tr>

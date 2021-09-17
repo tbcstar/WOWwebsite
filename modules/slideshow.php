@@ -5,7 +5,7 @@ if(!isset($_GET['page']))
 else
 	$page = $_GET['page'];
 	
-if ($GLOBALS['enableSlideShow'] == TRUE && !isset($_COOKIE['hideslider']) && $_GET['page']=='home') 
+if ( DATA['use']['slideShow'] == true && !isset($_COOKIE['hideslider']) && $_GET['page'] == 'home' )
 { 
 	global $Website;?>
 <div class="main_view">

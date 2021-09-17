@@ -93,12 +93,12 @@
 					// Your site is currently being integrated with AlertPay IPN for TESTING PURPOSES
 					// ONLY. Don't store any information in your production database and 
 					// DO NOT process this transaction as a real order.
-					global $Connect;
-                    $conn = $Connect->connectToDB();
+					global $Database;
+                    $conn = $Database->database();
 
-					$conn->select_db("craftedcms");
+					$Database->conn->select_db("craftedcms");
 
-					$conn->query("INSERT INTO paypal_payment_info (userid, paymentstatus, buyer_email, firstname, lastname) 
+					$Database->conn->query("INSERT INTO paypal_payment_info (userid, paymentstatus, buyer_email, firstname, lastname) 
                         VALUES (". $myCustomField_1 .", '". $transactionStatus ."', '". $customerEmailAddress ."', '". $customerFirstName ."', '". $customerLastName ."');");
                 }
 				else 

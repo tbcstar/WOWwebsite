@@ -1,7 +1,9 @@
 <?php
-	if(!defined('INIT_SITE'))
+	if( !defined('INIT_SITE') )
+	{
 		exit();
-		
+	}
+
 	#############################
 	## CRAFTEDWEB配置文件      ##
 	## 第一代                  ##
@@ -39,7 +41,7 @@
 	 版权所有'; //设置页脚文本，显示在底部。
 	 //Tips: &copy; = Copyright symbol. <br/> = line break.
 	 
-	 $timezone = 'Asia/Shanghai'; //为你的网站设置时区。默认:欧洲/贝尔格莱德(GMT +1)
+	 $timezone = 'CST +0800'; //为你的网站设置时区。默认:欧洲/贝尔格莱德(GMT +1)
 	 //支持时区的完整列表可以在这里找到: http://php.net/manual/en/timezones.php
 	 
 	 $core_expansion = 2; //服务器的版本。
@@ -125,41 +127,41 @@
 	# 网站数据库连接设置
 	#*************************#
 	
-	$connection['web']['host']        = "game.tbcstar.com";
-    $connection['web']['port']        = "3306";
-	$connection['web']['user']        = "root";
-	$connection['web']['password']    = "A112233a!";
-	$connection['web']['database']    = "tbcstar";
+	$Databaseion['web']['host']        = "game.tbcstar.com";
+    $Databaseion['web']['port']        = "3306";
+	$Databaseion['web']['user']        = "root";
+	$Databaseion['web']['password']    = "A112233a!";
+	$Databaseion['web']['database']    = "tbcstar";
 
     #*************************#
     # 登录数据库连接设置
     #*************************#
 
-    $connection['logon']['host']        = "game.tbcstar.com";
-    $connection['logon']['port']        = "3306";
-    $connection['logon']['user']        = "root";
-    $connection['logon']['password']    = "A112233a!";
-    $connection['logon']['database']    = "auth";
+    $Databaseion['logon']['host']        = "game.tbcstar.com";
+    $Databaseion['logon']['port']        = "3306";
+    $Databaseion['logon']['user']        = "root";
+    $Databaseion['logon']['password']    = "A112233a!";
+    $Databaseion['logon']['database']    = "auth";
 
     #*************************#
     # 角色数据库连接设置
     #*************************#
 
-    $connection['characters']['host']        = "game.tbcstar.com";
-    $connection['characters']['port']        = "3306";
-    $connection['characters']['user']        = "root";
-    $connection['characters']['password']    = "A112233a!";
-    $connection['characters']['database']    = "characters";
+    $Databaseion['characters']['host']        = "game.tbcstar.com";
+    $Databaseion['characters']['port']        = "3306";
+    $Databaseion['characters']['user']        = "root";
+    $Databaseion['characters']['password']    = "A112233a!";
+    $Databaseion['characters']['database']    = "characters";
 
     #*************************#
     # World 数据库连接设置
     #*************************#
 
-    $connection['world']['host']        = "game.tbcstar.com";
-    $connection['world']['port']        = "3306";
-    $connection['world']['user']        = "root";
-    $connection['world']['password']    = "A112233a!";
-    $connection['world']['database']    = "world";
+    $Databaseion['world']['host']        = "game.tbcstar.com";
+    $Databaseion['world']['port']        = "3306";
+    $Databaseion['world']['user']        = "root";
+    $Databaseion['world']['password']    = "A112233a!";
+    $Databaseion['world']['database']    = "world";
 	
 	// host = IP地址或域名地址（可以修改端口）
 	// user = 一个可以查看/写入整个数据库的mySQL用户
@@ -170,7 +172,7 @@
     # Realmlist
     #*************************#
 
-	$connection['realmlist']   = "game.tbcstar.com";
+	$Databaseion['realmlist']   = "game.tbcstar.com";
 	
 	/*************************/
 	/* 注册设置
@@ -295,59 +297,6 @@
 	'角色复活' => 'revive.php','修改Email' => 'settings.php','支持' => 'support.php',
 	'角色传送' => 'teleport.php','角色解卡' => 'unstuck.php','投票' => 'vote.php',
 	'投票商店' => 'voteshop.php','确认服务' => 'confirmservice.php');
-	
-	###根据资料片加载最大物品等级###
-	switch($GLOBALS['core_expansion']) 
-	{
-		case(0):
-		$maxItemLevel = 100;
-		break;
-		case(1):
-		$maxItemLevel = 175;
-		break;
-		default:
-		case(2):
-		$maxItemLevel = 284;
-		break;
-		case(3):
-		$maxItemLevel = 416;
-		break;
 
-		case 4:
-		case 5:
-		case 6:
-		case 7:
-		break;
-	}
-	
-	if($GLOBALS['core_expansion']>2) 
-		$tooltip_href = 'wotlk.cavernoftime.com/';
-	else
-		$tooltip_href = 'wotlk.cavernoftime.com/';
-	
-	//设置时区。
-	date_default_timezone_set($GLOBALS['timezone']);
-	
-	//设置错误处理。
-	if(file_exists("includes/classes/error.php"))
-	{
-		require "includes/classes/error.php";
-	}		
-	elseif(file_exists("../classes/error.php"))
-	{
-		require "../classes/error.php";
-	}		
-	elseif(file_exists("../includes/classes/error.php"))
-	{
-		require "../includes/classes/error.php";
-	}	
-	elseif(file_exists("../../includes/classes/error.php"))
-	{
-		require "../../includes/classes/error.php";
-	}	
-	elseif(file_exists("../../../includes/classes/error.php"))
-	{
-		require "../../../includes/classes/error.php";
-	}
-	loadCustomErrors(); //加载自定义错误
+
 	?> 

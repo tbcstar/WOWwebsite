@@ -83,7 +83,7 @@ $Account->isNotLoggedIn();
 
 
 <section class="my-characters">
-<h3 class="services character">你在服务器上的角色 <span>时光祭坛</span></h3>
+<h3 class="services character">你在服务器上的角色 <span>时光回溯</span></h3>
 <ul class="character">
 <?php 
 

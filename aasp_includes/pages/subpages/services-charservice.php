@@ -13,19 +13,19 @@
 </tr>
 <?php
 $GameServer->selectDB("webdb", $conn);
-$result = $conn->query("SELECT * FROM service_prices;");
+$result = $Database->select("service_prices")->get_result();
 while ($row = $result->fetch_assoc())
 { ?>
 	<tr>
         <td><?php echo $row['service']; ?></td>
         <td><input type="text" value="<?php echo $row['price']; ?>" style="width: 50px; text-align: center;" id="<?php echo $row['service']; ?>_price" class="noremove"/></td>
         <td><select style="width: 200px;" id="<?php echo $row['service']; ?>_currency">
-             <option value="vp" <?php if ($row['currency']=='vp') echo 'selected'; ?>>投票积分</option>
-             <option value="dp" <?php if ($row['currency']=='dp') echo 'selected'; ?>><?php echo $GLOBALS['donation']['coins_name']; ?></option>
+            <option value="vp" <?php if ($row['currency']=='vp') echo 'selected'; ?>>投票积分</option>
+            <option value="dp" <?php if ($row['currency'] == 'dp') echo 'selected'; ?>><?php echo DATA['website']['donation']['coins_name']; ?></option>
         </select></td>
         <td><select style="width: 150px;" id="<?php echo $row['service']; ?>_enabled">
-             <option value="TRUE" <?php if ($row['enabled']=='TRUE') echo 'selected'; ?>>启用</option>
-             <option value="false" <?php if ($row['enabled']=='FALSE') echo 'selected'; ?>>禁用</option>
+            <option value="TRUE" <?php if ($row['enabled']=='TRUE') echo 'selected'; ?>>启用</option>
+            <option value="false" <?php if ($row['enabled']=='FALSE') echo 'selected'; ?>>禁用</option>
         </select></td>
         <td><input type="submit" value="Save" onclick="saveServicePrice('<?php echo $row['service']; ?>')"/>
     </tr>
