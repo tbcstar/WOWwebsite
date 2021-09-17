@@ -25,9 +25,9 @@ class Page
 
 	function replace_tags($tags = array())
 	{
-		if (sizeof($tags) > 0)
+		if ( sizeof($tags) > 0 )
 		{
-			if (is_array($tags) || is_object($tags))
+			if ( is_array($tags) || is_object($tags) )
 			{
 				foreach ($tags as $tag => $data)
 				{

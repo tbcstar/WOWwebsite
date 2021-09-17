@@ -94,7 +94,6 @@
 					// ONLY. Don't store any information in your production database and 
 					// DO NOT process this transaction as a real order.
 					global $Database;
-                    $conn = $Database->database();
 
 					$Database->conn->select_db("craftedcms");
 

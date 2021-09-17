@@ -1,6 +1,5 @@
 <?php 
     global $Account, $Database;
-    $conn = $Database->database();
     $Account->isNotLoggedIn();
 ?>
 <?php include "headers.php" ?>

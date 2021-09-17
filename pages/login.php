@@ -1,6 +1,5 @@
 <?php
 global $Account, $Database;
-$conn = $Database->database();
 ?>
 
 <?php if (!isset($_SESSION['cw_user'])) { 

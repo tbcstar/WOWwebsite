@@ -1,7 +1,7 @@
 <?php 
     global $GameServer, $GameAccount;
     $conn = $GameServer->connect();
-    $GameServer->selectDB("webdb", $conn);
+    $GameServer->selectDB("webdb");
 
 $per_page = 20;
 
@@ -28,7 +28,7 @@ if(isset($_SESSION['cw_staff']) && !isset($_SESSION['cw_admin']))
        <th>IP</th>
    </tr>
    <?php
-    $GameServer->selectDB("webdb", $conn);
+    $GameServer->selectDB("webdb");
     $result = $Database->select("admin_log", null, null, null, "ORDER BY id DESC LIMIT $start, $per_page")->get_result();
     while ($row    = $result->fetch_assoc())
     { ?>

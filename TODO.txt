@@ -1,0 +1,15 @@
+configuration.json
+	Remove ['website']
+	Change use_debug to ['use']
+	Add ['tooltip_href']
+	Change website->donation->donation_type -> type
+	Add ['service'] teleport, instant80, unstuck, change faction with currency, price,
+	Add core/plugins/playersonline/config.php values
+	Add modules array
+
+Includes
+	Classes
+		Account.php
+			- Change the output of `isLoggedIn` to boolean
+			- Remove `isNotLoggedIn`
+			- Rename `isNotGmLoggedIn` to `isAdmin` with `boolean` output

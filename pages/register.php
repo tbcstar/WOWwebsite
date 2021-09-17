@@ -5,7 +5,8 @@ global $Account;
 <?php 
 $Account->isLoggedIn();
 console.log($_POST['register']);
-if ($_POST['register']) {
+if ( isset($_POST['register']) )
+{
 	$Account->register($_POST['username'],$_POST['email'],$_POST['password'],$_POST['password_repeat'],$_POST['referer'],$_POST['captcha']);
 } 
 ?>
@@ -117,7 +118,7 @@ if ($_POST['register']) {
 <input id="password_repeat" type="password" class="inputbox" alt="Repeat the password" size="38" maxlength="16" placeholder="Repeat the Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Repeat Password'"><br />
 <input id="email" type="text" class="inputbox" alt="email" size="38" placeholder="E-mail" onfocus="this.placeholder = ''" onblur="this.placeholder = 'E-mail'" value="<?php echo $_POST['email']; ?>"><br />
 <br />
-<input type="submit" value="Register" onclick="register(<?php if($GLOBALS['registration']['captcha']==TRUE)  echo 1;  else  echo 0; ?>)" 
+<input type="submit" value="Register" onclick="register(<?php if ( DATA['website']['registration']['captcha'] == true )  echo 1;  else  echo 0; ?>)" 
                 id="register"/> 
 
 
@@ -138,7 +139,7 @@ if ($_POST['register']) {
 		var key_code = event.keyCode;
 		if(key_code == 13)
 			{
-				register(<?php if($GLOBALS['registration']['captcha']==TRUE)  echo 1;  else  echo 0; ?>)
+				register(<?php if ( DATA['website']['registration']['captcha'] == true )  echo 1;  else  echo 0; ?>)
 			}
 	}
  </script>

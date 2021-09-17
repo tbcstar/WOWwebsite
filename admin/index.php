@@ -255,7 +255,7 @@
                                         <td><?php echo DATA['world']['database']; ?></td>
                                         <td>
                                             <?php
-                                                $GameServer->selectDB("webdb", $conn);
+                                                $GameServer->selectDB("webdb");
                                                 $get = $Database->select("db_version", "version")->get_result();
                                                 $row = $get->fetch_assoc();
                                                 if ($row['version'] == null || empty($row['version'])) $row['version'] = '1.0';

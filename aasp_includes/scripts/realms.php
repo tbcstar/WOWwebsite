@@ -8,7 +8,7 @@
     global $GameServer, $GameAccount;
     $conn = $GameServer->connect();
 
-    $GameServer->selectDB("webdb", $conn);
+    $GameServer->selectDB("webdb");
 
     
     #                                                                   #
@@ -126,7 +126,7 @@
         case "getPresetRealms":
         {
             echo '<h3>选择一个服务器</h3><hr/>';
-            $GameServer->selectDB("webdb", $conn);
+            $GameServer->selectDB("webdb");
 
             $result = $Database->select("realms", "id, name, description", null, null, "ORDER BY id ASC")->get_result();
             while ($row = $result->fetch_assoc())

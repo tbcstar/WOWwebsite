@@ -11,23 +11,7 @@
 	<?php require "includes/template_loader.php"; ?>
 	<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
 	<title>
-		<?php
-            echo $website_title ." - ";
-
-            while ( $page_title = current(DATA['website']['core_pages']) )
-            {
-                if ( $page_title == $_GET['page'] .'.php' )
-                {
-                    echo key( DATA['website']['core_pages'] );
-                    $foundPT = TRUE;
-                }
-                next( $GLOBALS['core_pages'] );
-            }
-            if ( !isset( $foundPT ) )
-            {
-                echo htmlentities( ucfirst( $_GET['page'] ) );
-            }
-        ?>
+        <?php $Website->getTitle(); ?>
     </title>
 
     <?php

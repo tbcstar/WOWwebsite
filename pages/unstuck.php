@@ -53,7 +53,7 @@ global $Account, $Website, $Database;
 <?php
 $service = "unstuck";
 
-if ($GLOBALS['service'][$service]['price'] == 0)
+if ( DATA['service'][$service]['price'] == 0 )
 {
     echo '<span class="attention">解除卡死是免费的</span>';
 }
@@ -61,12 +61,12 @@ else
 { ?>
 <span class="attention">费用
 <?php 
-echo $GLOBALS['service'][$service]['price'].' '.$Website->convertCurrency($GLOBALS['service'][$service]['currency']); ?></span>
+echo DATA['service'][$service]['price'].' '.$Website->convertCurrency(DATA['service'][$service]['currency']); ?></span>
 <?php 
-if($GLOBALS['service'][$service]['currency']=="vp")
+if(DATA['service'][$service]['currency']=="vp")
 	echo "<span class='currency'> ".$Account->loadVP($_SESSION['cw_user'])."</span>";
-elseif($GLOBALS['service'][$service]['currency']=="dp")
-	echo "<span class='currency'>".$GLOBALS['donation']['coins_name'].": ".$Account->loadDP($_SESSION['cw_user'])."</span>";
+elseif(DATA['service'][$service]['currency']=="dp")
+	echo "<span class='currency'>".DATA['website']['donation']['coins_name'].": ".$Account->loadDP($_SESSION['cw_user'])."</span>";
 } 
 
 $Account->isNotLoggedIn();
@@ -87,7 +87,7 @@ while ($row = $result->fetch_assoc())
 
 <tr>
 <td><?php if(!file_exists('styles/global/images/portraits/'.$row['gender'].'-'.$row['race'].'-'.$row['class'].'.gif'))
-				       echo '<img src="styles/'.$GLOBALS['template']['path'].'/images/unknown.png" />';
+				       echo '<img src="styles/'.DATA['website']['template']['path'].'/images/unknown.png" />';
 					   else 
 					   { ?>
                         <img src="styles/global/images/portraits/

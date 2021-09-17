@@ -2,7 +2,7 @@
     global $GameServer, $GamePage;
     $conn = $GameServer->connect();
 
-    $GameServer->selectDB("webdb", $conn);
+    $GameServer->selectDB("webdb");
 
     $GamePage->validatePageAccess("Users");
 
@@ -12,7 +12,7 @@
 	} 
 	else 
 	{
-        $GameServer->selectDB("logondb", $conn);
+        $GameServer->selectDB("logondb");
         $usersTotal       = $Database->select("account", "COUNT(*) AS totalUsers");
         $usersToday       = $Database->select("account", "COUNT(*) AS dailyUsers", null, "joindate LIKE '%". date("Y-m-d") ."%'");
         $usersMonth       = $Database->select("account", "COUNT(*) AS monthlyUsers", null, "joindate LIKE '%". date("Y-m") ."%'");

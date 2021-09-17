@@ -1,7 +1,7 @@
 <?php 
   global $GamePage, $GameServer;
   $conn = $GameServer->connect();
-  $GameServer->selectDB("webdb", $conn);
+  $GameServer->selectDB("webdb");
 ?>
 <div class="box_right_title"><?php echo $GamePage->titleLink(); ?> &raquo; 菜单</div>
   <table class="center">

@@ -10,7 +10,7 @@
 	else 
     {   
         $conn = $GameServer->connect();
-        $GameServer->selectDB("webdb", $conn);
+        $GameServer->selectDB("webdb");
         $inShop     = $Database->select("shopitems", "COUNT(id) AS items");
         $purchToday = $Database->select("shoplog", "COUNT(id) AS purchases", null, "date LIKE '%". date('Y-m-d') ."%'");
         $getAvg     = $Database->select("shopitems", "AVG(price) AS priceAvg");

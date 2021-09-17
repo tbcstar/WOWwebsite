@@ -4,7 +4,7 @@ require "../ext_scripts_class_loader.php";
 
 global $Account, $Database, $Server;
 
-if(isset($_POST['element']) &&$_POST['element'] == 'vote') 
+if ( isset($_POST['element']) && $_POST['element'] == 'vote' )
 {
    echo '投票积分： '.$Account->loadVP($_POST['account']);
 }

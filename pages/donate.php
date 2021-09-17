@@ -8,7 +8,6 @@
 
 <?php
 global $Account, $Database;
-$conn = $Database->database();
 $Account->isNotLoggedIn(); ?>
 
 <div class='box_two_title'>捐赠</div>

@@ -8,7 +8,6 @@
 
 <?php
 global $Account, $Database;
-$conn = $Database->database();
 ?>
 
 <div class='box_two_title'>忘记密码</div>
@@ -22,10 +21,10 @@ if(isset($_GET['code']) || isset($_GET['account'])) {
 	 echo "<b class='red_text'>链接错误，缺少一个或多个必需的值。</b>";
  else 
  {
-	$Database->selectDB("webdb", $conn);
+	$Database->selectDB("webdb");
     $code    = $Database->conn->escape_string($_GET['code']);
     $account = $Database->conn->escape_string($_GET['account']);
-    $result  = $Database->select( COUNT('id') FROM password_reset WHERE code='" . $code . "' AND account_id=". $account .";");
+    $result  = $Database->select("password_reset", "COUNT('id')", null, "code='" . $code . "' AND account_id=". $account)->get_result();
 	 if ($result->data_seek(0)==0)
 		 echo "<b class='red_text'>指定的值与数据库中的值不匹配。</b>";
 	 else 

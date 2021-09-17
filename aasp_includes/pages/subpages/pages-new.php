@@ -2,7 +2,7 @@
 
 global $GamePage, $GameServer;
 $conn = $GameServer->connect();
-$GameServer->selectDB("webdb", $conn);
+$GameServer->selectDB("webdb");
 if(isset($_POST['newpage']))
 {
 	$name     = $Database->conn->escape_string($_POST['newpage_name']);

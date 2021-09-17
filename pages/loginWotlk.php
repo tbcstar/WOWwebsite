@@ -1,7 +1,6 @@
 <?php
 
 global $Account, $Database;
-$conn = $Database->database();
 
 if (!isset($_SESSION['cw_user'])) { 
 if (isset($_POST['login'])) 

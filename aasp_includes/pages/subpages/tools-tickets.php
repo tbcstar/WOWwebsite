@@ -13,7 +13,7 @@
             <td>
             <select id="tickets_realm">
            		 <?php
-				 $GameServer->selectDB("webdb", $conn);
+				 $GameServer->selectDB("webdb");
 
 				$result = $Database->select("realms", "char_db, name, description")->get_result();
                 if ($result->num_rows == 0)

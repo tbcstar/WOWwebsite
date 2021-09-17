@@ -7,9 +7,8 @@
 <div class="box_two">
 <?php 
 global $Account, $Shop, $Database;
-$conn = $Database->database();
 $Account->isNotLoggedIn();
-$Database->conn->select_db("webdb", $conn);
+$Database->conn->select_db("webdb");
 
  /* 声明一些通用变量 */ 
  $shopPage     = $Database->conn->escape_string($_GET['page']);

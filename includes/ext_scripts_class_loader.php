@@ -3,15 +3,12 @@
 	session_start();
 	
 	define('INIT_SITE', TRUE); //初始化配置
-	
-    require "../configuration.php";
+
     require "../misc/connect.php";
+    $Database = new Database();
+
     require "../misc/func_lib.php";
     require "../classes/account.php";
     require "../classes/website.php";
     require "../classes/character.php";
-    require "../classes/server.php";
-	
-	global $Database;
-
-	$Database->connect();
+    require "../classes/server.php"; 

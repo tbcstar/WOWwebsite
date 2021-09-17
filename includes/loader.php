@@ -4,7 +4,8 @@
     主要加载程序文件
     *********************/
     
-    require "includes/misc/headers.php"; //Load sessions, error reporting & ob.
+    require_once "includes/classes/cache.php";
+    //require_once "includes/misc/headers.php"; //Load sessions, error reporting & ob.
     
     if ( file_exists("install/index.php") )
     {
@@ -12,10 +13,9 @@
     }
     
     define('INIT_SITE', TRUE);
+    require "includes/misc/connect.php"; //Load connection class
     
-    require "includes/configuration.php"; //Load configuration file
-    $config_file = file_get_contents("includes/configuration.json");
-    define("DATA", json_decode($config_file, true));
+    $Database = new Database();
     
     
     ###LOAD MAXIMUM ITEM LEVEL DEPENDING ON EXPANSION###
@@ -55,25 +55,9 @@
     }
 
     //Set the error handling.
-    if(file_exists("includes/classes/error.php"))
+    if( file_exists("includes/classes/error.php") )
     {
         require "includes/classes/error.php";
-    }       
-    elseif(file_exists("../classes/error.php"))
-    {
-        require "../classes/error.php";
-    }       
-    elseif(file_exists("../includes/classes/error.php"))
-    {
-        require "../includes/classes/error.php";
-    }   
-    elseif(file_exists("../../includes/classes/error.php"))
-    {
-        require "../../includes/classes/error.php";
-    }   
-    elseif(file_exists("../../../includes/classes/error.php"))
-    {
-        require "../../../includes/classes/error.php";
     }
 
     loadCustomErrors(); //Load custom errors
@@ -84,23 +68,19 @@
         die("<center><h3>网站维护</h3>". DATA['website']['title'] ." 目前正在进行一些重大维护，将尽快恢复。<br/><br/>TBCstar 项目组</center>");
     }
     
-    require "includes/misc/connect.php"; //Load connection class
-    
-    $Database = new Database();
-    
-    require "includes/misc/func_lib.php";
-    require "includes/misc/compress.php";
+    //require "includes/misc/func_lib.php";
+    //require "includes/misc/compress.php";
     
     require "includes/classes/account.php";
-    require "includes/classes/server.php";
-    require "includes/classes/website.php";
-    require "includes/classes/shop.php";
     require "includes/classes/character.php";
-    require "includes/classes/cache.php";
     require "includes/classes/plugins.php";
-    
+    require "includes/classes/server.php";
+    require "includes/classes/shop.php";
+    require "includes/classes/website.php";
+
     global $Plugins, $Account, $Website;
-    
+    $Plugins = new Plugins();
+
     /******* 加载插件 ***********/
     $Plugins->globalInit();
     

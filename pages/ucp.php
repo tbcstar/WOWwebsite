@@ -1,6 +1,5 @@
 <?php
 global $Account, $Website, $Database;
-$conn = $Database->database();
 
 $Account->isNotLoggedIn();
 ?>
@@ -65,7 +64,7 @@ $Account->isNotLoggedIn();
 <?php 
 
 $Account->isNotLoggedIn();
-$Database->selectDB("webdb", $conn);
+$Database->selectDB("webdb");
 $num = 0;
 $result = $conn->query('SELECT char_db,name FROM realms ORDER BY id ASC');
 while($row = $result->fetch_assoc()) 
@@ -74,7 +73,7 @@ while($row = $result->fetch_assoc())
 	$realm = $row['name'];
 	$char_db = $row['char_db'];
 		          	
-	$Database->selectDB($char_db, $conn);
+	$Database->selectDB($char_db);
 	$result = $conn->query('SELECT name,guid,gender,class,race,level,online FROM characters WHERE account='.$acct_id);
 	while($row = $result->fetch_assoc()) {
 	?>

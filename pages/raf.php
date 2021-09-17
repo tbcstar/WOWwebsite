@@ -11,8 +11,9 @@ global $Account;
 $Account->isNotLoggedIn(); ?>
 
 <div class='box_two_title'>战友招募</div>
-<b class='yellow_text'>你的招募链接</b> <div id="raf_box">
-                  <?php echo $GLOBALS['website_domain']."?page=register&id=".$Account->getAccountID($_SESSION['cw_user']); ?>
+<b class='yellow_text'>您的推荐链接：</b>
+<div id="raf_box">
+	<?php echo DATA['website']['domain'] . "?page=register&id=" . $Account->getAccountID($_SESSION['cw_user']); ?>
 </div><br/>
 <h4 class='blue_text'>它是如何工作的？</h4>
 

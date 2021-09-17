@@ -3,8 +3,7 @@
     require "includes/classes/template_parse.php";
  
     global $Database, $Plugins;
-    $conn = $Database->database();
-    $Database->selectDB("webdb", $conn);
+    $Database->selectDB("webdb");
 
 	if ( $getTemplate = $Database->select("template", "path", null, "applied='1'")->get_result() )
 	{

@@ -54,23 +54,25 @@ $Account->isNotLoggedIn();
 
 $service = "teleport";
 
-if($GLOBALS['service'][$service]['price']==0) 
-      echo '<span class="attention">传送是免费的。</span>';
+if ( DATA['service'][$service]['price'] == 0 )
+{
+  echo '<span class="attention">传送是免费的。</span>';
+}
 else
 { ?>
 <span class="attention">传送费用 
 <?php 
-echo $GLOBALS['service'][$service]['price'].' '.$Website->convertCurrency($GLOBALS['service'][$service]['currency']); ?></span>
+echo DATA['service'][$service]['price'].' '.$Website->convertCurrency(DATA['service'][$service]['currency']); ?></span>
 <?php 
-if($GLOBALS['service'][$service]['currency']=="vp")
+if(DATA['service'][$service]['currency']=="vp")
 	echo "<span class='currency'>投票积分：".$Account->loadVP($_SESSION['cw_user'])."</span>";
-elseif($GLOBALS['service'][$service]['currency']=="dp")
-	echo "<span class='currency'>".$GLOBALS['donation']['coins_name'].": ".$Account->loadDP($_SESSION['cw_user'])."</span>";
+elseif(DATA['service'][$service]['currency']=="dp")
+	echo "<span class='currency'>".DATA['website']['donation']['coins_name'].": ".$Account->loadDP($_SESSION['cw_user'])."</span>";
 } ?>
 <hr/>
 <h3 id="choosechar">选择角色</h3> 
 <?php
-$Database->selectDB("webdb", $conn);
+$Database->selectDB("webdb");
 $result = $Database->select("realms", "char_db, name", null, null, "ORDER BY id ASC;")->get_result();
 while ($row = $result->fetch_assoc())
 {
@@ -90,12 +92,16 @@ while ($row = $result->fetch_assoc())
 
 	<table>
 <tr>
-<td><?php if(!file_exists('styles/global/images/portraits/'.$row['gender'].'-'.$row['race'].'-'.$row['class'].'.gif'))
-				       echo '<img src="styles/'.$GLOBALS['template']['path'].'/images/unknown.png" />';
-					   else 
-					   { ?>
-				   <img src="styles/global/images/portraits/<?php echo $row['gender'].'-'.$row['race'].'-'.$row['class']; ?>.gif" border="none">
-                </td>
+<td>
+    <?php
+    if ( !file_exists('styles/global/images/portraits/'. $row['gender'] .'-'. $row['race'] .'-'. $row['class'] .'.gif') )
+    {
+        echo '<img src="styles/' . DATA['website']['template']['path'] . '/images/unknown.png" />';
+    }
+    else
+    { ?>
+		<img src="styles/global/images/portraits/<?php echo $row['gender'].'-'.$row['race'].'-'.$row['class']; ?>.gif" border="none">
+</td>
 <td><?php echo $row['name']; ?></td>
 <td><?php echo $row['level']; ?></td>
 <td><?php echo "".$Character->getRace($row['race']); ?></td>

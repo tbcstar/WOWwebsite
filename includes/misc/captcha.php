@@ -1,6 +1,6 @@
 <?php
     session_start();
-    header('Content-type: image/jpeg');
+    header("Content-type: image/jpeg");
 	
 	$font_size = 20;
 	
@@ -21,8 +21,8 @@
 		
 		imageline($image, $x1, $y1, $x2, $x2, $text_color);
 	}
-	
-    if (imagettftext($image, $font_size, 0, 15, 30, $text_color, "./arial.ttf", $_SESSION['captcha_numero']) !== false)
+
+    if ( imagettftext($image, $font_size, 0, 15, 30, $text_color, realpath("./arial.ttf"), $_SESSION['captcha_numero']) !== false )
     {
         imagejpeg($image);
     }

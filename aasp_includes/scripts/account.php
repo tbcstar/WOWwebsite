@@ -7,7 +7,7 @@
     global $GameServer, $GameAccount;
     $conn = $GameServer->connect();
 
-    $GameServer->selectDB("logondb", $conn);
+    $GameServer->selectDB("logondb");
 
     # Organized Alphabeticaly
 
@@ -42,7 +42,7 @@
             }
             $Database->conn->query("UPDATE account SET email='". $email ."' WHERE id=$id");
 
-            $GameServer->selectDB("webdb", $conn);
+            $GameServer->selectDB("webdb");
 
             $Database->conn->query("INSERT INTO account_data (id) VALUES(". $id .");");
 
@@ -65,7 +65,7 @@
                 $username = strtoupper(trim($GameAccount->getAccName($id)));
 
                 $password = sha1("". $username .":". $password ."");
-                $GameServer->selectDB("logondb", $conn);
+                $GameServer->selectDB("logondb");
                 $Database->conn->query("UPDATE account SET sha_pass_hash='". $password ."' WHERE id=". $id .";");
                 $Database->conn->query("UPDATE account SET v='0', s='0' WHERE id=". $id .";");
                 $extended .= "更改密码<br/>";

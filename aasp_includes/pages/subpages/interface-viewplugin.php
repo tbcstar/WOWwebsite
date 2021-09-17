@@ -1,7 +1,7 @@
 <?php 
     global $GameServer;
     $conn = $GameServer->connect();
-    $GameServer->selectDB("webdb", $conn);
+    $GameServer->selectDB("webdb");
 
 	$filename = $_GET['plugin']; 
 	include "../plugins/". $filename ."/info.php";

@@ -8,7 +8,70 @@ class Database
 
     public function __construct()
     {
+        $config_file = file_get_contents("../configuration.json");
+        define("DATA", json_decode($config_file, true));
         $this->connect();
+
+        /*************************#/
+        # Realms & service prices #
+        # automatic settings      #
+        #*************************/
+        $realms  = array();
+        $service = array();
+
+        try
+        {
+            $this->selectDB("webdb");
+            //Realms
+            $statement = $this->select("realms", null, null, null, "ORDER BY id ASC");
+            $getRealms = $statement->get_result();
+            while ($row = $getRealms->fetch_assoc())
+            {
+                $realms['realms'][$row['id']]['id']           = $row['id'];
+                $realms['realms'][$row['id']]['name']         = $row['name'];
+                $realms['realms'][$row['id']]['chardb']       = $row['char_db'];
+                $realms['realms'][$row['id']]['description']  = $row['description'];
+                $realms['realms'][$row['id']]['port']         = $row['port'];
+
+                $realms['realms'][$row['id']]['rank_user']    = $row['rank_user'];
+                $realms['realms'][$row['id']]['rank_pass']    = $row['rank_pass'];
+                $realms['realms'][$row['id']]['ra_port']      = $row['ra_port'];
+                $realms['realms'][$row['id']]['soap_port']    = $row['soap_port'];
+
+                $realms['realms'][$row['id']]['host']         = $row['host'];
+
+                $realms['realms'][$row['id']]['sendType']     = $row['sendType'];
+
+                $realms['realms'][$row['id']]['mysqli_host']  = $row['mysqli_host'];
+                $realms['realms'][$row['id']]['mysqli_user']  = $row['mysqli_user'];
+                $realms['realms'][$row['id']]['mysqli_pass']  = $row['mysqli_pass'];
+            }
+            $statement->close();
+
+            # Service prices
+            $statement = $this->select("service_prices", "enabled, price, currency, service");
+            $getServices = $statement->get_result();
+            while ($row = $getServices->fetch_assoc())
+            {
+                $service['service'][$row['service']]['status']   = $row['enabled'];
+                $service['service'][$row['service']]['price']    = $row['price'];
+                $service['service'][$row['service']]['currency'] = $row['currency'];
+            }
+            $statement->close();
+
+            if ( defined("DATA") )
+            {
+                $config_file = fopen("../configuration.json", "w");
+                $data = array_merge(DATA, $realms, $service);
+                $json_config = json_encode($data);
+                fwrite($config_file, $json_config);
+                fclose($config_file);
+            }
+        }
+        catch( Exception $e )
+        {
+            buildError($e, null);
+        }
     }
 
     public function connect()
@@ -27,32 +90,6 @@ class Database
             buildError("<b>数据库连接错误：</b> 连接不能建立。 错误：" . $this->conn->error, NULL);
             $this->connectedTo = null;
         }
-    }
-
-    public function realm($realmid)
-    {
-        self::selectDB("webdb");
-
-        if (DATA['characters']['host'] != DATA['website']['connection']['host'] || 
-            DATA['characters']['user'] != DATA['website']['connection']['user'] || 
-            DATA['characters']['pass'] != DATA['website']['connection']['password'])
-	    {
-            $this->conn->set_charset("UTF8");
-            return mysqli_connect(
-                DATA['characters']['host'], 
-                DATA['characters']['user'], 
-                DATA['characters']['pass'])
-            or buildError("<b>数据库连接错误：</b> 无法与 Realm 建立连接。 错误： " . $this->conn->error, NULL);
-        }
-        else
-        {
-            self::connect();
-        }
-
-        $this->conn->select_db(DATA['characters']['database']) 
-            or buildError("<b>数据库选择错误：</b> 无法选择Realm数据库。 错误：" . $this->conn->error, NULL);
-
-        $this->connectedTo = "chardb";
     }
 
     public function selectDB($db, $realmid = 1)
@@ -532,59 +569,4 @@ class Database
             return $statement;
         }
     }
-}
-
-$Database = new Database();
-
-/*************************#/
-# Realms & service prices #
-# automatic settings      #
-#*************************/
-$realms  = array();
-$service = array();
-
-$Database->selectDB("webdb");
-
-try
-{
-    //Realms
-    $statement = $Database->select("realms", null, null, "ORDER BY id ASC");
-    $getRealms = $statement->get_result();
-    while ($row = $getRealms->fetch_assoc())
-    {
-        $realms[$row['id']]['id']           = $row['id'];
-        $realms[$row['id']]['name']         = $row['name'];
-        $realms[$row['id']]['chardb']       = $row['char_db'];
-        $realms[$row['id']]['description']  = $row['description'];
-        $realms[$row['id']]['port']         = $row['port'];
-
-        $realms[$row['id']]['rank_user']    = $row['rank_user'];
-        $realms[$row['id']]['rank_pass']    = $row['rank_pass'];
-        $realms[$row['id']]['ra_port']      = $row['ra_port'];
-        $realms[$row['id']]['soap_port']    = $row['soap_port'];
-
-        $realms[$row['id']]['host']         = $row['host'];
-
-        $realms[$row['id']]['sendType']     = $row['sendType'];
-
-        $realms[$row['id']]['mysqli_host']  = $row['mysqli_host'];
-        $realms[$row['id']]['mysqli_user']  = $row['mysqli_user'];
-        $realms[$row['id']]['mysqli_pass']  = $row['mysqli_pass'];
-    }
-    $statement->close();
-
-    # Service prices
-    $statement = $Database->select("service_prices", "enabled, price, currency, service");
-    $getServices = $statement->get_result();
-    while ($row = $getServices->fetch_assoc())
-    {
-        $service[$row['service']]['status']   = $row['enabled'];
-        $service[$row['service']]['price']    = $row['price'];
-        $service[$row['service']]['currency'] = $row['currency'];
-    }
-    $statement->close();
-}
-catch( Exception $e )
-{
-    buildError($e, null);
 } 

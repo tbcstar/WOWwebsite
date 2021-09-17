@@ -3,7 +3,7 @@
     global $GameServer, $GamePage;
     $conn = $GameServer->connect();
 
-    $GameServer->selectDB("webdb", $conn);
+    $GameServer->selectDB("webdb");
     $GamePage->validatePageAccess('News');
 
     if ($GamePage->validateSubPage() == TRUE)

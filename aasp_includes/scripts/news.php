@@ -7,7 +7,7 @@ include "../functions.php";
 global $GameServer, $GameAccount;
 $conn = $GameServer->connect();
 
-$GameServer->selectDB("webdb", $conn);
+$GameServer->selectDB("webdb");
 
   # Organized Alphabeticaly
 

@@ -1,8 +1,8 @@
 <?php
 
-if (!isset($_SESSION['cw_user'])) 
+if ( !isset($_SESSION['cw_user']) )
 { 
-    if (isset($_POST['login']))
+    if ( isset($_POST['login']) )
     {
         global $Account;
         $Account->logIn($_POST['login_username'], $_POST['login_password'], $_SERVER['REQUEST_URI'], $_POST['login_remember']);
@@ -25,8 +25,8 @@ if (!isset($_SESSION['cw_user']))
                 <td align="right"><a href="?page=forgotpw">忘记密码？</a></td>
             </tr>
      </table>
-     </div>
-<?php } ?>
+    </div><?php
+} ?>
 
 
 <?php if(isset($_SESSION['cw_user'])) { ?>

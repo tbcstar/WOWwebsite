@@ -1,7 +1,6 @@
 <?php
 
 global $Account, $Website, $Database, $Character;
-$conn = $Database->database();
 
 $service  = $_GET['s'];
 $guid     = $Database->conn->escape_string($_GET['guid']);
@@ -208,7 +207,9 @@ span.attention, span.notice, span.alert, span.download, span.approved, span.medi
 <div class="box_two_title">确认 <?php echo $service_title; ?></div>
 <?php
 if ( DATA['service'][$service]['price'] == 0 )
-      	echo '<span class="attention">'.$service_title.' 是免费的。</span>';
+{
+  	echo '<span class="attention">'.$service_title.' 是免费的。</span>';
+}
 else
 { ?>
 <span class="attention"><?php echo $service_title; ?> 费用 
@@ -221,7 +222,7 @@ elseif (DATA['service'][$service]['currency'] == "dp") echo "<span class='curren
 
 	$Account->isNotLoggedIn();
 
-	$Database->selectDB("webdb", $conn);
+	$Database->selectDB("webdb");
     $result = $Database->select("realms", "name", null, "id=$realm_id")->get_result();
 	$row = $result->fetch_assoc();
 	$realm = $row['name'];

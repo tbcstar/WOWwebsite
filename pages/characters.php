@@ -1,6 +1,5 @@
 <?php 
-global $Account, $Website, $Connect, $Character;
-$conn = $Connect->connectToDB();
+global $Account, $Website, $Database, $Character;
 $Account->isNotLoggedIn();
 ?>
 <?php include "headers.php" ?>
@@ -77,7 +76,7 @@ $Account->isNotLoggedIn();
 <div class="">
 所在服务器： </div>
 <a href="game.tbcstar.com">
-时光祭坛 </a>
+时光回溯 </a>
 </div>
 </div>
 
@@ -88,7 +87,7 @@ $Account->isNotLoggedIn();
 <?php 
 
 $Account->isNotLoggedIn();
-$Connect->selectDB("webdb", $conn);
+$Database->selectDB("webdb");
 $num = 0;
 $result = $conn->query('SELECT char_db,name FROM realms ORDER BY id ASC');
 while($row = $result->fetch_assoc()) 
@@ -97,7 +96,7 @@ while($row = $result->fetch_assoc())
 	$realm = $row['name'];
 	$char_db = $row['char_db'];
 		          	
-	$Connect->selectDB($char_db);
+	$Database->selectDB($char_db);
 	$result = $conn->query('SELECT name,guid,gender,class,race,level,online FROM characters WHERE account='.$acct_id);
 	while($row = $result->fetch_assoc()) {
 	?>

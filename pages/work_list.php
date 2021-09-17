@@ -1,6 +1,5 @@
 <?php
 global $Account, $Connect;
-$conn = $Connect->connectToDB();
 $Account->isNotLoggedIn();
 ?>
 
