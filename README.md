@@ -30,7 +30,8 @@
 28. 重置副本
 
 
-PHP version requirements: 7.2	Enable：gmp、gd、soap、mbstring、pdo、pdo-mysql
+要求：PHP = 7.2
+启用 gmp、gd、soap、mbstring、pdo 和 pdo-mysql。
 CHMOD 777 'error.log'、'/includes/configuration.php'、styles/global/slideshow/
 
 
