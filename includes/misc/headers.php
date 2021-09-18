@@ -10,7 +10,7 @@
 	ob_start();
 
 	# Enable all errors. None will be shown due to our custom errors.
-	ini_set('display_errors', 1);
+	ini_set("display_errors", 1);
 	error_reporting(E_ALL);
 
 	# Start microtime.

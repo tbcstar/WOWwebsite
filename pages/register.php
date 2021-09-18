@@ -118,9 +118,7 @@ if ( isset($_POST['register']) )
 <input id="password_repeat" type="password" class="inputbox" alt="Repeat the password" size="38" maxlength="16" placeholder="Repeat the Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Repeat Password'"><br />
 <input id="email" type="text" class="inputbox" alt="email" size="38" placeholder="E-mail" onfocus="this.placeholder = ''" onblur="this.placeholder = 'E-mail'" value="<?php echo $_POST['email']; ?>"><br />
 <br />
-<input type="submit" value="Register" onclick="register(<?php if ( DATA['website']['registration']['captcha'] == true )  echo 1;  else  echo 0; ?>)" 
-                id="register"/> 
-
+<input type="submit" value="Register" onclick="register(<?php if ( DATA['website']['registration']['captcha'] == true ) echo 1; else echo 0; ?>)" id="register"/>
 
 <p><font color="white">已经有账户了? </font><a href="?page=login">这里登录</a></p>
 </div>
@@ -137,7 +135,7 @@ if ( isset($_POST['register']) )
 	{
 		var key_press = String.fromCharCode(event.keyCode);
 		var key_code = event.keyCode;
-		if(key_code == 13)
+		if ( key_code == 13 )
 			{
 				register(<?php if ( DATA['website']['registration']['captcha'] == true )  echo 1;  else  echo 0; ?>)
 			}

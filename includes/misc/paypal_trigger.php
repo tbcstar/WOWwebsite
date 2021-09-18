@@ -1,19 +1,19 @@
 <?php  
  
-define('INIT_SITE', TRUE);
+define("INIT_SITE", TRUE);
 require "../configuration.php";
 require "connect.php";
 
 global $Database;
 $conn = $Database->connect();
 
-$send = 'cmd=_notify-validate';
+$send = "cmd=_notify-validate";
 
-if (is_array($_POST) || is_object($_POST))
+if ( is_array($_POST) || is_object($_POST) )
 {
 	foreach ($_POST as $key => $value)
 	{
-		if(get_magic_quotes_gpc() == 1)
+		if ( get_magic_quotes_gpc() == 1 )
 		{
 		    $value = urlencode(stripslashes($value));
 		}
@@ -28,9 +28,9 @@ if (is_array($_POST) || is_object($_POST))
 
 $head .= "POST /cgi-bin/webscr HTTP/1.0\r\n";
 $head .= "Content-Type: application/x-www-form-urlencoded\r\n";
-$head .= 'Content-Length: '.strlen($send)."\r\n\r\n";
+$head .= "Content-Length: " . strlen($send) . "\r\n\r\n";
 
-$fp = fsockopen ('www.paypal.com', 80, $errno, $errstr, 30);
+$fp = fsockopen("www.paypal.com", 80, $errno, $errstr, 30);
 
 $Database->selectDB("webdb");
 
@@ -39,7 +39,7 @@ if ( $fp !== false )
     fwrite($fp, $head.$send);
     $resp = stream_get_contents($fp);
 	
-    $resp = end(explode("\n", $resp));
+    $resp = end( explode("\n", $resp) );
 	 
     $item_number = $Database->conn->escape_string($_POST['item_number']);
     $reciever = $Database->conn->escape_string($_POST['receiver_email']);
@@ -62,7 +62,7 @@ if ( $fp !== false )
         "payment_status"  => $Database->conn->escape_string($_POST['payment_status'])
     );
 	
-	if ($resp == 'VERIFIED')
+	if ( $resp == "VERIFIED" )
 	{
 		if ( $reciever != DATA['website']['donation']['paypal_email'] )
 		{

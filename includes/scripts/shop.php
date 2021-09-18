@@ -7,10 +7,10 @@ require "../classes/account.php";
 require "../classes/character.php";
 require "../classes/shop.php";
 
-global $Database, $Account, $Shop, $Character;
+global $Database, $Account, $Shop, $Character, $Server;
 
 
-if ( $_POST['action'] == 'removeFromCart' )
+if ( $_POST['action'] == "removeFromCart" )
 {
 	unset($_SESSION[$_POST['cart']][$_POST['entry']]);
 	return;
@@ -29,24 +29,24 @@ if ( $_POST['action'] == 'addShopitem' )
    	{
 		$Database->selectDB("webdb");
 
-		$statement = $Database->selecT("shopitems", "entry, price", null, "entry=$entry AND in_shop=$shop");
+		$statement = $Database->select("shopitems", "entry, price", null, "entry='$entry' AND in_shop='$shop'");
         $result = $statement->get_result();
-		if ($result->num_rows != 0)
+		if ( $result->num_rows != 0 )
 		{
-			$row = $result->fetch_array();
+			$row = $result->fetch_assoc();
 			$_SESSION[$_POST['cart']][$row['entry']] = array("quantity" => 1, "price" => $row['price']);
 		}
 		$statement->close();
   	}
 }
 
-if ( $_POST['action'] == 'clear' )
+if ( $_POST['action'] == "clear" )
 {
 	unset($_SESSION['donateCart']);
 	unset($_SESSION['voteCart']);
 }
 
-if ( $_POST['action'] == 'getMinicart' )
+if ( $_POST['action'] == "getMinicart" )
 {
 	$num = 0;
 	$totalPrice = 0;
@@ -62,7 +62,7 @@ if ( $_POST['action'] == 'getMinicart' )
 
 	if ( !isset($_SESSION[$_POST['cart']]) )
 	{
-		echo "<b>显示购物车:</b> 0 物品 (0 ".$curr.")";
+		echo "<b>显示购物车</b> 0 物品 (0 $curr)";
 		exit();
 	}
 
@@ -71,25 +71,25 @@ if ( $_POST['action'] == 'getMinicart' )
 	{
 		foreach($_SESSION[$_POST['cart']] as $entry => $value) 
 		{
-		    $num = $num + $_SESSION[$_POST['cart']][$entry]['quantity'];
+		    $num += $_SESSION[$_POST['cart']][$entry]['quantity'];
 
 			$shop_filt = substr($_POST['cart'],0,-4);
 
 			$shop_filt = $Database->conn->escape_string($shop_filt);
 
-            $statement = $Database->select("shopitems", "price", null, "entry=$entry AND in_shop=$shop_filt");
+            $statement = $Database->select("shopitems", "price", null, "entry='$entry' AND in_shop='$shop_filt'");
             $result = $statement->get_result();
 			$row 	= $result->fetch_assoc();
 
 
-			$totalPrice = $totalPrice + ( $_SESSION[$_POST['cart']][$entry]['quantity'] * $row['price'] );
+			$totalPrice += ( $_SESSION[$_POST['cart']][$entry]['quantity'] * $row['price'] );
 		}
 	}
 
-	echo "<b>显示购物车:</b> ".$num." 物品 (".$totalPrice." ".$curr.")";
+	echo "<b>显示购物车:</b> $num 物品 ($totalPrice $curr)";
 }
 
-if ( $_POST['action'] == 'saveQuantity' )
+if ( $_POST['action'] == "saveQuantity" )
 {
 	if ( $_POST['quantity'] == 0 )
 	{
@@ -101,15 +101,13 @@ if ( $_POST['action'] == 'saveQuantity' )
 	}
 }
 
-if ( $_POST['action'] == 'checkout' )
+if ( $_POST['action'] == "checkout" )
 {
 	$totalPrice = 0;
 	
 	$values = explode('*',$_POST['values']);
 	
 	$Database->selectDB("webdb");
-	require "../misc/ra.php";
-	require "../misc/soap.php";
 	
 	if ( isset($_SESSION['donateCart']) )
 	{
@@ -118,19 +116,19 @@ if ( $_POST['action'] == 'checkout' )
 	 	{
 			foreach($_SESSION['donateCart'] as $entry => $value) 
 			{
-				$result = $Database->select("shopitems", "price", null, "entry=$entry AND in_shop='donate'");
+				$result = $Database->select("shopitems", "price", null, "entry='$entry' AND in_shop='donate'");
 				$row = $result->fetch_assoc();
 
 				$add = $row['price'] * $_SESSION['donateCart'][$entry]['quantity'];
 
-				$totalPrice = $totalPrice + $add;
+				$totalPrice += + $add;
 			}
 		}
 
 
 	  	if ( $Account->hasDP($_SESSION['cw_user'], $totalPrice) == FALSE )
         {
-			die("你的钱不够 ".DATA['website']['donation']['coins_name']."！");
+			die("你的钱不够 ". DATA['website']['donation']['coins_name'] ."!");
         }
 
 		$host      = DATA['realms'][$values[1]]['host'];
@@ -150,11 +148,15 @@ if ( $_POST['action'] == 'checkout' )
 					while($num>0) 
 					{
 						if ( $num > 12 )
-						$command = "send items ".$Character->getCharname($values[0],$values[1])." \"Your requested item\" \"Thanks for supporting us!\" ".$entry.":12 ";
+						{
+						    $command = "send items ". $Character->getCharname($values[0], $values[1]) ." \"Your requested item\" \"Thanks for supporting us!\" $entry:12 ";
+                        }
 						else
-						$command = "send items ".$Character->getCharname($values[0],$values[1])." \"Your requested item\" \"Thanks for supporting us!\" ".$entry.":".$num." ";
+						{
+						    $command = "send items ". $Character->getCharname($values[0], $values[1]) ." \"Your requested item\" \"Thanks for supporting us!\" $entry:$num ";
+                        }
 						$Shop->logItem("donate",$entry,$values[0],$Account->getAccountID($_SESSION['cw_user']),$values[1],$num);
-						sendSoap($command,$rank_user,$rank_pass,$host,$soap_port);	
+						$Server->sendRA($command, $rank_user, $rank_pass, $host, $ra_port);
 
 						$num = $num - 12;
 					} 
@@ -164,7 +166,7 @@ if ( $_POST['action'] == 'checkout' )
 				{
 				    $command = "send items ".$Character->getCharname($values[0],$values[1])." \"Your requested item\" \"Thanks for supporting us!\" ".$entry.":".$_SESSION['donateCart'][$entry]['quantity']." ";
 					$Shop->logItem("donate",$entry,$values[0],$Account->getAccountID($_SESSION['cw_user']),$values[1],$_SESSION['donateCart'][$entry]['quantity']);
-				    sendSoap($command,$rank_user,$rank_pass,$host,$soap_port);	
+				    $Server->sendRA($command, $rank_user, $rank_pass, $host, $soap_port);
 				}
 			}
 		}
@@ -181,7 +183,7 @@ if ( $_POST['action'] == 'checkout' )
 	 	{
 		 	foreach($_SESSION['voteCart'] as $entry => $value) 
 		 	{
-				$statement = $Database->select("shopitems", "price", null, "entry=$entry AND in_shop='vote'");
+				$statement = $Database->select("shopitems", "price", null, "entry='$entry' AND in_shop='vote'");
                 $result = $statement->get_result();
 				$row = $result->fetch_assoc();
 
@@ -222,7 +224,7 @@ if ( $_POST['action'] == 'checkout' )
 							$command = "send items ".$Character->getCharname($values[0],$values[1])." \"Your requested item\" \"Thanks for supporting us!\" ".$entry.":".$num." ";
 						}
 						$Shop->logItem("vote",$entry,$values[0],$Account->getAccountID($_SESSION['cw_user']),$values[1],$num);	
-				        sendSoap($command,$rank_user,$rank_pass,$host,$soap_port);	
+				        $Server->sendRA($command, $rank_user, $rank_pass, $host, $soap_port);
 						$num = $num - 12;
 					} 
 
@@ -231,7 +233,7 @@ if ( $_POST['action'] == 'checkout' )
 				{
 				    $command = "send items ".$Character->getCharname($values[0],$values[1])." \"Your requested item\" \"Thanks for supporting us!\" ".$entry.":".$_SESSION['voteCart'][$entry]['quantity']." ";
 					$Shop->logItem("vote",$entry,$values[0],$Account->getAccountID($_SESSION['cw_user']),$values[1],$_SESSION['voteCart'][$entry]['quantity']); 
-				    sendSoap($command,$rank_user,$rank_pass,$host,$soap_port);	
+				    $Server->sendRA($command, $rank_user, $rank_pass, $host, $soap_port);
 				}
 	  		}
 	  	}
@@ -242,7 +244,7 @@ if ( $_POST['action'] == 'checkout' )
    	echo TRUE;
 }
 
-if ( $_POST['action'] == 'removeItem' )
+if ( $_POST['action'] == "removeItem" )
 {
 	if ( $Account->isGM($_SESSION['cw_user']) == FALSE )
 	{
@@ -253,10 +255,10 @@ if ( $_POST['action'] == 'removeItem' )
 	$shop  = $Database->conn->escape_string($_POST['shop']);
 
 	$Database->selectDB("webdb", $Database->conn);
-	$Database->conn->query("DELETE FROM shopitems WHERE entry=". $entry ." AND in_shop='". $shop ."';");
+	$Database->conn->query("DELETE FROM shopitems WHERE entry='$entry' AND in_shop='$shop';");
 }
 
-if ( $_POST['action'] == 'editItem' )
+if ( $_POST['action'] == "editItem" )
 {
 	if ( $Account->isGM($_SESSION['cw_user']) == FALSE )
 	{

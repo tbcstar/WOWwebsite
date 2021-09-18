@@ -4,20 +4,20 @@ require "../ext_scripts_class_loader.php";
 
 global $Account, $Database, $Server;
 
-if ( isset($_POST['element']) && $_POST['element'] == 'vote' )
+if ( isset($_POST['element']) && $_POST['element'] == "vote" )
 {
-   echo '投票积分： '.$Account->loadVP($_POST['account']);
+   echo "投票积分: " . $Account->loadVP($_POST['account']);
 }
-elseif(isset($_POST['element']) && $_POST['element'] == 'donate') 
+elseif ( isset($_POST['element']) && $_POST['element'] == "donate" )
 {
-   echo DATA['website']['donation']['coins_name'] . ': ' . $Account->loadDP($_POST['account']);
+   echo DATA['website']['donation']['coins_name'] . ": " . $Account->loadDP($_POST['account']);
 }
 ##
 #
 ##
-if(isset($_POST['action']) && $_POST['action'] == 'removeComment') 
+if ( isset($_POST['action']) && $_POST['action'] == "removeComment" )
 {
-   $Database->selectDB("webdb");
+    $Database->selectDB("webdb");
     $Database->conn->query("DELETE FROM news_comments WHERE id=". $Database->conn->escape_string($_POST['id']) .";");
 }
 ##
@@ -65,7 +65,7 @@ if ( isset($_POST['getRefundPolicy']) )
 ##
 if ( isset($_POST['serverStatus']) )
 {
-   	echo '<div class="box_one_title">服务器状态</div>';
+   	echo "<div class=\"box_one_title\">服务器状态</div>";
 	$num = 0;
 	if ( is_array(DATA['realms']) || is_object(DATA['realms']) )
 	{
@@ -83,13 +83,10 @@ if ( isset($_POST['serverStatus']) )
 	{
 		buildError("<b>找不到服务器: </b> 请设置您的数据库并添加您的服务器!",NULL);  
 		echo "找不到服务器。";
-	}
-	unset($num);
-	?>
+	} ?>
 	<hr/>
 	<span id="realmlist">设置服务器列表 <?php echo DATA['website']['realmlist']; ?></span>
-	</div>
-	<?php    
+	</div><?php   
 }
 ##
 #   Donation List

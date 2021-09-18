@@ -10,14 +10,13 @@
     if ( file_exists("install/index.php") )
     {
     	header("Location: install/index.php");
+    	exit;
     }
     
-    define('INIT_SITE', TRUE);
+    define("INIT_SITE", TRUE);
     require "includes/misc/connect.php"; //Load connection class
-    
     $Database = new Database();
-    
-    
+
     ###LOAD MAXIMUM ITEM LEVEL DEPENDING ON EXPANSION###
     switch(DATA['website']['expansion']) 
     {
@@ -78,7 +77,7 @@
     require "includes/classes/shop.php";
     require "includes/classes/website.php";
 
-    global $Plugins, $Account, $Website;
+    global $Account, $Character, $Plugins, $Server, $Shop, $Website;
     $Plugins = new Plugins();
 
     /******* 加载插件 ***********/
@@ -110,10 +109,10 @@
     
     $Account->getRemember(); //Remember thingy.
     
-    //这是为了防止错误 "Undefined index: p"
+    //This is to prevent the error "Undefined index: page"
     if ( !isset($_GET['page']) )
     {
-    	$_GET['page'] = 'login';
+    	$_GET['page'] = "login";
     }
     
     ###投票系统####
@@ -130,14 +129,14 @@
     	
         $Database->selectDB("webdb");
     
-        $insert_values = array
-        (
+        $insert_values =
+        [
             "siteid" => $Database->conn->escape_string($_SESSION['votingUrlID']),
             "userid" => $accound_id,
             "timestamp" => time(),
             "next_vote" => $next_vote,
             "ip" => $_SERVER['REMOTE_ADDR']
-        );
+        ];
     
     	$Database->insert("votelog", $insert_values);
     

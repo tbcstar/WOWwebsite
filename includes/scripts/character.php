@@ -9,7 +9,7 @@ require "../ext_scripts_class_loader.php";
 
 global $Database, $Server, $Character, $Account;
 
-if ( $_POST['action'] == 'unstuck' )
+if ( $_POST['action'] == "unstuck" )
 {
 	$guid       = $Database->conn->escape_string($_POST['guid']);
 	$realm_id 	= $Server->getRealmId($_POST['char_db']);
@@ -18,7 +18,7 @@ if ( $_POST['action'] == 'unstuck' )
 	$Character->unstuck($guid,$_POST['char_db']);
 }	
 
-if ( $_POST['action'] == 'revive' )
+if ( $_POST['action'] == "revive" )
 {
 	$guid     = $Database->conn->escape_string($_POST['guid']);
 	$realm_id = $Server->getRealmId($_POST['char_db']);
@@ -27,7 +27,7 @@ if ( $_POST['action'] == 'revive' )
 	$Character->revive($guid,$_POST['char_db']);
 }	
 
-if ( $_POST['action'] == 'getLocations' )
+if ( $_POST['action'] == "getLocations" )
 {
 	$values = explode('*',$_POST['values']);
 	
@@ -100,7 +100,7 @@ if ( $_POST['action'] == 'getLocations' )
 	}
 }
 
-if ( $_POST['action'] == 'teleport' )
+if ( $_POST['action'] == "teleport" )
 {
 	$character = $Database->conn->escape_string($_POST['character']);
     $char_db   = $Database->conn->escape_string($_POST['char_db']);
@@ -108,11 +108,11 @@ if ( $_POST['action'] == 'teleport' )
 	
     $realm_id = $Server->getRealmId($_POST['char_db']);
     $Database->realm($realm_id);
-    $statement   = $Database->select("characters", "race, account, level, online", null, "guid=$character");
+    $statement   = $Database->select("characters", "race, account, level, online", null, "guid='$character'");
     $result = $statement->get_result();
     if ( $result->num_rows == 0 )
 	{
-		die("<span class='alert'>该帐户中不存在该角色！</span>");
+		die("<span class=\"alert\">该角色不存在于该帐户！</span>");
 	}
 	else 
 	{
@@ -228,8 +228,8 @@ if ( $_POST['action'] == 'teleport' )
 			case 4:
 			case 7:
 			case 11:
-				if((($location >= 5) && ($location <= 8)) && ($location != 9))
-					die("<span class='alert'>联盟玩家<b>无法</b>传送到部落地区!</span>");	
+				if ((($location >= 5) && ($location <= 8)) && ($location != 9))
+					die("<span class=\"alert\">联盟玩家<b>无法</b>传送到部落地区!</span>");	
 				break;
 
 			//部落
@@ -239,17 +239,17 @@ if ( $_POST['action'] == 'teleport' )
 			case 8:
 			case 10:
 				if ((($location >= 1) && ($location <= 4)) && ($location != 9))
-					die("<span class='alert'>部落玩家<b>无法</b>传送到联盟地区！</span>");
+					die("<span class=\"alert\">部落玩家<b>无法</b>传送到联盟地区！</span>");
 				break;
 
 			default:
-				die("<span class='alert'>这不是有效的种族！</span>");
+				die("<span class=\"alert\">这不是有效的种族！</span>");
 				break;
 		}
 
 		if ( $location == "Dalaran" && $level < 68 )
 		{
-			die("正在退出...<br/><span class='alert'>你的角色必须达到68级或以上才能传送到诺森德!</span>");
+			die("正在退出...<br/><span class=\"alert\">你的角色必须达到68级或以上才能传送到诺森德!</span>");
 		}
 
 		if ( DATA['service']['teleport']['currency'] == "vp" )
@@ -269,19 +269,18 @@ if ( $_POST['action'] == 'teleport' )
         $pos    = $result->fetch_assoc();
         $statement->close();
 
-		$char_x = $pos['position_x'];
-		$char_y = $pos['position_y'];
-		$char_z = $pos['position_z'];
+		$char_x   = $pos['position_x'];
+		$char_y   = $pos['position_y'];
+		$char_z   = $pos['position_z'];
 		$char_map = $pos['map'];
-		$from = "X: ".$char_x." - Y: ".$char_y." - Z: ".$char_z." - MAP ID: ".$char_map;
+		$from     = "X: ". $char_x ." - Y: ". $char_y ." - Z: ". $char_z ." - MAP ID: ". $char_map;
 
-	    $set = array
-        (
+	    $set = [
             "position_x" => $x, 
             "position_y" => $y, 
             "position_z" => $z, 
             "map" => $map 
-        );
+        ];
         $Database->update("characters", $set, array("account" => $acct, "guid" => $character));
 
 		if ( DATA['service']['teleport']['currency'] == "vp" )
@@ -290,14 +289,14 @@ if ( $_POST['action'] == 'teleport' )
 		}
 		elseif ( DATA['service']['teleport']['currency'] == "dp" )
 		{
-			echo DATA['service']['teleport']['price'] . " " . DATA['website']['donation']['coins_name'] ." 已从您的账户中扣除。";
+			echo DATA['service']['teleport']['price'] ." ". DATA['website']['donation']['coins_name'] ." 已从您的账户中扣除。";
 		}
-		$Account->logThis("传送角色 ".$Character->getCharName($character,$realm_id)." 到 ".$location,'传送',$realm_id);
+		$Account->logThis("传送角色 ". $Character->getCharName($character, $realm_id) ." 到 ". $location, "传送", $realm_id);
 		//echo TRUE;
 	}
 }
 
-if ( $_POST['action'] == 'service' )
+if ( $_POST['action'] == "service" )
 {
 	$guid     = $Database->conn->escape_string($_POST['guid']);
     $realm_id = $Database->conn->escape_string($_POST['realm_id']);
@@ -306,20 +305,22 @@ if ( $_POST['action'] == 'service' )
 	
 	if ( $Character->isOnline($guid) == TRUE )
 	{
-		die('<b class="red_text">请先退回到登录界面，然后再继续。');
+		die("<b class=\"red_text\">请先退回到登录界面，然后再继续。");
 	}
 	
 	if ( DATA['service'][$serviceX]['currency'] == 'vp' )
 	{
-		if ($Account->hasVP($_SESSION['cw_user'], DATA['service'][$serviceX]['price']) == false)
-			die('<b class="red_text">投票积分不足！</b>');
+		if ( $Account->hasVP($_SESSION['cw_user'], DATA['service'][$serviceX]['price']) == false )
+        {
+            die("<b class=\"red_text\">投票积分不足！</b>");
+        }
 	}
 	
 	if ( DATA['service'][$serviceX]['currency'] == 'dp' )
 	{
-		if ($Account->hasDP($_SESSION['cw_user'], DATA['service'][$serviceX]['price']) == false)
+		if ( $Account->hasDP($_SESSION['cw_user'], DATA['service'][$serviceX]['price']) == false )
 		{
-			die('<b class="red_text">'.DATA['website']['donation']['coins_name'].' 钱不够！</b>');
+			die("<b class=\"red_text\">钱不够 ". DATA['website']['donation']['coins_name'] ."</b>");
 		}
 	}
 	
@@ -352,38 +353,30 @@ if ( $_POST['action'] == 'service' )
 	}
 	
 	$Database->selectDB("webdb", $Database->conn);
-    $statement = $Database->select("realms", null, null, "id=$realm_id");
+    $statement = $Database->select("realms", null, null, "id='$realm_id'");
     $result = $statement->get_result();
     $row   = $result->fetch_assoc();
 	
-	if ( $row['sendType'] == 'ra' )
+	if ( $row['sendType'] == "ra" )
 	{
-		require "../misc/ra.php";
-		 
-		sendRa("character ".$command." ".$Character->getCharname($guid,$realm_id),
-		$row['rank_user'],$row['rank_pass'],$row['host'],$row['ra_port']);
-
-    } 
+		$Server->sendRA("character ". $command ." ". $Character->getCharname($guid, $realm_id), $row['rank_user'], $row['rank_pass'], $row['host'], $row['ra_port']);
+    }
 	elseif($row['sendType'] == "soap") 
 	{
-		require "../misc/soap.php";
-		 
-		sendSoap("character ".$command." ".$Character->getCharname($guid,$realm_id),
-		$row['rank_user'],$row['rank_pass'],$row['host'],$row['soap_port']);
+		$Server->sendSoap("character ". $command ." ". $Character->getCharname($guid, $realm_id), $row['rank_user'], $row['rank_pass'], $row['host'], $row['soap_port']);
     }
 
-	if ( DATA['service'][$serviceX]['currency'] == 'vp' )
+	if ( DATA['service'][$serviceX]['currency'] == "vp" )
 	{
 		$Account->deductVP($Account->getAccountID($_SESSION['cw_user']), DATA['service'][$serviceX]['price']);
 	}
 
-	if ( DATA['service'][$serviceX]['currency'] == 'dp' )
+	if ( DATA['service'][$serviceX]['currency'] == "dp" )
 	{
 		$Account->deductDP($Account->getAccountID($_SESSION['cw_user']), DATA['service'][$serviceX]['price']);
 	}
 
-	$Account->logThis("Performed a ".$info." on ".$Character->getCharName($guid,$realm_id),$serviceX,$realm_id);
-	$Account->logThis("下次登录时，您将能够".$info." 的角色".character::getCharName($guid,$realm_id),$serviceX,$realm_id);
+	$Account->logThis("Performed a $info on ". $Character->getCharName($guid, $realm_id), $serviceX, $realm_id);
 	
-	//echo TRUE;
+	echo TRUE;
 }

@@ -20,10 +20,9 @@ class Account
 
         $Database->selectDB("logondb", $Database->conn);
 
-        $statement = $Database->select("account", "COUNT(id) AS username", null, "username='$username'");
-        $checkForAccount = $statement->get_result();
+        $checkForAccount = $Database->select("account", null, null, "username='$username'");
 
-        if ( $checkForAccount->fetch_assoc()['username'] == 0 )
+        if ( $checkForAccount->num_rows == 0 )
         {
             echo "<span class=\"red_text\">Invalid username.</span>";
         }
@@ -44,7 +43,7 @@ class Account
             # Set "remember me" cookie. Expires in 1 week
             if ( $remember == "on" )
             {
-                setcookie("cw_rememberMe", $username .' * '. $password, time() + ( (60*60)*24)*7);
+                setcookie("cw_rememberMe", $username ." * ". $password, time() + ( (60*60)*24)*7);
             }
 
             $id = $result->fetch_assoc()['id'];
@@ -67,7 +66,7 @@ class Account
 
             if ( !empty($last_page) )
             {
-                header("Location: ". $last_page);
+                header("Location: $last_page");
                 exit;
             }
             else
@@ -99,16 +98,16 @@ class Account
     {
         $_SESSION = array();
         session_destroy();
-        setcookie('cw_rememberMe', '', time() - 30758400);
+        setcookie("cw_rememberMe", "", time() - 30758400);
 
         if ( empty($last_page) )
         {
-            header('Location: ?page=home"');
+            header("Location: ?page=home");
             exit();
         }
         else
         {
-            header('Location: ' . $last_page);
+            header("Location: $last_page");
             exit();
         }
     }
@@ -118,43 +117,45 @@ class Account
         $errors = array();
 
         if ( empty($username) )
-            $errors[] = 'Enter a username.';
+            $errors[] = "Enter a username.";
 
         if ( empty($email) )
-            $errors[] = 'Enter an email address.';
+            $errors[] = "Enter an email address.";
 
         if ( empty($password) )
-            $errors[] = 'Enter a password.';
+            $errors[] = "Enter a password.";
 
         if ( empty($repeat_password) )
-            $errors[] = 'Enter the password repeat.';
+            $errors[] = "Enter the password repeat.";
 
         if ( $username == $password )
         {
-            $errors[] = 'Your password cannot be your username!';
+            $errors[] = "Your password cannot be your username!";
         }
         else
         {
             session_start();
-            if ( DATA['website']['registration']['captcha'] == TRUE )
+            if ( DATA['website']['registration']['captcha'] == TRUE && defined("CAPTCHA_VALUE") )
 		    {
-                if ( $captcha != $_SESSION['captcha_numero'] )
+                if ( $captcha != CAPTCHA_VALUE )
 			    { 
-                    $errors[] = 'The captcha is incorrect!';
+                    $errors[] = "The captcha is incorrect!";
 		    	}
             }
 
-            if ( strlen($username) > DATA['website']['registration']['user_max_length'] || strlen($username) < DATA['website']['registration']['user_min_length'] )
-                $errors[] = 'The username must be between ' . DATA['website']['registration']['user_minlength'] .' and '. DATA['website']['registration']['user_max_length'] .' letters.';
+            if ( strlen($username) > DATA['website']['registration']['user_max_length'] || 
+                strlen($username) < DATA['website']['registration']['user_min_length'] )
+                $errors[] = "The username must be between ". DATA['website']['registration']['user_minlength'] ." and ". DATA['website']['registration']['user_max_length'] ." letters.";
 
-            if ( strlen($password) > DATA['website']['registration']['pass_max_length'] || strlen($password) < DATA['website']['registration']['pass_min_length'] )
-                $errors[] = 'The password must be between ' . DATA['website']['registration']['pass_min_length'] . ' and ' . DATA['website']['registration']['pass_max_length'] . ' letters.';
+            if ( strlen($password) > DATA['website']['registration']['pass_max_length'] || 
+                strlen($password) < DATA['website']['registration']['pass_min_length'] )
+                $errors[] = "The password must be between ". DATA['website']['registration']['pass_min_length'] ." and ". DATA['website']['registration']['pass_max_length'] ." letters.";
 				
             if ( DATA['website']['registration']['validate_email'] == TRUE )
             {
                 if ( filter_var($email, FILTER_VALIDATE_EMAIL) === false )
 			    {
-                    $errors[] = 'Enter a valid email address.';
+                    $errors[] = "Enter a valid email address.";
 			    }
 	    	}
 
@@ -177,10 +178,14 @@ class Account
         $result = $statement->get_result();
 
         if ( $result->fetch_assoc()['user'] > 1 )
-            $errors[] = 'The username already exists!';
+        {
+            $errors[] = "The username already exists!";
+        }
 
         if ( $password != $repeat_password )
-            $errors[] = 'The passwords does not match!';
+        {
+            $errors[] = "The passwords does not match!";
+        }
 
         if ( !empty($errors) )
         {
@@ -190,7 +195,7 @@ class Account
 		    {
                 foreach ($errors as $error)
 				{
-                    echo "<strong>*", $error, "</strong><br/>";
+                    echo "<strong>*$error</strong><br/>";
 				}
 		    }
 
@@ -216,10 +221,10 @@ class Account
             }
 
             $statement = $Database->select("account", "id", null, "username='$username'");
-            $getID = $statement->get_result();
-            $row   = $getID->fetch_assoc();
+            $row = $statement->get_result()->fetch_assoc();
 
             $Database->selectDB("webdb");
+
             $Database->insert("account_data", "id", $row['id']);
 
             $Database->selectDB("logondb");
@@ -537,12 +542,12 @@ class Account
             if ( $result->num_rows == 0 && !isset($x) )
             {
                 $x = TRUE;
-                echo '<option value="">No characters found!</option>';
+                echo "<option value=\"\">No characters found!</option>";
             }
 
             while ($char = $result->fetch_assoc())
             {
-                echo '<option value="' . $char['guid'] . '*' . $row['id'] . '">' . $char['name'] . ' - ' . $row['name'] . '</option>';
+                echo "<option value=\"". $char['guid'] ."*". $row['id'] ."\">". $char['name'] ." - ". $row['name'] ."</option>";
 		    }
 	    }
     }
@@ -551,13 +556,13 @@ class Account
     {
         $errors = array();
 
-        if (empty($current_pass))
+        if ( empty($current_pass) )
         {
             $errors[] = 'Please enter your current password';
         }
         else
         {
-            if (empty($email))
+            if ( empty($email) )
 		    {
 			    $errors[] = 'Please enter an email address.';
 		    }
@@ -569,13 +574,13 @@ class Account
             $username = $Database->conn->escape_string( trim( strtoupper( $_SESSION['cw_user'] ) ) );
             $password = $Database->conn->escape_string( trim( strtoupper( $current_pass ) ) );
 
-            $password = sha1("". $username .":". $password ."");
+            $password = sha1($username .":". $password);
 
-            $statement = $Database->select("account", "COUNT(id) AS id", null, "username=$username AND sha_pass_hash=$password");
+            $statement = $Database->select("account", "COUNT(id) AS id", null, "username='$username' AND sha_pass_hash='$password'");
             $result = $statement->get_result();
-            if ( $result->data_seek(0) == 0 )
+            if ( $result->num_rows == 0 )
             {
-                $errors[] = 'The current password is incorrect.';
+                $errors[] = "The current password is incorrect.";
             }
 
             if ( DATA['website']['registration']['validate_email'] == TRUE )
@@ -586,27 +591,27 @@ class Account
 			    }
                 else
 			    {
-                    $Database->update("account", array("email"=> $email), array("username"=> $_SESSION['cw_user']));
+                    $Database->update("account", array("email"=> $email), array("username" => $_SESSION['cw_user']));
 			    }
 		    }
         }
 
         if ( empty($errors) )
         {
-            echo 'Successfully updated your account.';
+            echo "Successfully updated your account.";
         }
         else
         {
-            echo '<div class="news" style="padding: 5px;">
-            <h4 class="red_text">The following errors occured:</h4>';
+            echo "<div class=\"news\" style=\"padding: 5px;\">
+            <h4 class=\"red_text\">The following errors occured:</h4>";
             if ( is_array($errors) || is_object($errors) )
 		    {
                 foreach ($errors as $error)
 			    {
-                    echo '<strong class="yellow_text">*', $error, '</strong><br/>';
+                    echo "<strong class=\"yellow_text\">*$error</strong><br/>";
 			    }
 		    }
-            echo '</div>';
+            echo "</div>";
 	    }
     }
 
@@ -620,66 +625,63 @@ class Account
         $_POST['new_password_repeat'] = $Database->conn->escape_string($new_repeat);
 		
         //Check if all field values has been typed into
-        if (empty($_POST['current_password']) || 
+        if ( empty($_POST['current_password']) || 
             empty($_POST['new_password']) || 
-            empty($_POST['new_password_repeat']))
+            empty($_POST['new_password_repeat']) )
         {
-            echo '<b class="red_text">Please type in all fields!</b>';
+            echo "<b class=\"red_text\">Please type in all fields!</b>";
         }
         else
         {
             //Check if new passwords match?
-            if ( $_POST['new_password'] != $_POST['new_password_repeat'] )
+            if ( $_POST['new_password'] !== $_POST['new_password_repeat'] )
+            {
+                echo "<b class=\"red_text\">The new passwords doesnt match!</b>";
+            }
+            elseif ( strlen($_POST['new_password']) < DATA['website']['registration']['pass_min_length'] || 
+                    strlen($_POST['new_password']) > DATA['website']['registration']['pass_max_length'] )
 		    {
-                echo '<b class="red_text">新密码不匹配！</b>';
+                echo "<b class=\"red_text\">
+                        Your password must be between ". DATA['website']['registration']['pass_min_length'] ." 
+                        and ". DATA['website']['registration']['pass_max_length'] ." letters.
+                    </b>";
 		    }
 	        else 
 		    {
-                if (strlen($_POST['new_password']) < DATA['website']['registration']['pass_min_length'] || 
-                    strlen($_POST['new_password']) > DATA['website']['registration']['pass_max_length'])
+                //Lets check if the old password is correct!
+                $username = $Database->conn->escape_string(strtoupper($_SESSION['cw_user']));
+
+                $Database->selectDB("logondb");
+
+                $statement = $Database->select("account", "sha_pass_hash", null, "username='$username'");
+                $getPass = $statement->get_result();
+
+                $row     = $getPass->fetch_assoc();
+                $thePass = $row['sha_pass_hash'];
+
+                $pass      = $Database->conn->escape_string(strtoupper($_POST['current_password']));
+
+                $pass_hash = sha1($username .":". $pass);
+
+                $new_password      = $Database->conn->escape_string(strtoupper($_POST['new_password']));
+                $new_password_hash = sha1($username .":". $new_password);
+
+                if ( $thePass != $pass_hash )
                 {
-                    echo "<b class='red_text'>
-                            您的密码必须介于 ". DATA['website']['registration']['pass_min_length'] ." 
-                            和 ". DATA['website']['registration']['pass_max_length'] ." 之间。
-                        </b>";
+                    echo "<b class=\"red_text\">
+                            The old password is not correct!
+                        </b>'";
 			    }
 			    else 
 			    {
-                    //Lets check if the old password is correct!
-                    $username = $Database->conn->escape_string(strtoupper($_SESSION['cw_user']));
-
-                    $Database->selectDB("logondb");
-
-                    $statement = $Database->select("account", "sha_pass_hash", null, "username=$username");
-                    $getPass = $statement->get_result();
-
-                    $row     = $getPass->fetch_assoc();
-                    $thePass = $row['sha_pass_hash'];
-
-                    $pass      = $Database->conn->escape_string(strtoupper($_POST['current_password']));
-
-                    $pass_hash = sha1("". $username .":". $pass ."");
-
-                    $new_password      = $Database->conn->escape_string(strtoupper($_POST['new_password']));
-                    $new_password_hash = sha1("". $username .":". $new_password ."");
-
-                    if ($thePass != $pass_hash)
-				    {
-                        echo "<b class='red_text'>
-                                The old password is not correct!
-                            </b>'";
-				    }
-				    else 
-				    {
-                        //success, change password
-                        echo "<b class='green_text'>
-                                Your Password was changed!
-                            </b>";
-                        $Database->update("account", array("sha_pass_hash" => $new_password_hash), array("username" => $username));
-                        $Database->update("account", array("v"=>0,"s"=>0), array("username" => $username));
-					}
-                    $statement->close();
+                    //success, change password
+                    echo "<b class=\"green_text\">
+                            Your Password was changed!
+                        </b>";
+                    $Database->update("account", array("sha_pass_hash" => $new_password_hash), array("username" => $username));
+                    $Database->update("account", array("v" => 0,"s" => 0), array("username" => $username));
 				}
+                $statement->close();
 			}
 		}
 	}
@@ -691,12 +693,12 @@ class Account
         $username  = $Database->conn->escape_string(strtoupper($account_name));
         $pass      = $Database->conn->escape_string(strtoupper($password));
 
-        $pass_hash = sha1($username . ':' . $pass);
+        $pass_hash = sha1($username .":". $pass);
 	
         $Database->selectDB("logondb");
 
         $Database->update("account", array("sha_pass_hash" => $pass_hash), array("username" => $username));
-        $Database->update("account", array("v"=>0,"s"=>0), array("username" => $username));
+        $Database->update("account", array("v" => 0,"s" => 0), array("username" => $username));
 
         $this->logThis("Changed password", "passwordchange", NULL);
     }
@@ -710,29 +712,29 @@ class Account
 
         if ( empty($accountName) || empty($accountEmail) )
         {
-            echo '<b class="red_text">Please enter both fields.</b>';
+            echo "<b class=\"red_text\">Please enter both fields.</b>";
         }
         else
 	    {
             $Database->selectDB("logondb");
 
-            $statement = $Database->select("account", "COUNT('id') AS id", null, "username=$accountName AND email=$accountEmail");
+            $statement = $Database->select("account", null, null, "username='$accountName' AND email='$accountEmail'");
             $result = $statement->get_result();
 
-            if ( $result->fetch_assoc()['id'] == 0 )
+            if ( $result->num_rows == 0 )
 		    {
-                echo '<b class="red_text">
+                echo "<b class=\"red_text\">
                         The username or email is incorrect.
-                    </b>';
+                    </b>";
 		    }
 		    else 
 		    {
                 //Success, lets send an email & add the forgotpw thingy.
                 $code = RandomString();
 
-                $Website->sendEmail($accountEmail, DATA['website']['email'], 'Forgot Password', "
+                $Website->sendEmail($accountEmail, DATA['website']['email'], "Forgot Password", "
     				Hello there. <br/><br/>
-    				A password reset has been requested for the account ". $accountName ." <br/>
+    				A password reset has been requested for the account $accountName <br/>
     				If you wish to reset your password, click the following link: <br/>
     				<a href='". DATA['website']['domain'] ."?page=forgotpw&code=". $code ."&account=". $this->getAccountID($accountName) ."'>
     				". DATA['website']['domain'] ."?page=forgotpw&code=". $code ."&account=". $this->getAccountID($accountName) ."</a>
@@ -765,10 +767,10 @@ class Account
 
             $Database->selectDB("webdb");
 
-            $statement = $Database->select("account_data", "COUNT(id) AS id", null, "vp >= $points AND id=$account_id");
+            $statement = $Database->select("account_data", null, null, "vp >='$points' AND id='$account_id'");
             $result = $statement->get_result();
 
-            if ( $result->fetch_assoc()['id'] == 0 )
+            if ( $result->num_rows == 0 )
             {
                 return FALSE;
 		    }
@@ -789,10 +791,10 @@ class Account
 
             $Database->selectDB("webdb");
 
-            $statement = $Database->select("account_data","COUNT(id) AS id", null, "dp>=$points AND id=$account_id");
+            $statement = $Database->select("account_data", null, null, "dp >='$points' AND id='$account_id'");
             $result = $statement->get_result();
 
-            if ( $result->fetch_assoc()['id'] == 0 )
+            if ( $result->num_rows == 0 )
             {
                 return FALSE;
             }
@@ -806,32 +808,32 @@ class Account
         {
             global $Database;
 
-            $points     = $Database->conn->escape_string($points);
-            $account_id  = $Database->conn->escape_string($account_id);
+            $points = $Database->conn->escape_string($points);
+            $account_id = $Database->conn->escape_string($account_id);
 
             $Database->selectDB("webdb");
 
-            $Database->update("account_data", "vp", "vp-$points", "id",$account_id);
+            $Database->update("account_data", array("vp" => "vp-$points"), array("id" => $account_id));
         }
 
         function deductDP($account_id, $points)
         {
             global $Database;
 
-            $points     = $Database->conn->escape_string($points);
-            $accountId  = $Database->conn->escape_string($account_id);
+            $points = $Database->conn->escape_string($points);
+            $accountId = $Database->conn->escape_string($account_id);
 
             $Database->selectDB("webdb");
 
-            $Database->update("account_data", array("dp"=> "dp-$points"), array("id"=> $account_id));
+            $Database->update("account_data", array("dp" => "dp-$points"), array("id"=> $account_id));
         }
 
         function addDP($account_id, $points)
         {
             global $Database;
 
-            $account_id  = $Database->conn->escape_string($account_id);
-            $points     = $Database->conn->escape_string($points);
+            $account_id = $Database->conn->escape_string($account_id);
+            $points = $Database->conn->escape_string($points);
 
             $Database->selectDB("webdb");
 
@@ -842,8 +844,8 @@ class Account
         {
             global $Database;
 
-            $account_id  = $Database->conn->escape_string($account_id);
-            $points     = $Database->conn->escape_string($points);
+            $account_id = $Database->conn->escape_string($account_id);
+            $points = $Database->conn->escape_string($points);
 
             $Database->selectDB("webdb");
 
@@ -854,15 +856,15 @@ class Account
         {
             global $Database;
 
-            $charId  = $Database->conn->escape_string($char_id);
+            $charId = $Database->conn->escape_string($char_id);
             $realmId = $Database->conn->escape_string($realm_id);
 
             $Database->selectDB("webdb");
             $Database->realm($realmId);
 
-            $statement = $Database->select("characters", "account", null, "guid=$charId");
+            $statement = $Database->select("characters", "account", null, "guid='$charId'");
             $result = $statement->get_result();
-            $row    = $result->fetch_assoc();
+            $row = $result->fetch_assoc();
 
             return $row['account'];
         }
@@ -875,7 +877,7 @@ class Account
 
             $account_id  = $this->getAccountID($accountName);
 
-            $statement = $Database->select("account_access", "COUNT(id) AS gm", null, "id=$account_id AND gmlevel >= 1");
+            $statement = $Database->select("account_access", "COUNT(id) AS gm", null, "id='$account_id' AND gmlevel >= 1");
             $result = $statement->get_result();
             if ( $result->fetch_assoc()['gm'] > 0 )
             {

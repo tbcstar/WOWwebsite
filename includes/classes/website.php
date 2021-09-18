@@ -1,52 +1,52 @@
 <?php
+
 ########################
 ## 包含网站功能的脚本将在这里添加。例如新闻。
 #######################
 
-    class Website
+class Website
+{
+    public function __construct()
     {
-        public function __construct()
-        {
-            $_GET = filter_input_array(
-                INPUT_GET,
-                array
-                (
-                    'account' => FILTER_SANITIZE_ENCODED,
-                    'action' => FILTER_SANITIZE_ENCODED,
-                    'c' => FILTER_SANITIZE_ENCODED,
-                    'char' => FILTER_SANITIZE_ENCODED,
-                    'code' => FILTER_SANITIZE_ENCODED,
-                    'db' => FILTER_SANITIZE_ENCODED,
-                    'error' => FILTER_SANITIZE_ENCODED,
-                    'editaccount' => FILTER_SANITIZE_ENCODED,
-                    'f' => FILTER_SANITIZE_ENCODED,
-                    'filename' => FILTER_SANITIZE_ENCODED,
-                    'getlogs' => FILTER_SANITIZE_ENCODED,
-                    'guid' => FILTER_SANITIZE_ENCODED,
-                    'id' => FILTER_SANITIZE_ENCODED,
-                    'ilfrom' => FILTER_SANITIZE_ENCODED,
-                    'ilto' => FILTER_SANITIZE_ENCODED,
-                    'last_page' => FILTER_SANITIZE_ENCODED,
-                    'newsid' => FILTER_SANITIZE_ENCODED,
-                    'page' => FILTER_SANITIZE_ENCODED,
-                    'plugin' => FILTER_SANITIZE_ENCODED,
-                    'q' => FILTER_SANITIZE_ENCODED,
-                    'r' => FILTER_SANITIZE_ENCODED,
-                    'return' => FILTER_SANITIZE_ENCODED,
-                    'rid' => FILTER_SANITIZE_ENCODED,
-                    's' => FILTER_SANITIZE_ENCODED,
-                    'search' => FILTER_SANITIZE_ENCODED,
-                    'search_value' => FILTER_SANITIZE_ENCODED,
-                    'service' => FILTER_SANITIZE_ENCODED,
-                    'step' => FILTER_SANITIZE_ENCODED,
-                    't' => FILTER_SANITIZE_ENCODED,
-                    'user' => FILTER_SANITIZE_ENCODED
-                )
-            );
+        $_GET = filter_input_array(
+            INPUT_GET,
+            [
+                'account' => FILTER_SANITIZE_ENCODED,
+                'action' => FILTER_SANITIZE_ENCODED,
+                'c' => FILTER_SANITIZE_ENCODED,
+                'char' => FILTER_SANITIZE_ENCODED,
+                'code' => FILTER_SANITIZE_ENCODED,
+                'db' => FILTER_SANITIZE_ENCODED,
+                'error' => FILTER_SANITIZE_ENCODED,
+                'editaccount' => FILTER_SANITIZE_ENCODED,
+                'f' => FILTER_SANITIZE_ENCODED,
+                'filename' => FILTER_SANITIZE_ENCODED,
+                'getlogs' => FILTER_SANITIZE_ENCODED,
+                'guid' => FILTER_SANITIZE_ENCODED,
+                'id' => FILTER_SANITIZE_ENCODED,
+                'ilfrom' => FILTER_SANITIZE_ENCODED,
+                'ilto' => FILTER_SANITIZE_ENCODED,
+                'last_page' => FILTER_SANITIZE_ENCODED,
+                'newsid' => FILTER_SANITIZE_ENCODED,
+                'page' => FILTER_SANITIZE_ENCODED,
+                'plugin' => FILTER_SANITIZE_ENCODED,
+                'q' => FILTER_SANITIZE_ENCODED,
+                'r' => FILTER_SANITIZE_ENCODED,
+                'return' => FILTER_SANITIZE_ENCODED,
+                'rid' => FILTER_SANITIZE_ENCODED,
+                's' => FILTER_SANITIZE_ENCODED,
+                'search' => FILTER_SANITIZE_ENCODED,
+                'search_value' => FILTER_SANITIZE_ENCODED,
+                'service' => FILTER_SANITIZE_ENCODED,
+                'step' => FILTER_SANITIZE_ENCODED,
+                't' => FILTER_SANITIZE_ENCODED,
+                'user' => FILTER_SANITIZE_ENCODED
+            ]
+        );
 
         $_POST = filter_input_array(
             INPUT_POST,
-            array(
+            [
                 'account' => FILTER_SANITIZE_STRING,
                 'action' => FILTER_SANITIZE_STRING,
                 'addSlideImage' => FILTER_SANITIZE_STRING,
@@ -252,263 +252,321 @@
                 'x_remember' => FILTER_SANITIZE_STRING,
                 'x_username' => FILTER_SANITIZE_STRING,
                 'editpage' => FILTER_SANITIZE_STRING
-                )
-            );
-        }
+            ]
+        );
+    }
 
-        public function getNews()
+    public function getNews()
+    {
+        global $Cache, $Database, $Website;
+
+        if ( DATA['website']['news']['enable'] == TRUE )
         {
-            global $Cache, $Database, $Website;
+            echo "<div class='box_two_title'>Latest News</div>";
 
-            if ( DATA['website']['news']['enable'] == TRUE )
-            {
-                echo "<div class='box_two_title'>最近新闻</div>";
-
-                $Database->selectDB("webdb");
-
-                $result = $Database->select("news", null, null, null, "ORDER BY id DESC LIMIT ". DATA['website']['news']['max_shown'])->get_result();
-
-                if ($result->num_rows == 0)
-                {
-                    echo "没有找到任何消息。";
-                }
-                else
-                {
-                $output = null;
-                while ($row = $result->fetch_assoc())
-                    {
-                        if (file_exists($row['image']))
-                        {
-                            echo $newsPT1 = "
-					       <table class='news' width='100%'>
-						        <tr>
-								    <td>
-                                        <h3 class='yellow_text'>". 
-                                            $row['title'] 
-                                        ."</h3>
-                                    </td>
-							    </tr>
-						   </table>
-                           <table class='news_content' cellpadding='4'> 
-						       <tr>
-						          <td><img src='". $row['image'] ."' alt=''/></td> 
-						          <td>";
-                        }
-                        else
-                        {
-                            echo $newsPT1 = "
-					       <table class='news' width='100%'> 
-						        <tr>
-								    <td>
-                                        <h3 class='yellow_text'>". 
-                                            $row['title'] 
-                                        ."</h3>
-                                    </td>
-							    </tr>
-						   </table>";
-                        }
-                        $output .= $newsPT1;
-                        unset($newsPT1);
-
-                        if (file_exists("includes/classes/validator.php"))
-                        {
-                            include "includes/classes/validator.php";
-
-                            $Validator = new Validator(array(), array($row['body']), array($row['body']));
-                            $sanatized_text = $Validator->sanatize($row['body'], "string");
-
-                            if ( DATA['website']['news']['limit_home_characters'] == TRUE )
-                            {
-                                echo $Website->limit_characters($sanatized_text, 200);
-                                $output .= $Website->limit_characters($row['body'], 200);
-                            }
-                            else
-                            {
-                                echo nl2br("<br>".$sanatized_text);
-                                $output .= nl2br($row['body']);
-                            }
-
-                            $result = $Database->select("news_comments", "COUNT(id)", null, "newsid=". $row['id'])->get_result();
-                            $commentsNum = $result->fetch_row();
-
-                            if ( DATA['website']['news']['enable_comments'] == true )
-                            {
-                                $comments = '| <a href="?page=news&amp;newsid=' . $row['id'] . '">Comments ('. $commentsNum[0] .')</a>';
-                            }
-                            else
-                            {
-                                $comments = "";
-                            }
-
-                            echo $newsPT2 = "<br/><br/><br/>
-                                <i class='gray_text'>Written by ". $row['author'] ." | ". $row['date'] ." ". $comments ."</i>
-                                </td> 
-                                </tr>
-                                </table";
-                            $output  .= $newsPT2;
-                            unset($newsPT2);
-                        }
-                    }
-                    echo "<br><hr/><a href='?page=news'>查看旧新闻...</a>";
-                }
-            }
-        }
-
-        public function getSlideShowImages()
-        {
-            global $Cache, $Database;
-            
-            if ($Cache->exists("slideshow") == TRUE)
-            {
-                $Cache->loadCache("slideshow");
-            }
-            else
-            {
-                $Database->selectDB("webdb");
-                $result = $Database->select("slider_images", "path,link", null, null, "ORDER BY position ASC")->get_result();
-                while ($row = $result->fetch_assoc())
-                {
-                    echo $outPutPT = '<a href="'. htmlspecialchars($row['link']) .'"><img border="none" src="'. htmlspecialchars($row['path']) .'" alt="" class="slideshow_image"></a>';
-                    $output   .= $outPutPT;
-                }
-                $Cache->buildCache('slideshow', $output);
-            }
-        }
-
-        public function getSlideShowImageNumbers()
-        {
-            global $Database;
             $Database->selectDB("webdb");
 
-            $result = $Database->select("slider_images", "position", null, null, "ORDER BY position ASC")->get_result();
-            $x      = 1;
-
-            while ($row = $result->fetch_assoc())
-            {
-                echo '<a href="#" rel="'. htmlspecialchars($x) .'">'. htmlspecialchars($x) .'</a>';
-                $x++;
-            }
-
-            unset($x);
-        }
-
-        public function limit_characters($str, $n)
-        {
-            $str = preg_replace("/<img[^>]+\>/i", "(image)", $str);
-
-            if (strlen($str) <= $n)
-            {
-                return $str;
-            }
-            else
-            {
-                return substr($str, 0, $n) . '...';
-            }
-        }
-
-        public function loadVotingLinks()
-        {
-            global $Database, $Account, $Website;
-            $Database->selectDB("webdb");
-
-            $result = $Database->select("votingsites", null, null, null, "ORDER BY id DESC")->get_result();
+            $result = $Database->select("news", null, null, null, "ORDER BY id DESC LIMIT ". DATA['website']['news']['max_shown'])->get_result();
 
             if ($result->num_rows == 0)
             {
-                buildError("无法从数据库中获取任何投票链接. ". $Database->conn->error);
+                echo "No News Were Found.";
             }
             else
             {
+                $output = null;
                 while ($row = $result->fetch_assoc())
-                { ?>
+                {
+                    if (file_exists($row['image']))
+                    {
+                        echo $newsPT1 = "
+				       <table class='news' width='100%'>
+					        <tr>
+							    <td>
+                                    <h3 class='yellow_text'>". 
+                                        $row['title'] 
+                                    ."</h3>
+                                </td>
+						    </tr>
+					   </table>
+                       <table class='news_content' cellpadding='4'> 
+					       <tr>
+					          <td><img src='". $row['image'] ."' alt=''/></td> 
+					          <td>";
+                    }
+                    else
+                    {
+                        echo $newsPT1 = "
+				       <table class='news' width='100%'> 
+					        <tr>
+							    <td>
+                                    <h3 class='yellow_text'>". 
+                                        $row['title'] 
+                                    ."</h3>
+                                </td>
+						    </tr>
+					   </table>";
+                    }
+                    $output .= $newsPT1;
+                    unset($newsPT1);
 
-				<div class="col">
-				<div class="item">
-				<img src="/themes/cp_nefelin/images/vote-bg.jpg" alt="" /> <div class="item-content">
-				<h3><?php echo $row['title']; ?></strong></h3>
-				<div>
+                    if (file_exists("includes/classes/validator.php"))
+                    {
+                        include "includes/classes/validator.php";
 
-				</div>
+                        $Validator = new Validator(array(), array($row['body']), array($row['body']));
+                        $sanatized_text = $Validator->sanatize($row['body'], "string");
 
-				<div class="bonus"><?php if($Website->checkIfVoted($row['id'])==FALSE) {?> 
+                        if ( DATA['website']['news']['limit_home_characters'] == TRUE )
+                        {
+                            echo $Website->limit_characters($sanatized_text, 200);
+                            $output .= $Website->limit_characters($row['body'], 200);
+                        }
+                        else
+                        {
+                            echo nl2br("<br>".$sanatized_text);
+                            $output .= nl2br($row['body']);
+                        }
 
-				<?php
-				}
-				else 
-				{
-				$getNext = $Database->select(DATA['website']['connection']['name'].".votelog", "next_vote", null, " WHERE userid=". $Account->getAccountID($_SESSION['cw_user']) ." AND siteid=". $row['id'] ." ORDER BY id DESC LIMIT 1;")->get_result();
+                        $result = $Database->select("news_comments", "COUNT(id)", null, "newsid=". $row['id'])->get_result();
+                        $commentsNum = $result->fetch_row();
 
-                $row  = $getNext->fetch_assoc();
-				$time = $row['next_vote'] - time();
+                        if ( DATA['website']['news']['enable_comments'] == true )
+                        {
+                            $comments = '| <a href="?page=news&amp;newsid=' . $row['id'] . '">Comments ('. $commentsNum[0] .')</a>';
+                        }
+                        else
+                        {
+                            $comments = "";
+                        }
 
-				echo '<font color="red">'.convTime($time);
-				}
-				?></font><br><br><span class="coin-silver"></span> <span class="numbers"></span> 2点积分</div>
-				<input type='submit' target='_blank' class='btn btn-low-green' value='Vote'  onclick="vote('<?php echo $row['id']; ?> ',this)">
-				</div>
-				</div>
-				</div>
+                        echo $newsPT2 = "<br/><br/><br/>
+                            <i class='gray_text'>Written by ". $row['author'] ." | ". $row['date'] ." ". $comments ."</i>
+                            </td> 
+                            </tr>
+                            </table";
+                        $output  .= $newsPT2;
+                        unset($newsPT2);
+                    }
+                }
+                echo "<br><hr/><a href='?page=news'>View older news...</a>";
+            }
+        }
+    }
 
-				<?php
-				}
+    public function getSlideShowImages()
+    {
+        global $Cache, $Database;
+
+        if ($Cache->exists("slideshow") == TRUE)
+        {
+            $Cache->loadCache("slideshow");
+        }
+        else
+        {
+            $Database->selectDB("webdb");
+            $result = $Database->select("slider_images", "path,link", null, null, "ORDER BY position ASC")->get_result();
+            while ($row = $result->fetch_assoc())
+            {
+                echo $outPutPT = '<a href="'. htmlspecialchars($row['link']) .'"><img border="none" src="'. htmlspecialchars($row['path']) .'" alt="" class="slideshow_image"></a>';
+                $output   .= $outPutPT;
+            }
+            $Cache->buildCache('slideshow', $output);
+        }
+    }
+
+    public function getSlideShowImageNumbers()
+    {
+        global $Database;
+        $Database->selectDB("webdb");
+
+        $result = $Database->select("slider_images", "position", null, null, "ORDER BY position ASC")->get_result();
+        $x      = 1;
+
+        while ($row = $result->fetch_assoc())
+        {
+            echo '<a href="#" rel="'. htmlspecialchars($x) .'">'. htmlspecialchars($x) .'</a>';
+            $x++;
+        }
+
+        unset($x);
+    }
+
+    public function limit_characters($str, $n)
+    {
+        $str = preg_replace("/<img[^>]+\>/i", "(image)", $str);
+
+        if (strlen($str) <= $n)
+        {
+            return $str;
+        }
+        else
+        {
+            return substr($str, 0, $n) . '...';
+        }
+    }
+
+    public function loadVotingLinks()
+    {
+        global $Database, $Account, $Website;
+        $Database->selectDB("webdb");
+
+        $result = $Database->select("votingsites", null, null, null, "ORDER BY id DESC")->get_result();
+
+        if ($result->num_rows == 0)
+        {
+            buildError("Couldnt Fetch Any Voting Links From The Database. ". $Database->conn->error);
+        }
+        else
+        {
+            while ($row = $result->fetch_assoc())
+            { ?>
+                <div class="votelink">
+                    <table width="100%">
+                        <tr>
+                            <td width="20%"><img src="<?php echo $row['image']; ?>" /></td>
+                            <td width="50%"><strong><?php echo $row['title']; ?></strong> (<?php echo $row['points']; ?> Vote Points)<td>
+                            <td width="40%">
+                                <?php
+                                if ($Website->checkIfVoted($row['id']) == false)
+                                { 
+                                    ?><input type='submit' value='Vote'  onclick="vote('<?php echo $row['id']; ?>', this)"><?php
+                                }
+                                else
+                                {
+                                    $getNext = $Database->select(DATA['website']['connection']['name'].".votelog", "next_vote", null, " WHERE userid=". $Account->getAccountID($_SESSION['cw_user']) ." AND siteid=". $row['id'] ." ORDER BY id DESC LIMIT 1;")->get_result();
+
+                                    $row  = $getNext->fetch_assoc();
+                                    $time = $row['next_vote'] - time();
+
+                                    if (gmp_sign($time) == -1)
+                                    {
+                                        $time = 43200;
+				                    }
+
+                                    echo "Time until reset: ". convTime($time);
+                                }
+                                ?>
+                            </td>
+                        </tr>
+                    </table>
+                </div><?php
 			}
 		}
+	}
 
-        public function checkIfVoted($siteid)
+    public function checkIfVoted($siteid)
+    {
+        global $Account, $Database;
+
+        $siteId  = $Database->conn->escape_string($siteid);
+
+        $acct_id = $Account->getAccountID($_SESSION['cw_user']);
+        $Database->selectDB("webdb");
+
+        $result = $Database->select("votelog", "COUNT(id) AS voted", null, "userid=". $acct_id ." AND siteid=". $siteId ." AND next_vote > ". time())->get_result();
+
+        if ($result->fetch_assoc()['voted'] == 0)
         {
-            global $Account, $Database;
-
-            $siteId  = $Database->conn->escape_string($siteid);
-
-            $acct_id = $Account->getAccountID($_SESSION['cw_user']);
-            $Database->selectDB("webdb");
-
-            $result = $Database->select("votelog", "COUNT(id) AS voted", null, "userid=". $acct_id ." AND siteid=". $siteId ." AND next_vote > ". time())->get_result();
-
-            if ($result->fetch_assoc()['voted'] == 0)
-            {
-                return false;
-            }
-            else
-            {
-                return TRUE;
-            }
+            return false;
         }
-
-        public function sendEmail($to, $from, $subject, $body)
+        else
         {
-            $headers = 'MIME-Version: 1.0' . "\r\n";
-            $headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-            $headers .= 'From: ' . $from . "\r\n";
-
-            mail($to, $subject, $body, $headers);
+            return TRUE;
         }
-
-        public function convertCurrency($currency)
-        {
-            if ($currency == "dp") return DATA['website']['donation']['coins_name'];
-            elseif ($currency == "vp") return "Vote Points";
-        }
-
-        public function getTitle()
-        {
-            echo DATA['website']['title'] ." - ";
-
-            foreach (DATA['website']['core_pages'] as $key => $value)
-            {
-                if ( $value == $_GET['page'].".php" )
-                {
-                    $value = str_replace(".php", "", $value);
-                    echo ucfirst($value);
-                    $foundPT = true;
-                }
-            }
-
-            if ( !isset( $foundPT ) )
-            {
-                echo htmlentities( ucfirst( $_GET['page'] ) );
-            }
-        }
-
     }
-    $Website = new Website();
+
+    public function sendEmail($to, $from, $subject, $body)
+    {
+        $headers = 'MIME-Version: 1.0' . "\r\n";
+        $headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+        $headers .= 'From: ' . $from . "\r\n";
+
+        mail($to, $subject, $body, $headers);
+    }
+
+    public function convertCurrency($currency)
+    {
+        if ($currency == "dp") return DATA['website']['donation']['coins_name'];
+        elseif ($currency == "vp") return "Vote Points";
+    }
+
+    public function getTitle()
+    {
+        echo DATA['website']['title'] ." - ";
+
+        foreach (DATA['website']['core_pages'] as $key => $value)
+        {
+            if ( $value == $_GET['page'].".php" )
+            {
+                $value = str_replace(".php", "", $value);
+                echo ucfirst($value);
+                $foundPT = true;
+            }
+        }
+
+        if ( !isset( $foundPT ) )
+        {
+            echo htmlentities( ucfirst( $_GET['page'] ) );
+        }
+    }
+
+    public function getCaptcha()
+    {
+        @session_start();
+        header("Content-type: image/jpeg");
+
+        $font_size = 20;
+
+        $img_width  = 210;
+        $img_height = 40;
+
+        $image = imagecreate($img_width, $img_height);
+        imagecolorallocate($image, 255, 255, 255);
+
+        $text_color = imagecolorallocate($image, 0, 0, 0);
+
+        for ($x = 1; $x <= $img_height; $x++)
+        {
+            $x1 = rand(1, $img_width);
+            $y1 = rand(1, $img_width);
+            $x2 = rand(1, $img_width);
+            $y2 = rand(1, $img_width);
+
+            imageline($image, $x1, $y1, $x2, $x2, $text_color);
+        }
+
+        function generateRandomString($length = 10)
+        {
+            $characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            $charactersLength = strlen($characters);
+            $randomString = "";
+            for ($i = 0; $i < $length; $i++)
+            {
+                $randomString .= $characters[rand(0, $charactersLength - 1)];
+            }
+            return $randomString;
+        }
+
+        if ( defined("CAPTCHA_VALUE") )
+        {
+            define("CAPTCHA_VALUE", null);
+            define("CAPTCHA_VALUE", generateRandomString());
+        }
+        else
+        {
+            define("CAPTCHA_VALUE", generateRandomString());
+        }
+
+        if ( imagettftext($image, $font_size, 0, 15, 30, $text_color, realpath("./arial.ttf"), CAPTCHA_VALUE) !== false )
+        {
+            imagejpeg($image);
+        }
+        else
+        {
+            log_error("Captcha image could not be retrieved.", "C01");
+        }
+    }
+
+}
+$Website = new Website(); 

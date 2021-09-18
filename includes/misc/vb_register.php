@@ -2,7 +2,7 @@
 
 function qpc_post($varname)
 {
-	return trim( stripslashes( (get_magic_quotes_gpc() ) ? $_POST[$varname] : addslashes( $_POST[$varname]) ) );
+	return trim( stripslashes( ( get_magic_quotes_gpc() ) ? $_POST[$varname] : addslashes( $_POST[$varname]) ) );
 }
 
 define('THIS_SCRIPT', 'vb_register.php');
@@ -18,7 +18,7 @@ $userdm = new vB_DataManager_User($vbulletin, ERRTYPE_ARRAY);
 $userdm->set('username', qpc_post('username'));
 $userdm->set('email', qpc_post('email'));
 $userdm->set('password', qpc_post('password'));
-$userdm->set('usergroupid',qpc_post('usergroupid'));
+$userdm->set('usergroupid', qpc_post('usergroupid'));
 $userdm->set('ipaddress', qpc_post('ipaddress'));
 $userdm->set('referrerid', qpc_post('referrername'));
 $userdm->set('timezoneoffset', qpc_post('timezoneoffset'));

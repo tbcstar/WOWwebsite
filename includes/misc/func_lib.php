@@ -13,8 +13,8 @@ function exit_page()
 function RandomString() 
 {
     $length = 10;
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
-    $string = '';    
+    $characters = "0123456789abcdefghijklmnopqrstuvwxyz";
+    $string     = "";
     for ($p = 0; $p < $length; $p++) 
 	{
         $string .= $characters[mt_rand(0, strlen($characters))];
@@ -44,5 +44,5 @@ function convTime($time)
 		$time = $time / 24;
 	}
 
-    return ceil($time) . " " . $string;
+    return ceil($time) ." ". $string;
 } 
