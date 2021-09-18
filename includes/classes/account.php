@@ -1,5 +1,9 @@
 <?php
 
+global $Database, $Account, $Messages, $Server;
+
+require_once "random_compat-2.0.20/lib/random.php";
+ 
 /**
  * Account Class 
  */
@@ -10,13 +14,12 @@ class Account
     {
         if ( empty($username) || empty($password) )
         {
-            echo "<span class=\"red_text\">Please enter both fields.</span>";
-            exit;
+            $Messages->error("请输入用户名和密码");
+            return null;
         }
-        global $Database;
 
-        $username   = $Database->conn->escape_string( trim( strtoupper($username) ) );
-        $password   = $Database->conn->escape_string( trim( strtoupper($password) ) );
+        $username = $Database->conn->escape_string( strtoupper($username) );
+        $password = $Database->conn->escape_string( strtoupper($password) );
 
         $Database->selectDB("logondb", $Database->conn);
 
@@ -24,56 +27,57 @@ class Account
 
         if ( $checkForAccount->num_rows == 0 )
         {
-            echo "<span class=\"red_text\">Invalid username.</span>";
+            $Messages->error("用户名和密码不匹配");
+            return;
+        }
+
+        if ( $remember != 835727313 )
+    	{
+			$data = mysqli_query("SELECT salt, verifier FROM account WHERE username = '".$username."'");
+			$data = mysqli_fetch_assoc($data);
+			$salt = $data['salt'];
+			$verifier = $data['verifier'];
+        }
+
+        if (!$Account->verifySRP6($username, $password, $salt, $verifier))
+        {
+            $Messages->error("密码错误");
+            return;
+        }
+
+        # Set "remember me" cookie. Expires in 1 week
+        if ( $remember == "on" )
+        {
+            setcookie("cw_rememberMe", $username ." * ". $password, time() + ( (60*60)*24)*7);
+        }
+
+        $id = $result->fetch_assoc()['id'];
+
+        $this->GMLogin($username);
+        $_SESSION['cw_user']    = ucfirst(strtolower($username));
+        $_SESSION['cw_user_id'] = $id;
+
+        $statement->close();
+
+        $Database->selectDB("webdb");
+
+        $statement = $Database->select("account_data", "COUNT(*)", null, "id='$id'");
+        $count = $statement->get_result();
+        if ( $count->data_seek(0) == 0 )
+        {
+            $Database->insert("account_data", "id", $id);
+        }
+        $statement->close();
+
+        if ( !empty($last_page) )
+        {
+            header("Location: $last_page");
+            exit;
         }
         else
-    	{
-            if ( $remember != 835727313 )
-		{
-            $password = sha1( $username .":". $password );
-		}
-
-            $statement = $Database->select("account", "id", null, "username='$username' AND sha_pass_hash='$password'");
-            $result = $statement->get_result();
-            if ( $result->num_rows == 0 )
-            {
-                echo "<span class=\"red_text\">Wrong password.</span>";
-            }
-
-            # Set "remember me" cookie. Expires in 1 week
-            if ( $remember == "on" )
-            {
-                setcookie("cw_rememberMe", $username ." * ". $password, time() + ( (60*60)*24)*7);
-            }
-
-            $id = $result->fetch_assoc()['id'];
-
-            $this->GMLogin($username);
-            $_SESSION['cw_user']    = ucfirst(strtolower($username));
-            $_SESSION['cw_user_id'] = $id;
-
-            $statement->close();
-
-            $Database->selectDB("webdb");
-
-            $statement = $Database->select("account_data", "COUNT(*)", null, "id='$id'");
-            $count = $statement->get_result();
-            if ( $count->data_seek(0) == 0 )
-            {
-                $Database->insert("account_data", "id", $id);
-		    }
-            $statement->close();
-
-            if ( !empty($last_page) )
-            {
-                header("Location: $last_page");
-                exit;
-            }
-            else
-		    {
-                header("Location: index.php");
-                exit;
-		    }
+        {
+            header("Location: index.php");
+            exit;
         }
     }
 
@@ -112,50 +116,110 @@ class Account
         }
     }
 
+
+
+	###############################
+	####### SRP6 methods
+	###############################
+	public function calculateSRP6Verifier($username, $password, $salt)
+    {
+        // algorithm constants
+        $g = gmp_init(7);
+        $N = gmp_init('894B645E89E1535BBDAD5B8B290650530801B18EBFBF5E8FAB3C82872A3E9BB7', 16);
+
+        // calculate first hash
+        $h1 = sha1(strtoupper($username . ':' . $password), TRUE);
+
+        // calculate second hash
+        $h2 = sha1($salt.$h1, TRUE);
+
+        // convert to integer (little-endian)
+        $h2 = gmp_import($h2, 1, GMP_LSW_FIRST);
+
+        // g^h2 mod N
+        $verifier = gmp_powm($g, $h2, $N);
+
+        // convert back to a byte array (little-endian)
+        $verifier = gmp_export($verifier, 1, GMP_LSW_FIRST);
+
+        // pad to 32 bytes, remember that zeros go on the end in little-endian!
+        $verifier = str_pad($verifier, 32, chr(0), STR_PAD_RIGHT);
+
+        // done!
+        return $verifier;
+    }
+
+    // Returns SRP6 parameters to register this username/password combination with
+    public function getRegistrationData($username, $password)
+    {
+        // generate a random salt
+        $salt = random_bytes(32);
+
+        // calculate verifier using this salt
+        $verifier = $Account->calculateSRP6Verifier($username, $password, $salt);
+
+        // done - this is what you put in the account table!
+        return array($salt, $verifier);
+    }
+
+    public function verifySRP6($user, $pass, $salt, $verifier)
+    {
+        $g = gmp_init(7);
+        $N = gmp_init('894B645E89E1535BBDAD5B8B290650530801B18EBFBF5E8FAB3C82872A3E9BB7', 16);
+        $x = gmp_import(
+            sha1($salt . sha1(strtoupper($user . ':' . $pass), TRUE), TRUE),
+            1,
+            GMP_LSW_FIRST
+        );
+        $v = gmp_powm($g, $x, $N);
+        return ($verifier === str_pad(gmp_export($v, 1, GMP_LSW_FIRST), 32, chr(0), STR_PAD_RIGHT));
+    }
+
+
     public function register($username, $email, $password, $repeat_password, $captcha, $raf)
     {
         $errors = array();
 
         if ( empty($username) )
-            $errors[] = "Enter a username.";
+            $errors[] = "输入用户名。";
 
         if ( empty($email) )
-            $errors[] = "Enter an email address.";
+            $errors[] = "输入电子邮件地址。";
 
         if ( empty($password) )
-            $errors[] = "Enter a password.";
+            $errors[] = "输入密码。";
 
         if ( empty($repeat_password) )
-            $errors[] = "Enter the password repeat.";
+            $errors[] = "再次输入密码。";
 
         if ( $username == $password )
         {
-            $errors[] = "Your password cannot be your username!";
+            $errors[] = "您的密码不能是您的用户名！";
         }
         else
         {
-            session_start();
+            @session_start();
             if ( DATA['website']['registration']['captcha'] == TRUE && defined("CAPTCHA_VALUE") )
 		    {
                 if ( $captcha != CAPTCHA_VALUE )
 			    { 
-                    $errors[] = "The captcha is incorrect!";
+                    $errors[] = "验证码不正确！";
 		    	}
             }
 
             if ( strlen($username) > DATA['website']['registration']['user_max_length'] || 
                 strlen($username) < DATA['website']['registration']['user_min_length'] )
-                $errors[] = "The username must be between ". DATA['website']['registration']['user_minlength'] ." and ". DATA['website']['registration']['user_max_length'] ." letters.";
+                $errors[] = "用户名必须介于 ". DATA['website']['registration']['user_minlength'] ." 和 ". DATA['website']['registration']['user_max_length'] ." 之间。";
 
             if ( strlen($password) > DATA['website']['registration']['pass_max_length'] || 
                 strlen($password) < DATA['website']['registration']['pass_min_length'] )
-                $errors[] = "The password must be between ". DATA['website']['registration']['pass_min_length'] ." and ". DATA['website']['registration']['pass_max_length'] ." letters.";
+                $errors[] = "密码必须介于 ". DATA['website']['registration']['pass_min_length'] ." 和 ". DATA['website']['registration']['pass_max_length'] ." 之间。";
 				
             if ( DATA['website']['registration']['validate_email'] == TRUE )
             {
                 if ( filter_var($email, FILTER_VALIDATE_EMAIL) === false )
 			    {
-                    $errors[] = "Enter a valid email address.";
+                    $errors[] = "输入一个有效的电子邮件地址。";
 			    }
 	    	}
 
@@ -179,18 +243,18 @@ class Account
 
         if ( $result->fetch_assoc()['user'] > 1 )
         {
-            $errors[] = "The username already exists!";
+            $errors[] = "这个用户名已经存在！";
         }
 
         if ( $password != $repeat_password )
         {
-            $errors[] = "The passwords does not match!";
+            $errors[] = "密码不匹配！";
         }
 
         if ( !empty($errors) )
         {
             //errors found.
-            echo "<p><h4>The following errors occured:</h4>";
+            echo "<p><h4>出现以下错误：</h4>";
             if ( is_array($errors) || is_object($errors) )
 		    {
                 foreach ($errors as $error)
@@ -204,7 +268,9 @@ class Account
         }
         else
         {
-            $password = sha1( $username .":". $password );
+			$data = $Account->getRegistrationData($username, $password);
+			$salt = $data[0];
+			$verifier = $data[1];
 
             if ( empty($raf) )
             {
@@ -213,11 +279,21 @@ class Account
 
             $Database->selectDB("logondb");
 
-            $result = $Database->insert("account", array("username", "email", "sha_pass_hash", "joindate", "expansion", "recruiter"), array($username, $email, $password, date("Y-m-d H:i:s"), DATA['website']['core_expansion']), $raf)->get_result();
-
-            if ( !$result )
+            $statement = $Database->insert("account", 
+                [
+                    "username" => $username, 
+                    "salt" => $salt, 
+                    "verifier" => $verifier, 
+                    "email" => $email, 
+                    "joindate" => date("Y-m-d H:i:s"), 
+                    "expansion" => DATA['website']['expansion'], 
+                    "recruiter" => $raf
+                ]);
+            if ( !empty($statement->error) )
             {
-                buildError("Could not create user!", null, $Database->conn->error);
+                global $Messages;
+                $Messages->error("错误联系管理员！");
+                return;
             }
 
             $statement = $Database->select("account", "id", null, "username='$username'");
@@ -225,7 +301,7 @@ class Account
 
             $Database->selectDB("webdb");
 
-            $Database->insert("account_data", "id", $row['id']);
+            $Database->insert("account_data", ["id" => $row['id']]);
 
             $Database->selectDB("logondb");
             $result = $Database->select("account", "id", null, "username='$username_clean'");
@@ -237,7 +313,7 @@ class Account
             $_SESSION['cw_user']    = ucfirst(strtolower($username_clean));
             $_SESSION['cw_user_id'] = $id;
 
-            #$this->forumRegister($username_clean, $password_clean, $email);
+            $Account->forumRegister($username_clean,$password_clean,$email);
 	    }
     }
 
@@ -337,13 +413,13 @@ class Account
                 $duration = ($duration / 60) / 60;
                 $duration = $duration . ' hours';
 		    }
-            echo '<span class="yellow_text">Banned<br/>
-				  Reason: ' . $row['banreason'] . '<br/>
-				  Time left: ' . $duration . '</span>';
+            echo '<span class="yellow_text">禁用<br/>
+				  原因： ' . $row['banreason'] . '<br/>
+				  剩余时间： ' . $duration . '</span>';
 	    }
         else
 	    {
-            echo '<b class="green_text">Active</b>';
+            echo '<b class="green_text">活跃</b>';
         }
     }
 
@@ -475,11 +551,11 @@ class Account
         $result = $statement->get_result();
         if ( $result->fetch_assoc()['online'] == 0 )
 	    {
-            return '<b class="red_text">Offline</b>';
+            return "<b style=\"color:red;\">离线</b>";
         }
         else
         {
-            return '<b class="green_text">Online</b>';
+            return "<b style=\"color:green;\">在线</b>";
         }
     }
 
@@ -542,7 +618,7 @@ class Account
             if ( $result->num_rows == 0 && !isset($x) )
             {
                 $x = TRUE;
-                echo "<option value=\"\">No characters found!</option>";
+                echo "<option value=\"\">没有找到角色！</option>";
             }
 
             while ($char = $result->fetch_assoc())
@@ -558,13 +634,13 @@ class Account
 
         if ( empty($current_pass) )
         {
-            $errors[] = 'Please enter your current password';
+            $errors[] = '请输入您当前的密码';
         }
         else
         {
             if ( empty($email) )
 		    {
-			    $errors[] = 'Please enter an email address.';
+			    $errors[] = '请输入电子邮件地址。';
 		    }
 
             global $Database;
@@ -574,20 +650,21 @@ class Account
             $username = $Database->conn->escape_string( trim( strtoupper( $_SESSION['cw_user'] ) ) );
             $password = $Database->conn->escape_string( trim( strtoupper( $current_pass ) ) );
 
-            $password = sha1($username .":". $password);
+			$data = mysqli_query("SELECT salt, verifier FROM account WHERE username = '".$username."'");
+			$data = mysqli_fetch_assoc($data);
+			$salt = $data['salt'];
+			$verifier = $data['verifier'];
 
-            $statement = $Database->select("account", "COUNT(id) AS id", null, "username='$username' AND sha_pass_hash='$password'");
-            $result = $statement->get_result();
-            if ( $result->num_rows == 0 )
+			if (!$Account->verifySRP6($username, $password, $salt, $verifier))
             {
-                $errors[] = "The current password is incorrect.";
+                $errors[] = "当前密码不正确。";
             }
 
             if ( DATA['website']['registration']['validate_email'] == TRUE )
             {
                 if ( filter_var($email, FILTER_VALIDATE_EMAIL) === false )
 			    {
-                    $errors[] = 'Enter a valid email address.';
+                    $errors[] = '输入一个有效的电子邮件地址。';
 			    }
                 else
 			    {
@@ -598,12 +675,12 @@ class Account
 
         if ( empty($errors) )
         {
-            echo "Successfully updated your account.";
+            echo "已成功更新您的帐户。";
         }
         else
         {
             echo "<div class=\"news\" style=\"padding: 5px;\">
-            <h4 class=\"red_text\">The following errors occured:</h4>";
+            <h4 class=\"red_text\">出现以下错误：</h4>";
             if ( is_array($errors) || is_object($errors) )
 		    {
                 foreach ($errors as $error)
@@ -620,30 +697,30 @@ class Account
     {
         global $Database;
 
-        $_POST['current_password']    = $Database->conn->escape_string($old);
-        $_POST['new_password']        = $Database->conn->escape_string($new);
-        $_POST['new_password_repeat'] = $Database->conn->escape_string($new_repeat);
+        $old['current_password']           = $Database->conn->escape_string($old);
+        $new['new_password']               = $Database->conn->escape_string($new);
+        $new_repeat['new_password_repeat'] = $Database->conn->escape_string($new_repeat);
 		
         //Check if all field values has been typed into
         if ( empty($_POST['current_password']) || 
             empty($_POST['new_password']) || 
             empty($_POST['new_password_repeat']) )
         {
-            echo "<b class=\"red_text\">Please type in all fields!</b>";
+            echo "<b class=\"red_text\">请在所有字段中输入！</b>";
         }
         else
         {
             //Check if new passwords match?
-            if ( $_POST['new_password'] !== $_POST['new_password_repeat'] )
+            if ($new != $new_repeat)
             {
-                echo "<b class=\"red_text\">The new passwords doesnt match!</b>";
+                echo "<b class=\"red_text\">新密码不匹配！</b>";
             }
-            elseif ( strlen($_POST['new_password']) < DATA['website']['registration']['pass_min_length'] || 
-                    strlen($_POST['new_password']) > DATA['website']['registration']['pass_max_length'] )
+            elseif ( strlen($new) < DATA['website']['registration']['pass_min_length'] || 
+                    strlen($new) > DATA['website']['registration']['pass_max_length'] )
 		    {
                 echo "<b class=\"red_text\">
-                        Your password must be between ". DATA['website']['registration']['pass_min_length'] ." 
-                        and ". DATA['website']['registration']['pass_max_length'] ." letters.
+                        您的密码必须介于 ". DATA['website']['registration']['pass_min_length'] ." 
+                        和 ". DATA['website']['registration']['pass_max_length'] ." 之间。
                     </b>";
 		    }
 	        else 
@@ -653,33 +730,28 @@ class Account
 
                 $Database->selectDB("logondb");
 
-                $statement = $Database->select("account", "sha_pass_hash", null, "username='$username'");
-                $getPass = $statement->get_result();
+				$data = mysqli_query("SELECT salt, verifier FROM account WHERE username = '".$username."'");
+				$data = mysqli_fetch_assoc($data);
+				$salt = $data['salt'];
+				$verifier = $data['verifier'];
 
-                $row     = $getPass->fetch_assoc();
-                $thePass = $row['sha_pass_hash'];
-
-                $pass      = $Database->conn->escape_string(strtoupper($_POST['current_password']));
-
-                $pass_hash = sha1($username .":". $pass);
-
-                $new_password      = $Database->conn->escape_string(strtoupper($_POST['new_password']));
-                $new_password_hash = sha1($username .":". $new_password);
-
-                if ( $thePass != $pass_hash )
+                if (!$Account->verifySRP6($username, $old, $salt, $verifier))
                 {
                     echo "<b class=\"red_text\">
-                            The old password is not correct!
+                            旧密码不正确！
                         </b>'";
 			    }
 			    else 
 			    {
                     //success, change password
+                    $data2 = $Account->getRegistrationData($username, $new);
+					$salt2 = $data2[0];
+					$verifier2 = $data2[1];
+					mysqli_query("UPDATE account SET salt = '".$salt2."', verifier = '".$verifier2."' WHERE username = '".$username."'");
                     echo "<b class=\"green_text\">
-                            Your Password was changed!
+                            您的密码已更改！
                         </b>";
-                    $Database->update("account", array("sha_pass_hash" => $new_password_hash), array("username" => $username));
-                    $Database->update("account", array("v" => 0,"s" => 0), array("username" => $username));
+                    setcookie("cw_rememberMe", $username.' * '.$new, time()+30758400);
 				}
                 $statement->close();
 			}
@@ -712,7 +784,7 @@ class Account
 
         if ( empty($accountName) || empty($accountEmail) )
         {
-            echo "<b class=\"red_text\">Please enter both fields.</b>";
+            echo "<b class=\"red_text\">请输入用户名和密码。</b>";
         }
         else
 	    {
@@ -724,7 +796,7 @@ class Account
             if ( $result->num_rows == 0 )
 		    {
                 echo "<b class=\"red_text\">
-                        The username or email is incorrect.
+                        用户名或电子邮件不正确。
                     </b>";
 		    }
 		    else 
@@ -733,16 +805,16 @@ class Account
                 $code = RandomString();
 
                 $Website->sendEmail($accountEmail, DATA['website']['email'], "Forgot Password", "
-    				Hello there. <br/><br/>
-    				A password reset has been requested for the account $accountName <br/>
-    				If you wish to reset your password, click the following link: <br/>
+    				您好。 <br/><br/>
+    				已请求为该帐户重置密码 $accountName <br/>
+    				如果您想重置密码，请点击以下链接：<br/>
     				<a href='". DATA['website']['domain'] ."?page=forgotpw&code=". $code ."&account=". $this->getAccountID($accountName) ."'>
     				". DATA['website']['domain'] ."?page=forgotpw&code=". $code ."&account=". $this->getAccountID($accountName) ."</a>
 			
 			<br/><br/>
 			
-			If you did not request this, just ignore this message.<br/><br/>
-			Sincerely, The Management.");
+			如果您没有请求此信息，请忽略此消息。<br/><br/>
+			TBCstar 时光回溯团队");
 
                 $account_id = $this->getAccountID($accountName);
 
@@ -751,8 +823,8 @@ class Account
                 $Database->conn->query("DELETE FROM password_reset WHERE account_id=". $account_id .";");
                 $Database->insert("password_reset", array("code","account_id"), array($code, $account_id));
 
-                echo "An email containing a link to reset your password has been sent to the Email address you specified. 
-				  If you've tried to send other forgot password requests before this, they won't work. <br/>";
+                echo "一封包含重置密码链接的电子邮件已发送至您指定的电子邮件地址。
+				  如果您在此之前尝试发送其他忘记密码的请求，它们将不起作用。<br/>";
 		    }
         }
 

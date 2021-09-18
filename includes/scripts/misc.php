@@ -67,15 +67,15 @@ if ( isset($_POST['serverStatus']) )
 {
    	echo "<div class=\"box_one_title\">服务器状态</div>";
 	$num = 0;
-	if ( is_array(DATA['realms']) || is_object(DATA['realms']) )
+	if ( is_array(DATA['realms']) )
 	{
-		foreach (DATA['realms'] as $k => $v)
+		foreach (array_keys(DATA['realms']) as $realm_id)
 		{
-			if ($num != 0) 
+			if ( $num != 0 )
 			{ 
-				echo "<hr/>"; 
+				echo "<hr>";
 			}
-			$Server->serverStatus($k);
+			$Server->serverStatus($realm_id);
 			$num++;
 		}
 	}
@@ -84,7 +84,7 @@ if ( isset($_POST['serverStatus']) )
 		buildError("<b>找不到服务器: </b> 请设置您的数据库并添加您的服务器!",NULL);  
 		echo "找不到服务器。";
 	} ?>
-	<hr/>
+	<hr>
 	<span id="realmlist">设置服务器列表 <?php echo DATA['website']['realmlist']; ?></span>
 	</div><?php   
 }

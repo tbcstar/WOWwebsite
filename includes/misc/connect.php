@@ -204,7 +204,7 @@ class Database
         {
             $bind_values .= "d";
         }
-        else
+        elseif ( !is_null($variables) )
         {
             $bind_values .= "b";
         }
@@ -212,7 +212,7 @@ class Database
         # Adds into the $sql string the value given by the parameter
         if ( $where !== null )
         {
-            $sql .= "WHERE $where ";
+            $sql .= "WHERE $where";
         }
 
         if ( $extra !== null )
@@ -277,6 +277,8 @@ class Database
         ## be `changed` in the sql statement
         $bind_values = null;
 
+        $vals = [];
+
         # Checks wether the $variables is an array
         ## If so run through the values within it and check wether
         ## they are numeric or string and adds it into the $bind_values
@@ -285,7 +287,7 @@ class Database
             foreach (array_keys($variables) as $key => $value)
             {
                 $sql .= "$value";
-                if ( !empty($variables[$key + 1]) )
+                if ( !empty(array_keys($variables)[$key + 1]) )
                 {
                     $sql .= ",";
                 }
@@ -294,6 +296,7 @@ class Database
 
             foreach ($variables as $key)
 			{
+                $vals[] = $key;
                 if ( substr($sql, -1) !== "," && substr($sql, -1) == "?")
 				{
                     $sql .= ",";
@@ -328,6 +331,7 @@ class Database
 
         $sql .= ")";
 
+
         # Prepares the statement
         if ( ($statement = $this->conn->prepare($sql)) === false )
         {
@@ -337,7 +341,7 @@ class Database
         # If it's an array, bind_param with ... to go through all of the array's values
         if ( is_array($variables) )
         {
-            $statement->bind_param($bind_values, ...$variables);
+            $statement->bind_param($bind_values, ...$vals);
         }
         else
         {

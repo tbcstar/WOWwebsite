@@ -76,8 +76,9 @@
     require "includes/classes/server.php";
     require "includes/classes/shop.php";
     require "includes/classes/website.php";
+    require "includes/Messages.php";
 
-    global $Account, $Character, $Plugins, $Server, $Shop, $Website;
+    global $Account, $Character, $Plugins, $Server, $Shop, $Website, $Messages;
     $Plugins = new Plugins();
 
     /******* 加载插件 ***********/

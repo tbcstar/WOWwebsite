@@ -36,7 +36,7 @@ class Cache
 		{
 			if ( !opcache_compile_file("includes/misc/$name") )
 			{
-				die("error");
+				die("错误");
 			}
 		}
 
@@ -68,6 +68,8 @@ class Cache
 				die("error");
 			}
 		}
+
+		opcache_compile_file("includes/javascript_loader.php");
 
 		//opcache_compile_file("../../../../index.php");
 	}

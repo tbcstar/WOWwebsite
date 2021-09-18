@@ -1,5 +1,5 @@
 <?php
-	require "includes/loader.php"; //Load all php scripts
+	require "includes/loader.php"; //加载所有 php 脚本
 ?>
 <!DOCTYPE>
 <html>
@@ -17,9 +17,9 @@
     <?php
         $content = new Page("styles/". $template['path'] ."/template.html");
 
-        $content->loadCustoms(); //Load custom modules
+        $content->loadCustoms(); //加载自定义模块
 
-        $content->replace_tags( ['content'      => 'modules/content.php'] ); //Main content 
+        $content->replace_tags( ['content'      => 'modules/content.php'] ); //主要内容
         $content->replace_tags( ['menu'         => 'modules/menu.php'] );
         $content->replace_tags( ['login'        => 'modules/login.php'] );
         $content->replace_tags( ['account'      => 'modules/account.php'] );

@@ -40,11 +40,11 @@ class Server
         //Get status
         if ( @(fsockopen(DATA['realms'][$realm_id]['host'], DATA['realms'][$realm_id]['port'], $errno, $errstr, 1)) === false )
         {
-            echo $status = "<h4 class='realm_status_title_offline'>Offline</h4>";
+            echo "<h4 class=\"text-center\">离线</h4>";
         }
         else
 	    {
-            echo $status = "<h4 class='realm_status_title_online'>Online</h4>";
+            echo $status = "<h4 class=\"text-center\">在线</h4>";
 
             echo "<span class='realm_status_text'>";
 
@@ -122,11 +122,11 @@ class Server
                 $statement->close();
                 if ( $pOnline['online'] > 1 || $pOnline['online'] == 0 ) 
                 {
-                    echo "<td><b>". $pOnline['online'] ."</b> Players Online</td>";
+                    echo "<td><b>". $pOnline['online'] ."</b> 在线玩家</td>";
                 }
                 elseif ( $pOnline['online'] == 1 )
                 {
-                    echo "<td><b>". $pOnline['online'] ."</b> Player Online</td>";
+                    echo "<td><b>". $pOnline['online'] ."</b> 在线玩家</td>";
     			}
     		}
 
@@ -145,7 +145,7 @@ class Server
 
                 echo '
 				<td>
-				   <b>'. convTime($uptime) .'</b> uptime
+				   <b>'. convTime($uptime) .'</b> 正常运行时间
 				</td>
 				</tr>';
 		    }
@@ -162,7 +162,7 @@ class Server
 
             echo '<tr>
 		 	   <td>
-			   	   Next arena flush: <b>' . $flush . '</b>
+			   	   竞技场新赛季： <b>' . $flush . '</b>
 			   </td>';
         }
         echo '</tr>
@@ -186,12 +186,12 @@ class Server
         {
             $result = $client->executeCommand(new SoapParam($command, "command"));
 
-            echo "Command succeeded! Output:<br />\n";
+            echo "命令成功！ 输出：<br />\n";
             echo $result;
         }
         catch (Exception $e)
         {
-            echo "Command failed! Reason:<br />\n";
+            echo "命令失败！ 原因：<br />\n";
             echo $e->getMessage();
         }        
     }
@@ -211,7 +211,7 @@ class Server
         }
         else
         {
-            die("Connection problems...Aborting | Error: $error_string");
+            die("连接问题...正在中止 | 错误: $error_string");
         }
     }
 

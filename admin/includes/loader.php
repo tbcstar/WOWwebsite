@@ -4,14 +4,14 @@
 ## ------------------------##
 #############################
 
-    require "../includes/misc/headers.php"; //Load headers
+    require "../includes/misc/headers.php"; //加载标题
 
 	define('INIT_SITE', TRUE);
 	include "../includes/configuration.php";
 
-    if ( DATA['admin']['enabled'] == FALSE ) exit();
+    if ( DATA['admin']['enabled'] == false ) exit();
 
-	require "../includes/misc/compress.php"; //Load compression file
+	require "../includes/misc/compress.php"; //加载压缩文件
 	include "../aasp_includes/functions.php";
 
     global $GameServer, $GameAccount, $GamePage;

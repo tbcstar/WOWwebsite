@@ -2,7 +2,7 @@
 
 require "../ext_scripts_class_loader.php";
 
-global $Database, $Account;
+global $Database, $Account, $Messages;
 
 $Database->selectDB("logondb");
 
@@ -27,11 +27,11 @@ if ( isset($_POST['check']) && $_POST['check'] == "username" )
     $result = $statement->get_result();
     if ( $result->num_rows > 0 )
     {
-        echo "<i class=\"red_text\">此用户名不可用</i>";
+        $Messages->error("此用户名不可用", false);
     }
     else
 	{
-        echo "<i class=\"green_text\">此用户名可用</i>";
+        $Messages->success("此用户名可用", false);
 	}
     $statement->close();
 } 

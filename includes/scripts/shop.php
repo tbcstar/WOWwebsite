@@ -149,11 +149,11 @@ if ( $_POST['action'] == "checkout" )
 					{
 						if ( $num > 12 )
 						{
-						    $command = "send items ". $Character->getCharname($values[0], $values[1]) ." \"Your requested item\" \"Thanks for supporting us!\" $entry:12 ";
+						    $command = "发送物品 ". $Character->getCharname($values[0], $values[1]) ." \"您购买的物品\" \"感谢您对我们的支持！\" $entry:12 ";
                         }
 						else
 						{
-						    $command = "send items ". $Character->getCharname($values[0], $values[1]) ." \"Your requested item\" \"Thanks for supporting us!\" $entry:$num ";
+						    $command = "发送物品 ". $Character->getCharname($values[0], $values[1]) ." \"您购买的物品\" \"感谢您对我们的支持！\" $entry:$num ";
                         }
 						$Shop->logItem("donate",$entry,$values[0],$Account->getAccountID($_SESSION['cw_user']),$values[1],$num);
 						$Server->sendRA($command, $rank_user, $rank_pass, $host, $ra_port);
@@ -164,7 +164,7 @@ if ( $_POST['action'] == "checkout" )
 				} 
 				else 
 				{
-				    $command = "send items ".$Character->getCharname($values[0],$values[1])." \"Your requested item\" \"Thanks for supporting us!\" ".$entry.":".$_SESSION['donateCart'][$entry]['quantity']." ";
+				    $command = "send items ".$Character->getCharname($values[0],$values[1])." \"您购买的物品\" \"感谢您对我们的支持！\" ".$entry.":".$_SESSION['donateCart'][$entry]['quantity']." ";
 					$Shop->logItem("donate",$entry,$values[0],$Account->getAccountID($_SESSION['cw_user']),$values[1],$_SESSION['donateCart'][$entry]['quantity']);
 				    $Server->sendRA($command, $rank_user, $rank_pass, $host, $soap_port);
 				}
@@ -217,11 +217,11 @@ if ( $_POST['action'] == "checkout" )
 					{
 						if ( $num > 12 )
 						{
-							$command = "send items ".$Character->getCharname($values[0],$values[1])." \"Your requested item\" \"Thanks for supporting us!\" ".$entry.":12 ";
+							$command = "send items ".$Character->getCharname($values[0],$values[1])." \"您购买的物品\" \"感谢您对我们的支持！\" ".$entry.":12 ";
 						}
 						else
 						{
-							$command = "send items ".$Character->getCharname($values[0],$values[1])." \"Your requested item\" \"Thanks for supporting us!\" ".$entry.":".$num." ";
+							$command = "send items ".$Character->getCharname($values[0],$values[1])." \"您购买的物品\" \"感谢您对我们的支持！\" ".$entry.":".$num." ";
 						}
 						$Shop->logItem("vote",$entry,$values[0],$Account->getAccountID($_SESSION['cw_user']),$values[1],$num);	
 				        $Server->sendRA($command, $rank_user, $rank_pass, $host, $soap_port);
@@ -231,7 +231,7 @@ if ( $_POST['action'] == "checkout" )
 			  	} 
 				else 
 				{
-				    $command = "send items ".$Character->getCharname($values[0],$values[1])." \"Your requested item\" \"Thanks for supporting us!\" ".$entry.":".$_SESSION['voteCart'][$entry]['quantity']." ";
+				    $command = "send items ".$Character->getCharname($values[0],$values[1])." \"您购买的物品\" \"感谢您对我们的支持！\" ".$entry.":".$_SESSION['voteCart'][$entry]['quantity']." ";
 					$Shop->logItem("vote",$entry,$values[0],$Account->getAccountID($_SESSION['cw_user']),$values[1],$_SESSION['voteCart'][$entry]['quantity']); 
 				    $Server->sendRA($command, $rank_user, $rank_pass, $host, $soap_port);
 				}

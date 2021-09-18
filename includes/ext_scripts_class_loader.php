@@ -11,4 +11,5 @@
     require "../classes/account.php";
     require "../classes/website.php";
     require "../classes/character.php";
-    require "../classes/server.php"; 
+    require "../classes/server.php";
+    require "../Messages.php";

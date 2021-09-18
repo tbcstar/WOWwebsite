@@ -262,94 +262,65 @@ class Website
 
         if ( DATA['website']['news']['enable'] == TRUE )
         {
-            echo "<div class='box_two_title'>Latest News</div>";
+            echo "<div class=\"well text-center\">最新消息</div>";
 
             $Database->selectDB("webdb");
 
             $result = $Database->select("news", null, null, null, "ORDER BY id DESC LIMIT ". DATA['website']['news']['max_shown'])->get_result();
 
-            if ($result->num_rows == 0)
+            if ( $result->num_rows == 0 )
             {
-                echo "No News Were Found.";
+                echo "没有找到任何消息。";
             }
             else
             {
                 $output = null;
                 while ($row = $result->fetch_assoc())
                 {
-                    if (file_exists($row['image']))
-                    {
-                        echo $newsPT1 = "
-				       <table class='news' width='100%'>
+                    if ( file_exists($row['image']) )
+                    { ?>
+				       <table class="news" width="100%">
 					        <tr>
 							    <td>
-                                    <h3 class='yellow_text'>". 
-                                        $row['title'] 
-                                    ."</h3>
+                                    <h3 class="yellow_text"> 
+                                        <?php echo $row['title']; ?>
+                                    </h3>
                                 </td>
 						    </tr>
 					   </table>
-                       <table class='news_content' cellpadding='4'> 
+                       <table class="news_content" cellpadding="4"> 
 					       <tr>
-					          <td><img src='". $row['image'] ."' alt=''/></td> 
-					          <td>";
+					          <td><img src="<?php echo $row['image'];?>" alt=''/></td> 
+					          <td><?php
                     }
                     else
-                    {
-                        echo $newsPT1 = "
+                    { ?>
 				       <table class='news' width='100%'> 
 					        <tr>
 							    <td>
-                                    <h3 class='yellow_text'>". 
-                                        $row['title'] 
-                                    ."</h3>
+                                    <h3 class='yellow_text'> 
+                                        <?php echo $row['title']; ?> 
+                                    </h3>
                                 </td>
 						    </tr>
-					   </table>";
+					   </table><?php
                     }
-                    $output .= $newsPT1;
-                    unset($newsPT1);
-
-                    if (file_exists("includes/classes/validator.php"))
+                    if ( DATA['website']['news']['limit_home_characters'] == TRUE )
                     {
-                        include "includes/classes/validator.php";
-
-                        $Validator = new Validator(array(), array($row['body']), array($row['body']));
-                        $sanatized_text = $Validator->sanatize($row['body'], "string");
-
-                        if ( DATA['website']['news']['limit_home_characters'] == TRUE )
-                        {
-                            echo $Website->limit_characters($sanatized_text, 200);
-                            $output .= $Website->limit_characters($row['body'], 200);
-                        }
-                        else
-                        {
-                            echo nl2br("<br>".$sanatized_text);
-                            $output .= nl2br($row['body']);
-                        }
-
-                        $result = $Database->select("news_comments", "COUNT(id)", null, "newsid=". $row['id'])->get_result();
-                        $commentsNum = $result->fetch_row();
-
-                        if ( DATA['website']['news']['enable_comments'] == true )
-                        {
-                            $comments = '| <a href="?page=news&amp;newsid=' . $row['id'] . '">Comments ('. $commentsNum[0] .')</a>';
-                        }
-                        else
-                        {
-                            $comments = "";
-                        }
-
-                        echo $newsPT2 = "<br/><br/><br/>
-                            <i class='gray_text'>Written by ". $row['author'] ." | ". $row['date'] ." ". $comments ."</i>
-                            </td> 
-                            </tr>
-                            </table";
-                        $output  .= $newsPT2;
-                        unset($newsPT2);
+                        echo $Website->limit_characters($row['body'], 200);
                     }
+                    else
+                    {
+                        echo nl2br("<br>".$row['body']);
+                    }
+
+                    echo "<br/><br/><br/>
+                        <i class='gray_text'>作者 ". $row['author'] ." | ". $row['date'] ." ". $this->getComments($row['id']) ."</i>
+                        </td> 
+                        </tr>
+                        </table";
                 }
-                echo "<br><hr/><a href='?page=news'>View older news...</a>";
+                echo "<br><hr/><a href='?page=news'>查看旧新闻...</a>";
             }
         }
     }
@@ -413,9 +384,9 @@ class Website
 
         $result = $Database->select("votingsites", null, null, null, "ORDER BY id DESC")->get_result();
 
-        if ($result->num_rows == 0)
+        if ( $result->num_rows == 0 )
         {
-            buildError("Couldnt Fetch Any Voting Links From The Database. ". $Database->conn->error);
+            buildError("无法从数据库中获取任何投票链接。 ". $Database->conn->error);
         }
         else
         {
@@ -444,7 +415,7 @@ class Website
                                         $time = 43200;
 				                    }
 
-                                    echo "Time until reset: ". convTime($time);
+                                    echo "重置前的时间： ". convTime($time);
                                 }
                                 ?>
                             </td>
@@ -564,7 +535,22 @@ class Website
         }
         else
         {
-            log_error("Captcha image could not be retrieved.", "C01");
+            log_error("无法检索验证码图像。", "C01");
+        }
+    }
+
+    public function getComments($news_id)
+    {
+        if ( DATA['website']['news']['enable_comments'] == true )
+        {
+            global $Database;
+            $commentsNum = $Database->select("news_comments", "COUNT(id) AS comments", null, "newsid='". $news_id."'")->get_result();
+
+            return "| <a href=\"?page=news&amp;newsid=". $news_id ."\">Comments <span class=\"badge\">". $commentsNum->fetch_assoc()['comments'] ."</span></a>";
+        }
+        else
+        {
+            return "";
         }
     }
 
