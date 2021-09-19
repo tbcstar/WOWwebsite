@@ -113,7 +113,7 @@ $j=1;
                 '5' => '5x5'
 				);
 				
-$connect = new mysqli($host,$user,$pass) OR DIE("'Can't connect with $host"); 
+$connect = new mysqli($host,$user,$pass) OR DIE("'无法连接 $host"); 
 $conn->select_db($mangoscharacters,$connect) or die($conn->error()); 
 
 

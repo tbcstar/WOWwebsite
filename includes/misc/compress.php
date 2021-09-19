@@ -1,6 +1,6 @@
 <?php
     
-    if ( DATA['website']['compression']['gzip'] == true )
+    if ( @DATA['website']['compression']['gzip'] == true )
     {
      	if ( substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], "gzip") )
      	{
@@ -9,7 +9,7 @@
      	}
     }
     
-    if ( DATA['website']['compression']['sanitize_output'] == true )
+    if ( @DATA['website']['compression']['sanitize_output'] == true )
     {
     	function sanitize_output($buffer) 
     	{

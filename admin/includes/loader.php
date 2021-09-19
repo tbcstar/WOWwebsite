@@ -3,13 +3,13 @@
 ##管理面板加载程序文件 ##
 ## ------------------------##
 #############################
-
+    error_reporting(E_ALL^E_WARNING);
     require "../includes/misc/headers.php"; //加载标题
 
 	define('INIT_SITE', TRUE);
 	include "../includes/configuration.php";
 
-    if ( DATA['admin']['enabled'] == false ) exit();
+    if (@ DATA['admin']['enabled'] == false ) exit();
 
 	require "../includes/misc/compress.php"; //加载压缩文件
 	include "../aasp_includes/functions.php";

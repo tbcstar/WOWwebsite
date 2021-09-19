@@ -5,7 +5,7 @@
     <script type="text/javascript" src="../aasp_includes/js/logs.js"></script>
     <script type="text/javascript" src="../aasp_includes/js/shop.js"></script>
     <?php
-        if ( DATA['website']['core_expansion'] > 2)
+        if ( @DATA['website']['core_expansion'] > 2)
         {
     		//核心在WOTLK之上。 使用WoWHead,反之使用cavernoftime
     		echo '<script type="text/javascript" src="https://static.wowhead.com/widgets/power.js"></script>';

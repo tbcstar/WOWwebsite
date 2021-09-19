@@ -1,6 +1,5 @@
 <?php
 
-
 class Cache
 {
 	private $prefered_values = null;

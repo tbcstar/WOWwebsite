@@ -8,7 +8,7 @@
 	<head>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title><?php echo DATA['website']['title']; ?> 管理面板</title>
+	<title><?php echo @DATA['website']['title']; ?> 管理面板</title>
 	<link rel="stylesheet" href="/aasp_includes/styles/default/style.css" />
 	<link rel="stylesheet" href="/aasp_includes/styles/wysiwyg.css" />
 	<script type="text/javascript" src="/aasp_includes/js/jquery.min.js"></script>
@@ -168,7 +168,7 @@
                             }
                         }
                     ?>
-            <?php if (DATA['website']['forum']['type'] == "phpbb" && DATA['website']['forum']['auto_account_create'] == TRUE && $page == 'dashboard')
+            <?php if (@DATA['website']['forum']['type'] == "phpbb" && @DATA['website']['forum']['auto_account_create'] == TRUE && $page == 'dashboard')
     { ?>
                             <div class="box_right">
                                 <div class="box_right_title">最近的论坛活动</div>
@@ -197,7 +197,7 @@
                                                    target="_blank"><?php echo $user['username']; ?></a></td>
                                             <td><?php echo $topic['topic_title']; ?></td>
                                             <td><?php echo limit_characters(strip_tags($string), 75); ?>...</td>
-                                            <td><a href="<?php echo DATA['website']['domain'] . substr(DATA['website']['forum']['path'], 1); ?>viewtopic.php?t=<?php echo $row['topic_id'] ?>" 
+                                            <td><a href="<?php echo @DATA['website']['domain'] . substr(@DATA['website']['forum']['path'], 1); ?>viewtopic.php?t=<?php echo $row['topic_id'] ?>" 
                                                    title="View this topic" target="_blank">
                                                     查看主题</a></td>
                                         </tr>
@@ -232,8 +232,8 @@
                                     <td>
 
                                     <tr style="font-weight: bold;">
-                                        <td><?php echo DATA['website']['connection']['host']; ?></td>
-                                        <td><?php echo DATA['website']['connection']['username']; ?></td>
+                                        <td><?php echo @DATA['website']['connection']['host']; ?></td>
+                                        <td><?php echo @DATA['website']['connection']['username']; ?></td>
                                         <td>****<br/></td>
                                     </tr>
 
@@ -250,9 +250,9 @@
                                     </td>
                                     <td>
                                     <tr style="font-weight: bold;">
-                                        <td><?php echo DATA['logon']['database']; ?></td>
-                                        <td><?php echo DATA['website']['connection']['name']; ?></td>
-                                        <td><?php echo DATA['world']['database']; ?></td>
+                                        <td><?php echo @DATA['logon']['database']; ?></td>
+                                        <td><?php echo @DATA['website']['connection']['name']; ?></td>
+                                        <td><?php echo @DATA['world']['database']; ?></td>
                                         <td>
                                             <?php
                                                 $GameServer->selectDB("webdb");

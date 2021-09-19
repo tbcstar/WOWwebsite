@@ -8,7 +8,8 @@ class Database
 
     public function __construct()
     {
-        $config_file = file_get_contents("../configuration.json");
+        $config_file = file_get_contents("includes/configuration.json");
+        $config_file1 = file_get_contents("includes/classes/error.php");
         define("DATA", json_decode($config_file, true));
         $this->connect();
 
@@ -61,8 +62,8 @@ class Database
 
             if ( defined("DATA") )
             {
-                $config_file = fopen("../configuration.json", "w");
-                $data = array_merge(DATA, $realms, $service);
+                $config_file = fopen("includes/configuration.json", "w");
+                $data = @array_merge(DATA, $realms, $service);
                 $json_config = json_encode($data);
                 fwrite($config_file, $json_config);
                 fclose($config_file);
@@ -70,24 +71,26 @@ class Database
         }
         catch( Exception $e )
         {
-            buildError($e, null);
+            $this->buildError($e, null);
         }
     }
-
+    
+ 
     public function connect()
-    {
-        $this->conn = mysqli_connect(
-            DATA['website']['connection']['host'], 
-            DATA['website']['connection']['username'], 
-            DATA['website']['connection']['password']);
+    {   
+        
+        @$this->conn = mysqli_connect(
+            @DATA['website']['connection']['host'], 
+            @DATA['website']['connection']['username'], 
+            @DATA['website']['connection']['password']);
 
-        if ( $this->conn != null && $this->conn != false )
+        if ( $this->conn)
 	    {
             $this->conn->set_charset("UTF8");
 	    }
         else
-	    {
-            buildError("<b>数据库连接错误：</b> 连接不能建立。 错误：" . $this->conn->error, NULL);
+	    {   /*echo '数据库连接错误';*/
+            /*$this->buildError("<b>数据库连接错误：</b> 连接不能建立。 错误：", NULL);*/
             $this->connectedTo = null;
         }
     }
@@ -101,19 +104,19 @@ class Database
                 break;
 
             case "logondb": 
-                $this->conn->select_db(DATA['logon']['database']);
+                $this->conn->select_db(@DATA['logon']['database']);
                 break;
 
             case "webdb":
-                $this->conn->select_db(DATA['website']['connection']['name']);
+                $this->conn->select_db(@DATA['website']['connection']['name']);
                 break;
 
             case "worlddb":
-                $this->conn->select_db(DATA['world']['database']);
+                $this->conn->select_db(@DATA['world']['database']);
                 break;
 
             case "chardb":
-                $this->conn->select_db(DATA['characters']['database']);
+                $this->conn->select_db(@DATA['characters']['database']);
                 break;
         }
         return TRUE;
@@ -156,7 +159,7 @@ class Database
         ## If it is throws an error with the given message
         if ( empty($table) )
         {
-            throw new Exception("First Parameter Cannot Be Empty", 1);
+            throw new Exception("第一个参数不能为空", 1);
             exit;
         }
         $sql .= "FROM $table ";
@@ -573,4 +576,46 @@ class Database
             return $statement;
         }
     }
+    
+ public    function buildError($error, $num , $hidden_error = "")
+	{
+		if ( @DATA['use']['debug'] == false )
+		{
+			$this->log_error($error ." ". $hidden_error, $num);
+		}
+		else
+		{
+			$this->errors($error, $num);
+		}
+	}
+
+public	function errors($error, $num)
+	{
+		$this->log_error(strip_tags($error), $num);
+		die("<center><b>网站错误</b><br/>
+			网站脚本遇到错误并关闭。 <br/><br/>
+			<b>错误消息: </b>". $error ."  <br/>
+			<b>错误序号: </b>". $num ."
+			<br/><br/><br/><i>TBCstar 团队
+			<br/><font size='-2'>www.tbcstar.com</font></i></center>
+			");
+	}
+
+public	function log_error($error, $num)
+	{
+		$this->error_log("*[" . date("d M Y H:i") . "] " . $error ."\n", 3, "error.log");
+	}
+
+public	function loadCustomErrors()
+	{
+		$this->set_error_handler("customError");
+	}
+
+public	function customError($errno, $errstr)
+	{
+		if ($errno != 8 && $errno != 2048 && @DATA['use']['debug'] == true)
+		{
+			$this->error_log("*[" . date("d M Y H:i") . "]<i>" . $errstr . "</i>\n", 3, "error.log");
+		}
+	} 
 } 
