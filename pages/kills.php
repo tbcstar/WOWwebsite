@@ -71,7 +71,7 @@ account::isNotLoggedIn();
 统计 </a>
 <span class="ico-raquo"></span>
 <div>
-荣誉排名 </div>
+击杀排名 </div>
 </div>
 <div class="realm_picker">
 <div class="">
@@ -84,7 +84,7 @@ account::isNotLoggedIn();
 <div class="content-holder">
 <div class="content-frame">
 <div class="content">
-<h2>荣誉排名</h2>
+<h2>击杀数</h2>
 <br />
 
 <?php
@@ -93,8 +93,8 @@ account::isNotLoggedIn();
 # SQL连接
 ######################################################
 $db_user = "root";
-$db_pass = "A112233a" ;
-$db_host = "game.tbcstar.com:3310";
+$db_pass = "A112233a!" ;
+$db_host = "game.tbcstar.com";
 
 ######################################################
 # 投票商店网站连接
@@ -133,7 +133,7 @@ $msg = mysql_num_rows($result);
 <th>阵营</th>
 <th>总击杀数</th>
 </tr>
-<center><br />不是PVP前5名！</center>
+<center><br />不是PVP前50名！</center>
 ';}else{
 echo '
 <table class="table">

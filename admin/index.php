@@ -113,9 +113,9 @@
 <br/>
 <center>
 <h2>请登录</h2>
-  <input type="text" placeholder="Username" id="login_username" style="border: 1px solid #ccc;"/><br/> 
-  <input type="password" placeholder="Password" id="login_password" style="border: 1px solid #ccc;"/><br/>
-  <input type="submit" value="Log in" onclick="login('admin')"/> <br/>
+  <input type="text" placeholder="用户名" id="login_username" style="border: 1px solid #ccc;"/><br/> 
+  <input type="password" placeholder="密码" id="login_password" style="border: 1px solid #ccc;"/><br/>
+  <input type="submit" value="登录" onclick="login('admin')"/> <br/>
   <div id="login_status"></div>
 </center>
  <?php 
@@ -165,7 +165,7 @@
 				$topic = mysql_fetch_assoc($getTopic);
             ?>
                 <tr class="center">
-                    <td><a href="http://heroic-wow.net/forum/memberlist.php?mode=viewprofile&u=<?php echo $row['poster_id']; ?>" title="View profile" 
+                    <td><a href="http://www.tbcstar.com/forum/memberlist.php?mode=viewprofile&u=<?php echo $row['poster_id']; ?>" title="查看资料" 
                     target="_blank"><?php echo $user['username']; ?></a></td>
                     <td><?php echo $topic['topic_title']; ?></td>
                     <td><?php echo limit_characters(strip_tags($string),75);?>...</td>

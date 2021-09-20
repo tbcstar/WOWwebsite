@@ -67,7 +67,7 @@
 <span class="ico-raquo"></span>
 
 <div>
-修改E-mail </div>
+修改邮箱地址 </div>
 </div>
 <div class="realm_picker">
 <div class="">
@@ -85,10 +85,10 @@ if (isset($_POST['save'])) {
 <div class="content-holder">
 <div class="content-frame">
 <div class="content">
-<h2>修改E-mail地址</h2>
+<h2>修改邮箱地址</h2>
 <form action="?p=settings" method="post">
 <div class="row">
-<label for="PasswordForm_password">E-mail地址</label>:<br />
+<label for="PasswordForm_password">邮箱地址</label>:<br />
 <input class="default" name="email" type="text" value="<?php echo account::getEmail($_SESSION['cw_user']); ?>" /> </div>
 <div class="row">
 <label for="PasswordForm_password">当前密码</label>:<br />

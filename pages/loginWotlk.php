@@ -167,7 +167,7 @@ if ($_POST['register']) {
 <div class="row">
 <div class="form-group text-right captcha"></div>
 <div class="form-group text-right">
-<button type="submit" class="btn btn-green" name="login" id='customID2'>Log in</button>
+<button type="submit" class="btn btn-green" name="login" id='customID2'>登录</button>
 </div>
 </div>
 <div class="row">

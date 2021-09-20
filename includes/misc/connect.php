@@ -4,15 +4,15 @@ class connect {
 	
 	public static $connectedTo = NULL;
 
-     public static function connectToDB() 
-	 {
-		 if(self::$connectedTo != 'global')
-		 {
-			 if (!mysql_connect($GLOBALS['connection']['host'],$GLOBALS['connection']['user'],$GLOBALS['connection']['password']))
-				 buildError("<b>数据库连接错误:</b>无法建立连接。错误:".mysql_error(),NULL);
-			 self::$connectedTo = 'global';	 
-		 }
-	 }
+    public static function connectToDB() 
+	{
+		if(self::$connectedTo != 'global')
+		{
+			if (!mysql_connect($GLOBALS['connection']['host'],$GLOBALS['connection']['user'],$GLOBALS['connection']['password']))
+				buildError("<b>数据库连接错误:</b>无法建立连接。错误:".mysql_error(),NULL);
+			self::$connectedTo = 'global';	 
+		}
+	}
 	 
 	public static function connectToRealmDB($realmid) 
 	{ 
@@ -57,7 +57,13 @@ class connect {
 				mysql_select_db($GLOBALS['connection']['worlddb']);
 			break;
 		 }
-			 return TRUE;
+
+		 mysql_query("SET NAMES 'utf8'");
+		 mysql_query('SET character_set_connection=utf8');
+		 mysql_query('SET character_set_client=utf8');
+		 mysql_query('SET character_set_results=utf8');
+
+		 return TRUE;
 	 }
 	 
 	  public static function checkRevision() 

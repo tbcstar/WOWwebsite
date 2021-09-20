@@ -91,6 +91,7 @@ if($_POST['action']=='checkout')
 	
 	connect::selectDB('webdb');
 	require("../misc/ra.php");
+	require("../misc/soap.php");
 	
 	if(isset($_SESSION['donateCart'])) 
 	{
@@ -109,10 +110,11 @@ if($_POST['action']=='checkout')
 	  if(account::hasDP($_SESSION['cw_user'],$totalPrice)==FALSE)
 		  die("你的积分不足".$GLOBALS['donation']['coins_name']."!");
 
-	  $host = $GLOBALS['realms'][$values[1]]['host'];
+	  $host      = $GLOBALS['realms'][$values[1]]['host'];
 	  $rank_user = $GLOBALS['realms'][$values[1]]['rank_user'];
 	  $rank_pass = $GLOBALS['realms'][$values[1]]['rank_pass'];
-	  $ra_port = $GLOBALS['realms'][$values[1]]['ra_port'];
+	  $ra_port   = $GLOBALS['realms'][$values[1]]['ra_port'];
+	  $soap_port = $GLOBALS['realms'][$values[1]]['soap_port'];
 	  
 	  foreach($_SESSION['donateCart'] as $entry => $value) 
 	  {
@@ -127,7 +129,7 @@ if($_POST['action']=='checkout')
 				else
 				$command = "send items ".character::getCharname($values[0],$values[1])." \"您购买的物品\" \"感谢您对我们的支持！\" ".$entry.":".$num." ";
 			 shop::logItem("donate",$entry,$values[0],account::getAccountID($_SESSION['cw_user']),$values[1],$num);
-			 sendRA($command,$rank_user,$rank_pass,$host,$ra_port);	
+			 sendSoap($command,$rank_user,$rank_pass,$host,$soap_port);	
 			 
 				$num = $num - 12;
 				} 
@@ -137,7 +139,7 @@ if($_POST['action']=='checkout')
 		  {
 		    $command = "send items ".character::getCharname($values[0],$values[1])." \"您购买的物品\" \"感谢您对我们的支持！\" ".$entry.":".$_SESSION['donateCart'][$entry]['quantity']." ";
 			shop::logItem("donate",$entry,$values[0],account::getAccountID($_SESSION['cw_user']),$values[1],$_SESSION['donateCart'][$entry]['quantity']);
-		    sendRA($command,$rank_user,$rank_pass,$host,$ra_port);	
+		    sendSoap($command,$rank_user,$rank_pass,$host,$soap_port);	
 		  }
 	  }
 	  
@@ -180,7 +182,7 @@ if($_POST['action']=='checkout')
 				else
 					$command = "send items ".character::getCharname($values[0],$values[1])." \"您购买的物品\" \"感谢您对我们的支持！\" ".$entry.":".$num." ";
 				 shop::logItem("vote",$entry,$values[0],account::getAccountID($_SESSION['cw_user']),$values[1],$num);	
-		         sendRA($command,$rank_user,$rank_pass,$host,$ra_port);	
+		         sendSoap($command,$rank_user,$rank_pass,$host,$soap_port);	
 					$num = $num - 12;
 				} 
 			 
@@ -189,7 +191,7 @@ if($_POST['action']=='checkout')
 		  {
 		    $command = "send items ".character::getCharname($values[0],$values[1])." \"您购买的物品\" \"感谢您对我们的支持！\" ".$entry.":".$_SESSION['voteCart'][$entry]['quantity']." ";
 			shop::logItem("vote",$entry,$values[0],account::getAccountID($_SESSION['cw_user']),$values[1],$_SESSION['voteCart'][$entry]['quantity']); 
-		    sendRA($command,$rank_user,$rank_pass,$host,$ra_port);	
+		    sendSoap($command,$rank_user,$rank_pass,$host,$soap_port);	
 		  }
 	  }
 	  account::deductVP(account::getAccountID($_SESSION['cw_user']),$totalPrice);

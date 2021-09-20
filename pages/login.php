@@ -929,7 +929,7 @@ T <span class="numbers">5</span>
 <script src="/css/js/jquery.fancybox-media.js" type="text/javascript"></script>
 <script src="/css/js/wow.min.js" type="text/javascript"></script>
 <script src="/css/js/tab.js" type="text/javascript"></script>
-<script src="/javascript/custom.js" type="text/javascript"></script>
+<script src="https://unsimpleworld.com/portfolio/html-preview/blackrock-landing-page-world-of-warcraft/js/custom.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 $(document).ready(function(){

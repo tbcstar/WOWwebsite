@@ -77,7 +77,7 @@ account::isNotLoggedIn();
 时光回溯 </a>
 </div>
 </div>
-<h3 class="main-title">游戏统计</h3>
+<h3 class="main-title">角色统计</h3>
 <div class="statistic">
 <div class="row">
 <div class="col">
@@ -88,8 +88,8 @@ account::isNotLoggedIn();
 <div class="item">
 <img src="/themes/cp_nefelin/images/stat-type-02.jpg" alt="">
 <div class="item-content">
-<div>PvE统计</div>
-<a href="#" class="btn btn-low-green">查看</a>
+<div>竞技场</div>
+<a href="?p=arena" class="btn btn-low-green">查看</a>
 </div>
 </div>
 </div>

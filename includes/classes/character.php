@@ -26,9 +26,10 @@ class character {
 				else
 					account::deductDP(account::getAccountID($_SESSION['cw_user']),$GLOBALS['service']['unstuck']['price']);
 		}
-			
+
+        connect::connectToRealmDB($rid);	
 		$getXYZ = mysql_query("SELECT * FROM `character_homebind` WHERE `guid`='".$guid."'");
-       // $getXYZ = mysql_query("SELECT COUNT('guid') FROM character_homebind WHERE guid='".$guid."' AND online=1");		
+        //$getXYZ = mysql_query("SELECT COUNT('guid') FROM character_homebind WHERE guid='".$guid."' AND online=1");		
 		$row = mysql_fetch_assoc($getXYZ);
 		
 		$new_x = $row['posX']; 
@@ -37,7 +38,8 @@ class character {
 		$new_zone = $row['zoneId']; 
 		$new_map = $row['mapId'];
 		
-		mysql_query("UPDATE characters SET position_x='".$new_x."', position_y='".$new_y."', position_z='".$new_z."', zone='".$new_zone."',map='".$new_map."' WHERE guid='".$guid."'");
+		mysql_query("UPDATE characters SET position_x='".$new_x."', position_y='".$new_y."', 
+		position_z='".$new_z."', zone='".$new_zone."',map='".$new_map."' WHERE guid='".$guid."'");
 		
 		account::logThis("Performed unstuck on ".character::getCharName($guid,$rid),'Unstuck',$rid);
 		
@@ -57,7 +59,7 @@ class character {
 		{
 			if($GLOBALS['service']['revive']['currency']=='vp')
 			{
-				if(account::hasVP($_SESSION['cw_user'],$GLOBALS['service']['unstuck']['price'])==FALSE) 
+				if(account::hasVP($_SESSION['cw_user'],$GLOBALS['service']['revive']['price'])==FALSE) 
 					die( '<b class="red_text">没有足够的投票积分！</b>' );
 				else
 					account::deductVP(account::getAccountID($_SESSION['cw_user']),$GLOBALS['service']['revive']['price']);	
@@ -65,13 +67,13 @@ class character {
 		
 		if($GLOBALS['service']['revive']['currency']=='dp')
 		{
-			if(account::hasDP($_SESSION['cw_user'],$GLOBALS['service']['unstuck']['price'])==FALSE) 
+			if(account::hasDP($_SESSION['cw_user'],$GLOBALS['service']['revive']['price'])==FALSE) 
 				die( '<b class="red_text">积分不足'.$GLOBALS['donation']['coins_name'].'</b>' );
 			else
 				account::deductDP(account::getAccountID($_SESSION['cw_user']),$GLOBALS['service']['revive']['price']);	
 		}
-			
-		    mysql_query("DELETE FROM character_aura WHERE guid = '".$guid."' AND spell = '20584' OR guid = '".$guid."' AND spell = '8326'");
+			connect::connectToRealmDB($rid);
+		    mysql_query("DELETE FROM character_aura WHERE (guid = '".$guid."' AND spell = '55164') OR (guid = '".$guid."' AND spell = '20584') OR (guid = '".$guid."' AND spell = '8326')");
 			
 			account::logThis("Performed a revive on ".character::getCharName($guid,$rid),'Revive',$rid);
 			

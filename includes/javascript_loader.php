@@ -26,9 +26,11 @@ if($_GET['p']=='voteshop')
 <?php 
 }
 if($GLOBALS['core_expansion']>2) 
-	echo '<script type="text/javascript" src="/javascript/tooltip.js"></script>';
+	//echo '<script type="text/javascript" src="/javascript/tooltip.js"></script>';
+	echo '<script type="text/javascript" src="https://static.wowhead.com/widgets/power.js"></script>';
 else
-	echo '<script type="text/javascript" src="/javascript/tooltip.js"></script>';
+	//echo '<script type="text/javascript" src="/javascript/tooltip.js"></script>';
+	echo '<script type="text/javascript" src="https://wotlkdb.com/static/widgets/power.js"></script>';
 
 ####CURSOR TRACKER####
 if($_GET['p']=='donateshop' || $_GET['p'] == 'voteshop') 

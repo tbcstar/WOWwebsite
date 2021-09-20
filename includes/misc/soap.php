@@ -12,6 +12,7 @@ $client = new SoapClient(NULL,
 try 
 {
     $result = $client->executeCommand(new SoapParam($command, "command"));
+    return;
 
     echo "命令成功!输出:<br />\n";
     echo $result;

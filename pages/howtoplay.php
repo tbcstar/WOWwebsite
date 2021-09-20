@@ -41,21 +41,6 @@
 <div class="row">
 <aside class="sidebar pull-right wow bounceInRight">
 
-<div class="twitter-widget-holder js-pretty-scroll-light">
-测试
-</div>
-
-
-<div class="facebook-widget-holder js-pretty-scroll-light">
-<div class="fb-container">
-<div class="fb-page" data-href="" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false" data-height="3000" data-width="350">
-<blockquote cite="" class="fb-xfbml-parse-ignore">
-<a href="">TBCstar 时光回溯</a>
-</blockquote>
-</div>
-</div>
-</div>
-
 </aside>
 <section class="main-section with-sidebar">
 <div class="newsbox clearfix">

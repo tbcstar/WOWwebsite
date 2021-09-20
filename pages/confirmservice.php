@@ -266,7 +266,7 @@ elseif($GLOBALS['service'][$service]['currency']=="dp")
     <?php
 	echo $service_desc[$service];
 	?>
-       <input type="submit" class="btn btn-low-yellow" value="Agree & Continue" 
+       <input type="submit" class="btn btn-low-yellow" value="同意并继续" 
        <?php if($row['online']==0) { ?> 
        onclick='confirmService(<?php echo $row['guid']; ?>,<?php echo $realm_id; ?>,"<?php echo $service; ?>","<?php echo $service_title; ?>"
        ,"<?php echo $row['name']; ?>")' <?php }

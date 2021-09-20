@@ -52,7 +52,8 @@ if (isset($_GET['newsid']))
 	{
 		if (isset($_POST['text']) && isset($_SESSION['cw_user']) && strlen($_POST['text'])<1000) 
 		{
-			$text = mysql_real_escape_string(trim(htmlentities($_POST['text'])));
+			//$text = mysql_real_escape_string(trim(htmlentities($_POST['text'])));
+			$text = mysql_real_escape_string(trim($_POST['text']));
 			$ip = $_SERVER['REMOTE_ADDR'];
 			connect::selectDB('logondb');
 			

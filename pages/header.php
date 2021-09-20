@@ -15,12 +15,6 @@
 </div>
 <div class="container">
 <div class="brand">
-<!--<div class="realmlist-btn">
-<a href="/realmlist.wtf">
-<i class="fa fa-cloud-download realmlist-btn-icon"></i>
-<span class="realmlist-btn-text">点击下载登录器</span>
-</a>
-</div>-->
 <a class="logo" href="./">
 <img class="wow swing" role="banner" src="/themes/nefelin/images/logo.png" alt="logo" /> </a>
 <div class="game-versions">
@@ -36,18 +30,16 @@
 </div>-->
 <ul class="nav navbar-nav clearfix wow flip">
 <li><a href="./" class="active">首页</a></li>
-<li><a href="#">介绍</a></li>
+<li><a href="?p=howtoplay">介绍</a></li>
 <li><a href="http://forum.tbcstar.com" target="_blank">论坛</a></li>
 <li><a href="http://www.tbcstar.com" target="_blank"><p style="color:#bbde7a">TBC</p></a></li>
-<li><a href="#">如何加入</a></li>
 <li class="submenu last">
-<a href="">更多 <span class="caret"></span></a>
-<ul class="nav" style="display:none">
+<!-- <a href="">更多 <span class="caret"></span></a>
+<ul class="nav" style="display:none"> -->
 <li><a href="?p=ucp">控制面板</a></li>
-<li><a href="#">Bug-跟踪</a></li>
 <li><a href="#">时间线</a></li>
-<li><a href="#">照片墙</a></li>
 <li><a href="#">B站频道</a></li>
+<li><a href="?p=faq">FAQ</a></li>
 </ul>
  </li>
 </ul>

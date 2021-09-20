@@ -33,7 +33,7 @@
 	 //Example: http://yourserver.com/
 	 //如果你的网站在子目录下， include that aswell. Ex: http://yourserver.com/cataclysm/
 	 
-	 $showLoadTime = true; 
+	 $showLoadTime = false; 
 	 //在页脚显示页面加载时间。
 	 
 	 $footer_text = 'Copyright &copy; TBCstar | 时光回溯 2021<br/>
@@ -125,10 +125,10 @@
 	/* mySQL连接设置
 	/*************************/
 	
-	$connection['host'] = 'game.tbcstar.com:3310';
+	$connection['host'] = 'game.tbcstar.com';
 	$connection['user'] = 'root';
-	$connection['password'] = 'A112233a';
-	$connection['logondb'] = 'realmd';
+	$connection['password'] = 'A112233a!';
+	$connection['logondb'] = 'auth';
 	$connection['webdb'] = 'tbcstar';
 	$connection['worlddb'] = 'world';
 	$connection['realmlist'] = 'game.tbcstar.com';
