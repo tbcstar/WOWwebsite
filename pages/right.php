@@ -11,7 +11,7 @@
 <div class="fb-container">
 <div class="fb-page" data-href="" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false" data-height="3000" data-width="350">
 <blockquote cite="" class="fb-xfbml-parse-ignore">
-<a href="www.tbcstar.com">TBCstar 时光回溯</a>
+<!--<a href="www.tbcstar.com">TBCstar 时光回溯</a>-->
 </blockquote>
 </div>
 </div>
